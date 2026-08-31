@@ -5,13 +5,18 @@ const els = {
 	siteTitle: document.getElementById('site-title'),
 	searchInput: document.getElementById('search-input'),
 	searchBtn: document.getElementById('search-btn'),
-	filterDetails: document.getElementById('filter-details'),
-	filterSummary: document.getElementById('filter-summary'),
-	filterField: document.getElementById('filter-field'),
-	filterValue: document.getElementById('filter-value'),
-	filterApply: document.getElementById('filter-apply'),
-	filterClear: document.getElementById('filter-clear'),
+	filterToggle: document.getElementById('filter-toggle'),
+	filterPanel: document.getElementById('filter-panel'),
+	filterAuthorLabel: document.getElementById('filter-author-label'),
+	filterAuthorInput: document.getElementById('filter-author'),
+	filterTitleLabel: document.getElementById('filter-title-label'),
+	filterTitleInput: document.getElementById('filter-title'),
+	filterDynastyLabel: document.getElementById('filter-dynasty-label'),
+	filterDynastyTang: document.getElementById('filter-dynasty-tang'),
+	filterDynastySong: document.getElementById('filter-dynasty-song'),
 	modules: document.getElementById('modules'),
+	dailyGrid: document.getElementById('daily-grid'),
+	randomArea: document.getElementById('random-area'),
 	results: document.getElementById('results'),
 	resultsHeading: document.getElementById('results-heading'),
 	resultsCount: document.getElementById('results-count'),
@@ -28,6 +33,7 @@ const els = {
 };
 
 let currentLang = 'en';
+let currentRandomPoem = null;
 
 function t(key) {
 	const table = translations[currentLang] || translations['en'];
@@ -68,43 +74,6 @@ function renderDailyPoet() {
 	els.dailyPoetWorks.textContent = poet.works.join(' / ');
 }
 
-function renderFilterFieldOptions() {
-	const fields = [
-		{ value: 'author', label: t('filterFieldAuthor') },
-		{ value: 'dynasty', label: t('filterFieldDynasty') },
-		{ value: 'title', label: t('filterFieldTitle') }
-	];
-	els.filterField.innerHTML = '';
-	fields.forEach(function (f) {
-		const opt = document.createElement('option');
-		opt.value = f.value;
-		opt.textContent = f.label;
-		els.filterField.appendChild(opt);
-	});
-}
-
-function buildFilterValueOptions() {
-	const field = els.filterField.value;
-	const seen = [];
-	POETRY_DATA.forEach(function (p) {
-		const value = isZh()
-			? (field === 'author' ? p.author : field === 'dynasty' ? p.dynasty : p.title)
-			: (field === 'author' ? p.authorEn : field === 'dynasty' ? p.dynastyEn : p.titleEn);
-		if (!seen.includes(value)) seen.push(value);
-	});
-	els.filterValue.innerHTML = '';
-	const placeholder = document.createElement('option');
-	placeholder.value = '';
-	placeholder.textContent = t('filterValuePlaceholder');
-	els.filterValue.appendChild(placeholder);
-	seen.forEach(function (v) {
-		const opt = document.createElement('option');
-		opt.value = v;
-		opt.textContent = v;
-		els.filterValue.appendChild(opt);
-	});
-}
-
 function buildResultCard(poem) {
 	const article = document.createElement('article');
 	const header = document.createElement('header');
@@ -124,9 +93,10 @@ function buildResultCard(poem) {
 	return article;
 }
 
-// 搜索后显示结果并隐藏下方三个模块
-function showResults(list, headingKey) {
-	els.modules.hidden = true;
+// 显示结果并隐藏每日诗词/诗人；keepRandom 为 true 时保留随机跳转按钮
+function showResults(list, headingKey, keepRandom) {
+	els.dailyGrid.hidden = true;
+	els.randomArea.hidden = !keepRandom;
 	els.results.hidden = false;
 	els.resultsHeading.textContent = t(headingKey);
 	els.resultsList.innerHTML = '';
@@ -141,8 +111,10 @@ function showResults(list, headingKey) {
 }
 
 function hideResults() {
+	currentRandomPoem = null;
 	els.results.hidden = true;
-	els.modules.hidden = false;
+	els.dailyGrid.hidden = false;
+	els.randomArea.hidden = false;
 }
 
 function doSearch() {
@@ -151,50 +123,75 @@ function doSearch() {
 		hideResults();
 		return;
 	}
-	showResults(searchPoems(input), 'resultsHeading');
+	currentRandomPoem = null;
+	let list;
+	try {
+		list = searchPoems(input);
+	} catch (err) {
+		// 搜索异常时给出反馈，避免页面无任何反应
+		list = [];
+	}
+	showResults(list, 'resultsHeading', false);
 }
 
 function showRandomPoem() {
-	const poem = POETRY_DATA[Math.floor(Math.random() * POETRY_DATA.length)];
-	showResults([poem], 'randomHeading');
+	currentRandomPoem = POETRY_DATA[Math.floor(Math.random() * POETRY_DATA.length)];
+	showResults([currentRandomPoem], 'randomHeading', true);
 }
 
-// 筛选：把生成的表达式同步到搜索框（带引号以支持含空格的值），并执行搜索
-function applyFilter() {
-	const value = els.filterValue.value;
-	if (!value) return;
-	const field = els.filterField.value;
-	// 先移除该字段已有的表达式
+// ---------- 筛选：表达式同步到搜索框 ----------
+
+// 移除搜索框中某字段已有的表达式
+function removeFieldExpression(field) {
 	const re = new RegExp('(^|\\s)' + field + ':"[^"]*"|(^|\\s)' + field + ':[^\\s]+', 'g');
-	const cleaned = els.searchInput.value.replace(re, ' ').replace(/\s+/g, ' ').trim();
-	const parts = cleaned ? cleaned.split(' ') : [];
-	parts.push(field + ':"' + value + '"');
-	els.searchInput.value = parts.join(' ');
-	els.filterDetails.removeAttribute('open');
-	doSearch();
+	return els.searchInput.value.replace(re, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function clearFilter() {
-	els.searchInput.value = '';
-	els.filterValue.value = '';
-	els.filterDetails.removeAttribute('open');
-	hideResults();
+// 同步筛选表达式到搜索框：value 为空则移除该字段
+function syncExpression(field, value) {
+	const cleaned = removeFieldExpression(field);
+	if (value) {
+		const parts = cleaned ? cleaned.split(' ') : [];
+		parts.push(field + ':"' + value + '"');
+		els.searchInput.value = parts.join(' ');
+	} else {
+		els.searchInput.value = cleaned;
+	}
 }
+
+// Dynasty 单选切换：Tang / Song，再次点击取消选中（只同步表达式，由 Search 按钮触发搜索）
+function setDynasty(value) {
+	els.filterDynastyTang.classList.toggle('selected', value === 'Tang');
+	els.filterDynastySong.classList.toggle('selected', value === 'Song');
+	syncExpression('dynasty', value);
+}
+
+// Filter 按钮：展开/收起下拉面板
+function toggleFilterPanel() {
+	els.filterPanel.hidden = !els.filterPanel.hidden;
+	els.filterToggle.setAttribute('aria-expanded', String(!els.filterPanel.hidden));
+}
+
+// ---------- 语言切换 ----------
 
 function applyStaticTexts() {
 	document.title = t('title');
 	els.siteTitle.textContent = t('title');
 	els.searchInput.placeholder = t('searchPlaceholder');
 	els.searchBtn.textContent = t('searchBtn');
-	els.filterSummary.textContent = t('filterSummary');
-	els.filterApply.textContent = t('filterApply');
-	els.filterClear.textContent = t('filterClear');
+	els.filterToggle.textContent = t('filterToggle');
+	els.filterAuthorLabel.textContent = t('filterFieldAuthor');
+	els.filterTitleLabel.textContent = t('filterFieldTitle');
+	els.filterDynastyLabel.textContent = t('filterFieldDynasty');
+	els.filterAuthorInput.placeholder = t('filterAuthorPlaceholder');
+	els.filterTitleInput.placeholder = t('filterTitlePlaceholder');
+	els.filterDynastyTang.textContent = t('dynastyTang');
+	els.filterDynastySong.textContent = t('dynastySong');
 	els.dailyPoemTitle.textContent = t('dailyPoemTitle');
 	els.dailyPoetTitle.textContent = t('dailyPoetTitle');
 	els.randomBtn.textContent = t('randomBtn');
 	els.backLink.textContent = t('backLink');
 	els.footerText.textContent = t('footer');
-	renderFilterFieldOptions();
 }
 
 function setLanguage(lang) {
@@ -204,22 +201,44 @@ function setLanguage(lang) {
 	els.langSwitcher.value = lang;
 	localStorage.setItem('preferred-language', lang);
 	applyStaticTexts();
-	buildFilterValueOptions();
 	renderDailyPoem();
 	renderDailyPoet();
 	if (!els.results.hidden) {
-		doSearch();
+		if (currentRandomPoem) {
+			// 随机结果：语言切换时保持原诗并保留随机按钮
+			showResults([currentRandomPoem], 'randomHeading', true);
+		} else {
+			doSearch();
+		}
 	}
 }
 
 // 事件绑定
 els.searchBtn.addEventListener('click', doSearch);
+els.filterToggle.addEventListener('click', toggleFilterPanel);
+// 点击面板外部时收起下拉面板
+document.addEventListener('click', function (e) {
+	if (!els.filterPanel.hidden && !els.filterPanel.contains(e.target) && e.target !== els.filterToggle) {
+		els.filterPanel.hidden = true;
+		els.filterToggle.setAttribute('aria-expanded', 'false');
+	}
+});
 els.searchInput.addEventListener('keydown', function (e) {
 	if (e.key === 'Enter') doSearch();
 });
-els.filterField.addEventListener('change', buildFilterValueOptions);
-els.filterApply.addEventListener('click', applyFilter);
-els.filterClear.addEventListener('click', clearFilter);
+// 筛选输入只同步表达式到搜索框，不自动触发搜索（由 Search 按钮 / 回车触发）
+els.filterAuthorInput.addEventListener('input', function () {
+	syncExpression('author', this.value.trim());
+});
+els.filterTitleInput.addEventListener('input', function () {
+	syncExpression('title', this.value.trim());
+});
+els.filterDynastyTang.addEventListener('click', function () {
+	setDynasty(this.classList.contains('selected') ? '' : 'Tang');
+});
+els.filterDynastySong.addEventListener('click', function () {
+	setDynasty(this.classList.contains('selected') ? '' : 'Song');
+});
 els.randomBtn.addEventListener('click', showRandomPoem);
 els.langSwitcher.addEventListener('change', function () {
 	setLanguage(this.value);

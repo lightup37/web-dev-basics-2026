@@ -34,5 +34,6 @@
 	--pico-link-underline: rgba(140, 107, 39, 0.5);
 	--pico-code-background-color: #f3ead0;
 	--pico-mark-background-color: #f3d97c;
-	--pico-font-family: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+	/* 筛选面板背景：比页面底色更亮的米白，用于区分筛选区 */
+	--paper-filter-bg: #fffaf0;
 }

@@ -22,24 +22,35 @@
 
 		<section class="search-section" aria-label="Search">
 			<div class="search-bar">
-				<input type="search" id="search-input" style="margin: 0;">
-				<button id="search-btn" style="margin: 0;"></button>
+				<div class="search-input-wrap">
+					<input type="search" id="search-input" style="margin: 0;">
+					<button id="filter-toggle" type="button" class="filter-toggle" style="margin: 0;"></button>
+				</div>
+				<button id="search-btn" type="button" style="margin: 0;"></button>
 			</div>
-			<div class="filter-area">
-				<details id="filter-details">
-					<summary id="filter-summary"></summary>
-					<div class="filter-menu">
-						<select id="filter-field" style="width: auto; margin: 0;"></select>
-						<select id="filter-value" style="width: auto; margin: 0;"></select>
-						<button id="filter-apply" class="secondary" style="width: auto; margin: 0;"></button>
-						<button id="filter-clear" class="secondary" style="width: auto; margin: 0;"></button>
+			<div id="filter-panel" class="filter-panel" hidden>
+				<div class="filter-menu">
+					<div class="filter-item">
+						<label for="filter-author" id="filter-author-label" class="filter-label"></label>
+						<input type="text" id="filter-author" style="width: auto; margin: 0;">
 					</div>
-				</details>
+					<div class="filter-item">
+						<label for="filter-title" id="filter-title-label" class="filter-label"></label>
+						<input type="text" id="filter-title" style="width: auto; margin: 0;">
+					</div>
+					<div class="filter-item">
+						<label id="filter-dynasty-label" class="filter-label"></label>
+						<div class="filter-chips">
+							<button id="filter-dynasty-tang" type="button" class="filter-chip secondary" style="width: auto; margin: 0;"></button>
+							<button id="filter-dynasty-song" type="button" class="filter-chip secondary" style="width: auto; margin: 0;"></button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 
 		<section id="modules" aria-label="Daily features">
-			<div class="grid">
+			<div id="daily-grid" class="grid">
 				<article>
 					<header><h2 id="daily-poem-title" style="margin: 0;"></h2></header>
 					<p id="daily-poem-content" class="poem-content"></p>
@@ -51,9 +62,6 @@
 					<p id="daily-poet-works" class="muted"></p>
 				</article>
 			</div>
-			<div class="random-area">
-				<button id="random-btn" style="margin: 0;"></button>
-			</div>
 		</section>
 
 		<section id="results" hidden aria-label="Search results">
@@ -61,6 +69,10 @@
 			<p id="results-count" class="muted"></p>
 			<div id="results-list"></div>
 		</section>
+
+		<div id="random-area" class="random-area">
+			<button id="random-btn" style="margin: 0;"></button>
+		</div>
 	</main>
 
 	<footer class="site-footer">
@@ -71,7 +83,7 @@
 		</p>
 	</footer>
 
-	<script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
 	<script src="./js/data.js"></script>
 	<script src="./js/lang.js"></script>
 	<script src="./js/search.js"></script>

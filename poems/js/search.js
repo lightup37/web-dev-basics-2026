@@ -1,22 +1,23 @@
-// 搜索：Flexsearch 全文搜索 + 表达式字段筛选
+// 搜索：Fuse.js 严格匹配 + 表达式字段筛选
 // 表达式语法：field:"value" 或 field:value，field 可为 author / dynasty / title
 
 const EXPR_FIELDS = ['author', 'dynasty', 'title'];
 
-// 建立 Flexsearch 索引：标题、作者、朝代、内容（中英文）拼入一条文本
-const searchIndex = new FlexSearch.Index({
-	tokenize: 'forward',
-	context: true
-});
-
-POETRY_DATA.forEach(function (poem) {
-	const haystack = [
-		poem.title, poem.titleEn,
-		poem.author, poem.authorEn,
-		poem.dynasty, poem.dynastyEn,
-		poem.content, poem.contentEn
-	].join(' ');
-	searchIndex.add(poem.id, haystack);
+// Fuse.js 索引：严格匹配 title、内容、作者（中英文）
+// threshold: 0 为完全精确匹配（不做编辑距离近似）；
+// ignoreLocation 允许任意位置匹配（中文子串包含匹配）
+const fuse = new Fuse(POETRY_DATA, {
+	keys: [
+		{ name: 'title', weight: 1 },
+		{ name: 'titleEn', weight: 1 },
+		{ name: 'author', weight: 1 },
+		{ name: 'authorEn', weight: 1 },
+		{ name: 'content', weight: 0.7 },
+		{ name: 'contentEn', weight: 0.7 }
+	],
+	threshold: 0,
+	ignoreLocation: true,
+	shouldSort: true
 });
 
 // 解析输入：提取 field:"value" / field:value 表达式，其余文本作为全文查询词
@@ -48,15 +49,12 @@ function matchField(poem, field, value) {
 	});
 }
 
-// 执行搜索：全文结果再叠加字段筛选，返回符合全部条件的诗词数组
+// 执行搜索：Fuse 模糊搜索结果再叠加字段筛选，返回符合全部条件的诗词数组
 function searchPoems(input) {
 	const parsed = parseExpression(input);
 	let list;
 	if (parsed.query) {
-		const ids = searchIndex.search(parsed.query);
-		list = ids.map(function (id) {
-			return POETRY_DATA.find(function (p) { return p.id === id; });
-		}).filter(Boolean);
+		list = fuse.search(parsed.query).map(function (r) { return r.item; });
 	} else {
 		list = POETRY_DATA.slice();
 	}

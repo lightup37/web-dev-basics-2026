@@ -4,13 +4,14 @@ const translations = {
 		title: 'Tang & Song Poems',
 		searchPlaceholder: 'Search poems or authors... (try "moon" or author:"Li Bai")',
 		searchBtn: 'Search',
-		filterSummary: 'Filter',
+		filterToggle: 'Filter',
 		filterFieldAuthor: 'Author',
 		filterFieldDynasty: 'Dynasty',
 		filterFieldTitle: 'Title',
-		filterApply: 'Apply',
-		filterClear: 'Clear',
-		filterValuePlaceholder: '-- Choose a value --',
+		filterAuthorPlaceholder: 'e.g. Li Bai',
+		filterTitlePlaceholder: 'e.g. Tranquil Night',
+		dynastyTang: 'Tang',
+		dynastySong: 'Song',
 		dailyPoemTitle: 'Poem of the Day',
 		dailyPoetTitle: 'Poet of the Day',
 		randomBtn: 'Random Poem',
@@ -19,19 +20,20 @@ const translations = {
 		noResults: 'No results found. Try another query.',
 		randomHeading: 'Random Poem',
 		backLink: 'Back to Home',
-		footer: '© 2026 · Tang & Song Poems'
+		footer: '© 2026 · Tang & Song Poems · Group [Name]'
 	},
 	'zh': {
 		title: '唐诗宋词',
 		searchPlaceholder: '搜索诗词或作者…（试试 "明月" 或 author:"李白"）',
 		searchBtn: '搜索',
-		filterSummary: '筛选',
+		filterToggle: '筛选',
 		filterFieldAuthor: '作者',
 		filterFieldDynasty: '朝代',
 		filterFieldTitle: '标题',
-		filterApply: '应用',
-		filterClear: '清除',
-		filterValuePlaceholder: '-- 请选择 --',
+		filterAuthorPlaceholder: '如：李白',
+		filterTitlePlaceholder: '如：静夜思',
+		dynastyTang: '唐',
+		dynastySong: '宋',
 		dailyPoemTitle: '每日诗词',
 		dailyPoetTitle: '每日诗人',
 		randomBtn: '随机跳转',
@@ -40,6 +42,6 @@ const translations = {
 		noResults: '未找到结果，请尝试其他关键词。',
 		randomHeading: '随机诗词',
 		backLink: '返回主页',
-		footer: '© 2026 · 唐诗宋词'
+		footer: '© 2026 · 唐诗宋词 · 小组 [组名]'
 	}
 };
