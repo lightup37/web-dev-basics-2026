@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tang &amp; Song Poems</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+	<link rel="stylesheet" href="./css/theme.css">
+	<link rel="stylesheet" href="./css/layout.css">
+</head>
+<body>
+	<main class="container">
+		<header class="site-header">
+			<div class="grid" style="align-items: center; justify-content: space-between; margin: 0;">
+				<h1 id="site-title" style="margin: 0;"></h1>
+				<select id="lang-switcher" style="width: auto; margin: 0;">
+					<option value="en">English</option>
+					<option value="zh">中文</option>
+				</select>
+			</div>
+		</header>
+
+		<section class="search-section" aria-label="Search">
+			<div class="search-bar">
+				<input type="search" id="search-input" style="margin: 0;">
+				<button id="search-btn" style="margin: 0;"></button>
+			</div>
+			<div class="filter-area">
+				<details id="filter-details">
+					<summary id="filter-summary"></summary>
+					<div class="filter-menu">
+						<select id="filter-field" style="width: auto; margin: 0;"></select>
+						<select id="filter-value" style="width: auto; margin: 0;"></select>
+						<button id="filter-apply" class="secondary" style="width: auto; margin: 0;"></button>
+						<button id="filter-clear" class="secondary" style="width: auto; margin: 0;"></button>
+					</div>
+				</details>
+			</div>
+		</section>
+
+		<section id="modules" aria-label="Daily features">
+			<div class="grid">
+				<article>
+					<header><h2 id="daily-poem-title" style="margin: 0;"></h2></header>
+					<p id="daily-poem-content" class="poem-content"></p>
+					<footer id="daily-poem-meta" class="muted"></footer>
+				</article>
+				<article>
+					<header><h2 id="daily-poet-title" style="margin: 0;"></h2></header>
+					<p id="daily-poet-name"></p>
+					<p id="daily-poet-works" class="muted"></p>
+				</article>
+			</div>
+			<div class="random-area">
+				<button id="random-btn" style="margin: 0;"></button>
+			</div>
+		</section>
+
+		<section id="results" hidden aria-label="Search results">
+			<h2 id="results-heading"></h2>
+			<p id="results-count" class="muted"></p>
+			<div id="results-list"></div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<p style="margin: 0;">
+			<a href="../" id="back-link"></a>
+			<span> · </span>
+			<span id="footer-text"></span>
+		</p>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.min.js"></script>
+	<script src="./js/data.js"></script>
+	<script src="./js/lang.js"></script>
+	<script src="./js/search.js"></script>
+	<script src="./js/main.js"></script>
+</body>
+</html>
