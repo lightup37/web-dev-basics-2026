@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Website Develop Basic - Group [组名]</title>
+  <!-- <link rel="stylesheet" href="css/pico.min.css"> -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body style="display:flex; align-items:center; justify-content:center; min-height:100dvh; margin:0; padding:20px;">
+	<main class="container">
+        <article>
+            <header>
+				<div class = "grid" style="align-items: center; justify-content: space-between;">
+                	<h1 id = "title" style="margin: 0;"></h1>
+					<select id = "lang-switcher" style="margin: 0;">
+						<option value="en">English</option>
+						<option value="zh">中文</option>
+					</select>
+				</div>
+            </header>
+            <p id="desc"></p>
+            <div class="grid">
+                <a href="./poems" role="button" id="btn1"></a>
+                <a href="./" role="button" class="secondary" id="btn2">...</a>
+            </div>
+            <footer style="margin-top: 1rem; font-size: 0.9rem; color: var(--muted-color);">
+                © 2026 · Beijing Institute of Technology · Group [组名]
+            </footer>
+        </article>
+    </main>
+	<script src="./js/lang.js"></script>
+</body>
+</html>
