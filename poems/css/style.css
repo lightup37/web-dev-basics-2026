@@ -88,8 +88,8 @@ body {
 }
 
 .card__media {
-    flex: 0 0 40%;            /* 固定占 40% 宽度 */
-    /* 里面放图片或图形，用 object-fit 控制 */
+	max-width: 100%;
+  flex: 0 0 40%;
 }
 
 .card__content {
