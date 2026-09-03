@@ -12,8 +12,12 @@ powered by [lightup37](https://github.com/lightup37) with ❤️.
 ├── img/
 │   ├── sushi.jpg
 │   └── ....                  # 图片文件
-├── Li-Bai.html               
-├── ...                       # 各诗人的个人页面
+├── tang/
+|   ├──Li-Bai.html               
+|   ├── ...                   # 唐代诗人的个人页面
+├── song/
+|   ├──Su-shi.html               
+|   ├── ...                   # 宋代词人的个人页面
 └── README.md                 # 项目说明
 ```
 
