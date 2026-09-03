@@ -1,0 +1,130 @@
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* justify-content: center; */
+	min-height: 100dvh;
+	padding: 2rem 1.5rem;
+	font-family: 'Courier New', Courier, monospace;
+	background: blanchedalmond;
+	color: black;
+	line-height: 1.6;
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	max-width: 380px;
+	/* max-width: 90%; */
+	width: 100%;
+	text-align: center;
+
+	/* justify-content: center; */
+
+	padding: 1.75rem 1.75rem 2rem;
+	border-radius: 1.5rem;
+
+	background: white;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+	transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.card:hover {
+	box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+	transform: translateY(-2px);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.2rem;   /* 内边距使按钮有足够点击区域 */
+  border: none;             /* 去掉默认边框 */
+  border-radius: 6.25rem;   /* 胶囊形状 */
+  font-family: inherit;     /* 继承 body 字体 */
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;          /* 手型光标 */
+  transition: background 0.2s, transform 0.1s;
+  text-decoration: none;    /* 如果作为链接，去除下划线 */
+}
+
+.btn--primary {
+  background: hsl(220, 70%, 50%);
+  color: white;
+}
+
+.btn--primary:hover {
+  background: hsl(220, 70%, 42%); /* 悬停颜色变深 */
+}
+
+.btn--primary:active {
+  transform: scale(0.96);   /* 按下时轻微缩小，模拟按压 */
+}
+
+.btn--tang {
+  background: hsl(0, 70%, 50%);
+  color: white;
+}
+
+.btn--song {
+  background: hsl(130, 70%, 50%);
+  color: white;
+}
+
+.card--wide {
+    max-width: 100%;          /* 允许撑满父容器 */
+    flex-direction: row;      /* 改为水平排列 */
+    align-items: stretch;     /* 让左右高度一致 */
+		max-width: 90%;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+.card__media {
+    flex: 0 0 40%;            /* 固定占 40% 宽度 */
+    /* 里面放图片或图形，用 object-fit 控制 */
+}
+
+.card__content {
+    flex: 1;                  /* 剩余空间给文字 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* 垂直居中内容（可选） */
+}
+
+/* 移动端降级 */
+@media (max-width: 640px) {
+    .card--wide {
+        flex-direction: column;
+    }
+    .card__media {
+        flex: none;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: #e0e4e9;
+  margin: 1rem 0;
+}
+
+.split-poem {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	align-items: center;
+}
+
+.split-poem .card {
+	width: 380px;
+}

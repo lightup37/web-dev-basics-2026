@@ -1,92 +1,51 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tang &amp; Song Poems</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-	<link rel="stylesheet" href="./css/theme.css">
-	<link rel="stylesheet" href="./css/layout.css">
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<main class="container">
-		<header class="site-header">
-			<div class="grid" style="align-items: center; justify-content: space-between; margin: 0;">
-				<h1 id="site-title" style="margin: 0;"></h1>
-				<select id="lang-switcher" style="width: auto; margin: 0;">
-					<option value="en">English</option>
-					<option value="zh">中文</option>
-				</select>
-			</div>
-		</header>
-
-		<section class="search-section" aria-label="Search">
-			<div class="search-bar">
-				<div class="search-input-wrap">
-					<input type="search" id="search-input" style="margin: 0;">
-					<button id="filter-toggle" type="button" class="filter-toggle" style="margin: 0;"></button>
-				</div>
-				<button id="search-btn" type="button" style="margin: 0;"></button>
-			</div>
-			<div id="filter-panel" class="filter-panel" hidden>
-				<div class="filter-menu">
-					<div class="filter-item">
-						<label for="filter-author" id="filter-author-label" class="filter-label"></label>
-						<input type="text" id="filter-author" style="width: auto; margin: 0;">
-					</div>
-					<div class="filter-item">
-						<label for="filter-title" id="filter-title-label" class="filter-label"></label>
-						<input type="text" id="filter-title" style="width: auto; margin: 0;">
-					</div>
-					<div class="filter-item">
-						<label id="filter-dynasty-label" class="filter-label"></label>
-						<div class="filter-chips">
-							<button id="filter-dynasty-tang" type="button" class="filter-chip secondary" style="width: auto; margin: 0;"></button>
-							<button id="filter-dynasty-song" type="button" class="filter-chip secondary" style="width: auto; margin: 0;"></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section id="modules" aria-label="Daily features">
-			<div id="daily-grid" class="grid">
-				<article>
-					<header><h2 id="daily-poem-title" style="margin: 0;"></h2></header>
-					<p id="daily-poem-content" class="poem-content"></p>
-					<footer id="daily-poem-meta" class="muted"></footer>
-				</article>
-				<article>
-					<header><h2 id="daily-poet-title" style="margin: 0;"></h2></header>
-					<p id="daily-poet-name"></p>
-					<p id="daily-poet-works" class="muted"></p>
-				</article>
-			</div>
-		</section>
-
-		<section id="results" hidden aria-label="Search results">
-			<h2 id="results-heading"></h2>
-			<p id="results-count" class="muted"></p>
-			<div id="results-list"></div>
-		</section>
-
-		<div id="random-area" class="random-area">
-			<button id="random-btn" style="margin: 0;"></button>
+	<div class="header">
+		<a href = "./index.html" class="btn btn--primary">主页</a>
+		<span> | </span>
+		<span class="btn btn--tang">唐代诗人</span>
+		<a href = "./Du-Fu.html" class="btn btn--primary">杜甫</a>
+		<a href = "./Li-Bai.html" class="btn btn--primary">李白</a>
+		<a href = "./Li-Shangyin.html" class="btn btn--primary">李商隐</a>
+		<span> | </span>
+		<span class="btn btn--song">宋代词人</span>
+		<a href = "./Li-Qingzhao.html" class="btn btn--primary">李清照</a>
+		<a href = "./Su-Shi.html" class="btn btn--primary">苏轼</a>
+		<a href = "./Xin-Qiji.html" class="btn btn--primary">辛弃疾</a>
+		<hr style="margin: 20px 0px 0px 0px;"/>
+	</div>
+	<br />
+	<div class="card card--wide">
+		<div class="card__media">
+			<img src="img/tang-poets.png" alt="唐代诗人图片">
 		</div>
-	</main>
-
-	<footer class="site-footer">
-		<p style="margin: 0;">
-			<a href="../" id="back-link"></a>
-			<span> · </span>
-			<span id="footer-text"></span>
-		</p>
-	</footer>
-
-	<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
-	<script src="./js/data.js"></script>
-	<script src="./js/lang.js"></script>
-	<script src="./js/search.js"></script>
-	<script src="./js/main.js"></script>
+		<div class="card__content">
+		<h2>唐诗简介</h2>
+		<br />
+		<p>唐诗泛指创作于唐代（公元618年~907年）的诗，也可以引申指以唐朝风格创作的诗。唐诗上承魏晋南朝诗，下开宋诗，唐代也被视为中国历来诗歌发展最盛的黄金时期，因此有与宋词并举之说。</p>
+		<p>唐代以后，唐诗的选本、选集不断涌现，现今流传最广的是蘅塘退士编选的《唐诗三百首》。清朝康熙年间的《全唐诗》整理收录了二千二百多名诗人超过五万多首唐诗。</p>
+		<p>中国自《诗经》、《楚辞》、汉赋、《乐府》以来一直有作韵文的传统。《诗经》的诗句多以四字为一句。到了汉乐府字数则比较多变。从汉到魏晋南北朝发展出来的古体诗，有不固定字数的、亦有五言、六言或七言的，但句数不限。隋唐除了承袭了古体诗的体裁，亦同时继承齐梁的永明体并将之发展完善，成为音律工整协美的近体诗，如四句的绝句和八句的律诗，对押韵、平仄等等格律上有更严谨的要求。唐诗所包含的题材多样化，既有抒发个人情感，亦有深刻反映现实社会的作品，意境深远，达到了甚高之艺术水平。</p>
+		<footer style="font-size: xx-small;">引用自 <a href="https://zh.wikipedia.org/wiki/%E5%94%90%E8%AF%97">wikipedia</a></footer>
+		</div>
+	</div>
+	<br />
+	<div class="card card--wide">
+		<div class="card__content">
+		<h2>宋词简介</h2>
+		<br />
+		<p>词，是一种诗歌艺术形式，是中国古代诗体的一种，亦称曲子词、诗馀、长短句、乐府。始于唐代，在宋代达到其顶峰。一开始伴曲而唱，所以写词又称作填词、倚声。后来逐渐独立出来，成为一门专门的诗歌艺术。</p>
+		<p>清初的浙西词派，为救明词之弊，主张尊南宋词、尚醇雅，以姜夔、张炎为圭臬。戈载的《宋七家词选》将周邦彦、史达祖、姜夔、吴文英、王沂孙、张炎、周密列为宋七大词家。而到之后的常州词派，张惠言有感于浙西词派的题材狭窄,内容枯寂，提出了“比兴寄托”的主张，强调词作应该重视内容，并推崇唐五代，轻南宋词。张惠言的词论有超越前人之处。但他的词学评论常缺乏逻辑论证，不能实事求是，如论说温庭筠、韦庄和欧阳修的一些艳词都有政治寄托，即失之偏颇。而再之后的周济，撰定《词辨》﹑《宋四家词选》，言:“推明张氏之旨而广大之”，但他得论述不囿于张氏的立论，以周邦彦﹑辛弃疾﹑ 王沂孙﹑吴文英为词四大家。</p>
+		<p>而到晚清，一部分传统词派的词人，如况周颐等清末四词家，受到常州派的影响。而况周颐著有蕙风词话，集合前人词话，强调作词有三要: 曰重、拙、大。并讲求"性灵流露"与"书卷酝酿"。另外受到西学影响的新氏词派，如王国维著之人间词话，对词学提出不同意见。王国维喜爱北宋词的天然明畅，否定南宋词的雕饰及词旨晦涩，以情感的真挚为评词标准，对南宋雅词(如姜夔、吴文英、张炎词)评价甚低。这些观点在后世影响很大。</p>
+		<footer style="font-size: xx-small;">引用自 <a href="https://zh.wikipedia.org/w/index.php?title=%E8%AF%8D_(%E6%96%87%E5%AD%A6)">wikipedia</a></footer>
+		</div>
+		<div class="card__media">
+			<img src="img/song-poets.png" alt="宋代词人图片">
+		</div>
+	</div>
 </body>
 </html>
