@@ -22,7 +22,7 @@ body {
 	flex-direction: column;
 	max-width: 380px;
 	/* max-width: 90%; */
-	width: 100%;
+	/* width: 100%; */
 	text-align: center;
 
 	/* justify-content: center; */
@@ -119,6 +119,8 @@ body {
 }
 
 .split-poem {
+	justify-content: center;
+	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 2rem;
@@ -126,5 +128,6 @@ body {
 }
 
 .split-poem .card {
-	width: 380px;
+	flex: 0 1 380px;
+	max-width: 380px;
 }
