@@ -18,6 +18,7 @@ powered by [lightup37](https://github.com/lightup37) with ❤️.
 ├── song/
 |   ├──Su-shi.html               
 |   ├── ...                   # 宋代词人的个人页面
+├── favicon.svg               # 网站图标
 └── README.md                 # 项目说明
 ```
 
