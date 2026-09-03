@@ -17,6 +17,11 @@ body {
 	line-height: 1.6;
 }
 
+p {
+	text-align: justify; /* 强制首尾对齐 */
+	text-align-last: center; /* 最后一行居中 */
+}
+
 .card {
 	display: flex;
 	flex-direction: column;
