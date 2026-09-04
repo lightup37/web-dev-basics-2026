@@ -3,14 +3,16 @@ const translations = {
     title: '网站开发基础',
     desc: '选择项目浏览：',
     btn1: '唐诗宋词',
-    btn2: '...',
+    btn2: '游戏(测试版)',
+		btn3: '...',
     footer: '© 2026 · 北京理工大学 · 小组 [组名]'
   },
   'en': {
     title: 'Website Development Basic',
     desc: 'Choose a project:',
     btn1: 'Tang & Song Poems',
-    btn2: '...',
+    btn2: 'Game(demo)',
+		btn3: '...',
     footer: '© 2026 · Beijing Institute of Technology · Group [组名]'
   }
 };
