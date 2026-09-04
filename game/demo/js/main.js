@@ -173,7 +173,7 @@ function checkWinState() {
 	if(redc == 0) {
 		boardContainer.style.display = 'none';
 		const winState = document.getElementById('win');
-		winState.style.display = 'display: flex; flex-direction: column; align-items: center;' ;
+		winState.style = 'display: flex; flex-direction: column; align-items: center;' ;
 		if(bluec == 0) {
 			const winState = document.getElementById('1star');
 			winState.style.display = '' ;
