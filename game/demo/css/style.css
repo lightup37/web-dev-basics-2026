@@ -44,14 +44,8 @@ body {
 	display: flex;
   align-items: center;
   justify-content: center; /*棋子名字居中*/
-}
 
-.chess--red {
-	background-color: red;
-}
-
-.chess--blue {
-	background-color: skyblue;
+	overflow: hidden; /*防止棋子图像超出范围*/
 }
 
 #arrowSvg {

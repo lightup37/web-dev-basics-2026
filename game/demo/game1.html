@@ -10,7 +10,7 @@
 <body>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 0%;">
 	<h2>Game1 : Break through the defense</h2>
-	<footer><p style="font-size: x-small; margin: 0px 0px 10px;">Win by DESTROYING every red army!</p></footer>
+	<footer><p id="footer-bar" style="font-size: x-small; margin: 0px 0px 10px;"></p></footer>
 </div>
 <div id="board"></div>
 <div id="win" style="display: none;">
@@ -20,9 +20,17 @@
 	<h2 id="2star" style="display: none;">⭐⭐</h2>
 	<h2 id="1star" style="display: none;">⭐</h2>
 </div>
+<div id="lose" style="display: none;">
+	<br />
+	<h1>You Lose!</h1>
+	<p id="loseTips" style="font-size: x-small;"></p>
+</div>
 <br />
 <button id="button" style="width: 100px; height: 50px;"> Next Turn </button>
+<button id="button-next-game" style="display: none;"> Next Game </button>
+<button id="button-replay" style="display: none;"> Replay </button>
 
+<script src="js/constants.js"></script>
 <script src="js/pieces.js"></script>
 <script src="js/arrow.js"></script>
 <script src="js/main.js"></script>
