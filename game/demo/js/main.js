@@ -381,4 +381,4 @@ async function showRedEffect(){
 	}, 1000) ;
 }
 
-document.addEventListener('DOMContentLoaded', showRedEffect) ;
+window.addEventListener('load', showRedEffect) ;
