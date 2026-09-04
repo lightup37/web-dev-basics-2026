@@ -52,8 +52,9 @@ body {
   pointer-events: none; /* 让鼠标事件穿透，不干扰点击 */
 }
 
-.chess--blue:hover {
-	background-color: blue;
+.chess--blue:hover img {
+	filter: brightness(0.8);   
+	transition: filter 0.3s ease;
 }
 
 .chess--blue:active {
@@ -67,8 +68,9 @@ body {
   border: 1px solid #FFD700;
 }
 
-.chess.disabled {
-	background-color: grey;
+.chess.disabled img {
+	filter: brightness(0.2);   
+	transition: filter 0.2s ease;
 }
 
 #arrowSvg {

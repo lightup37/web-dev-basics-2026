@@ -5,7 +5,7 @@
 var game1 = {
 	n: 10,
 	m: 10,
-	turns_limit: 15,
+	turns_limit: 20,
 	pieces: new Array()
 } ;
 
