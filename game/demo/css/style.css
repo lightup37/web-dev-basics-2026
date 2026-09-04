@@ -80,6 +80,10 @@ body {
   border: 1px solid red;
 }
 
+.chess.disabled {
+	z-index: 5;
+}
+
 .chess.disabled img {
 	filter: brightness(0.2);   
 	transition: filter 0.2s ease;
