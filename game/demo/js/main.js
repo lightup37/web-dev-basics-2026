@@ -63,7 +63,8 @@ function loadGame(game) {
 	console.log(`distance = ${distance}, offset = ${offset}`)
 	/* 加载初始棋盘，计算棋子移动所需常量 */
 
-	document.getElementById('footer-bar').innerHTML = `Win by DESTROYING every red army! —— You have ${remain_turns} turns.`;
+	document.getElementById('footer-bar').innerHTML = `Win by DESTROYING every <span id="red-hinter" style="font-style: italic; text-decoration: underline;">red</span> army! —— You have ${remain_turns} turns.`;
+	document.getElementById('red-hinter').addEventListener('click', showRedEffect) ;
 	/* 加载胜利条件与回合限制 */
 	
 	game.pieces.forEach(element => {
@@ -350,3 +351,34 @@ document.getElementById('button-replay').addEventListener('click', () => {
 	// 加载 Replay 按钮
 	window.location.reload();
 })
+
+async function showRedEffect(){
+	armys.forEach(element => {
+		if(element.color == 'red') {
+			document.getElementById(element.id).classList.add('highlighted');
+		}
+	}) ;
+	setTimeout(() => {
+		armys.forEach(element => {
+			if(element.color == 'red') {
+				document.getElementById(element.id).classList.remove('highlighted');
+			}
+		}) ;
+		setTimeout(() => {
+			armys.forEach(element => {
+				if(element.color == 'red') {
+					document.getElementById(element.id).classList.add('highlighted');
+				}
+			}) ;
+			setTimeout(() => {
+				armys.forEach(element => {
+					if(element.color == 'red') {
+						document.getElementById(element.id).classList.remove('highlighted');
+					}
+				}) ;
+			}, 1000) ;
+		}, 1000) ;
+	}, 1000) ;
+}
+
+document.addEventListener('DOMContentLoaded', showRedEffect) ;

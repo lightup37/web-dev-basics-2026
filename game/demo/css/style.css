@@ -68,6 +68,18 @@ body {
   border: 1px solid #FFD700;
 }
 
+.chess--red {
+	transition: box-shadow 0.3s ease, border 0.3s ease;
+	box-sizing: border-box;
+}
+
+.chess--red.highlighted {
+  box-shadow: 0 0 20px 1px red;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  border: 1px solid red;
+}
+
 .chess.disabled img {
 	filter: brightness(0.2);   
 	transition: filter 0.2s ease;
