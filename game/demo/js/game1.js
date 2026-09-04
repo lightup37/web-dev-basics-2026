@@ -26,7 +26,7 @@ loadGame(game1);
 // 加载 game1
 
 document.getElementById('button-next-game').addEventListener('click', () => {
-	window.location = './end-game.html'
+	window.location = './game2.html'
 })
 // 加载下一关按钮
 
