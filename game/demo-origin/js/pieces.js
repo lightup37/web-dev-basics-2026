@@ -2,6 +2,7 @@
 
 function movePieceTo(id, row, col) {
 	// 将 id 号棋子移动到 (row, col) 格
+	console.log(`move: ${id}, ${row}, ${col}`);
   const piece = document.getElementById(id);
   if (!piece) return;
 
@@ -10,4 +11,5 @@ function movePieceTo(id, row, col) {
 
   piece.style.left = x + 'px';
   piece.style.top = y + 'px';
+	console.log(`move pieces x=${piece.style.left}, y=${piece.style.top}`)
 }

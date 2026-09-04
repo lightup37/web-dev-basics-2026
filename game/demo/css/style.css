@@ -62,14 +62,14 @@ body {
 }
 
 .chess.selected {
-  box-shadow: 0 0 20px 1px rgba(255, 215, 0, 0.8);
+  box-shadow: 0 0 18px 4px rgba(60, 150, 255, 0.9);   /* 我方选中：蓝光 */
   transform: translate(-50%, -50%);
   z-index: 100;
-  border: 1px solid #FFD700;
+  border: 1px solid #5ab0ff;
 }
 
 .chess--red {
-	transition: box-shadow 0.3s ease, border 0.3s ease;
+	transition: box-shadow 0.3s ease, border 0.3s ease, left 0.4s ease-in-out, top 0.4s ease-in-out;   /* 补上位移过渡，与蓝方一致地滑行 */
 	box-sizing: border-box;
 }
 
@@ -92,3 +92,547 @@ body {
 #arrowSvg {
   pointer-events: none; /* 让鼠标事件穿透，不干扰点击 */
 }
+
+/* ===== to-do #1：主页 / 注册 / 小组介绍 / 游戏主界面 ===== */
+.page-box {
+	width: min(92vw, 560px);
+	text-align: center;
+	padding: 1rem 0;
+}
+
+.page-sub {
+	color: #6b5b3e;
+	margin: 0.2rem 0 1rem;
+}
+
+.form-box {
+	border: 1px solid #d8c49a;
+	background: #fff8ec;
+	border-radius: 10px;
+	padding: 1.2rem 1.4rem;
+	text-align: left;
+}
+
+.form-box label {
+	display: block;
+	margin-bottom: 0.6rem;
+	font-size: 0.9rem;
+}
+
+.form-box input {
+	display: block;
+	width: 100%;
+	margin-top: 0.2rem;
+	padding: 0.4rem 0.5rem;
+	border: 1px solid #cbb98f;
+	border-radius: 6px;
+	box-sizing: border-box;
+}
+
+.form-box button {
+	margin-top: 0.4rem;
+	padding: 0.45rem 1.4rem;
+	border: none;
+	border-radius: 6px;
+	background: #7a5c33;
+	color: #fff;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.form-box button:hover { background: #63491f; }
+
+.form-msg {
+	color: #b03030;
+	min-height: 1.2em;
+	margin: 0.3rem 0 0;
+	font-size: 0.85rem;
+}
+
+.form-link { margin: 0.4rem 0 0; font-size: 0.9rem; }
+
+.member-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: 14px;
+	width: min(92vw, 760px);
+	margin: 0 auto 1rem;
+}
+
+.member-card {
+	display: block;
+	border: 1px solid #d8c49a;
+	background: #fff8ec;
+	border-radius: 10px;
+	padding: 1rem 0.8rem;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.member-card:hover {
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	transform: translateY(-2px);
+}
+
+.member-card p { font-size: 0.85rem; color: #6b5b3e; }
+
+.member-more { font-size: 0.8rem; color: #8a6d3b; }
+
+.menu-list {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
+	padding: 0;
+}
+
+.menu-link {
+	display: inline-block;
+	padding: 0.5rem 1.6rem;
+	border: 1px solid #cbb98f;
+	border-radius: 8px;
+	background: #fff8ec;
+	color: #4a3a20;
+	text-decoration: none;
+	min-width: 180px;
+}
+
+.menu-link:hover { background: #f0e3c5; }
+
+.page-note { color: #8a7a5c; font-size: 0.85rem; }
+
+.page-back { margin-top: 1rem; }
+
+/* ===== to-do #2：主界面关卡进度列表 ===== */
+.level-list {
+	list-style: none;
+	width: min(92vw, 600px);
+	margin: 0 auto 1rem;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.level-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid #d8c49a;
+	background: #fff8ec;
+	border-radius: 10px;
+	padding: 0.7rem 1rem;
+	gap: 1rem;
+}
+
+.level-info { display: flex; flex-direction: column; gap: 2px; }
+.level-name { font-weight: bold; }
+.level-stars { color: #e8a400; letter-spacing: 3px; }
+.level-locked { opacity: 0.55; }
+
+.level-btn {
+	padding: 0.4rem 1.2rem;
+	border-radius: 8px;
+	background: #7a5c33;
+	color: #fff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.level-btn:hover { background: #63491f; }
+.level-btn-disabled { background: #bbb; cursor: default; }
+.save-note { color: #6b5b3e; font-size: 0.85rem; min-height: 1.2em; margin: 0.2rem 0 0; }
+
+/* ===== to-do #3：关卡内 存/读档 + 返回主界面 ===== */
+#game-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.game-btn {
+	padding: 0.5rem 0.9rem;
+	border: none;
+	border-radius: 6px;
+	background: #7a5c33;
+	color: #fff;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+.game-btn:hover { background: #63491f; }
+
+/* ===== to-do #3：手动存档槽位选择 ===== */
+#slot-select {
+	font-size: 0.9rem;
+	padding: 0.45rem 0.5rem;
+	border-radius: 6px;
+	border: 1px solid #cbb98f;
+	background: #fff8ec;
+	color: #4a3a20;
+	max-width: 240px;
+}
+
+.section-title {
+	width: min(92vw, 600px);
+	margin: 1.2rem auto 0.4rem;
+	font-size: 1.05rem;
+	color: #4a3a20;
+}
+
+/* ===== to-do #3：主界面存档切换选择器 ===== */
+.file-selector {
+	width: min(92vw, 600px);
+	margin: 0.2rem auto 0.8rem;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.95rem;
+	color: #4a3a20;
+}
+
+.file-selector select,
+#slot-select {
+	font-size: 0.9rem;
+	padding: 0.45rem 0.5rem;
+	border-radius: 6px;
+	border: 1px solid #cbb98f;
+	background: #fff8ec;
+	color: #4a3a20;
+	max-width: 260px;
+}
+
+/* ===== to-do #4：画框多选 ===== */
+#boxSel {
+	position: absolute;
+	display: none;
+	z-index: 60;
+	border: 1px dashed #FFD700;
+	background: rgba(255, 215, 0, 0.18);
+	pointer-events: none;
+}
+
+#board { user-select: none; -webkit-user-select: none; }
+.chess img { user-select: none; -webkit-user-drag: none; user-drag: none; }
+
+/* ===== to-do #5：左侧选中部队显示条 ===== */
+#info-bar {
+	position: fixed;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 190px;
+	display: none;
+	z-index: 200;
+	background: rgba(255, 248, 236, 0.95);
+	border: 1px solid #cbb98f;
+	border-radius: 10px;
+	padding: 10px 12px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.info-head {
+	font-weight: bold;
+	color: #4a3a20;
+	margin-bottom: 8px;
+	text-align: center;
+}
+
+.info-row {
+	border-top: 1px dashed #d8c49a;
+	padding: 6px 2px;
+}
+
+.info-title { font-weight: bold; color: #2c3e50; }
+.info-stats { font-size: 0.78rem; color: #6b5b3e; margin: 2px 0 4px; }
+.info-lpbar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+.info-lpfill { height: 100%; }
+.info-lptext { font-size: 0.72rem; color: #4a3a20; margin-top: 2px; text-align: right; }
+
+/* ===== to-do #6：显示条行内取消选中 ===== */
+.info-titleline {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 6px;
+}
+
+.info-remove {
+	border: none;
+	background: transparent;
+	color: #a03a2e;
+	font-size: 0.85rem;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0 2px;
+}
+
+.info-remove:hover { color: #7d2a20; }
+
+/* ===== 显示条悬停：对应棋子呼吸发光（我方=蓝光 / 敌方=红光） ===== */@keyframes hoverGlowBlue {
+	0%, 100% { box-shadow: 0 0 10px 4px rgba(40, 140, 255, 0.6); }
+	50%      { box-shadow: 0 0 30px 14px rgba(100, 190, 255, 1); }
+}
+
+@keyframes hoverGlowRed {
+	0%, 100% { box-shadow: 0 0 10px 4px rgba(255, 60, 60, 0.6); }
+	50%      { box-shadow: 0 0 30px 14px rgba(255, 120, 120, 1); }
+}
+
+.chess.hover-match { z-index: 150; }
+.chess.hover-blue { animation: hoverGlowBlue 0.8s ease-in-out infinite; }
+.chess.hover-red  { animation: hoverGlowRed  0.8s ease-in-out infinite; }
+
+/* ===== to-do #7：攻击范围圈 ===== */
+.range-layer {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 3;
+}
+
+.range-circle {
+	position: absolute;
+	border-radius: 50%;
+	pointer-events: none;
+	box-sizing: border-box;
+	border: 2px dashed rgba(70, 170, 255, 0.75);     /* 己方 */
+	background: rgba(70, 170, 255, 0.10);
+	transition: left 0.4s ease-in-out, top 0.4s ease-in-out;   /* 与棋子滑行同步 */
+}
+
+.range-circle--enemy {
+	border-color: rgba(255, 90, 90, 0.75);            /* 敌方 */
+	background: rgba(255, 90, 90, 0.10);
+}
+
+/* ===== 查看敌人模式：右侧面板 + 敌方选中描边 ===== */
+#enemy-info {
+	position: fixed;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 190px;
+	display: none;
+	z-index: 200;
+	background: rgba(255, 248, 236, 0.95);
+	border: 1px solid #d08a5a;
+	border-radius: 10px;
+	padding: 10px 12px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+	font-family: 'Courier New', Courier, monospace;
+}
+
+/* 敌方选中不再画外圈（避免与红方视觉混淆），信息以右侧面板为准 */
+.chess.sel-enemy {}
+
+/* ===== menu：重新开始游戏 ===== */
+.danger-btn { background: #a03a2e; }
+.danger-btn:hover { background: #7d2a20; }
+
+/* ===== to-do #11：常驻行动指示箭头（蓝方命令 / 红方 AI） ===== */
+.order-layer {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 6;
+}
+
+.order-arrow {
+	position: absolute;
+	height: 4px;
+	transform-origin: 0 2px;   /* 绕 (x1, y1) 旋转 */
+	transition: left 0.4s ease-in-out, top 0.4s ease-in-out,
+		width 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.order-arrow .oa-line {
+	position: absolute;
+	left: 0;
+	right: 5px;
+	top: 1px;
+	height: 2px;
+	background: repeating-linear-gradient(90deg, #5ab0ff 0 5px, transparent 5px 8px);
+}
+
+.order-arrow .oa-head {
+	position: absolute;
+	right: 0;
+	top: -1px;
+	width: 0;
+	height: 0;
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent;
+	border-left: 6px solid #5ab0ff;
+}
+
+.order-arrow--red .oa-line {
+	background: repeating-linear-gradient(90deg, #ff6b6b 0 5px, transparent 5px 8px);
+}
+
+.order-arrow--red .oa-head {
+	border-left-color: #ff6b6b;
+}
+
+/* 预览箭头：鼠标跟随的临时红虚线（多选时每个选中单位各一条） */
+.order-arrow--preview .oa-line {
+	background: repeating-linear-gradient(90deg, rgba(255, 90, 90, 0.95) 0 4px, transparent 4px 7px);
+}
+
+.order-arrow--preview .oa-head {
+	border-left-color: rgba(255, 90, 90, 0.95);
+}
+
+/* ===== to-do #12：战前情报弹窗 ===== */
+.intro-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 500;
+	background: rgba(18, 15, 8, 0.55);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.intro-box {
+	max-width: min(92vw, 560px);
+	background: #fff8ec;
+	border: 1px solid #cbb98f;
+	border-radius: 12px;
+	padding: 20px 24px;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+	text-align: left;
+}
+
+.intro-box h2 { margin: 0 0 10px; color: #4a3a20; }
+
+.intro-text {
+	color: #3c2f1b;
+	line-height: 1.7;
+	margin: 0 0 16px;
+}
+
+.intro-actions { text-align: right; }
+
+/* ===== to-do #13：剧情对话 / 结局页 ===== */
+.dialog-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 600;
+	background: rgba(18, 15, 8, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dialog-box {
+	max-width: min(92vw, 560px);
+	background: #fff8ec;
+	border: 1px solid #cbb98f;
+	border-radius: 12px;
+	padding: 18px 22px;
+	text-align: left;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.dialog-who { font-weight: bold; color: #7a5c33; margin-bottom: 4px; }
+.dialog-text { color: #3c2f1b; line-height: 1.7; margin-bottom: 12px; }
+.dialog-next { display: block; margin-left: auto; }
+
+.story-panel {
+	border: 1px solid #d8c49a;
+	background: #fff8ec;
+	border-radius: 10px;
+	padding: 14px 16px;
+	margin: 0 auto 14px;
+	width: min(92vw, 560px);
+	text-align: left;
+}
+
+.story-line { margin: 0 0 8px; color: #3c2f1b; }
+
+/* ===== to-do #15：成就列表 ===== */
+.achv-locked { opacity: 0.6; }
+
+/* ===== to-do #16：界面卡片化（核心棋盘 #board/.cell/.chess 不动） =====
+   风格对齐最初的极简设计：白卡片 + 柔和阴影 + 大圆角，背景保留暖色调。 */
+.card {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 380px;
+	margin: 0 auto;
+	text-align: center;
+	padding: 1.75rem 1.75rem 2rem;
+	border-radius: 1.5rem;
+	background: white;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+	transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+/* 表单 / 登录注册 / 结局链接框 */
+.form-box {
+	background: #fff;
+	border: none;
+	border-radius: 1.5rem;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* 小组卡片 */
+.member-card {
+	background: #fff;
+	border: none;
+	border-radius: 1.5rem;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* 主界面关卡/存档/成就行 */
+.level-row {
+	background: #fff;
+	border: none;
+	border-radius: 1rem;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 战前情报 / 剧情对话 / 结局叙事 */
+.intro-box,
+.dialog-box,
+.story-panel {
+	background: #fff;
+	border: none;
+	border-radius: 1.5rem;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* 关卡内左右信息面板 */
+#info-bar,
+#enemy-info {
+	background: rgba(255, 255, 255, 0.96);
+	border: none;
+	border-radius: 1.25rem;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 胜利/失败结算页不卡片化（按原样展示） */
+
+/* 圆角统一 */
+.level-btn,
+.menu-link,
+.game-btn,
+.form-box button {
+	border-radius: 0.9rem;
+}
+
+/* 收尾：关卡页垂直紧凑（不改棋盘尺寸，减少页头/按钮空隙，避免右侧滚动条） */
+h2 { margin: 0.25em 0; }
+footer { margin: 0; }
+#game-actions { margin-top: 4px; gap: 6px; }
+
+/* menu：重新开始按钮上方留白 */
+#btn-restart { margin-top: 1.5rem; }

@@ -5,48 +5,35 @@
 	<link rel="stylesheet" href="css/style.css">
 	<title>Game - Level#1</title>
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+	<icon></icon>
 </head>
 <body>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 0%;">
 	<h2>Game1 : Break through the defense</h2>
 	<footer><p id="footer-bar" style="font-size: x-small; margin: 0px 0px 10px;"></p></footer>
 </div>
-<div id="info-bar"></div>
-<div id="enemy-info"></div>
 <div id="board"></div>
 <div id="win" style="display: none;">
+	<br />
 	<h1>You Win!</h1>
 	<h2 id="3star" style="display: none;">⭐⭐⭐</h2>
 	<h2 id="2star" style="display: none;">⭐⭐</h2>
 	<h2 id="1star" style="display: none;">⭐</h2>
 </div>
 <div id="lose" style="display: none;">
+	<br />
 	<h1>You Lose!</h1>
 	<p id="loseTips" style="font-size: x-small;"></p>
 </div>
+<br />
 <button id="button" style="width: 100px; height: 50px;"> Next Turn </button>
 <button id="button-next-game" style="display: none;"> Next Game </button>
 <button id="button-replay" style="display: none;"> Replay </button>
-<button id="button-fail" style="display: none;"> View Ending: Early Defeat </button>
-<div id="game-actions">
-	<span id="save-load-btns">
-		<button id="button-save" class="game-btn" title="把当前这关的中途状态存进所选手动存档槽"> Save </button>
-		<select id="slot-select"></select>
-		<button id="button-load" class="game-btn" title="读取所选手动存档槽的中途状态（覆盖当前进度）"> Load </button>
-		<button id="button-mode" class="game-btn" title="切换为查看敌方剩余血量，再按一次返回指挥"> 查看敌人 </button>
-	</span>
-	<button id="button-exit" class="game-btn" title="返回游戏主界面"> Menu </button>
-</div>
 
 <script src="js/constants.js"></script>
 <script src="js/pieces.js"></script>
 <script src="js/arrow.js"></script>
-<script src="js/dialog.js"></script>
-<script src="js/account.js"></script>
-<script src="js/save.js"></script>
 <script src="js/main.js"></script>
-<script src="js/ai.js"></script>
-<script src="js/levels.js"></script>
 <script src="js/game1.js"></script>
 </body>
 

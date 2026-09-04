@@ -22,21 +22,13 @@ game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 6.0,
 
 // game1 的所需元素
 
-var CURRENT_LEVEL_ID = 1;
-var CURRENT_GAME = game1;   // 本关配置：读档恢复时用它校正每名棋子的满血上限（LP max）
-if (typeof attachLevelAI === 'function') attachLevelAI(CURRENT_LEVEL_ID);   // 敌方 AI 配置取自 levels.js（本关为站桩）
+loadGame(game1);
+// 加载 game1
 
-var snapToResume = null;
-if (wantResume() && typeof currentUser === 'function' && currentUser()) {
-	var _s = autoSnapshot(currentUser());
-	if (_s && Number(_s.level) === CURRENT_LEVEL_ID) snapToResume = _s;
-}
-if (snapToResume) {
-	loadSnapshot(snapToResume);   // URL 带 resume=1 且 a.save 有本关快照 -> 继续
-} else {
-	loadGame(game1);              // 否则按关卡配置全新开局
-}
-refreshSlotSelect();   // 初始化关卡内 Save/Load 下拉
+document.getElementById('button-next-game').addEventListener('click', () => {
+	window.location = './game2.html'
+})
+// 加载下一关按钮
 
 loseTips.push('Concentrate a superior force to destroy the enemy forces one by one.')
 // 加载死亡提示

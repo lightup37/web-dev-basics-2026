@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>注册 - 拿破仑战争</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="page-box">
+		<h1>注册新账号</h1>
+		<p class="page-sub">账号只保存在本地浏览器（localStorage），换浏览器/清缓存会丢失</p>
+
+		<div class="form-box">
+			<form id="register-form" autocomplete="on">
+				<label>用户名
+					<input type="text" id="reg-name" autocomplete="username" placeholder="请输入用户名">
+				</label>
+				<label>密码
+					<input type="password" id="reg-pass" autocomplete="new-password" placeholder="请输入密码">
+				</label>
+				<label>确认密码
+					<input type="password" id="reg-pass2" autocomplete="new-password" placeholder="再输一遍密码">
+				</label>
+				<button type="submit">注 册</button>
+			</form>
+			<p id="reg-msg" class="form-msg"></p>
+			<p class="form-link">已有账号？<a href="index.html">返回登录</a></p>
+		</div>
+	</div>
+
+	<script src="js/account.js"></script>
+	<script>
+		document.getElementById('register-form').addEventListener('submit', function (e) {
+			e.preventDefault();
+			var msg = document.getElementById('reg-msg');
+			var name = document.getElementById('reg-name').value;
+			var pass = document.getElementById('reg-pass').value;
+			var pass2 = document.getElementById('reg-pass2').value;
+			if (!name.trim() || !pass) { msg.textContent = '用户名和密码都不能为空'; return; }
+			if (pass !== pass2) { msg.textContent = '两次输入的密码不一致'; return; }
+			var res = register(name, pass);
+			if (!res.ok) { msg.textContent = res.msg; return; }
+			// 注册成功视为已登录，直接进主界面
+			window.location.href = 'menu.html';
+		});
+	</script>
+</body>
+</html>

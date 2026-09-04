@@ -1,0 +1,94 @@
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100dvh;
+	padding: 0rem 0rem;
+	font-family: 'Courier New', Courier, monospace;
+	background: blanchedalmond;
+	color: black;
+	line-height: 1.6;
+}
+
+.cell {
+  aspect-ratio: 1 / 1; /* 强制正方形 */
+	background-color: #FFFFFF;
+}
+
+#board {
+	width: 80dvh;
+	height: 80dvh;
+	display: grid;
+	background-color: #000000;
+	gap: 0px;
+	position: relative;
+}
+
+.chess {
+	position: absolute;
+	width: 4dvh;
+	height: 4dvh;
+	border-radius: 50%;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+	transition: left 0.4s ease-in-out, top 0.4s ease-in-out;
+	z-index: 10;
+	transform: translate(-50%, -50%);
+
+	display: flex;
+  align-items: center;
+  justify-content: center; /*棋子名字居中*/
+
+	overflow: hidden; /*防止棋子图像超出范围*/
+}
+
+#arrowSvg {
+  pointer-events: none; /* 让鼠标事件穿透，不干扰点击 */
+}
+
+.chess--blue:hover img {
+	filter: brightness(0.8);   
+	transition: filter 0.3s ease;
+}
+
+.chess--blue:active {
+	transform: translate(-50%, -50%) scale(0.96);
+}
+
+.chess.selected {
+  box-shadow: 0 0 20px 1px rgba(255, 215, 0, 0.8);
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  border: 1px solid #FFD700;
+}
+
+.chess--red {
+	transition: box-shadow 0.3s ease, border 0.3s ease;
+	box-sizing: border-box;
+}
+
+.chess--red.highlighted {
+  box-shadow: 0 0 20px 1px red;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  border: 1px solid red;
+}
+
+.chess.disabled {
+	z-index: 5;
+}
+
+.chess.disabled img {
+	filter: brightness(0.2);   
+	transition: filter 0.2s ease;
+}
+
+#arrowSvg {
+  pointer-events: none; /* 让鼠标事件穿透，不干扰点击 */
+}

@@ -1,18 +1,32 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>结局：走向欧洲 - 拿破仑战争</title>
 	<link rel="stylesheet" href="css/style.css">
-	<title>Game - You Win!</title>
-	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
-	<icon></icon>
 </head>
 <body>
-<div style="display: flex; flex-direction: column; align-items: center; padding: 0%;">
-	<h1>Congratulations!</h1>
-	<br />
-	<h3>You have won EVERY game!</h3>
-</div>
+	<div class="page-box">
+		<h1>胜利！</h1>
+		<p class="page-sub">拿破仑战争的六大战役全部获胜</p>
+		<div class="story-panel">
+			<p class="story-line"><b>拿破仑：</b>诸位，让我们数一数：军团还在，炮兵还在，而我——也还在。</p>
+			<p class="story-line"><b>副官：</b>陛下，联军已经全线后退，维也纳和柏林的大门都敞开了。</p>
+			<p class="story-line"><b>拿破仑：</b>很好。历史将走向它该走的道路——就像它本该写的那样。</p>
+			<p class="story-line"><b>副官（压低声音）：</b>只是……陛下，听说威灵顿公爵还在滑铁卢附近重整旗鼓。</p>
+			<p class="story-line"><b>拿破仑：</b>滑铁卢？哈，那会是很多年后的一场雨夜了。今夜，先让我们享受这场胜利。</p>
+		</div>
+		<p class="page-note">（正常结局：同正史走向——多年后的滑铁卢雨夜，将是另一场故事。而另一种可能，还藏在更深处……）</p>
+		<div class="form-box">
+			<p class="form-link"><a href="menu.html">返回游戏主界面</a></p>
+			<p class="form-link"><a href="game1.html">从头再战</a></p>
+		</div>
+	</div>
+	<script src="js/account.js"></script>
+	<script src="js/save.js"></script>
+	<script>
+		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('victory_end');
+	</script>
 </body>
-
 </html>

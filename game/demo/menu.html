@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>游戏主界面 - 拿破仑战争</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="page-box">
+		<h1>游戏主界面</h1>
+		<p class="page-sub">欢迎回来，<span id="welcome-name"></span>！</p>
+		<p id="save-note" class="save-note"></p>
+	</div>
+
+	<h2 class="section-title">活动存档 · 自动存档 a.save（进度与进行中的关）</h2>
+	<ul id="level-list" class="level-list"></ul>
+
+	<h2 class="section-title">手动备份（存档 1/2/3）——"载入"会用该档覆盖 a.save</h2>
+	<ul id="manual-list" class="level-list"></ul>
+
+	<div class="page-box">
+		<ul class="menu-list">
+			<li><a class="menu-link" href="group.html">小组介绍</a></li>
+			<li><a class="menu-link" href="#" id="logout-btn">退出登录</a></li>
+		</ul>
+		<button id="btn-restart" class="game-btn danger-btn" title="清空活动存档 a.save，从头开始">重新开始游戏</button>
+		<p class="page-note">通关自动存入 a.save；关卡内 Save 可写入 a.save 或备份到 存档1~3；Load 就是把所选存档覆盖回 a.save。</p>
+	</div>
+
+	<script src="js/account.js"></script>
+	<script src="js/save.js"></script>
+	<script src="js/levels.js"></script>
+	<script>
+		if (!currentUser()) { window.location.href = 'index.html'; }
+		var user = currentUser();
+		document.getElementById('welcome-name').textContent = user;
+
+		// 关卡清单来自 levels.js 注册表（to-do #10：标题/顺序/敌方 AI 都从这里读）
+		var LEVELS = getLevelList();
+
+		var levelList = document.getElementById('level-list');
+		var manualList = document.getElementById('manual-list');
+
+		function starsText(s) {
+			return s > 0 ? '★'.repeat(s) + '☆'.repeat(3 - s) : '未通关';
+		}
+
+		function render() {
+			var auto = autoProgress(user);
+
+			document.getElementById('save-note').textContent =
+				'已通关 ' + Object.keys(auto.stars).length + ' 关' +
+				(auto.snapshot ? '，当前进行到第 ' + auto.snapshot.level + ' 关' : '');
+
+			// —— 活动存档 a.save 的关卡进度（同关有进行中快照则只给"继续"）——
+			levelList.innerHTML = '';
+			LEVELS.forEach(function (lv) {
+				var s = auto.stars['' + lv.id] || 0;
+				var unlocked = (auto.unlocked || 1) >= lv.id;
+				var cont = auto.snapshot && Number(auto.snapshot.level) === lv.id;
+
+				var li = document.createElement('li');
+				li.className = 'level-row' + (unlocked || cont ? '' : ' level-locked');
+				var info = document.createElement('span');
+				info.className = 'level-info';
+				info.innerHTML = '<span class="level-name">' + lv.name + '</span>' +
+					'<span class="level-stars">' +
+					(cont ? '进行中 · 剩余 ' + auto.snapshot.remain_turns + ' 回合' : starsText(s)) +
+					'</span>';
+				li.appendChild(info);
+
+				if (cont) {
+					var go = document.createElement('a');
+					go.className = 'level-btn';
+					go.href = lv.file + '?resume=1';
+					go.textContent = '继续';
+					li.appendChild(go);
+				} else if (unlocked) {
+					var start = document.createElement('a');
+					start.className = 'level-btn';
+					start.href = lv.file;
+					start.textContent = '开始';
+					li.appendChild(start);
+				} else {
+					var locked = document.createElement('span');
+					locked.textContent = '未解锁';
+					locked.className = 'level-btn level-btn-disabled';
+					li.appendChild(locked);
+				}
+				levelList.appendChild(li);
+			});
+
+			// —— 隐藏关：game1 ≤12 回合开启路线；需先通关第 6 关才能进入（此前显示"？？？"+🔒）——
+			if (typeof hiddenRouteOpen === 'function' && hiddenRouteOpen()) {
+				var hm = (typeof getHiddenLevel === 'function') ? getHiddenLevel() : null;
+				if (hm) {
+					var lv6ok = (typeof hasBeatenLevel === 'function') ? hasBeatenLevel(user, 6) : false;
+					var hs7 = auto.stars['7'] || 0;
+					var hcont = !!(auto.snapshot && Number(auto.snapshot.level) === 7);
+					var hli = document.createElement('li');
+					hli.className = 'level-row' + (lv6ok ? '' : ' achv-locked');
+					var hinfo = document.createElement('span');
+					hinfo.className = 'level-info';
+					if (lv6ok) {
+						hinfo.innerHTML = '<span class="level-name">' + hm.name + '</span>' +
+							'<span class="level-stars">' +
+							(hcont ? '进行中 · 剩余 ' + auto.snapshot.remain_turns + ' 回合' : (hs7 > 0 ? starsText(hs7) : '未通关')) +
+							'</span>';
+						hli.appendChild(hinfo);
+						var hbtn = document.createElement('a');
+						hbtn.className = 'level-btn';
+						hbtn.href = hm.file + (hcont ? '?resume=1' : '');
+						hbtn.textContent = hcont ? '继续' : '开始';
+						hli.appendChild(hbtn);
+					} else {
+						hinfo.innerHTML = '<span class="level-name">？？？</span>' +
+							'<span class="level-stars">通关第 6 关后揭晓</span>';
+						hli.appendChild(hinfo);
+						var lockBadge = document.createElement('span');
+						lockBadge.className = 'level-btn level-btn-disabled';
+						lockBadge.textContent = '🔒 需先通关第 6 关';
+						hli.appendChild(lockBadge);
+					}
+					levelList.appendChild(hli);
+				}
+			}
+
+			// —— 手动备份档：载入（覆盖 a.save）/ 删除 ——
+			manualList.innerHTML = '';
+			manualSummaries(user).forEach(function (m) {
+				var f = m.file;
+				var li = document.createElement('li');
+				li.className = 'level-row';
+				var info = document.createElement('span');
+				info.className = 'level-info';
+				var detail = '';
+				if (f) {
+					detail = f.snapshot
+						? '第 ' + f.snapshot.level + ' 关进行中 · 剩余 ' + f.snapshot.remain_turns + ' 回合'
+						: '已通关 ' + Object.keys(f.stars).length + ' 关';
+				} else {
+					detail = '（空）';
+				}
+				info.innerHTML = '<span class="level-name">' + fileName(m.id) + '</span>' +
+					'<span class="level-stars">' + detail + '</span>';
+				li.appendChild(info);
+
+				if (f) {
+					var load = document.createElement('button');
+					load.className = 'game-btn';
+					load.textContent = '载入';
+					load.onclick = (function (id) {
+						return function () {
+							if (!confirm('载入 ' + fileName(id) + ' 会用它的内容覆盖当前自动存档 a.save，继续？')) return;
+							if (loadManualToAuto(user, id)) { alert('已载入 ' + fileName(id) + ' 到 a.save'); render(); }
+						};
+					})(m.id);
+					li.appendChild(load);
+
+					var del = document.createElement('button');
+					del.className = 'game-btn';
+					del.textContent = '删除';
+					del.onclick = (function (id) {
+						return function () {
+							if (confirm('删除 ' + fileName(id) + '？')) { clearManual(user, id); render(); }
+						};
+					})(m.id);
+					li.appendChild(del);
+				} else {
+					var dash = document.createElement('span');
+					dash.textContent = '—';
+					dash.style.opacity = '0.5';
+					li.appendChild(dash);
+				}
+				manualList.appendChild(li);
+			});
+		}
+
+		document.getElementById('logout-btn').addEventListener('click', function (e) {
+			e.preventDefault();
+			logout();
+			window.location.href = 'index.html';
+		});
+
+		// 重新开始游戏 = 清空活动存档 a.save（手动备份档保留）
+		document.getElementById('btn-restart').addEventListener('click', function () {
+			if (!confirm('重新开始将清空活动存档 a.save（通关进度 / 星级 / 进行中快照），且不可恢复；手动备份 存档1~3 会保留。确定继续？')) return;
+			resetAutoSave(user);
+			alert('已重新开始：a.save 已清空');
+			render();
+		});
+
+		render();
+
+		// —— 成就列表（to-do #15）——
+		function renderAchievements() {
+			var old = document.getElementById('achv-area');
+			if (old) old.remove();
+			var holder = document.createElement('div');
+			holder.id = 'achv-area';
+			var list = (typeof achievementState === 'function') ? achievementState(user) : [];
+			var done = list.filter(function (a) { return a.unlocked; }).length;
+			var h = document.createElement('h2');
+			h.className = 'section-title';
+			h.textContent = '成就（' + done + '/' + list.length + '）';
+			holder.appendChild(h);
+			var ul = document.createElement('ul');
+			ul.className = 'level-list';
+			list.forEach(function (a) {
+				var li = document.createElement('li');
+				li.className = 'level-row' + (a.unlocked ? '' : ' achv-locked');
+				var info = document.createElement('span');
+				info.className = 'level-info';
+				info.innerHTML = '<span class="level-name">' + a.name + '</span>' +
+					'<span class="level-stars">' + a.desc + '</span>';
+				li.appendChild(info);
+				var badge = document.createElement('span');
+				badge.className = 'level-btn ' + (a.unlocked ? '' : 'level-btn-disabled');
+				badge.textContent = a.unlocked ? '✓ 已达成' : '🔒 未解锁';
+				li.appendChild(badge);
+				ul.appendChild(li);
+			});
+			holder.appendChild(ul);
+			var ref = document.querySelector('.menu-list');
+			var box = ref ? ref.closest('.page-box') : null;
+			if (box && box.parentNode) box.parentNode.insertBefore(holder, box);
+			else document.body.appendChild(holder);
+		}
+		renderAchievements();
+	</script>
+</body>
+</html>

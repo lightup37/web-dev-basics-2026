@@ -7,11 +7,6 @@ const LP_high = 120, LP_standard = 60, LP_low = 42;
 const ATK_high = 1.0, ATK_medium_high = 0.7, ATK_standard = 0.5, ATK_low = 0.3;
 const IMG_BLUE_infantry = 'blue_infantry', IMG_BLUE_artillery = 'blue_artillery', IMG_RED_infantry = 'red_infantry', IMG_RED_artillery = 'red_artillery';
 
-/* 兵种原型（to-do #8）：class 用于棋盘文字占位（无图时），img 置空即可走文字兜底 */
-const UNIT_CAVALRY    = { cls: '骑', speed: MOVING_SPEED_fast,      atkrange: ATK_RANGE_standard,    atk: ATK_high,        lp: LP_standard };
-const UNIT_SKIRMISHER = { cls: '散', speed: MOVING_SPEED_standard,  atkrange: ATK_RANGE_medium_far,  atk: ATK_medium_high, lp: LP_low };
-const UNIT_GRENADIER  = { cls: '掷', speed: MOVING_SPEED_slow,      atkrange: ATK_RANGE_standard,    atk: ATK_medium_high, lp: LP_high };
-
 /* 用于失败后提示 */
 
 let loseTips = [ 'Some battles you win, some you lose.' ] ;
