@@ -46,6 +46,7 @@ body {
   justify-content: center; /*棋子名字居中*/
 
 	overflow: hidden; /*防止棋子图像超出范围*/
+	z-index: 50;
 }
 
 #arrowSvg {
@@ -78,6 +79,10 @@ body {
   transform: translate(-50%, -50%);
   z-index: 100;
   border: 1px solid red;
+}
+
+.chess.disabled {
+	z-index: 1;
 }
 
 .chess.disabled img {
