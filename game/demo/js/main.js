@@ -207,13 +207,17 @@ boardContainer.addEventListener('click', function(e) {
 		handleBoardClick(e);
 		return ;
 	}
-  
+
   // 阻止事件冒泡，避免同时触发棋盘点击
   
   // 根据 DOM 元素的 id 找到对应数据
   const pieceId = pieceEl.id;
   const pieceData = armys.find(p => p.id === pieceId);
-  if (!pieceData) return;
+	if (!pieceData) return;
+	if (pieceData.color == 'red') {
+		handleBoardClick(e);
+		return ;
+	}
   
   // 选中该棋子（切换选中/取消？这里直接选中）
 	if(selectedPiece == null) {
