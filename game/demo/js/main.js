@@ -267,7 +267,96 @@ function selectMinimalDistance(element, armys) {
 /* 将一个回合分成若干'帧'，每一'帧'分别处理 */
 /* 若当前回合棋子攻击范围内有敌人，则攻击最近的敌人 */
 /* 否则随机攻击 */
-function nextStep() {
+// =====================================================
+// 找出“这一小段移动路径”第一次进入哪个敌人的攻击范围
+//
+// 返回：
+// {
+//     enemy: 敌人,
+//     t: 0~1，表示沿着本次移动路径走了多少
+// }
+// 如果没有进入任何新的攻击范围，则返回 null
+// =====================================================
+function findFirstEnterAttackRange(element, startx, starty, endx, endy) {
+
+    let first = null;
+
+    const dx = endx - startx;
+    const dy = endy - starty;
+    const a = dx * dx + dy * dy;
+
+    if (a <= eps) return null;
+
+    for (let i = 0; i < armys.length; ++i) {
+
+        let enemy = armys[i];
+
+        // 死亡单位跳过
+        if (enemy.disabled) continue;
+
+        // 自己和同阵营跳过
+        if (enemy.color === element.color) continue;
+
+        // -----------------------------------------
+        // 如果移动开始时已经在这个敌人的攻击范围内
+        // 那么这次不把“离开它”当作进入
+        // -----------------------------------------
+        const sx = startx - enemy.posx;
+        const sy = starty - enemy.posy;
+
+        const startDis2 = sx * sx + sy * sy;
+        const range = Number(element.atkrange);
+
+        if (startDis2 <= range * range + eps) {
+            continue;
+        }
+
+        // -----------------------------------------
+        // 求线段与攻击范围圆的第一次交点
+        // 圆心 = enemy
+        // 半径 = element.atkrange
+        // -----------------------------------------
+        const fx = startx - enemy.posx;
+        const fy = starty - enemy.posy;
+
+        const b = 2 * (fx * dx + fy * dy);
+        const c = fx * fx + fy * fy - range * range;
+
+        const discriminant = b * b - 4 * a * c;
+
+        // 没有交点
+        if (discriminant < 0) continue;
+
+        const sqrtD = Math.sqrt(discriminant);
+
+        const t1 = (-b - sqrtD) / (2 * a);
+        const t2 = (-b + sqrtD) / (2 * a);
+
+        // 我们从圆外往圆内走，
+        // 所以第一次进入圆的是较小的有效 t
+        let t = null;
+
+        if (t1 >= -eps && t1 <= 1 + eps) {
+            t = t1;
+        } else if (t2 >= -eps && t2 <= 1 + eps) {
+            t = t2;
+        }
+
+        if (t === null) continue;
+
+        t = Math.max(0, Math.min(1, t));
+
+        if (first === null || t < first.t) {
+            first = {
+                enemy: enemy,
+                t: t
+            };
+        }
+    }
+
+    return first;
+}
+ /*function nextStep() {
 	let disabledList = new Array();
 	armys.forEach(element => {
 		if(element.disabled == true) return ;
@@ -297,8 +386,118 @@ function nextStep() {
 	disabledList.forEach(element => {
 		setToDisable(element) ;
 	}) ;
-}
+}*/
+function nextStep() {
+	let disabledList = new Array();
 
+	armys.forEach(element => {
+		if(element.disabled == true) return;
+
+		let atktar = selectMinimalDistance(element, armys);
+
+		// ============================================
+		// 先判断当前位置是否在最近敌人的攻击范围内
+		// ============================================
+
+		let inAttackRange = false;
+
+		if(atktar != null) {
+			inAttackRange = calcdis(element, atktar) < element.atkrange;
+		}
+
+		// ============================================
+		// 计算当前目标方向
+		// ============================================
+
+		let targetvector = normalize({
+			x: element.targetx - element.posx,
+			y: element.targety - element.posy
+		});
+
+		// ============================================
+		// 判断是否已经到达目标
+		// ============================================
+
+		if(
+			Math.abs(element.targetx - element.posx) <= eps &&
+			Math.abs(element.targety - element.posy) <= eps
+		) {
+			// 已经到达目标，如果在攻击范围内，就攻击
+			if(inAttackRange) {
+				atktar.lp -= element.atk;
+
+				if(atktar.lp <= 0)
+					disabledList.push(atktar);
+			}
+
+			return;
+		}
+
+		// ============================================
+		// 如果目前在攻击范围内
+		// 判断移动方向是不是在“离开敌人”
+		// ============================================
+
+		if(inAttackRange) {
+
+			// 从当前点指向目标点
+			let moveX = element.targetx - element.posx;
+			let moveY = element.targety - element.posy;
+
+			// 当前棋子指向敌人的向量
+			let enemyX = atktar.posx - element.posx;
+			let enemyY = atktar.posy - element.posy;
+
+			// 点积
+			let dot = moveX * enemyX + moveY * enemyY;
+
+			// dot < 0：
+			// 移动方向与“指向敌人”的方向相反
+			// 也就是正在远离敌人
+			if(dot >= 0) {
+				// 正在靠近敌人/没有离开
+				// 保持原来的攻击逻辑
+				atktar.lp -= element.atk;
+
+				if(atktar.lp <= 0)
+					disabledList.push(atktar);
+
+				return;
+			}
+
+			// dot < 0
+			// 正在离开敌人
+			// 不攻击，继续往外走
+		}
+
+		// ============================================
+		// 按照原来的逻辑移动一步
+		// ============================================
+
+		let beforeMove = (element.targetx - element.posx > eps);
+
+		element.posx = element.posx + targetvector.x * element.speed;
+		element.posy = element.posy + targetvector.y * element.speed;
+
+		// 防止移过目标位置
+		let afterMove = (element.targetx - element.posx > eps);
+
+		if(beforeMove != afterMove) {
+			element.posx = element.targetx;
+			element.posy = element.targety;
+		}
+
+		movePieceTo(element.id, element.posx, element.posy);
+	});
+
+	// ============================================
+	// 统一处理死亡单位
+	// ============================================
+
+	disabledList.forEach(element => {
+		setToDisable(element);
+	});
+}
 /* 将灰色的濒死棋子移除 */
 function clearDisable() {
 	armys.forEach(element => {
