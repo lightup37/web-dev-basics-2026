@@ -27,7 +27,7 @@ var LEVELS_ORDER = [
 		hint: '指令：掷弹兵（掷）血厚适合当前排，散兵（散）射程 1 格能放风筝。情报：敌军总挤在中央那名掷弹兵身边抱团取暖——趁他们堆成一团，用远程单位在外围点名。'
 	},
 	{
-		id: 5, file: 'game5.html', name: '第 5 关 · Onslaught（铁流强攻）', ai: { strategy: 'breakthrough', threat: 'strongest' },
+		id: 5, file: 'game5.html', name: '第 5 关 · Onslaught（铁血强攻）', ai: { strategy: 'breakthrough', threat: 'strongest' },
 		hint: '指令：本关兵种齐全，注意保护高攻单位。情报：敌军会优先集火攻击力最高的蓝方——你的炮兵和骑兵是头号目标，用掷弹兵和步兵给它们当盾。'
 	},
 	{

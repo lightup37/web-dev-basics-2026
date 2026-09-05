@@ -41,9 +41,9 @@
 
 ## 4. 技术细节
 
-- **开发平台**：任意现代浏览器 + 文本编辑器即可；无需构建工具。
+- **开发平台**：Microsoft Edge + VSCode；无需构建工具。
 - **运行平台**：纯静态页。直接双击 `index.html`，或在目录下运行本地静态服务器（如 `python -m http.server 8000`）后访问 `http://localhost:8000/index.html`。建议使用 Chrome / Edge 等现代浏览器。
-- **技术栈**：原生 HTML + CSS + JS；数据全部存 `localStorage`（`users`、`a.save:<用户名>`、`save1~3`、`achv:` 等），无后端、无框架、无外部依赖（仅 favicon 内嵌图片体积偏大，可后续优化）。
+- **技术栈**：原生 HTML + CSS + JS；数据全部存 `localStorage`（`users`、`a.save:<用户名>`、`save1~3`、`achv:` 等），无后端、无框架、无外部依赖。
 - **脚本约定**：游戏页固定加载顺序 `constants → pieces → arrow → dialog → account → save → main → ai → levels → gameN`。
 - **关卡与 AI**：跨关卡设计信息集中在 `js/levels.js`（注册表），各关棋子配置留在各自 `gameN.js`，方便成员独立维护。
 

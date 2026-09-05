@@ -9,14 +9,14 @@ var game4 = {
 	pieces: new Array()
 } ;
 
-game4.pieces.push({color:'blue', class:'掷', posx: 1.0, posy: 2.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_standard, atk: ATK_medium_high, lp: LP_high});
-game4.pieces.push({color:'blue', class:'散', posx: 0.0, posy: 5.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_medium_far, atk: ATK_medium_high, lp: LP_low});
-game4.pieces.push({color:'blue', class:'散', posx: 0.0, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_medium_far, atk: ATK_medium_high, lp: LP_low});
+game4.pieces.push({color:'blue', class:'掷', img:IMG_BLUE_grenadier, posx: 1.0, posy: 2.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_standard, atk: ATK_medium_high, lp: LP_high});
+game4.pieces.push({color:'blue', class:'散', img:IMG_BLUE_skirmisher, posx: 0.0, posy: 5.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_medium_far, atk: ATK_medium_high, lp: LP_low});
+game4.pieces.push({color:'blue', class:'散', img:IMG_BLUE_skirmisher, posx: 0.0, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_medium_far, atk: ATK_medium_high, lp: LP_low});
 game4.pieces.push({color:'blue', class:'步', img:IMG_BLUE_infantry, posx: 1.0, posy: 8.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game4.pieces.push({color:'blue', class:'炮', img:IMG_BLUE_artillery, posx: 2.0, posy: 4.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_far, atk: ATK_medium_high, lp: LP_standard});
 
 /* 红方第 0 个必须是"核心"（cluster 的 core:0 指向它）——这里给掷弹兵 */
-game4.pieces.push({color: 'red', class: '掷', posx: 6.0, posy: 5.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_standard, atk: ATK_medium_high, lp: LP_high});
+game4.pieces.push({color: 'red', class: '掷', img: IMG_RED_grenadier, posx: 6.0, posy: 5.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_standard, atk: ATK_medium_high, lp: LP_high});
 game4.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 7.0, posy: 3.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game4.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 7.0, posy: 7.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game4.pieces.push({color: 'red', class: '炮', img: IMG_RED_artillery, posx: 8.0, posy: 5.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_far, atk: ATK_medium_high, lp: LP_standard});
