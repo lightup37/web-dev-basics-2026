@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: #f4f4f1;
+    color: #222;
+    line-height: 1.8;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #22303f;
+    color: #fff;
+    padding: 14px 24px;
+}
+
+.top a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.top a:hover {
+    text-decoration: underline;
+}
+
+.top-title {
+    font-size: 14px;
+}
+
+.main {
+    max-width: 640px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.profile {
+    text-align: center;
+    padding: 30px 0 26px;
+}
+
+.photo {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 2px dashed #aaa;
+    border-radius: 50%;
+    color: #888;
+    font-size: 14px;
+}
+
+.profile h1 {
+    font-size: 32px;
+    letter-spacing: 2px;
+}
+
+.info {
+    margin-top: 6px;
+    color: #666;
+    font-size: 14px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+}
+
+.card h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #2c4a63;
+}
+
+.card p {
+    font-size: 14.5px;
+    color: #444;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags span {
+    background: #eef3f7;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #2c4a63;
+}
+
+.roles {
+    list-style: none;
+}
+
+.roles li {
+    display: inline-block;
+    margin: 0 12px 6px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-size: 14px;
+    color: #333;
+}
+
+.footer {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    padding: 28px 0 40px;
+}
+
+@media (max-width: 600px) {
+    .top {
+        padding: 12px 14px;
+    }
+
+    .main {
+        padding: 0 10px;
+    }
+
+    .card {
+        padding: 16px 18px;
+    }
+}
