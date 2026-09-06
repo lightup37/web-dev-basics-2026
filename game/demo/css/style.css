@@ -639,3 +639,15 @@ footer { margin: 0; }
 
 /* menu：重新开始按钮上方留白 */
 #btn-restart { margin-top: 1.5rem; }
+/* ===== game1 专属背景 ===== */
+.game1 #board {
+    background-image: url("../img/background1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 让背景图透过10×10格子显示 */
+.game1 #board .cell {
+    background-color: transparent;
+}
