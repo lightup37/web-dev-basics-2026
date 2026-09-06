@@ -160,7 +160,8 @@ body {
 }
 
 .member-card {
-	display: block;
+	display: flex;
+	flex-direction: column;
 	border: 1px solid #d8c49a;
 	background: #fff8ec;
 	border-radius: 10px;
@@ -169,6 +170,7 @@ body {
 	text-decoration: none;
 	color: inherit;
 	transition: box-shadow 0.2s ease, transform 0.2s ease;
+	min-height: 13dvh;
 }
 
 .member-card:hover {
@@ -176,9 +178,9 @@ body {
 	transform: translateY(-2px);
 }
 
-.member-card p { font-size: 0.85rem; color: #6b5b3e; }
+.member-card p { font-size: 0.85rem; color: #6b5b3e; margin: 5px 0px 0px;}
 
-.member-more { font-size: 0.8rem; color: #8a6d3b; }
+.member-more { font-size: 0.8rem; color: #8a6d3b; margin-top: auto; }
 
 .menu-list {
 	list-style: none;
@@ -586,6 +588,7 @@ body {
 
 /* 小组卡片 */
 .member-card {
+	flex: 1;
 	background: #fff;
 	border: none;
 	border-radius: 1.5rem;

@@ -13,10 +13,11 @@
 		<p class="page-sub">六位成员的简介与个人页面入口（角色分配见 group.md）</p>
 	</div>
 
-	<div class="member-grid">
+	<div class="member-grid" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
 		<!-- 成员卡片共 6 个。
 		     个人详情页统一放 members/ 目录，文件名用英文（这里先按姓名拼音占位），避免地址栏中文乱码；
 		     成员做完自己的页面后，如果文件名和实际英文名不一致，改对应卡片的 href 即可。 -->
+		<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 30px; justify-content: center; width: 100%;">
 		<a class="member-card" href="./members/TanYiqing.html">
 			<h3>谭意青</h3>
 			<p>项目经理 · 程序员 · CIO</p>
@@ -32,6 +33,8 @@
 			<p>摄影 · 剪辑</p>
 			<span class="member-more">查看个人页 →</span>
 		</a>
+		</div>
+		<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 30px; justify-content: center; width: 100%;">
 		<a class="member-card" href="./members/ChenSixing.html">
 			<h3>陈思行</h3>
 			<p>程序员 · 剪辑 · 美工</p>
@@ -47,6 +50,7 @@
 			<p>剪辑 · 美工</p>
 			<span class="member-more">查看个人页 →</span>
 		</a>
+		</div>
 	</div>
 
 	<p class="page-back"><a href="index.html">← 返回主页</a></p>
