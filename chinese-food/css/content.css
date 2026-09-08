@@ -1,0 +1,32 @@
+/* ============================================================
+   content.css —— 常规内容页(联系我们 contact.html、
+   独家菜单 featured.html)专用
+   作用:顶部标题区 + 内容卡片网格 + 无图列表等简单排版;
+   理由:这两页结构类似"一页式介绍",共用一份最简样式。
+   ============================================================ */
+
+.page-head{ margin:6px 0 18px; }
+.page-head h1{ font-size:26px; }
+.page-head p{ color:var(--muted); font-size:14px; margin-top:4px; }
+
+/* 内容网格:联系卡/招牌菜卡通用(自适应列数) */
+.info-grid{ display:grid; gap:18px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+.info-card{ padding:20px; }
+.info-card .ic{ font-size:34px; text-align:center; }
+.info-card h3{ text-align:center; margin:6px 0; }
+.info-card p{ font-size:14px; color:var(--muted); text-align:center; }
+.info-card a{ color:var(--accent); }
+.info-card a:hover{ text-decoration:underline; }
+
+/* 招牌菜横向卡片(独家菜单页)
+   作用:一行一条招牌菜:小图+说明+“去尝尝”; */
+.featured-row{ display:flex; gap:16px; padding:14px; margin-bottom:16px; }
+.featured-row img{ width:190px; height:130px; object-fit:cover;
+                   border-radius:10px; flex:none; }
+.featured-row h3{ font-size:19px; }
+.featured-row p{ font-size:14px; color:var(--muted); margin:6px 0 10px; }
+@media (max-width:640px){
+  .featured-row{ flex-direction:column; }
+  .featured-row img{ width:100%; height:auto; }
+}

@@ -1,0 +1,43 @@
+*{  margin:0px;  padding:0px;  }  /* 去掉所有默认的margin和padding*/
+body {  background-color: #D9D9D9;  }
+#topnav{  /* 顶部固定导航条*/
+     width:100%;   position:fixed;   height:40px;  left:0;  top:0;
+     background:#F1F1F1;   z-index:100; }
+#top{  /* 用于固定元素的参照块*/
+     width:1000px;  height:40px;  margin:0 auto;   position:relative;
+     font:12px  黑体;
+}
+#top a:hover{  color:red; }
+#logo{   /*logo的定位，相对于#top*/
+     position:absolute; top:0px; left:0px; }
+#logo img{   width:30px;  height:30px;  }
+#sbmt {   /*提交按钮的效果设置*/
+     width: 50px;   height: 20px;   font: 12px楷体;   text-align: center;
+     transition: all 1s;   border-radius: 3px;   cursor: pointer;  }
+#sbmt:hover {  background-color: #FF8023;  }
+#bread{   /*面包屑的定位，相对于#top*/
+     position:absolute;   right:8px;   top:8px;   }
+#toplist{   /* 顶部实用菜单的定位，相对于#top*/
+     margin-left:60px;  margin-top:8px;  }
+#toplist li{   /*让列表横向显示*/
+     display:inline-block;  margin:5px;  }
+#topnav #topform{   /*顶部搜索框的定位，相对于#top*/
+     position:absolute;   top:5px;   left:400px; }
+#main{   /*主内容块*/
+     width:1000px;  background:#E8A94C;   height:1500px;
+     margin:0 auto;   position:relative;
+     top:40px;   /* 留出顶部导航条的位置*/
+}
+#banner img{  width:1000px;     height:320px; }
+/*主导航条*/
+#nav {   background:#F2CAB3;   }
+#nav li{  display:inline-block;     width:12.5%;     text-align:center;     }
+#nav li a{   display:block;   padding:10px 0px 6px;
+     font:18px  楷体;   text-decoration: none;   color:black;  }
+#nav li a:hover{   background:#E8A94C;   border-bottom:4px brown solid;
+     padding-bottom:2px;   }
+#nav li a#current{   background:#E8A94C;  }   /* 当前栏目*/
+/*底部版权区*/
+#footer{  margin-top:40px;  width:100%;  background:#333;
+     color:white;   padding:10px;   }
+#footer p{   text-align:center; }

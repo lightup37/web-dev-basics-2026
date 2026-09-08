@@ -1,0 +1,10 @@
+#main h1{ border-bottom:1px black solid;   width:80%;
+     font:24px/1.5em黑体;   margin:40px; }
+.lft_img{   float:left;     margin:10px 40px; }
+.lft_img img{  width:480px; height:350px; }
+.rgt_txt{      width:400px; height:200px;   float:left;  }
+.rgt_txt p,.lft_txt p{      font:20px/1.4em隶书;  margin-bottom:1.6em; }
+.rgt_img{     float:left;  }
+.rgt_img img{ width:480px;  height:350px; }
+.lft_txt{     width:400px;  height:200px;   float:left;  margin:0px 40px;  }
+.clear{   clear:both;  }

@@ -4,7 +4,8 @@ const translations = {
     desc: '选择项目浏览：',
     btn1: '唐诗宋词',
     btn2: '游戏(测试版)',
-		btn3: '...',
+		btn3: '中华美食',
+		btn4: '...',
     footer: '© 2026 · 北京理工大学 · 小组 [组名]'
   },
   'en': {
@@ -12,7 +13,8 @@ const translations = {
     desc: 'Choose a project:',
     btn1: 'Tang & Song Poems',
     btn2: 'Game(demo)',
-		btn3: '...',
+		btn3: 'Chinese food',
+		btn4: '...',
     footer: '© 2026 · Beijing Institute of Technology · Group [组名]'
   }
 };

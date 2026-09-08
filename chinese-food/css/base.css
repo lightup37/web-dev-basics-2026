@@ -1,0 +1,172 @@
+/* ============================================================
+   base.css —— 全站通用样式(先于其它 CSS 被每个页面引入)
+   作用:统一色彩变量、重置默认样式、顶部固定工具条、
+   横幅(banner)、主导航、页脚以及全站响应式断点。
+   说明:把"每个页面都会用到的骨架"集中放在这里,可让各页
+   只写自己独有的少量样式,保持 CSS 简单、避免重复。
+   ============================================================ */
+
+/* 1) 色彩与全局变量
+   作用:集中定义配色,便于全站统一修改与按菜系换主题色;
+   理由:改一处即全站生效,避免散落的魔法数字。 */
+:root{
+  --paper:#faf6ee;        /* 页面底色:暖米色,贴近食物主题 */
+  --card:#ffffff;         /* 卡片底色 */
+  --ink:#33261b;          /* 主文字:深棕黑 */
+  --muted:#8d7b68;        /* 次要文字:灰褐 */
+  --line:#eadfce;         /* 分隔线/描边:浅卡其 */
+  --gold:#e8a94c;         /* 金色点缀(保留教材主色的呼应) */
+  --accent:#c0442a;       /* 通用主题红(川菜红油色) */
+  --accent-deep:#8f2f1b;  /* 加深红,用于悬停 */
+  --soft:#f7e8da;         /* 主题浅底 */
+  --shadow:0 4px 14px rgba(120,80,40,.10);
+  --shadow-lg:0 10px 26px rgba(120,80,40,.18);
+}
+/* 各菜系页面通过 body 上的 theme-* 类换主题色:
+   作用:让二级/三级页的标题、按钮、标签随菜系变色;
+   理由:只改一个 CSS 变量即可完成整套换肤,代码最简单。 */
+body.theme-chuan{ --accent:#c0442a; --accent-deep:#8f2f1b; --soft:#fbe7dd; } /* 川菜:红油辣椒色 */
+body.theme-lu   { --accent:#8a5424; --accent-deep:#61401a; --soft:#f3e5d3; } /* 鲁菜:酱香棕 */
+body.theme-yue  { --accent:#0e7a5b; --accent-deep:#0a4f3b; --soft:#dff0e8; } /* 粤菜:清鲜青 */
+body.theme-xiang{ --accent:#d9531e; --accent-deep:#9c3a12; --soft:#fbe3d4; } /* 湘菜:剁椒橙 */
+
+/* 2) 极简重置
+   作用:消除浏览器默认内外边距、统一盒模型;
+   理由:先"归零"再写布局,可避免各种默认值带来的偏差。 */
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  font:15px/1.7 "Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;
+  background:var(--paper); color:var(--ink); padding-top:48px;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+ul,ol{ list-style:none; }
+
+/* 3) 通用容器
+   作用:限制内容最大宽度并水平居中,保证大屏下不拉得过宽;
+   理由:比教材固定的 1000px 更适应不同屏幕,窄屏时靠左右留白自然收缩。 */
+.wrap{ max-width:1120px; margin:0 auto; padding:0 16px; }
+
+/* 4) 顶部固定工具条
+   作用:模拟教材的 fixed 顶部条:logo、实用链接(联系我们/独家菜单)、
+   搜索框与右侧面包屑同行显示;
+   理由:固定顶部让用户在任何页面深度都能立刻搜索或跳转。 */
+.topbar{ position:fixed; top:0; left:0; right:0; height:48px; z-index:100;
+         background:rgba(255,252,246,.97); border-bottom:1px solid var(--line); }
+.topbar-in{ height:48px; display:flex; align-items:center; gap:14px; }
+.logo{ font:800 21px/1 "KaiTi","STKaiti","Microsoft YaHei"; color:var(--accent);
+       letter-spacing:1px; white-space:nowrap; }
+.logo span{ font-size:13px; color:var(--muted); margin-left:6px; letter-spacing:0; }
+/* 顶部实用链接与搜索框
+   作用:与 logo 同一行排布;
+   理由:flex 一行排布比教材的绝对定位简单直观。 */
+.tools{ display:flex; gap:12px; font-size:13px; color:var(--muted); }
+.tools a:hover{ color:var(--accent); }
+.search{ display:flex; align-items:center; gap:6px; }
+.search input{
+  width:180px; height:30px; padding:0 10px; font-size:13px;
+  border:1px solid var(--line); border-radius:15px; background:#fff;
+}
+.search input:focus{ outline:none; border-color:var(--accent); }
+.search button{
+  height:30px; padding:0 12px; border:0; border-radius:15px; cursor:pointer;
+  background:var(--accent); color:#fff; font-size:13px;
+}
+.search button:hover{ background:var(--accent-deep); }
+/* 面包屑(右上角)
+   作用:显示当前位置(首页>菜系>菜名),是教材要求的导航补充;
+   理由:放在右上角与教材一致,窄屏时隐藏以免挤占空间。 */
+.crumb{ margin-left:auto; font-size:12px; color:var(--muted); white-space:nowrap; }
+.crumb a:hover{ color:var(--accent); }
+.crumb strong{ color:var(--ink); font-weight:600; }
+/* 搜索无结果提示(由 search.js 动态显示) */
+#searchmsg{
+  position:fixed; top:56px; right:16px; z-index:200; max-width:min(90vw,420px);
+  background:#fff3cd; color:#6b5200; border:1px solid #e7cf7e;
+  padding:8px 12px; border-radius:8px; font-size:13px; box-shadow:var(--shadow);
+}
+
+/* 5) 横幅 banner
+   作用:每页顶部重复显示一张横幅图与标题文字,形成全站一致性(同教材);
+   理由:文字用半透明深色渐变压底,保证任何图片上文字都清晰。 */
+.banner{ position:relative; overflow:hidden; border-radius:0 0 20px 20px;
+         box-shadow:var(--shadow); }
+.banner img{ width:100%; height:300px; object-fit:cover; }
+.banner-mask{ position:absolute; inset:auto 0 0 0; padding:26px 26px 22px;
+  background:linear-gradient(to top, rgba(30,18,8,.72), rgba(30,18,8,0));
+  color:#fff; }
+.banner-mask h1{ font-size:34px; letter-spacing:3px; }
+.banner-mask p{ font-size:14px; opacity:.92; margin-top:6px; }
+
+/* 6) 主导航条
+   作用:菜系/首页之间的主要跳转,当前项高亮成"标签页"效果;
+   理由:悬停变色加下划线呼应教材,高亮用胶囊底更醒目。 */
+.mainnav{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px;
+          margin:18px 0 6px; }
+.mainnav a{
+  padding:7px 20px; border-radius:20px; font-size:16px; color:var(--ink);
+  border-bottom:3px solid transparent; transition:.15s;
+}
+.mainnav a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
+.mainnav a.on{ background:var(--accent); color:#fff; border-bottom-color:var(--accent-deep); }
+
+/* 7) 主体与通用卡片
+   作用:.card 是所有"卡片式"内容(教材要求用卡片构建)的公共容器;
+   理由:统一样式后,首页/二级页/三级页直接复用,无需重复写。 */
+.page{ min-height:420px; padding:18px 0 46px; }
+.page h1.title{ font-size:26px; margin:10px 0 4px; }
+.page .subtitle{ color:var(--muted); font-size:14px; margin-bottom:18px; }
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  box-shadow:var(--shadow); transition:transform .2s, box-shadow .2s;
+}
+.card:hover{ transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.chip{
+  display:inline-block; padding:2px 10px; margin:2px 6px 2px 0; font-size:12px;
+  background:var(--soft); color:var(--accent-deep); border-radius:10px;
+}
+.btn{
+  display:inline-block; padding:8px 18px; border-radius:20px;
+  background:var(--accent); color:#fff; font-size:14px; transition:.15s;
+}
+.btn:hover{ background:var(--accent-deep); }
+.btn.ghost{ background:transparent; border:1px solid var(--accent); color:var(--accent); }
+.btn.ghost:hover{ background:var(--accent); color:#fff; }
+
+/* 8) 页脚
+   作用:全站统一的版权与出处信息;
+   理由:深底白字与正文区形成对比,呼应教材底部版权区设计。 */
+.footer{ background:#2e2118; color:#d9cdc0; margin-top:10px; }
+.footer-in{ padding:22px 16px; text-align:center; font-size:13px; }
+.footer-in a{ color:#f0b27a; margin:0 8px; }
+.footer-in a:hover{ text-decoration:underline; }
+.footer-in small{ display:block; margin-top:8px; color:#9a8876; }
+
+/* ============================================================
+   9) 全站响应式断点(补齐教材 9.5.2 未完成的部分)
+   断点① 900px:平板 —— 缩小横幅字、隐藏顶部面包屑;
+   断点② 640px:手机 —— 搜索框缩短、工具链接收窄、单栏内容。
+   理由:由宽到窄逐级降级布局,保证不同显示宽度下都能正常浏览。
+   ============================================================ */
+@media (max-width:900px){
+  .banner img{ height:210px; }
+  .banner-mask h1{ font-size:26px; }
+  .crumb{ display:none; }            /* 窄屏面包屑隐藏,导航仍可返回上级 */
+  .mainnav a{ padding:6px 14px; font-size:15px; }
+}
+@media (max-width:640px){
+  body{ padding-top:44px; }
+  .topbar{ height:44px; }
+  .topbar-in{ height:44px; }
+  .logo span{ display:none; }
+  .tools{ gap:8px; }
+  .tools a{ font-size:12px; }
+  .search input{ width:110px; }
+  .banner img{ height:160px; }
+  .banner-mask{ padding:16px; }
+  .banner-mask h1{ font-size:22px; }
+  .mainnav{ gap:6px; }
+  .mainnav a{ padding:5px 10px; font-size:14px; }
+  .page h1.title{ font-size:22px; }
+}

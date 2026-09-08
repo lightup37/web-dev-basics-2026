@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中华美食网 · 首页</title>
+<meta name="description" content="中华美食网:川菜、鲁菜、粤菜、湘菜四大菜系与二十道代表名菜介绍、去哪儿吃、怎么做。">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+<!-- 顶部固定工具条:logo / 联系我们·独家菜单 / 搜索框 / 面包屑 -->
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="logo" href="index.html">中华美食网<span>Chinese Cuisine</span></a>
+    <ul class="tools">
+      <li><a href="mailto:1120251902@bit.edu.cn">联系我们</a></li>
+      <li><a href="featured.html">独家菜单</a></li>
+    </ul>
+    <form class="search" id="searchform" action="#" role="search">
+      <input id="searchinput" type="search" placeholder="搜索:宫保鸡丁/川菜…" list="searchsuggest" autocomplete="off">
+      <datalist id="searchsuggest"></datalist>
+      <button type="submit">搜索</button>
+    </form>
+    <p class="crumb">您的位置:<strong>首页</strong></p>
+  </div>
+</div>
+<span id="searchmsg" hidden></span>
+
+<main>
+  <!-- 横幅:与全站各页一致,体现整体性(同教材的重复 banner 设计) -->
+  <div class="banner wrap">
+    <img src="images/banner.jpg" alt="中华美食宴席">
+    <div class="banner-mask">
+      <h1>中华美食网</h1>
+      <p>民以食为天 · 一菜一格,百菜百味 —— 带你寻味川、鲁、粤、湘四大菜系</p>
+    </div>
+  </div>
+
+  <!-- 主导航:当前页高亮 -->
+  <nav class="mainnav wrap">
+    <a class="on" href="index.html">首页</a>
+    <a href="chuan/index.html">川菜</a>
+    <a href="lu/index.html">鲁菜</a>
+    <a href="yue/index.html">粤菜</a>
+    <a href="xiang/index.html">湘菜</a>
+  </nav>
+
+  <div class="wrap page">
+    <div class="home-lead">
+      <h2>寻味中国 · 四大菜系 二十道名菜</h2>
+      <p>本站介绍四大经典菜系及其代表名菜。点击图片进入菜系主页,点击菜名直达详细介绍;
+         右上角搜索框支持按菜名或菜系<strong>完全匹配</strong>跳转。</p>
+    </div>
+
+    <!-- 四大菜系卡片区 -->
+    <div class="cuisine-grid">
+      <article class="card cuisine-card">
+        <a href="chuan/index.html"><img src="images/gongbaojiding.jpg" alt="川菜代表:宫保鸡丁"></a>
+        <div class="body">
+          <h3>川菜<small>四川 · Sichuan</small></h3>
+          <p>麻辣鲜香、一菜一格。以"尚滋味、好辛香"闻名,红油、豆瓣、花椒是它的灵魂。</p>
+          <div class="dish-chips">
+            <a href="chuan/gongbaojiding.html">宫保鸡丁</a>
+            <a href="chuan/dongpozhouzi.html">东坡肘子</a>
+            <a href="chuan/maoxuewang.html">毛血旺</a>
+            <a href="chuan/mapodoufu.html">麻婆豆腐</a>
+            <a href="chuan/huiguorou.html">回锅肉</a>
+          </div>
+          <a class="btn" href="chuan/index.html">进入川菜</a>
+        </div>
+      </article>
+
+      <article class="card cuisine-card">
+        <a href="lu/index.html"><img src="images/tangculiyu.jpg" alt="鲁菜代表:糖醋鲤鱼"></a>
+        <div class="body">
+          <h3>鲁菜<small>山东 · Shandong</small></h3>
+          <p>咸鲜为主、火候严谨,讲究"爆炒烹炸"之功,是北方菜系与宫廷菜的重要源头。</p>
+          <div class="dish-chips">
+            <a href="lu/tangculiyu.html">糖醋鲤鱼</a>
+            <a href="lu/congshaohaishen.html">葱烧海参</a>
+            <a href="lu/jiuzhuandachang.html">九转大肠</a>
+            <a href="lu/baochaoyaohua.html">爆炒腰花</a>
+            <a href="lu/youmendaxia.html">油焖大虾</a>
+          </div>
+          <a class="btn" href="lu/index.html">进入鲁菜</a>
+        </div>
+      </article>
+
+      <article class="card cuisine-card">
+        <a href="yue/index.html"><img src="images/michazhashao.jpg" alt="粤菜代表:蜜汁叉烧"></a>
+        <div class="body">
+          <h3>粤菜<small>广东 · Cantonese</small></h3>
+          <p>清而不淡、鲜而不俗,讲究原汁原味。烧腊与早茶点心更是享誉世界。</p>
+          <div class="dish-chips">
+            <a href="yue/michazhashao.html">蜜汁叉烧</a>
+            <a href="yue/baiqueji.html">白切鸡</a>
+            <a href="yue/xiajiao.html">虾饺</a>
+            <a href="yue/ganchaoniuhe.html">干炒牛河</a>
+            <a href="yue/shaoe.html">烧鹅</a>
+          </div>
+          <a class="btn" href="yue/index.html">进入粤菜</a>
+        </div>
+      </article>
+
+      <article class="card cuisine-card">
+        <a href="xiang/index.html"><img src="images/duojiyutou.jpg" alt="湘菜代表:剁椒鱼头"></a>
+        <div class="body">
+          <h3>湘菜<small>湖南 · Hunan</small></h3>
+          <p>香辣浓烈、腊味与剁椒并举,"无辣不欢"却又辣而不燥,重在香鲜。</p>
+          <div class="dish-chips">
+            <a href="xiang/duojiyutou.html">剁椒鱼头</a>
+            <a href="xiang/maoshihongshaorou.html">毛氏红烧肉</a>
+            <a href="xiang/kouweixia.html">口味虾</a>
+            <a href="xiang/lajiaochaorou.html">辣椒炒肉</a>
+            <a href="xiang/changshachoudoufu.html">长沙臭豆腐</a>
+          </div>
+          <a class="btn" href="xiang/index.html">进入湘菜</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- 招牌菜精选:点小图直接进入三级页 -->
+    <h2 class="sec-title">招牌菜 <span>·</span> 精选四道</h2>
+    <div class="feature-grid">
+      <a class="card feature-card" href="chuan/gongbaojiding.html">
+        <img src="images/gongbaojiding.jpg" alt="宫保鸡丁">
+        <h4>宫保鸡丁 · 川菜</h4>
+        <p class="where">荔枝口的微辣糊辣,鸡肉滑嫩、花生酥脆</p>
+      </a>
+      <a class="card feature-card" href="lu/tangculiyu.html">
+        <img src="images/tangculiyu.jpg" alt="糖醋鲤鱼">
+        <h4>糖醋鲤鱼 · 鲁菜</h4>
+        <p class="where">鲤鱼跃龙门造型,酸甜酥脆的齐鲁名菜</p>
+      </a>
+      <a class="card feature-card" href="yue/michazhashao.html">
+        <img src="images/michazhashao.jpg" alt="蜜汁叉烧">
+        <h4>蜜汁叉烧 · 粤菜</h4>
+        <p class="where">烧腊之魂,蜜香盈口、焦边晶亮</p>
+      </a>
+      <a class="card feature-card" href="xiang/duojiyutou.html">
+        <img src="images/duojiyutou.jpg" alt="剁椒鱼头">
+        <h4>剁椒鱼头 · 湘菜</h4>
+        <p class="where">鲜辣交融的"鸿运当头",湘菜头牌</p>
+      </a>
+    </div>
+
+    <!-- 八大菜系一览:已建成的 4 个菜系可点,其余仅文字介绍,避免死链 -->
+    <h2 class="sec-title">八大菜系 <span>·</span> 一览</h2>
+    <div class="eight">
+      <div class="item"><b><a class="ok" href="lu/index.html">鲁菜</a></b><span>咸鲜脆嫩 · 代表:糖醋鲤鱼、葱烧海参</span></div>
+      <div class="item"><b><a class="ok" href="chuan/index.html">川菜</a></b><span>麻辣鲜香 · 代表:宫保鸡丁、毛血旺</span></div>
+      <div class="item"><b><a class="ok" href="yue/index.html">粤菜</a></b><span>清淡鲜美 · 代表:白切鸡、蜜汁叉烧</span></div>
+      <div class="item"><b>苏菜</b><span>刀工精细 · 代表:松鼠鳜鱼、狮子头</span></div>
+      <div class="item"><b>浙菜</b><span>清鲜爽脆 · 代表:西湖醋鱼、龙井虾仁</span></div>
+      <div class="item"><b><a class="ok" href="xiang/index.html">湘菜</a></b><span>香辣浓烈 · 代表:剁椒鱼头、口味虾</span></div>
+      <div class="item"><b>闽菜</b><span>汤鲜味醇 · 代表:佛跳墙、荔枝肉</span></div>
+      <div class="item"><b>徽菜</b><span>火功独到 · 代表:臭鳜鱼、火腿炖甲鱼</span></div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <p>
+      <a href="index.html">首页</a>
+      <a href="chuan/index.html">川菜</a>
+      <a href="lu/index.html">鲁菜</a>
+      <a href="yue/index.html">粤菜</a>
+      <a href="xiang/index.html">湘菜</a>
+      <a href="featured.html">独家菜单</a>
+      <a href="mailto:1120251902@bit.edu.cn">联系我们</a>
+    </p>
+    <p>Copyright © 2026 Untitled Group</p>
+    <small>菜品图片来自 <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a></small>
+  </div>
+</footer>
+
+<script>window.SITE_PREFIX = '';</script>
+<script src="js/pages.js"></script>
+<script src="js/search.js"></script>
+</body>
+</html>

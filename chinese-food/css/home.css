@@ -1,0 +1,56 @@
+/* ============================================================
+   home.css —— 仅首页(index.html)使用
+   作用:首页的菜系大卡片、招牌菜精选、八大菜系一览等专属排版;
+   理由:首页结构特殊,单独成文件可避免污染通用 base.css。
+   ============================================================ */
+
+/* 首页引导语 */
+.home-lead{ text-align:center; margin:26px auto 6px; max-width:820px; }
+.home-lead h2{ font-size:24px; letter-spacing:2px; }
+.home-lead p{ color:var(--muted); margin-top:8px; font-size:15px; }
+
+/* 四大菜系主卡片区(响应式网格)
+   作用:把 4 个菜系排成自适应数量的列(宽屏 4 列→平板 2 列→手机 1 列);
+   理由:grid + auto-fit 无需写多个媒体查询即可自动换列,是最简做法。 */
+.cuisine-grid{ display:grid; gap:18px; margin:20px 0 8px;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
+.cuisine-card{ overflow:hidden; cursor:pointer; }
+.cuisine-card img{ width:100%; height:170px; object-fit:cover;
+                   transition:transform .4s; }
+/* 悬停图片轻微放大:让卡片有"活"的反馈(呼应教材悬停放大效果) */
+.cuisine-card:hover img{ transform:scale(1.06); }
+.cuisine-card .body{ padding:14px 16px 16px; }
+.cuisine-card h3{ font-size:20px; }
+.cuisine-card h3 small{ font-size:12px; color:var(--muted); margin-left:6px; }
+/* 简介文字:不裁剪、完整显示
+   作用:容纳整段菜系简介,避免窄屏换行后文字被截断; */
+.cuisine-card p{ font-size:13px; color:var(--muted); margin:6px 0 10px; }
+.cuisine-card .dish-chips a{ display:inline-block; margin:2px 6px 2px 0; padding:1px 8px;
+  font-size:12px; background:var(--soft); color:var(--accent-deep); border-radius:8px; }
+.cuisine-card .dish-chips a:hover{ background:var(--accent); color:#fff; }
+
+/* 招牌菜精选小卡(首页中部)
+   作用:直接展示 4 道代表菜的图片卡片,点击即到三级页; */
+.feature-grid{ display:grid; gap:16px; margin-top:16px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+.feature-card{ padding:10px; }
+.feature-card img{ width:100%; height:130px; object-fit:cover; border-radius:8px; }
+.feature-card h4{ font-size:16px; margin-top:8px; }
+.feature-card .where{ font-size:12px; color:var(--muted); }
+
+/* 分区标题(首页的每一块) */
+.sec-title{ margin:34px 0 6px; font-size:21px; text-align:center; letter-spacing:2px; }
+.sec-title span{ color:var(--gold); }
+
+/* 八大菜系一览(含未建设菜系,只做文字科普,不产生死链)
+   作用:介绍八大菜系;其中本站已实现的 4 个给出链接,其余 4 个仅文字;
+   理由:既保留"八大菜系"的完整性,又保证所有链接都能正常打开。 */
+.eight{ display:grid; gap:12px; margin-top:14px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+.eight .item{ padding:10px 14px; font-size:14px; display:flex; gap:10px;
+              align-items:baseline; background:var(--card);
+              border:1px solid var(--line); border-radius:10px; }
+.eight .item b{ color:var(--accent); min-width:3em; }
+.eight .item span{ color:var(--muted); font-size:13px; }
+.eight .item a.ok{ color:var(--accent-deep); font-weight:600; }
+.eight .item a.ok:hover{ text-decoration:underline; }

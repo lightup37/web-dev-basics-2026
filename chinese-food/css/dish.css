@@ -1,0 +1,64 @@
+/* ============================================================
+   dish.css —— 三级页面(菜品详情页)专用
+   作用:左侧主内容(去哪儿吃?/怎么做?)+ 右侧工艺介绍栏的两栏布局;
+   理由:用 grid 实现左右分栏比教材的绝对定位更简单,且天然可响应式
+   (窄屏时右栏自动折到主内容下方)。
+   ============================================================ */
+
+/* 两栏主布局:宽屏左(自适应)+右(300px);窄屏自动变单栏 */
+.dish-layout{ display:grid; grid-template-columns:1fr 300px; gap:20px;
+              align-items:start; margin-top:8px; }
+@media (max-width:900px){ .dish-layout{ grid-template-columns:1fr; } }
+
+/* 菜品大图与标题(下面与"去哪儿吃"卡片间留 16px 间距,与卡片之间的间距一致) */
+.dish-hero{ overflow:hidden; margin-bottom:16px; }
+.dish-hero img{ width:100%; height:340px; object-fit:cover; }
+.dish-hero h1{ padding:14px 18px 4px; font-size:26px; }
+.dish-hero h1 small{ font-size:13px; color:var(--muted); }
+.dish-hero p{ padding:0 18px 14px; color:var(--muted); font-size:14px; }
+
+/* 主内容区的小节(去哪吃/怎么做)都用卡片承载 */
+.dish-main .block{ padding:18px 20px; margin-bottom:16px; }
+.dish-main h2{ font-size:20px; margin-bottom:10px; padding-left:10px;
+               border-left:5px solid var(--accent); }
+
+/* 去哪儿吃:店铺条目 */
+.shop{ padding:10px 0; border-bottom:1px dashed var(--line); }
+.shop:last-child{ border-bottom:0; }
+.shop b{ font-size:15px; }
+.shop .tag{ margin-left:8px; font-size:12px; color:var(--accent-deep);
+            background:var(--soft); padding:1px 8px; border-radius:8px; }
+.shop p{ color:var(--muted); font-size:13px; }
+
+/* 怎么做:原料芯片 + 步骤列表 */
+.ingredients{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.ingredients li{ padding:4px 12px; background:var(--soft); border-radius:8px;
+                 font-size:13px; }
+.steps{ counter-reset:step; }
+.steps li{ position:relative; padding:6px 0 6px 40px; counter-increment:step;
+           font-size:15px; }
+/* 步骤序号圆点:用计数器生成 1.2.3…,无需手动写序号 */
+.steps li::before{
+  content:counter(step); position:absolute; left:0; top:8px;
+  width:26px; height:26px; border-radius:50%; text-align:center;
+  line-height:26px; font-size:13px; color:#fff; background:var(--accent);
+}
+.tip{ margin-top:10px; font-size:13px; color:var(--muted);
+      background:#fff8ec; border:1px dashed var(--gold); padding:8px 12px;
+      border-radius:8px; }
+
+/* 右侧栏:烹饪工艺卡 + 相关链接卡 */
+.side{ display:flex; flex-direction:column; gap:16px; }
+.side .card{ padding:18px; }
+.side h3{ font-size:18px; border-bottom:1px solid var(--line);
+          padding-bottom:8px; margin-bottom:10px; }
+.side .skill-name{ font-size:34px; color:var(--accent); text-align:center;
+                   margin-bottom:6px; }
+.side p{ font-size:14px; color:var(--muted); margin-bottom:10px; }
+.side ul li{ padding:6px 0; border-bottom:1px dashed var(--line); font-size:14px; }
+.side ul li:last-child{ border-bottom:0; }
+.side ul a:hover{ color:var(--accent); }
+
+@media (max-width:640px){
+  .dish-hero img{ height:220px; }
+}

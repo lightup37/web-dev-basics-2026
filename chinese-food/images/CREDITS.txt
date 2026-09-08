@@ -1,0 +1,27 @@
+本站图片均来自 Wikimedia Commons(https://commons.wikimedia.org),遵循各文件页标注的自由许可协议。
+本文件列出 images/ 中每个文件对应的 Commons 原始文件标题,便于核对署名与许可。
+
+文件名                     Commons 文件页标题(见 https://commons.wikimedia.org/wiki/ 后接标题)
+banner.jpg                File:Chinese banquet in a banquet hall.JPG
+gongbaojiding.jpg         File:Kung Pao Chicken at Yujiayan Restaurant (20230510123120).jpg
+dongpozhouzi.jpg          File:Su-Dongpo ham hock.jpg
+maoxuewang.jpg            File:Chongqing-style boiled blood curd (Mao Xuewang).jpg
+tangculiyu.jpg            File:Tianjin-style deep fried carp in sweet-sour sauce (20190111184649).jpg
+congshaohaishen.jpg       File:Braised Guandong Sea Cucumber with Scallion in Sauce.jpg
+jiuzhuandachang.jpg       File:Jiuqu dachang 2009 03.jpg
+michazhashao.jpg          File:Char siu pieces.jpg
+baiqueji.jpg              File:BeiQieJi-WhiteCutChicken.jpg
+xiajiao.jpg               File:3 pieces of har gow at Plum Blossom Room 20230125.jpg
+duojiyutou.jpg            File:Hunan cuisine, steamed fish head in chili sauce.jpg
+maoshihongshaorou.jpg     File:Red braised pork belly 红烧肉 hóngshāoròu 23 January 2025 Filipinas4.jpg
+kouweixia.jpg             File:麻辣小龙虾.jpg
+mapodoufu.jpg             File:Mapo doufu by Chen Mapo Restaurant in Chengdu Sichuan（陳麻婆豆腐店の麻婆豆腐）.jpg
+huiguorou.jpg             File:Twice-cooked Pork 回锅肉 (1648213963).jpg
+baochaoyaohua.jpg         File:Wok-Fried Pork Kidney (at Fengzeyuan).jpg
+youmendaxia.jpg           File:Shandong-Style Braised Prawns.jpg
+ganchaoniuhe.jpg          File:Dry-fried Beef Ho Fan.jpg
+shaoe.jpg                 File:Cantonese roast goose served in Guangzhou, China, June 2026.jpg
+lajiaochaorou.jpg         File:Lajiao Chaorou at Xiangzhongyuan Hunan Cuisine, Beijing (20240131...).jpg
+changshachoudoufu.jpg     File:Changsha.zhenzong.choudoufu.jpg
+
+如需重新下载或替换图片,可运行 tools/download_images.py(需本机代理可用时访问 Wikimedia)。
