@@ -37,9 +37,9 @@
 ├── game1.html                # 第一个游戏页面
 ├── game2.html                # 第二个游戏页面
 ├── game3.html                # 第三个游戏页面：骑兵突袭（to-do #10）
-├── game4.html                # 第四个游戏页面：血肉方阵（to-do #10）
+├── game4.html                # 第四个游戏页面：逐猎 Retreat Hunt（追逐战，逃跑结算）
 ├── game5.html                # 第五个游戏页面：铁流强攻（breakthrough+strongest，to-do #10）
-├── game6.html                # 第六个游戏页面：决战前夜（to-do #10）
+├── game6.html                # 第六个游戏页面：滑铁卢·限时攻坚（The Last Assault，红方固守 13 回合）
 ├── end-game.html             # 通关 game6 后的正常结局页（to-do #13 叙事版）
 ├── fail.html                 # 失败结局页：拿破仑提早失利（to-do #13）
 ├── destiny-fail.html         # 隐藏第 7 关失败专属结局：命运无法改变（to-do #14/#13）
@@ -79,7 +79,7 @@
 - 聚团取暖型：所有单位优先聚到核心单位附近，抱团行动。
 - 圆圈防守型：单位初始全部部署在一个圆上，每个时刻每支军队做"填空"，往空出来的位置补位。
 
-由于这是一款策略游戏，每一关卡敌方的 AI 应该是不改变的。也不需要使用 ML/DL 的技术，直接编写策略即可。策略表现为每一回合每个棋子的移动方向。实现挂载点：每次点 Next Turn、本回合 24 帧开始前给红方按策略重设一次 target/方向，一回合内不再变，不要写进逐帧逻辑。（to-do #9 已实现：js/ai.js，main.js 的回合按钮会在 24 帧前调用 applyEnemyAI()。关卡在 CURRENT_GAME.ai 上声明 { strategy: 'stationary'|'breakthrough'|'cluster'|'circle', threat/core/center/radius 等参数 }，详见 ai.js 头部注释；不配置即站桩，1/2 关保持站桩，3 关起启用）
+由于这是一款策略游戏，每一关卡敌方的 AI 应该是不改变的。也不需要使用 ML/DL 的技术，直接编写策略即可。策略表现为每一回合每个棋子的移动方向。实现挂载点：每次点 Next Turn、本回合 24 帧开始前给红方按策略重设一次 target/方向，一回合内不再变，不要写进逐帧逻辑。（to-do #9 已实现：js/ai.js，main.js 的回合按钮会在 24 帧前调用 applyEnemyAI()。关卡在 CURRENT_GAME.ai 上声明 { strategy: 'stationary'|'breakthrough'|'cluster'|'circle'|'flee', threat/core/center/radius/fleeTo 等参数 }，详见 ai.js 头部注释；不配置即站桩，1/2 关保持站桩，3 关起启用。另：已交战（射程内有可命中蓝方）的红方 unit 一律原地固守不移动，aiIsEngaged 判定）
 
 ## 兵种设计（to-do #8）
 
@@ -98,6 +98,8 @@
 - end-game.html：通关 game6 后由 levels.js 注册表的 Next Game 逻辑跳到它，是个静态"恭喜通关"页（正常结局占位，to-do #13/#14 会接结局分支）。
 - README.md（to-do #17 草稿已写，按"文档要求"7 问组织，待验收；示例图部分待补充截图）。
 - 收尾清理（2026-09-05）：favicon.svg 由 2MB 换成小型矢量图标；移除 7 个游戏页里的 <icon></icon> 空标签；删除 main.js/pieces.js 的高频调试 console.log。
+- 第 4 关追逐战（收尾后新增）：红方 AI 用 strategy:'flee'（ai.js，朝 fleeTo 直线撤离）；game4 的 objective { type:'retreat', loseEscape:3, exitX, exitY } 触发 main.js 的 processTurnEscapes()/追逐结算——逃脱≥3 判负，逃脱 0/1/2 支分别 3/2/1 星；escaped 标记随快照持久化。
+- 第 6 关改版为"滑铁卢·限时攻坚"（收尾后新增）：红方 8 人（原 7 人 + 中墙 1 步）在右侧高地原地固守——levels.js 第 6 关 ai 置 null（站桩，不再 breakthrough+weakest）；turns_limit 28→13，星级仍按过关存活蓝方数（≥2=3星/1=2星/0=1星），在"按时出伤"与"少损子力"间取舍。结算与引擎零改动。
 
 运行机制（对后面大部分改动都有影响）：
 

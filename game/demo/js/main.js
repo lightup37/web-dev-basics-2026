@@ -127,6 +127,7 @@ function loadSnapshot(snap) {
 			atkrange: u.atkrange, atk: u.atk, lp: restoredLp,
 			lpMax: restoredMax,
 			disabled: !!u.disabled,
+			escaped: !!u.escaped,
 			cls: u.cls, img: u.img || ''
 		});
 		movePieceTo(piece.id, u.posx, u.posy);
@@ -152,7 +153,8 @@ function captureSnapshot() {
 			targetx: u.targetx, targety: u.targety,
 			speed: u.speed, atkrange: u.atkrange, atk: u.atk, lp: u.lp,
 			lpMax: u.lpMax,   // 开局/读档时一定已按初始 LP 校准，无需兜底
-			disabled: u.disabled
+			disabled: u.disabled,
+			escaped: !!u.escaped
 		}))
 	};
 }
@@ -510,6 +512,25 @@ function clearDisable() {
 }
 
 /* 检查胜负状态 */
+/* to-do 收尾：追逐战（第 4 关）——红方"到达右上角"才算成功撤退（右边界与上边界同时满足，标记 escaped 并移出棋盘） */
+function processTurnEscapes() {
+	const obj = (typeof CURRENT_GAME !== 'undefined' && CURRENT_GAME && CURRENT_GAME.objective &&
+		CURRENT_GAME.objective.type === 'retreat') ? CURRENT_GAME.objective : null;
+	if (!obj) return;
+	const exitX = (obj.exitX !== undefined) ? obj.exitX : 9.5;
+	const exitY = (obj.exitY !== undefined) ? obj.exitY : -0.5;
+	armys.forEach(u => {
+		if (u.color !== 'red' || u.disabled || u.escaped) return;
+		if (u.posx >= exitX && u.posy <= exitY) {
+			console.log(`${u.id} is escaped!`);
+			u.escaped = true;
+			u.disabled = true;
+			const el = document.getElementById(u.id);
+			if (el) el.style.display = 'none';
+		}
+	});
+}
+
 function checkWinState() {
 	-- remain_turns;
 	let redc = 0, bluec = 0;
@@ -521,15 +542,22 @@ function checkWinState() {
 	}) ;
 	// 计算红蓝色棋子数量
 
-	if(redc == 0) {
-		// 没有红棋则获胜，根据剩余蓝棋数量给出星级
+	// 追逐战（第 4 关）特殊结算：按"逃脱数"给星；逃脱≥loseEscape 判负
+	const retreatObj = (typeof CURRENT_GAME !== 'undefined' && CURRENT_GAME && CURRENT_GAME.objective &&
+		CURRENT_GAME.objective.type === 'retreat') ? CURRENT_GAME.objective : null;
+	const retreat = !!retreatObj;
+	const retreatLose = retreatObj ? (retreatObj.loseEscape || 3) : 99;
+	const escaped = armys.filter(u => u.color === 'red' && !!u.escaped).length;
+
+	if(redc == 0 && !(retreat && escaped >= retreatLose)) {
+		// 没有红棋则获胜，根据剩余蓝棋数量给出星级（追逐战按逃脱数）
 		boardContainer.style.display = 'none';
 		buttonContainer.style = 'display: none;';
 		document.getElementById('footer-bar').style = 'display: none';
 		document.getElementById('win').style = 'display: flex; flex-direction: column; align-items: center;' ;
 		document.getElementById('button-next-game').style = 'width: 100px; height: 50px;';
 		// 加载胜利界面
-		const star = (bluec == 0) ? 1 : (bluec == 1) ? 2 : 3;
+		const star = retreat ? [3, 2, 1][Math.min(escaped, 2)] : ((bluec == 0) ? 1 : (bluec == 1) ? 2 : 3);
 		if(star == 1) {
 			const winState = document.getElementById('1star');
 			winState.style.display = '' ;
@@ -555,8 +583,8 @@ function checkWinState() {
 		hideMidGameControls();
 		return ;
 	}
-	if(bluec == 0 || remain_turns == 0) {
-		// 如果没有蓝棋时还有红棋，或者剩余回合数为 0，则本关失败
+	if((retreat && escaped >= retreatLose) || bluec == 0 || remain_turns == 0) {
+		// 追逐战逃脱数超限 / 蓝方全灭 / 回合耗尽：判负
 		boardContainer.style.display = 'none';
 		buttonContainer.style = 'display: none;';
 		document.getElementById('lose').style = 'display: flex; flex-direction: column; align-items: center;' ;
@@ -568,7 +596,7 @@ function checkWinState() {
 			if (CURRENT_LEVEL_ID === 7) {
 				// 隐藏第 7 关的失败有专属结局：命运无法改变
 				failBtn.dataset.target = 'destiny-fail.html';
-				failBtn.textContent = '看结局：命运无法改变';
+				failBtn.textContent = 'View Ending: Destined to fail';
 			} else {
 				failBtn.dataset.target = 'fail.html';
 				failBtn.textContent = 'View Ending: Early Defeat';
@@ -604,6 +632,7 @@ buttonContainer.addEventListener('click', function() {
 	const movingCounts = 24;
 	for(let i = 0; i < movingCounts; ++ i) {
 		nextStep();
+		processTurnEscapes();   // 追猎：每帧查一次逃脱，刚越过右上角顶点立即移除，不再走出棋盘
 	}
 	
 	// 防止误触造成多次触发

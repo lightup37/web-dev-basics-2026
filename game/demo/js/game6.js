@@ -1,12 +1,15 @@
 /* 第六关代码 */
-/* 设计思路：综合大关。敌方专挑"血最少的蓝方"下口（breakthrough + weakest），
-   残血单位要护，不能乱送。 */
+/* 设计思路：攻坚战（滑铁卢·限时攻垒）。红方 8 人占据右侧高地、原地固守
+   （levels.js 第 6 关 ai 置 null => 站桩，不追不逃）。回合上限 13：
+   要在时限内全歼守军，就必须顶着守军火力压上去集火；
+   但冲得越凶、高伤单位暴露越久，己方伤亡越大——
+   星级按过关时存活蓝方数给（≥2=3星 / 1=2星 / 0=1星），即"出伤速度 vs 子力损失"的取舍。 */
 /* 用到的各常数见 constants.js */
 
 var game6 = {
 	n: 10,
 	m: 10,
-	turns_limit: 28,
+	turns_limit: 13,
 	pieces: new Array()
 } ;
 
@@ -24,6 +27,8 @@ game6.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 8.0,
 game6.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 8.0, posy: 8.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game6.pieces.push({color: 'red', class: '骑', img: IMG_RED_cavalry, posx: 7.0, posy: 6.0, speed: MOVING_SPEED_fast, atkrange: ATK_RANGE_standard, atk: ATK_high, lp: LP_standard});
 game6.pieces.push({color: 'red', class: '炮', img: IMG_RED_artillery, posx: 9.0, posy: 2.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_far, atk: ATK_medium_high, lp: LP_standard});
+/* 第 8 个守军：新增中墙步兵，加厚正面防线（加强守垒） */
+game6.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 6.0, posy: 5.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 
 // game6 的所需元素
 
@@ -43,4 +48,4 @@ if (snapToResume) {
 }
 refreshSlotSelect();   // 初始化关卡内 Save/Load 下拉
 
-loseTips.push('The enemy hunts the wounded — keep your damaged units behind your line.')
+loseTips.push('13 turns against a fortress — push hard, but do not trade your whole army for a breach.')

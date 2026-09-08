@@ -23,11 +23,22 @@ function aiDist(a, b) {
 function aiAliveReds() { return armys.filter(u => u.color === 'red' && !u.disabled); }
 function aiAliveBlues() { return armys.filter(u => u.color === 'blue' && !u.disabled); }
 
-/* "威胁最大"的蓝方选择：nearest=距离最近 / strongest=攻击最高 / weakest=生命最低；并列时取更近者 */
+/* "交战状态"：射程内有活着的、可命中的蓝方（红方当前会优先开火） */
+function aiIsEngaged(red) {
+	return armys.some(b => b.color === 'blue' && !b.disabled && aiDist(red, b) < red.atkrange);
+}
+
+/* "威胁最大"的蓝方选择：nearest=距离最近 / strongest=攻击最高 / weakest=生命最低；并列时取更近者。
+ * 特殊规则（to-do #14 后补充）：敌方骑兵优先把炮兵当目标——若场上还有存活炮兵，先在炮兵里选。 */
 function pickThreatBlue(red, blues, metric) {
 	if (!blues.length) return null;
-	let best = blues[0];
-	blues.forEach(b => {
+	let pool = blues;
+	if (red && red.cls === '骑') {
+		const guns = blues.filter(b => b.cls === '炮');
+		if (guns.length) pool = guns;
+	}
+	let best = pool[0];
+	pool.forEach(b => {
 		let better = false;
 		if (metric === 'strongest') better = b.atk > best.atk || (b.atk === best.atk && aiDist(red, b) < aiDist(red, best));
 		else if (metric === 'weakest') better = b.lp < best.lp || (b.lp === best.lp && aiDist(red, b) < aiDist(red, best));
@@ -50,8 +61,28 @@ function applyEnemyAI() {
 	const strategy = ai.strategy || 'stationary';
 	if (strategy === 'stationary') return;
 
-	const reds = aiAliveReds();
+	let reds = aiAliveReds();
 	if (!reds.length) return;
+
+	// 已交战（射程内有蓝方）的红方：原地固守不移动；其余红方照常执行策略
+	const engagedReds = reds.filter(r => aiIsEngaged(r));
+	engagedReds.forEach(r => {
+		r.targetx = r.posx;
+		r.targety = r.posy;
+	});
+	reds = reds.filter(r => !aiIsEngaged(r));
+	if (!reds.length) return;
+
+	if (strategy === 'flee') {
+		// 撤退型（第 4 关追逐战）：全体朝 fleeTo（通常设为右上角顶点）直线撤离，
+		// 到达顶点后由 main.js 的逐帧逃脱检测当场判定撤退，不会越出棋盘
+		if (!ai.fleeTo) return;
+		reds.forEach(r => {
+			r.targetx = ai.fleeTo.x;
+			r.targety = ai.fleeTo.y;
+		});
+		return;
+	}
 
 	if (strategy === 'circle') {
 		const center = ai.center || { x: (n - 1) / 2, y: (m - 1) / 2 };
