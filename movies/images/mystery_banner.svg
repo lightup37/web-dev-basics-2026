@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#232834"/>
+      <stop offset="1" stop-color="#15181f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="rgba(166,120,216,0.16)"/>
+      <stop offset="1" stop-color="rgba(166,120,216,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="400" fill="url(#bg)"/>
+  <rect width="1200" height="400" fill="url(#glow)"/>
+  <line x1="0" y1="28" x2="1200" y2="28" stroke="#f5c518" stroke-width="10" stroke-dasharray="26 22" opacity="0.3"/>
+  <line x1="0" y1="372" x2="1200" y2="372" stroke="#f5c518" stroke-width="10" stroke-dasharray="26 22" opacity="0.3"/>
+  <text x="600" y="192" text-anchor="middle" font-family="KaiTi, 'Microsoft YaHei', SimHei, sans-serif" font-size="84" fill="#f5c518" letter-spacing="12">悬疑电影</text>
+  <text x="600" y="258" text-anchor="middle" font-family="'Microsoft YaHei', sans-serif" font-size="24" fill="#9aa1ad" letter-spacing="6">层层反转的谜局与真相</text>
+</svg>
