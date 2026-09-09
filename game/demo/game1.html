@@ -18,6 +18,9 @@
     <script src="js/game1.js" defer></script>
 </head>
 <body class="game1">
+	<audio id="game-music" loop>
+	<source src="mus/easygame.mp3" type="audio/mpeg">
+</audio>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 0%;">
 	<!--游戏上方标题-->
 	<h2>Game1 : Break through the defense</h2>
@@ -51,7 +54,23 @@
 	</span>
 	<button id="button-exit" class="game-btn" title="返回游戏主界面"> Menu </button>
 </div>
+<script>
+	// 第一关背景音乐
+	var gameMusic = document.getElementById('game-music');
+	gameMusic.volume = 0.35;
 
+	if (sessionStorage.getItem('game1Music') === '1') {
+		sessionStorage.removeItem('game1Music');
+
+		gameMusic.play().catch(function () {
+			// 如果浏览器阻止自动播放，
+			// 第一次点击页面时开始播放
+			document.addEventListener('click', function () {
+				gameMusic.play();
+			}, { once: true });
+		});
+	}
+</script>
 </body>
 
 </html>

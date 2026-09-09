@@ -6,7 +6,10 @@
 	<title>Game - Level#2</title>
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body>
+<body class="game2">
+	、	<audio id="game-music" loop>
+	<source src="mus/easygame.mp3" type="audio/mpeg">
+</audio>
 <div style="display: flex; flex-direction: column; align-items: center; padding: 0%;">
 	<h2>Game2 : Protect the artillery</h2>
 	<footer><p id="footer-bar" style="font-size: x-small; margin: 0px 0px 10px;"></p></footer>
@@ -48,6 +51,23 @@
 <script src="js/ai.js"></script>
 <script src="js/levels.js"></script>
 <script src="js/game2.js"></script>
+<script>
+	// 第二关背景音乐
+	var gameMusic = document.getElementById('game-music');
+	gameMusic.volume = 0.35;
+
+	if (sessionStorage.getItem('game1Music') === '1') {
+		sessionStorage.removeItem('game1Music');
+
+		gameMusic.play().catch(function () {
+			// 如果浏览器阻止自动播放，
+			// 第一次点击页面时开始播放
+			document.addEventListener('click', function () {
+				gameMusic.play();
+			}, { once: true });
+		});
+	}
+</script>
 </body>
 
 </html>

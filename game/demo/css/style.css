@@ -641,13 +641,165 @@ footer { margin: 0; }
 #btn-restart { margin-top: 1.5rem; }
 /* ===== game1 专属背景 ===== */
 .game1 #board {
-    background-image: url("../img/background1.png");
+    background-image: url("../img/backgrass1.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
-
+.game2 #board {
+    background-image: url("../img/backgrass2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game3 #board {
+    background-image: url("../img/backdis1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game4 #board {
+    background-image: url("../img/backdis2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game5 #board {
+    background-image: url("../img/backice1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game6 #board {
+    background-image: url("../img/backice2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game7 #board {
+    background-image: url("../img/backice2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 /* 让背景图透过10×10格子显示 */
-.game1 #board .cell {
+.cell {
     background-color: transparent;
+}
+/* ==================================================
+   第一关介绍图
+   流程：
+   介绍图1 → 介绍图2 → 正常剧情
+   ================================================== */
+
+.level-intro-image-overlay {
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/* 保留下面的棋盘和页面，只加一层淡淡的遮罩 */
+	background: rgba(0, 0, 0, 0.5);
+
+	z-index: 99999;
+}
+
+/* 介绍图 */
+.level-intro-image {
+	display: block;
+
+	max-width: 45vw;
+	max-height: 65vh;
+
+	width: auto;
+	height: auto;
+
+	object-fit: contain;
+
+	user-select: none;
+	-webkit-user-drag: none;
+
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+/* 右上角 × */
+.level-intro-image-box {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	max-width: 50vw;
+	max-height: 50vh;
+}
+
+.level-intro-image {
+	display: block;
+
+	max-width: 50vw;
+	max-height: 50vh;
+
+	width: auto;
+	height: auto;
+
+	object-fit: contain;
+
+	user-select: none;
+	-webkit-user-drag: none;
+
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+/* 固定在图片右上角 */
+.level-intro-close {
+	position: absolute;
+
+	top: -18px;
+	right: -18px;
+
+	width: 42px;
+	height: 42px;
+
+	border: none;
+	border-radius: 50%;
+
+	background: rgba(0, 0, 0, 0.7);
+	color: white;
+
+	font-size: 32px;
+	font-family: Arial, sans-serif;
+	font-weight: 300;
+
+	line-height: 38px;
+	text-align: center;
+
+	cursor: pointer;
+
+	z-index: 10;
+
+	transition:
+		background 0.2s ease,
+		transform 0.2s ease;
+}
+
+.level-intro-close:hover {
+	background: rgba(0, 0, 0, 0.9);
+	transform: scale(1.08);
+}
+
+.level-intro-close:active {
+	transform: scale(0.95);
+}
+
+.level-intro-close:hover {
+	background: rgba(0, 0, 0, 0.85);
+	transform: scale(1.08);
+}
+
+.level-intro-close:active {
+	transform: scale(0.95);
 }

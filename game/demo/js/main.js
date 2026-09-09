@@ -551,7 +551,178 @@ function checkWinState() {
 			if(element.color == 'red') ++ redc; 
 			if(element.color == 'blue') ++ bluec; 
 		} 
-	}) ; 
+	}); 
+
+	/* =========================================================
+	 * Game6：滑铁卢·限时攻坚
+	 *
+	 * 按通关所用步数评星：
+	 * ≤13 步：3 星
+	 * 14~15 步：2 星
+	 * 16~18 步：1 星
+	 *
+	 * 回合超过 18 步仍未消灭全部红军：失败
+	 * ========================================================= */
+
+	if(typeof CURRENT_LEVEL_ID !== 'undefined' && CURRENT_LEVEL_ID === 6) {
+
+		const usedTurns = CURRENT_GAME.turns_limit - remain_turns;
+
+		/* =========================
+		 * 情况1：红军全部被消灭
+		 * ========================= */
+		if(redc === 0) {
+
+			boardContainer.style.display = 'none';
+			buttonContainer.style = 'display: none;';
+			document.getElementById('footer-bar').style = 'display: none';
+
+			document.getElementById('win').style =
+				'display: flex; flex-direction: column; align-items: center;';
+
+			document.getElementById('button-next-game').style =
+				'width: 100px; height: 50px;';
+
+			/* 根据通关步数计算星级 */
+			let star;
+
+			if(usedTurns <= 13) {
+				star = 3;
+			}
+			else if(usedTurns <= 15) {
+				star = 2;
+			}
+			else {
+				star = 1;
+			}
+
+			/* 显示星星 */
+			if(star === 1) {
+				const winState = document.getElementById('1star');
+				if(winState) winState.style.display = '';
+			}
+			else if(star === 2) {
+				const winState = document.getElementById('2star');
+				if(winState) winState.style.display = '';
+			}
+			else {
+				const winState = document.getElementById('3star');
+				if(winState) winState.style.display = '';
+			}
+
+			/* 自动存档 */
+			const quickL1 = false;
+
+			if(
+				typeof autosaveOnWin === 'function' &&
+				typeof CURRENT_LEVEL_ID !== 'undefined'
+			) {
+				autosaveOnWin(
+					CURRENT_LEVEL_ID,
+					star,
+					quickL1
+				);
+			}
+
+			/* 三星成就 */
+			if(
+				typeof tryThreeStarAchievement === 'function' &&
+				typeof CURRENT_LEVEL_ID !== 'undefined'
+			) {
+				tryThreeStarAchievement(
+					CURRENT_LEVEL_ID,
+					star
+				);
+			}
+
+			hideMidGameControls();
+
+			return;
+		}
+
+		/* =========================
+		 * 情况2：我军全部阵亡
+		 * ========================= */
+		if(bluec === 0) {
+
+			boardContainer.style.display = 'none';
+			buttonContainer.style = 'display: none;';
+
+			document.getElementById('footer-bar').style = 'display: none';
+
+			document.getElementById('lose').style =
+				'display: flex; flex-direction: column; align-items: center;';
+
+			document.getElementById('button-replay').style =
+				'width: 100px; height: 50px;';
+
+			const tip = document.getElementById('loseTips');
+
+			if(tip) {
+				tip.style = '';
+				tip.innerHTML = '我军全部阵亡，滑铁卢攻坚失败。';
+			}
+
+			hideMidGameControls();
+
+			return;
+		}
+
+		/* =========================
+		 * 情况3：18步结束仍未消灭红军
+		 * ========================= */
+		if(remain_turns <= 0) {
+
+			boardContainer.style.display = 'none';
+			buttonContainer.style = 'display: none;';
+
+			document.getElementById('footer-bar').style = 'display: none';
+
+			document.getElementById('lose').style =
+				'display: flex; flex-direction: column; align-items: center;';
+
+			document.getElementById('button-replay').style =
+				'width: 100px; height: 50px;';
+
+			const tip = document.getElementById('loseTips');
+
+			if(tip) {
+				tip.style = '';
+				tip.innerHTML =
+					'18回合已经结束，仍有 ' +
+					redc +
+					' 支敌军存活，攻坚失败。';
+			}
+
+			if(
+				typeof recordLevelFail === 'function' &&
+				typeof CURRENT_LEVEL_ID !== 'undefined'
+			) {
+				recordLevelFail(CURRENT_LEVEL_ID);
+			}
+
+			hideMidGameControls();
+
+			return;
+		}
+
+		/* =========================
+		 * Game6 尚未结束
+		 * ========================= */
+		const footer = document.getElementById('footer-bar');
+
+		if(footer) {
+			footer.innerHTML =
+				'You have ' +
+				remain_turns +
+				' turns left. ' +
+				'Used: ' +
+				usedTurns +
+				' turns.';
+		}
+
+		return;
+	}
 
 	// 计算红蓝色棋子数量 
 
@@ -2681,97 +2852,123 @@ function renderOrderPreview(e) {
  
 /* ========== to-do #12/#13：战前情报 + 剧情对话 ========== */ 
 
-function showLevelIntro() { 
+/* ========== 第一关：介绍图1 → 介绍图2 → 正常剧情对话 → 战前情报 ========== */
+function showLevelIntro() {
+	if (typeof CURRENT_LEVEL_ID === 'undefined' || typeof getLevelById !== 'function') return;
 
-	if (
-		typeof CURRENT_LEVEL_ID === 'undefined' ||
-		typeof getLevelById !== 'function'
-	) {
-		return; 
-	}
+	const meta = getLevelById(CURRENT_LEVEL_ID);
+	if (!meta) return;
 
-	const meta =
-		getLevelById(
-			CURRENT_LEVEL_ID
-		); 
+	/* ==================================================
+	 * 只给第一关增加“两张介绍图”
+	 * 其他关卡保持原来的逻辑
+	 * ================================================== */
+	const showIntroImages = function (next) {
+		if (CURRENT_LEVEL_ID !== 1) {
+			next();
+			return;
+		}
 
-	if (!meta) return; 
+		const images = [
+			'./img/level1-intro-1.png',
+			'./img/level1-intro-2.png'
+		];
 
-	const runHint = function () { 
+		let index = 0;
 
-		const overlay =
-			document.createElement('div'); 
-
-		overlay.className =
-			'intro-overlay'; 
-
-		const box =
-			document.createElement('div'); 
-
-		box.className =
-			'intro-box'; 
-
-		const title =
-			document.createElement('h2'); 
-
-		title.textContent =
-			meta.name; 
-
-		const body =
-			document.createElement('p'); 
-
-		body.className =
-			'intro-text'; 
-
-		body.textContent =
-			meta.hint ||
-			'击败所有红方单位即可获胜。'; 
-
-		const act =
-			document.createElement('div'); 
-
-		act.className =
-			'intro-actions'; 
-
-		const go =
-			document.createElement('button'); 
-
-		go.className =
-			'game-btn intro-go'; 
-
-		go.textContent =
-			'开 战'; 
-
-		go.addEventListener(
-			'click',
-			function () {
-				overlay.remove();
+		const showNextImage = function () {
+			/* 两张图都看完了 */
+			if (index >= images.length) {
+				next();
+				return;
 			}
-		); 
+			 
+			const overlay = document.createElement('div');
+overlay.className = 'level-intro-image-overlay';
 
-		act.appendChild(go); 
-		box.appendChild(title); 
-		box.appendChild(body); 
-		box.appendChild(act); 
-		overlay.appendChild(box); 
-		document.body.appendChild(
-			overlay
-		); 
-	}; 
+/* 图片容器 */
+const imageBox = document.createElement('div');
+imageBox.className = 'level-intro-image-box';
 
-	// 该关有剧情先演一段对话，再给战前情报 
-	const story =
-		meta.story || []; 
+const image = document.createElement('img');
+image.className = 'level-intro-image';
+image.src = images[index];
+image.alt = '第一关介绍图 ' + (index + 1);
+image.draggable = false;
 
-	if (
-		typeof playDialogue === 'function' &&
-		story.length
-	) {
-		playDialogue(
-			story,
-			runHint
-		); 
-	} else {
-		runHint(); 
-	} 
+/* 图片右上角关闭按钮 */
+const closeBtn = document.createElement('button');
+closeBtn.className = 'level-intro-close';
+closeBtn.innerHTML = '&times;';
+closeBtn.setAttribute('aria-label', '关闭介绍图');
+
+closeBtn.addEventListener('click', function () {
+	overlay.remove();
+	index++;
+	showNextImage();
+});
+
+imageBox.appendChild(image);
+imageBox.appendChild(closeBtn);
+
+overlay.appendChild(imageBox);
+document.body.appendChild(overlay);
+		};
+
+		showNextImage();
+	};
+
+	const runHint = function () {
+		const overlay = document.createElement('div');
+		overlay.className = 'intro-overlay';
+
+		const box = document.createElement('div');
+		box.className = 'intro-box';
+
+		const title = document.createElement('h2');
+		title.textContent = meta.name;
+
+		const body = document.createElement('p');
+		body.className = 'intro-text';
+		body.textContent = meta.hint || '击败所有红方单位即可获胜。';
+
+		const act = document.createElement('div');
+		act.className = 'intro-actions';
+
+		const go = document.createElement('button');
+		go.className = 'game-btn intro-go';
+		go.textContent = '开 战';
+
+		go.addEventListener('click', function () {
+			overlay.remove();
+		});
+
+		act.appendChild(go);
+		box.appendChild(title);
+		box.appendChild(body);
+		box.appendChild(act);
+		overlay.appendChild(box);
+		document.body.appendChild(overlay);
+	};
+
+	/*
+	 * 原来的正常剧情对话
+	 * 现在改成：
+	 * 介绍图1
+	 *      ↓
+	 * 介绍图2
+	 *      ↓
+	 * 原来的剧情对话
+	 *      ↓
+	 * 战前情报
+	 */
+	const story = meta.story || [];
+
+	showIntroImages(function () {
+		if (typeof playDialogue === 'function' && story.length) {
+			playDialogue(story, runHint);
+		} else {
+			runHint();
+		}
+	});
 }

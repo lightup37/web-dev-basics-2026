@@ -1,45 +1,61 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>拿破仑战争 - 主页</title>
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
-</head>
-<body>
-	<div class="page-box">
-		<h1>拿破仑战争</h1>
-		<p class="page-sub">回合制策略小游戏 · 消灭红方军队，改写历史</p>
+<!DOCTYPE html> 
+<html lang="zh-CN"> 
+<head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<title>拿破仑战争 - 主页</title> 
+	<link rel="stylesheet" href="css/style.css"> 
+	<link rel="icon" type="image/svg+xml" href="./favicon.svg"> 
+</head> 
+<body> 
+	<div class="page-box"> 
+		<h1>拿破仑战争</h1> 
+		<p class="page-sub">回合制策略小游戏 · 消灭红方军队，改写历史</p> 
+ 
+		<div id="login-panel" class="form-box"> 
+			<h2>登录</h2> 
+			<form id="login-form" autocomplete="on"> 
+				<label>用户名 
+					<input type="text" id="login-name" autocomplete="username" placeholder="请输入用户名"> 
+				</label> 
+				<label>密码 
+					<input type="password" id="login-pass" autocomplete="current-password" placeholder="请输入密码"> 
+				</label> 
+				<button type="submit">登 录</button> 
+			</form> 
+			<p id="login-msg" class="form-msg"></p> 
+			<p class="form-link">还没有账号？<a href="register.html">去注册</a></p> 
+			<p class="form-link"><a href="group.html">查看小组介绍</a></p> 
+		</div> 
+	</div> 
 
-		<div id="login-panel" class="form-box">
-			<h2>登录</h2>
-			<form id="login-form" autocomplete="on">
-				<label>用户名
-					<input type="text" id="login-name" autocomplete="username" placeholder="请输入用户名">
-				</label>
-				<label>密码
-					<input type="password" id="login-pass" autocomplete="current-password" placeholder="请输入密码">
-				</label>
-				<button type="submit">登 录</button>
-			</form>
-			<p id="login-msg" class="form-msg"></p>
-			<p class="form-link">还没有账号？<a href="register.html">去注册</a></p>
-			<p class="form-link"><a href="group.html">查看小组介绍</a></p>
-		</div>
-	</div>
+	<!-- 登录按钮点击后准备播放主界面音乐 -->
+	<audio id="menu-music" loop>
+		<source src="mus/主界面背景音.mp3" type="audio/mpeg">
+	</audio>
+ 
+	<script src="js/account.js"></script> 
+	<script> 
+		document.getElementById('login-form').addEventListener('submit', function (e) { 
+			e.preventDefault(); 
 
-	<script src="js/account.js"></script>
-	<script>
-		document.getElementById('login-form').addEventListener('submit', function (e) {
-			e.preventDefault();
-			var msg = document.getElementById('login-msg');
-			var name = document.getElementById('login-name').value;
-			var pass = document.getElementById('login-pass').value;
-			var res = login(name, pass);
-			if (!res.ok) { msg.textContent = res.msg; return; }
-			window.location.href = 'menu.html';
-		});
-	</script>
-</body>
+			var msg = document.getElementById('login-msg'); 
+			var name = document.getElementById('login-name').value; 
+			var pass = document.getElementById('login-pass').value; 
+
+			var res = login(name, pass); 
+
+			if (!res.ok) { 
+				msg.textContent = res.msg; 
+				return; 
+			} 
+
+			// 记录：用户是通过登录按钮进入主界面的
+			sessionStorage.setItem('startMenuMusic', '1');
+
+			// 登录成功，进入游戏主界面
+			window.location.href = 'menu.html'; 
+		}); 
+	</script> 
+</body> 
 </html>

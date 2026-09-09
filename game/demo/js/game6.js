@@ -1,15 +1,19 @@
 /* 第六关代码 */
-/* 设计思路：攻坚战（滑铁卢·限时攻垒）。红方 8 人占据右侧高地、原地固守
-   （levels.js 第 6 关 ai 置 null => 站桩，不追不逃）。回合上限 13：
+/* 设计思路：攻坚战（滑铁卢·限时攻垒）。
+   红方 8 人占据右侧高地、原地固守。
+   回合上限 18：
    要在时限内全歼守军，就必须顶着守军火力压上去集火；
    但冲得越凶、高伤单位暴露越久，己方伤亡越大——
-   星级按过关时存活蓝方数给（≥2=3星 / 1=2星 / 0=1星），即"出伤速度 vs 子力损失"的取舍。 */
-/* 用到的各常数见 constants.js */
+   星级按通关所用步数计算：
+   ≤13步 = 3星
+   14~15步 = 2星
+   16~18步 = 1星。
+*/
 
 var game6 = {
 	n: 10,
 	m: 10,
-	turns_limit: 13,
+	turns_limit: 17,
 	pieces: new Array()
 } ;
 
@@ -48,4 +52,4 @@ if (snapToResume) {
 }
 refreshSlotSelect();   // 初始化关卡内 Save/Load 下拉
 
-loseTips.push('13 turns against a fortress — push hard, but do not trade your whole army for a breach.')
+loseTips.push('17 turns against a fortress — push hard, but do not trade your whole army for a breach.')
