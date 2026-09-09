@@ -2852,97 +2852,123 @@ function renderOrderPreview(e) {
  
 /* ========== to-do #12/#13：战前情报 + 剧情对话 ========== */ 
 
-function showLevelIntro() { 
+/* ========== 第一关：介绍图1 → 介绍图2 → 正常剧情对话 → 战前情报 ========== */
+function showLevelIntro() {
+	if (typeof CURRENT_LEVEL_ID === 'undefined' || typeof getLevelById !== 'function') return;
 
-	if (
-		typeof CURRENT_LEVEL_ID === 'undefined' ||
-		typeof getLevelById !== 'function'
-	) {
-		return; 
-	}
+	const meta = getLevelById(CURRENT_LEVEL_ID);
+	if (!meta) return;
 
-	const meta =
-		getLevelById(
-			CURRENT_LEVEL_ID
-		); 
+	/* ==================================================
+	 * 只给第一关增加“两张介绍图”
+	 * 其他关卡保持原来的逻辑
+	 * ================================================== */
+	const showIntroImages = function (next) {
+		if (CURRENT_LEVEL_ID !== 1) {
+			next();
+			return;
+		}
 
-	if (!meta) return; 
+		const images = [
+			'./img/level1-intro-1.png',
+			'./img/level1-intro-2.png'
+		];
 
-	const runHint = function () { 
+		let index = 0;
 
-		const overlay =
-			document.createElement('div'); 
-
-		overlay.className =
-			'intro-overlay'; 
-
-		const box =
-			document.createElement('div'); 
-
-		box.className =
-			'intro-box'; 
-
-		const title =
-			document.createElement('h2'); 
-
-		title.textContent =
-			meta.name; 
-
-		const body =
-			document.createElement('p'); 
-
-		body.className =
-			'intro-text'; 
-
-		body.textContent =
-			meta.hint ||
-			'击败所有红方单位即可获胜。'; 
-
-		const act =
-			document.createElement('div'); 
-
-		act.className =
-			'intro-actions'; 
-
-		const go =
-			document.createElement('button'); 
-
-		go.className =
-			'game-btn intro-go'; 
-
-		go.textContent =
-			'开 战'; 
-
-		go.addEventListener(
-			'click',
-			function () {
-				overlay.remove();
+		const showNextImage = function () {
+			/* 两张图都看完了 */
+			if (index >= images.length) {
+				next();
+				return;
 			}
-		); 
+			 
+			const overlay = document.createElement('div');
+overlay.className = 'level-intro-image-overlay';
 
-		act.appendChild(go); 
-		box.appendChild(title); 
-		box.appendChild(body); 
-		box.appendChild(act); 
-		overlay.appendChild(box); 
-		document.body.appendChild(
-			overlay
-		); 
-	}; 
+/* 图片容器 */
+const imageBox = document.createElement('div');
+imageBox.className = 'level-intro-image-box';
 
-	// 该关有剧情先演一段对话，再给战前情报 
-	const story =
-		meta.story || []; 
+const image = document.createElement('img');
+image.className = 'level-intro-image';
+image.src = images[index];
+image.alt = '第一关介绍图 ' + (index + 1);
+image.draggable = false;
 
-	if (
-		typeof playDialogue === 'function' &&
-		story.length
-	) {
-		playDialogue(
-			story,
-			runHint
-		); 
-	} else {
-		runHint(); 
-	} 
+/* 图片右上角关闭按钮 */
+const closeBtn = document.createElement('button');
+closeBtn.className = 'level-intro-close';
+closeBtn.innerHTML = '&times;';
+closeBtn.setAttribute('aria-label', '关闭介绍图');
+
+closeBtn.addEventListener('click', function () {
+	overlay.remove();
+	index++;
+	showNextImage();
+});
+
+imageBox.appendChild(image);
+imageBox.appendChild(closeBtn);
+
+overlay.appendChild(imageBox);
+document.body.appendChild(overlay);
+		};
+
+		showNextImage();
+	};
+
+	const runHint = function () {
+		const overlay = document.createElement('div');
+		overlay.className = 'intro-overlay';
+
+		const box = document.createElement('div');
+		box.className = 'intro-box';
+
+		const title = document.createElement('h2');
+		title.textContent = meta.name;
+
+		const body = document.createElement('p');
+		body.className = 'intro-text';
+		body.textContent = meta.hint || '击败所有红方单位即可获胜。';
+
+		const act = document.createElement('div');
+		act.className = 'intro-actions';
+
+		const go = document.createElement('button');
+		go.className = 'game-btn intro-go';
+		go.textContent = '开 战';
+
+		go.addEventListener('click', function () {
+			overlay.remove();
+		});
+
+		act.appendChild(go);
+		box.appendChild(title);
+		box.appendChild(body);
+		box.appendChild(act);
+		overlay.appendChild(box);
+		document.body.appendChild(overlay);
+	};
+
+	/*
+	 * 原来的正常剧情对话
+	 * 现在改成：
+	 * 介绍图1
+	 *      ↓
+	 * 介绍图2
+	 *      ↓
+	 * 原来的剧情对话
+	 *      ↓
+	 * 战前情报
+	 */
+	const story = meta.story || [];
+
+	showIntroImages(function () {
+		if (typeof playDialogue === 'function' && story.length) {
+			playDialogue(story, runHint);
+		} else {
+			runHint();
+		}
+	});
 }
