@@ -1,339 +1,1036 @@
 /*
- * Game8：最后防线
+ * ============================================================
+ * Game8：The Last Defensive Line
+ * 最后防线
  *
- * 玩家：
- * 3 步兵
- * 2 投掷兵
- * 1 炮兵
+ * 我方：
+ *     5 门炮兵
  *
- * 战前拖拽部署到棋盘任意位置
- * 放置后不能移动
- * 坚持 12 回合
+ * 敌方：
+ *     3 步兵
+ *     1 投掷兵
+ *     3 炮兵
  *
- * 5~6 人存活：3 星
- * 3~4 人存活：2 星
- * 1~2 人存活：1 星
- * 0 人：失败
+ * 核心：
+ *     炮兵部署位置 + 敌军炮兵火力压制 + 红线防守
+ *
+ * ============================================================
  */
 
 
-/* =========================================================
-   1. Game8 配置
-   ========================================================= */
+/* ============================================================
+ * Game8 关卡数据
+ * ============================================================ */
 
 var game8 = {
+
     n: 10,
+
     m: 10,
+
     turns_limit: 12,
 
     objective: {
-        type: 'defense',
-        totalUnits: 6,
-        threeStarMin: 5,
-        twoStarMin: 3
+
+        type: 'line_defense',
+
+        breakthrough_limit: 5
     },
 
-    pieces: []
+    pieces: new Array()
 };
 
 
-/* =========================================================
-   2. 敌军
-   ========================================================= */
+/* ============================================================
+ * 敌军：
+ *
+ * 3 步兵
+ * 1 投掷兵
+ * 3 炮兵
+ *
+ * 共 7 个敌军
+ * ============================================================ */
 
-/* 步兵 */
+
+/* ==========================
+ * 步兵 1
+ * ========================== */
+
 game8.pieces.push({
+
     color: 'red',
+
     class: '步',
+
     img: IMG_RED_infantry,
-    posx: 9.0,
+
+    posx: 9.2,
+
     posy: 1.0,
+
     speed: MOVING_SPEED_standard,
+
     atkrange: ATK_RANGE_standard,
+
     atk: ATK_standard,
+
     lp: LP_standard
 });
 
+
+/* ==========================
+ * 步兵 2
+ * ========================== */
+
 game8.pieces.push({
+
     color: 'red',
+
     class: '步',
+
     img: IMG_RED_infantry,
+
     posx: 9.0,
-    posy: 3.8,
+
+    posy: 5.0,
+
     speed: MOVING_SPEED_standard,
+
     atkrange: ATK_RANGE_standard,
+
     atk: ATK_standard,
+
     lp: LP_standard
 });
 
+
+/* ==========================
+ * 步兵 3
+ * ========================== */
+
 game8.pieces.push({
+
     color: 'red',
+
     class: '步',
-    img: IMG_RED_infantry,
-    posx: 9.0,
-    posy: 6.2,
-    speed: MOVING_SPEED_standard,
-    atkrange: ATK_RANGE_standard,
-    atk: ATK_standard,
-    lp: LP_standard
-});
 
-game8.pieces.push({
-    color: 'red',
-    class: '步',
     img: IMG_RED_infantry,
-    posx: 9.0,
-    posy: 9.0,
+
+    posx: 9.2,
+
+    posy: 8.4,
+
     speed: MOVING_SPEED_standard,
+
     atkrange: ATK_RANGE_standard,
+
     atk: ATK_standard,
+
     lp: LP_standard
 });
 
 
-/* 投掷兵 */
+/* ==========================
+ * 投掷兵
+ * ========================== */
+
 game8.pieces.push({
+
     color: 'red',
+
     class: '掷',
+
     img: IMG_RED_grenadier,
+
     posx: 8.2,
-    posy: 4.8,
+
+    posy: 5.0,
+
     speed: MOVING_SPEED_slow,
+
     atkrange: ATK_RANGE_standard,
+
     atk: ATK_medium_high,
+
     lp: LP_high
 });
 
 
-/* 炮兵 */
+/* ============================================================
+ * 敌军三门炮
+ *
+ * 适当增加射程，
+ * 保证可以威胁靠近红线的我方炮兵。
+ * ============================================================ */
+
+var GAME8_ENEMY_ARTILLERY_RANGE =
+    Math.max(
+        Number(ATK_RANGE_far),
+        5.0
+    );
+
+
+/* 上炮 */
+
 game8.pieces.push({
+
     color: 'red',
+
     class: '炮',
+
     img: IMG_RED_artillery,
-    posx: 9.0,
-    posy: 7.4,
+
+    posx: 7.0,
+
+    posy: 2.0,
+
     speed: MOVING_SPEED_slow,
-    atkrange: ATK_RANGE_far,
+
+    atkrange:
+        GAME8_ENEMY_ARTILLERY_RANGE,
+
     atk: ATK_medium_high,
+
     lp: LP_standard
 });
 
 
-/* =========================================================
-   3. 当前关卡
-   ========================================================= */
+/* 中炮 */
+
+game8.pieces.push({
+
+    color: 'red',
+
+    class: '炮',
+
+    img: IMG_RED_artillery,
+
+    posx: 7.4,
+
+    posy: 5.0,
+
+    speed: MOVING_SPEED_slow,
+
+    atkrange:
+        GAME8_ENEMY_ARTILLERY_RANGE,
+
+    atk: ATK_medium_high,
+
+    lp: LP_standard
+});
+
+
+/* 下炮 */
+
+game8.pieces.push({
+
+    color: 'red',
+
+    class: '炮',
+
+    img: IMG_RED_artillery,
+
+    posx: 7.0,
+
+    posy: 8.0,
+
+    speed: MOVING_SPEED_slow,
+
+    atkrange:
+        GAME8_ENEMY_ARTILLERY_RANGE,
+
+    atk: ATK_medium_high,
+
+    lp: LP_standard
+});
+
+
+/* ============================================================
+ * 全局
+ * ============================================================ */
 
 var CURRENT_LEVEL_ID = 8;
+
 var CURRENT_GAME = game8;
 
 
-/* =========================================================
-   4. Game8 状态
-   ========================================================= */
+/* 红线 */
+
+var GAME8_LINE_X = 4.5;
+
+
+/* 游戏是否开始 */
 
 var game8Started = false;
-var placedCount = 0;
-var usedSlots = {};
 
 
-/* =========================================================
-   5. 蓝方兵种配置
-   ========================================================= */
+/* 突破数 */
 
-var deployDefs = {
-
-    '步': {
-        img: IMG_BLUE_infantry,
-        speed: MOVING_SPEED_standard,
-        range: ATK_RANGE_standard,
-        atk: ATK_standard,
-        lp: LP_standard
-    },
-
-    '掷': {
-        img: IMG_BLUE_grenadier,
-        speed: MOVING_SPEED_slow,
-        range: ATK_RANGE_standard,
-        atk: ATK_medium_high,
-        lp: LP_high
-    },
-
-    '炮': {
-        img: IMG_BLUE_artillery,
-        speed: MOVING_SPEED_slow,
-        range: ATK_RANGE_far,
-        atk: ATK_medium_high,
-        lp: LP_standard
-    }
-
-};
+var game8BreakthroughCount = 0;
 
 
-/* =========================================================
-   6. 更新左侧部署面板
-   ========================================================= */
+/* 游戏是否已经结束 */
 
-function game8UpdatePanel() {
-
-    var status =
-        document.getElementById('deployment-status');
-
-    var hud =
-        document.getElementById('defense-hud');
-
-    var button =
-        document.getElementById('button');
-
-    var cards =
-        document.querySelectorAll('.deploy-card');
+var game8Finished = false;
 
 
-    /* 已部署数量 */
+/* ============================================================
+ * 我方 5 门炮
+ * ============================================================ */
 
-    if (status) {
-        status.textContent =
-            '已部署 ' + placedCount + ' / 6';
-    }
-
-
-    /* 更新卡片状态 */
-
-    for (var i = 0; i < cards.length; i++) {
-
-        var card = cards[i];
-
-        var key =
-            card.dataset.unit +
-            ':' +
-            card.dataset.index;
-
-        if (usedSlots[key]) {
-
-            card.classList.add('used');
-
-        } else {
-
-            card.classList.remove('used');
-        }
-    }
+var GAME8_ARTILLERY_COUNT = 5;
 
 
-    /* 没部署完 */
+var game8PlacedArtillery = [
 
-    if (placedCount < 6) {
+    false,
 
-        if (hud) {
-            hud.textContent =
-                '部署阶段 · 将 6 支部队拖入棋盘';
-        }
+    false,
 
-        if (button) {
+    false,
 
-            button.disabled = true;
+    false,
 
-            button.textContent =
-                '请先完成部署';
-        }
+    false
+];
+
+
+/* 当前正在部署的炮 */
+
+var game8DraggingIndex = -1;
+
+
+/* 拖拽预览 */
+
+var game8DragPiece = null;
+
+var game8DragRange = null;
+
+
+/* ============================================================
+ * 初始化
+ * ============================================================ */
+
+function game8Init() {
+
+    game8Started = false;
+
+    game8Finished = false;
+
+    game8BreakthroughCount = 0;
+
+    game8DraggingIndex = -1;
+
+    game8DragPiece = null;
+
+    game8DragRange = null;
+
+
+    game8PlacedArtillery = [
+
+        false,
+
+        false,
+
+        false,
+
+        false,
+
+        false
+    ];
+}
+
+
+/* ============================================================
+ * 获取棋盘 cell
+ * ============================================================ */
+
+function game8GetCell(row, col) {
+
+    return document.querySelector(
+
+        '#board .cell[data-row="' +
+        row +
+        '"][data-col="' +
+        col +
+        '"]'
+    );
+}
+
+
+/* ============================================================
+ * 鼠标 -> 棋盘连续坐标
+ * ============================================================ */
+
+function game8MouseToBoardPosition(e) {
+
+    var rect =
+        boardContainer.getBoundingClientRect();
+
+
+    var x = (
+
+        e.clientX -
+        rect.left -
+        offset
+
+    ) / distance;
+
+
+    var y = (
+
+        e.clientY -
+        rect.top -
+        offset
+
+    ) / distance;
+
+
+    return {
+
+        x: x,
+
+        y: y
+    };
+}
+
+
+/* ============================================================
+ * 创建拖拽中的真实炮兵
+ * ============================================================ */
+
+function game8CreateDragPiece() {
+
+    if (game8DragPiece) {
 
         return;
     }
 
 
-    /* 全部部署完 */
+    game8DragPiece =
+        document.createElement(
+            'div'
+        );
 
-    if (hud) {
-        hud.textContent =
-            '部署完成 · 点击“开始防守”';
+
+    game8DragPiece.className =
+        'chess chess--blue game8-drag-piece';
+
+
+    game8DragPiece.innerHTML =
+        getHtmlForPiece({
+
+            img:
+                IMG_BLUE_artillery,
+
+            class:
+                '炮'
+        });
+
+
+    game8DragPiece.style.pointerEvents =
+        'none';
+
+
+    game8DragPiece.style.opacity =
+        '0.82';
+
+
+    game8DragPiece.style.zIndex =
+        '200';
+
+
+    boardContainer.appendChild(
+        game8DragPiece
+    );
+}
+
+
+/* ============================================================
+ * 创建拖拽攻击范围
+ * ============================================================ */
+
+function game8CreateDragRange() {
+
+    if (game8DragRange) {
+
+        return;
     }
 
-    if (button) {
 
-        button.disabled = false;
+    game8DragRange =
+        document.createElement(
+            'div'
+        );
 
-        button.textContent =
-            '开始防守';
+
+    game8DragRange.id =
+        'game8-drag-range';
+
+
+    game8DragRange.className =
+        'range-circle range-circle--ally';
+
+
+    game8DragRange.style.position =
+        'absolute';
+
+
+    game8DragRange.style.pointerEvents =
+        'none';
+
+
+    game8DragRange.style.zIndex =
+        '3';
+
+
+    game8DragRange.style.display =
+        'none';
+
+
+    boardContainer.appendChild(
+        game8DragRange
+    );
+}
+
+
+/* ============================================================
+ * 炮兵位置是否合法
+ * ============================================================ */
+
+function game8IsValidPosition(
+    x,
+    y
+) {
+
+    if (x < 0.1) {
+
+        return false;
+    }
+
+
+    if (y < 0.1) {
+
+        return false;
+    }
+
+
+    if (y > 8.9) {
+
+        return false;
+    }
+
+
+    if (
+        x >
+        GAME8_LINE_X - 0.35
+    ) {
+
+        return false;
+    }
+
+
+    return true;
+}
+
+
+/* ============================================================
+ * 判断炮兵是否和其他单位重叠
+ * ============================================================ */
+
+function game8IsOccupied(
+    x,
+    y
+) {
+
+    for (
+        var i = 0;
+        i < armys.length;
+        i++
+    ) {
+
+        var p =
+            armys[i];
+
+
+        if (!p) {
+
+            continue;
+        }
+
+
+        if (
+            p.color !== 'blue'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            p.cls !== '炮'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            p.disabled
+        ) {
+
+            continue;
+        }
+
+
+        var dx =
+            p.posx - x;
+
+
+        var dy =
+            p.posy - y;
+
+
+        var d =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+
+        if (
+            d < 0.65
+        ) {
+
+            return true;
+        }
+    }
+
+
+    return false;
+}
+
+
+/* ============================================================
+ * 实时更新炮兵预览
+ * ============================================================ */
+
+function game8UpdateDragPiece(
+    x,
+    y,
+    valid
+) {
+
+    if (!game8DragPiece) {
+
+        return;
+    }
+
+
+    var left =
+        offset +
+        distance * x;
+
+
+    var top =
+        offset +
+        distance * y;
+
+
+    game8DragPiece.style.left =
+        left + 'px';
+
+
+    game8DragPiece.style.top =
+        top + 'px';
+
+
+    if (valid) {
+
+        game8DragPiece.style.opacity =
+            '0.82';
+
+        game8DragPiece.style.filter =
+            'none';
+
+    } else {
+
+        game8DragPiece.style.opacity =
+            '0.35';
+
+        game8DragPiece.style.filter =
+            'grayscale(100%)';
     }
 }
 
 
-/* =========================================================
-   7. 创建蓝方棋子
-   ========================================================= */
+/* ============================================================
+ * 实时更新攻击范围
+ * ============================================================ */
 
-function game8CreateBlue(unitKey, x, y) {
+function game8UpdateDragRange(
+    x,
+    y,
+    valid
+) {
 
-    var def =
-        deployDefs[unitKey];
+    if (!game8DragRange) {
 
-    if (!def) {
+        return;
+    }
+
+
+    var r =
+        Number(ATK_RANGE_far) *
+        distance;
+
+
+    var cx =
+        offset +
+        distance * x;
+
+
+    var cy =
+        offset +
+        distance * y;
+
+
+    game8DragRange.style.left =
+        (cx - r) + 'px';
+
+
+    game8DragRange.style.top =
+        (cy - r) + 'px';
+
+
+    game8DragRange.style.width =
+        (2 * r) + 'px';
+
+
+    game8DragRange.style.height =
+        (2 * r) + 'px';
+
+
+    game8DragRange.style.display =
+        'block';
+
+
+    game8DragRange.style.opacity =
+        valid
+            ? '1'
+            : '0.35';
+}
+
+
+/* ============================================================
+ * 删除拖拽预览
+ * ============================================================ */
+
+function game8RemoveDragPreview() {
+
+    if (game8DragPiece) {
+
+        game8DragPiece.remove();
+
+        game8DragPiece =
+            null;
+    }
+
+
+    if (game8DragRange) {
+
+        game8DragRange.remove();
+
+        game8DragRange =
+            null;
+    }
+
+
+    game8DraggingIndex =
+        -1;
+}
+
+
+/* ============================================================
+ * 更新部署栏
+ * ============================================================ */
+
+function game8UpdateDeploymentPanel() {
+
+    var cards =
+        document.querySelectorAll(
+            '.deploy-card'
+        );
+
+
+    var count =
+        0;
+
+
+    for (
+        var i = 0;
+        i < cards.length;
+        i++
+    ) {
+
+        var card =
+            cards[i];
+
+
+        var index =
+            Number(
+                card.dataset.index
+            );
+
+
+        if (
+            game8PlacedArtillery[index]
+        ) {
+
+            card.classList.add(
+                'game8-used'
+            );
+
+
+            card.setAttribute(
+                'draggable',
+                'false'
+            );
+
+
+            count++;
+
+        } else {
+
+            card.classList.remove(
+                'game8-used'
+            );
+
+
+            card.setAttribute(
+                'draggable',
+                game8Started
+                    ? 'false'
+                    : 'true'
+            );
+        }
+    }
+
+
+    var status =
+        document.getElementById(
+            'deployment-status'
+        );
+
+
+    if (status) {
+
+        status.innerText =
+            '已部署炮兵：' +
+            count +
+            ' / ' +
+            GAME8_ARTILLERY_COUNT;
+    }
+
+
+    var button =
+        document.getElementById(
+            'button'
+        );
+
+
+    if (!button) {
+
+        return;
+    }
+
+
+    if (game8Started) {
+
+        button.disabled =
+            false;
+
+        button.innerText =
+            'Next Turn';
+
+        return;
+    }
+
+
+    if (
+        count ===
+        GAME8_ARTILLERY_COUNT
+    ) {
+
+        button.disabled =
+            false;
+
+        button.innerText =
+            '开始防守';
+
+
+        var tip =
+            document.getElementById(
+                'deployment-tip'
+            );
+
+
+        if (tip) {
+
+            tip.innerHTML =
+                '5 门炮兵部署完毕。<br>' +
+                '敌军重炮已经进入阵地。';
+        }
+
+    } else {
+
+        button.disabled =
+            true;
+
+        button.innerText =
+            '请部署全部炮兵（' +
+            count +
+            '/' +
+            GAME8_ARTILLERY_COUNT +
+            '）';
+    }
+}
+
+
+/* ============================================================
+ * 创建正式炮兵
+ * ============================================================ */
+
+function game8DeployArtillery(
+    index,
+    x,
+    y
+) {
+
+    if (game8Started) {
+
+        return false;
+    }
+
+
+    if (
+        game8PlacedArtillery[index]
+    ) {
+
+        return false;
+    }
+
+
+    if (
+        !game8IsValidPosition(
+            x,
+            y
+        )
+    ) {
+
+        return false;
+    }
+
+
+    if (
+        game8IsOccupied(
+            x,
+            y
+        )
+    ) {
+
         return false;
     }
 
 
     var piece =
-        document.createElement('div');
+        document.createElement(
+            'div'
+        );
+
 
     piece.className =
-        'chess chess--blue';
+        'chess chess--blue game8-artillery';
+
 
     piece.id =
-        'piece-' + piece_cnt;
+        'piece-' +
+        piece_cnt;
 
-
-    /*
-     * 直接使用 main.js 原来的棋子图片生成函数
-     */
 
     piece.innerHTML =
         getHtmlForPiece({
-            img: def.img,
-            class: unitKey
+
+            img:
+                IMG_BLUE_artillery,
+
+            class:
+                '炮'
         });
 
 
-    boardContainer.appendChild(piece);
+    boardContainer.appendChild(
+        piece
+    );
 
-
-    /*
-     * 加入 armys
-     */
 
     armys.push({
 
-        id: piece.id,
+        id:
+            piece.id,
 
-        color: 'blue',
+        color:
+            'blue',
 
-        posx: x,
-        posy: y,
+        posx:
+            x,
 
-        speed: def.speed,
+        posy:
+            y,
 
-        targetx: x,
-        targety: y,
+        speed:
+            MOVING_SPEED_slow,
 
-        atkrange: def.range,
+        targetx:
+            x,
 
-        atk: def.atk,
+        targety:
+            y,
 
-        lp: def.lp,
-        lpMax: def.lp,
+        atkrange:
+            ATK_RANGE_far,
 
-        disabled: false,
+        atk:
+            ATK_medium_high,
 
-        cls: unitKey,
+        lp:
+            LP_standard,
 
-        img: def.img,
+        lpMax:
+            LP_standard,
 
-        escaped: false,
+        disabled:
+            false,
 
-        fixedDeployment: true
+        escaped:
+            false,
+
+        cls:
+            '炮',
+
+        img:
+            IMG_BLUE_artillery,
+
+        game8Index:
+            index,
+
+        /*
+         * Game8 固定炮兵标记
+         */
+        game8FixedArtillery:
+            true
     });
 
-
-    /*
-     * 使用 main.js 的原定位方式
-     */
 
     movePieceTo(
         piece.id,
@@ -344,797 +1041,1746 @@ function game8CreateBlue(unitKey, x, y) {
 
     piece_cnt++;
 
+
+    game8PlacedArtillery[index] =
+        true;
+
+
+    game8UpdateDeploymentPanel();
+
+
     return true;
 }
 
 
-/* =========================================================
-   8. 允许拖拽进入棋盘
-   ========================================================= */
+/* ============================================================
+ * 绑定炮兵部署
+ * ============================================================ */
 
-boardContainer.addEventListener(
-    'dragover',
-    function (e) {
+function game8BindDeployment() {
 
-        if (game8Started) {
-            return;
-        }
-
-        e.preventDefault();
-
-        if (e.dataTransfer) {
-            e.dataTransfer.dropEffect = 'move';
-        }
-    }
-);
+    var cards =
+        document.querySelectorAll(
+            '.deploy-card'
+        );
 
 
-/* =========================================================
-   9. 松开鼠标：部署单位
-   ========================================================= */
+    if (!boardContainer) {
 
-function game8Drop(e) {
-
-    if (game8Started) {
         return;
     }
 
-    e.preventDefault();
-
-
-    /*
-     * 读取拖拽卡片传来的数据
-     */
-
-    var key =
-        e.dataTransfer.getData(
-            'text/plain'
-        );
-
-    if (!key) {
-        return;
-    }
-
-
-    /*
-     * 这张卡已经使用过
-     */
-
-    if (usedSlots[key]) {
-        return;
-    }
-
-
-    var parts =
-        key.split(':');
-
-    var unitKey =
-        parts[0];
-
-
-    /*
-     * 获取棋盘位置
-     */
-
-    var rect =
-        boardContainer.getBoundingClientRect();
-
-
-    var px =
-        e.clientX -
-        rect.left;
-
-    var py =
-        e.clientY -
-        rect.top;
-
-
-    /*
-     * 限制鼠标位置在棋盘内部
-     */
-
-    px =
-        Math.max(
-            0,
-            Math.min(
-                rect.width,
-                px
-            )
-        );
-
-    py =
-        Math.max(
-            0,
-            Math.min(
-                rect.height,
-                py
-            )
-        );
-
-
-    /*
-     * 连续坐标
-     *
-     * 不调用 getPosByCell()
-     *
-     * 所以可以放在任意位置，
-     * 不会强制吸附到整数格。
-     */
-
-    var x =
-        px / rect.width * 10 - 0.5;
-
-    var y =
-        py / rect.height * 10 - 0.5;
-
-
-    /*
-     * 给棋子留一点边缘
-     */
-
-    x =
-        Math.max(
-            0.15,
-            Math.min(
-                8.85,
-                x
-            )
-        );
-
-    y =
-        Math.max(
-            0.15,
-            Math.min(
-                8.85,
-                y
-            )
-        );
-
-
-    /*
-     * 防止单位重叠
-     */
 
     for (
         var i = 0;
-        i < armys.length;
+        i < cards.length;
         i++
     ) {
 
-        var u = armys[i];
+        (function(card) {
 
-        if (
-            u.color === 'blue' &&
-            !u.disabled
-        ) {
+            card.addEventListener(
+                'pointerdown',
+                function(e) {
 
-            if (
-                calcdis(
-                    u,
-                    {
-                        posx: x,
-                        posy: y
+                    if (
+                        game8Started
+                    ) {
+
+                        return;
                     }
-                ) < 0.65
-            ) {
-
-                alert(
-                    '这个位置太拥挤，请换一个位置。'
-                );
-
-                return;
-            }
-        }
-    }
 
 
-    /*
-     * 创建单位
-     */
+                    if (
+                        e.button !== 0
+                    ) {
 
-    var success =
-        game8CreateBlue(
-            unitKey,
-            x,
-            y
-        );
+                        return;
+                    }
 
 
-    if (!success) {
-        return;
-    }
+                    var index =
+                        Number(
+                            card.dataset.index
+                        );
 
 
-    /*
-     * 标记卡片已经使用
-     */
+                    if (
+                        game8PlacedArtillery[
+                            index
+                        ]
+                    ) {
 
-    usedSlots[key] = true;
+                        return;
+                    }
 
-    placedCount++;
-
-
-    /*
-     * 自动选中新部署的单位
-     *
-     * 这样可以直接显示和其他 Game 一样的攻击范围。
-     */
-
-    var newPiece =
-        armys[armys.length - 1];
-
-    if (
-        typeof selectOnly === 'function' &&
-        newPiece
-    ) {
-
-        selectOnly(newPiece);
-    }
-
-
-    game8UpdatePanel();
-}
-
-
-boardContainer.addEventListener(
-    'drop',
-    game8Drop
-);
-
-
-/* =========================================================
-   10. 左侧兵种卡片
-   ========================================================= */
-
-var deployCards =
-    document.querySelectorAll(
-        '.deploy-card'
-    );
-
-
-for (
-    var cardIndex = 0;
-    cardIndex < deployCards.length;
-    cardIndex++
-) {
-
-    (function (card) {
-
-        card.addEventListener(
-            'dragstart',
-            function (e) {
-
-                var key =
-                    card.dataset.unit +
-                    ':' +
-                    card.dataset.index;
-
-
-                /*
-                 * 已经放置或者已经开战
-                 */
-
-                if (
-                    usedSlots[key] ||
-                    game8Started
-                ) {
 
                     e.preventDefault();
 
-                    return;
-                }
+
+                    game8DraggingIndex =
+                        index;
 
 
-                /*
-                 * 保存单位类型
-                 */
+                    game8CreateDragPiece();
 
-                e.dataTransfer.setData(
-                    'text/plain',
-                    key
-                );
-
-                e.dataTransfer.effectAllowed =
-                    'move';
+                    game8CreateDragRange();
 
 
-                /*
-                 * 设置小型拖拽图像
-                 *
-                 * 不再把整个长方形卡片
-                 * 显示成拖拽图标。
-                 */
-
-                var sourceImg =
-                    card.querySelector(
-                        'img'
-                    );
-
-                if (sourceImg) {
-
-                    var ghost =
-                        document.createElement(
-                            'img'
+                    var pos =
+                        game8MouseToBoardPosition(
+                            e
                         );
 
-                    ghost.src =
-                        sourceImg.src;
 
-                    ghost.style.width =
-                        '32px';
+                    var valid =
+                        game8IsValidPosition(
+                            pos.x,
+                            pos.y
+                        );
 
-                    ghost.style.height =
-                        '32px';
 
-                    ghost.style.position =
-                        'fixed';
+                    if (
+                        valid &&
+                        game8IsOccupied(
+                            pos.x,
+                            pos.y
+                        )
+                    ) {
 
-                    ghost.style.left =
-                        '-1000px';
+                        valid =
+                            false;
+                    }
 
-                    ghost.style.top =
-                        '-1000px';
 
-                    ghost.style.pointerEvents =
-                        'none';
-
-                    document.body.appendChild(
-                        ghost
-                    );
-
-                    e.dataTransfer.setDragImage(
-                        ghost,
-                        16,
-                        16
+                    game8UpdateDragPiece(
+                        pos.x,
+                        pos.y,
+                        valid
                     );
 
 
-                    setTimeout(
-                        function () {
-
-                            if (
-                                ghost.parentNode
-                            ) {
-
-                                ghost.parentNode
-                                    .removeChild(
-                                        ghost
-                                    );
-                            }
-
-                        },
-                        100
+                    game8UpdateDragRange(
+                        pos.x,
+                        pos.y,
+                        valid
                     );
-                }
-
-            }
-        );
-
-    })(deployCards[cardIndex]);
-}
 
 
-/* =========================================================
-   11. 战斗开始后禁止蓝方移动
-   ========================================================= */
+                    try {
 
-/*
- * 这里采用一个非常简单的方式：
- *
- * 当 Game8 开战以后，
- * main.js 的鼠标点击仍然会产生，
- * 但是我们把蓝兵的 targetx / targety
- * 每回合都固定回自己的当前位置。
- *
- * 这样不会破坏：
- *
- * - 选择
- * - 攻击范围
- * - main.js
- *
- * 同时可以确保蓝兵不会被移动。
- */
+                        card.setPointerCapture(
+                            e.pointerId
+                        );
+
+                    } catch (err) {
+                    }
 
 
-/*
- * 保存部署位置
- */
-
-function game8FreezeBlueUnits() {
-
-    for (
-        var i = 0;
-        i < armys.length;
-        i++
-    ) {
-
-        var u = armys[i];
-
-        if (
-            u.color === 'blue' &&
-            u.fixedDeployment
-        ) {
-
-            u.targetx =
-                u.posx;
-
-            u.targety =
-                u.posy;
-        }
-    }
-}
-
-
-/*
- * 开战后定期检查
- */
-
-setInterval(
-    function () {
-
-        if (!game8Started) {
-            return;
-        }
-
-        game8FreezeBlueUnits();
-
-    },
-    50
-);
-
-
-/* =========================================================
-   12. Game8 敌军 AI
-   ========================================================= */
-
-window.applyEnemyAI =
-    function () {
-
-        var blues =
-            armys.filter(
-                function (u) {
-
-                    return (
-                        u.color === 'blue' &&
-                        !u.disabled
+                    card.classList.add(
+                        'game8-dragging'
                     );
                 }
             );
 
 
-        if (blues.length === 0) {
-            return;
-        }
+            card.addEventListener(
+                'pointerup',
+                function(e) {
 
+                    if (
+                        game8DraggingIndex < 0
+                    ) {
 
-        armys.forEach(
-            function (u) {
-
-                if (
-                    u.color !== 'red' ||
-                    u.disabled
-                ) {
-                    return;
-                }
-
-
-                /*
-                 * 找最近的蓝方
-                 */
-
-                var best = null;
-
-                var bestDistance =
-                    Infinity;
-
-
-                blues.forEach(
-                    function (b) {
-
-                        var d =
-                            calcdis(
-                                u,
-                                b
-                            );
-
-                        if (
-                            d <
-                            bestDistance
-                        ) {
-
-                            bestDistance =
-                                d;
-
-                            best = b;
-                        }
+                        return;
                     }
-                );
 
 
-                if (!best) {
-                    return;
-                }
+                    e.preventDefault();
 
 
-                /*
-                 * 炮兵：
-                 * 不直接冲上去
-                 */
+                    var pos =
+                        game8MouseToBoardPosition(
+                            e
+                        );
 
-                if (u.cls === '炮') {
 
-                    var dx =
-                        best.posx -
-                        u.posx;
-
-                    var dy =
-                        best.posy -
-                        u.posy;
-
-                    var len =
-                        Math.sqrt(
-                            dx * dx +
-                            dy * dy
+                    var valid =
+                        game8IsValidPosition(
+                            pos.x,
+                            pos.y
                         );
 
 
                     if (
-                        len <
-                        0.0001
+                        valid &&
+                        game8IsOccupied(
+                            pos.x,
+                            pos.y
+                        )
                     ) {
 
-                        len = 1;
+                        valid =
+                            false;
                     }
 
 
-                    var stop =
-                        Math.max(
-                            0.8,
-                            Number(
-                                ATK_RANGE_far
-                            ) - 0.35
+                    if (valid) {
+
+                        game8DeployArtillery(
+                            game8DraggingIndex,
+                            pos.x,
+                            pos.y
                         );
+                    }
 
 
-                    u.targetx =
-                        Math.max(
-                            0,
-                            Math.min(
-                                9,
-                                best.posx -
-                                dx / len *
-                                stop
-                            )
-                        );
+                    card.classList.remove(
+                        'game8-dragging'
+                    );
 
 
-                    u.targety =
-                        Math.max(
-                            0,
-                            Math.min(
-                                9,
-                                best.posy -
-                                dy / len *
-                                stop
-                            )
-                        );
-
-                } else {
-
-                    /*
-                     * 步兵、投掷兵：
-                     * 向最近蓝兵推进
-                     */
-
-                    u.targetx =
-                        best.posx;
-
-                    u.targety =
-                        best.posy;
+                    game8RemoveDragPreview();
                 }
-
-            }
-        );
+            );
 
 
-        renderOrderArrows();
-    };
+            card.addEventListener(
+                'pointercancel',
+                function() {
+
+                    card.classList.remove(
+                        'game8-dragging'
+                    );
 
 
-/* =========================================================
-   13. 开始防守按钮
-   ========================================================= */
+                    game8RemoveDragPreview();
+                }
+            );
 
-document
-    .getElementById('button')
-    .addEventListener(
-        'click',
-        function (e) {
-
-            /*
-             * 如果已经开战：
-             *
-             * 什么都不做
-             *
-             * 让 main.js 正常执行 Next Turn
-             */
-
-            if (game8Started) {
-                return;
-            }
+        })(cards[i]);
+    }
 
 
-            /*
-             * 没有部署完
-             */
+    document.addEventListener(
+        'pointermove',
+        function(e) {
 
-            if (placedCount < 6) {
-
-                e.preventDefault();
-
-                e.stopImmediatePropagation();
-
-                alert(
-                    '请先部署 3 个步兵、2 个投掷兵和 1 个炮兵。'
-                );
-
-                return;
-            }
-
-
-            /*
-             * 进入战斗
-             */
-
-            game8Started = true;
-
-
-            /*
-             * 固定所有蓝方目标
-             */
-
-            game8FreezeBlueUnits();
-
-
-            /*
-             * 禁用部署卡
-             */
-
-            var cards =
-                document.querySelectorAll(
-                    '.deploy-card'
-                );
-
-            for (
-                var i = 0;
-                i < cards.length;
-                i++
+            if (
+                game8DraggingIndex < 0
             ) {
 
-                cards[i].draggable =
+                return;
+            }
+
+
+            if (
+                game8Started
+            ) {
+
+                return;
+            }
+
+
+            e.preventDefault();
+
+
+            var pos =
+                game8MouseToBoardPosition(
+                    e
+                );
+
+
+            var valid =
+                game8IsValidPosition(
+                    pos.x,
+                    pos.y
+                );
+
+
+            if (
+                valid &&
+                game8IsOccupied(
+                    pos.x,
+                    pos.y
+                )
+            ) {
+
+                valid =
                     false;
             }
 
 
-            /*
-             * 更新文字
-             */
-
-            var tip =
-                document.getElementById(
-                    'deployment-tip'
-                );
-
-            if (tip) {
-
-                tip.innerHTML =
-                    '防守开始！<br>' +
-                    '蓝方单位已经固定。';
-            }
+            game8UpdateDragPiece(
+                pos.x,
+                pos.y,
+                valid
+            );
 
 
-            var hud =
-                document.getElementById(
-                    'defense-hud'
-                );
+            game8UpdateDragRange(
+                pos.x,
+                pos.y,
+                valid
+            );
+        },
+        {
+            passive: false
+        }
+    );
 
-            if (hud) {
 
-                hud.textContent =
-                    '防守开始 · 坚守 12 回合';
-            }
-
-
-            /*
-             * 清除选中
-             *
-             * 避免刚点击“开始防守”时出现
-             * 奇怪的移动预览。
-             */
+    document.addEventListener(
+        'pointerup',
+        function(e) {
 
             if (
-                typeof clearSelection ===
-                'function'
+                game8DraggingIndex < 0
             ) {
 
-                clearSelection();
+                return;
+            }
+
+
+            if (
+                game8Started
+            ) {
+
+                game8RemoveDragPreview();
+
+                return;
+            }
+
+
+            var pos =
+                game8MouseToBoardPosition(
+                    e
+                );
+
+
+            var valid =
+                game8IsValidPosition(
+                    pos.x,
+                    pos.y
+                );
+
+
+            if (
+                valid &&
+                game8IsOccupied(
+                    pos.x,
+                    pos.y
+                )
+            ) {
+
+                valid =
+                    false;
+            }
+
+
+            if (valid) {
+
+                game8DeployArtillery(
+                    game8DraggingIndex,
+                    pos.x,
+                    pos.y
+                );
+            }
+
+
+            game8RemoveDragPreview();
+
+
+            document
+                .querySelectorAll(
+                    '.deploy-card'
+                )
+                .forEach(
+                    function(card) {
+
+                        card.classList.remove(
+                            'game8-dragging'
+                        );
+                    }
+                );
+        }
+    );
+}
+
+
+/* ============================================================
+ * 炮兵火力
+ * ============================================================ */
+
+function game8ArtilleryThreat(
+    x,
+    y
+) {
+
+    var threat =
+        0;
+
+
+    for (
+        var i = 0;
+        i < armys.length;
+        i++
+    ) {
+
+        var p =
+            armys[i];
+
+
+        if (!p) {
+
+            continue;
+        }
+
+
+        if (
+            p.color !== 'blue'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            p.cls !== '炮'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            p.disabled
+        ) {
+
+            continue;
+        }
+
+
+        var dx =
+            p.posx -
+            x;
+
+
+        var dy =
+            p.posy -
+            y;
+
+
+        var d2 =
+            dx * dx +
+            dy * dy;
+
+
+        var range =
+            Number(
+                p.atkrange
+            );
+
+
+        if (
+            d2 >
+            range * range
+        ) {
+
+            continue;
+        }
+
+
+        threat +=
+            1 /
+            (
+                1 +
+                d2
+            );
+    }
+
+
+    return threat;
+}
+
+
+/* ============================================================
+ * 红线火力
+ * ============================================================ */
+
+function game8LineThreat(y) {
+
+    return game8ArtilleryThreat(
+        GAME8_LINE_X,
+        y
+    );
+}
+
+
+/* ============================================================
+ * 寻找火力较弱突破点
+ * ============================================================ */
+
+function game8FindWeakPoint() {
+
+    var bestY =
+        0;
+
+
+    var bestThreat =
+        Infinity;
+
+
+    for (
+        var y = 0;
+        y <= 9;
+        y += 0.25
+    ) {
+
+        var threat =
+            game8LineThreat(
+                y
+            );
+
+
+        if (
+            threat <
+            bestThreat
+        ) {
+
+            bestThreat =
+                threat;
+
+            bestY =
+                y;
+        }
+    }
+
+
+    return bestY;
+}
+
+
+/* ============================================================
+ * 敌军目标位置
+ * ============================================================ */
+
+function game8ChooseTargetY(
+    enemy,
+    index
+) {
+
+    var weakY =
+        game8FindWeakPoint();
+
+
+    var candidates;
+
+
+    if (
+        enemy.cls === '步'
+    ) {
+
+        candidates = [
+
+            weakY,
+
+            weakY - 0.7,
+
+            weakY + 0.7,
+
+            weakY - 1.4,
+
+            weakY + 1.4,
+
+            enemy.posy
+        ];
+
+    } else if (
+        enemy.cls === '掷'
+    ) {
+
+        candidates = [
+
+            4.0,
+
+            5.0,
+
+            6.0,
+
+            weakY,
+
+            enemy.posy
+        ];
+
+    } else {
+
+        candidates = [
+
+            enemy.posy,
+
+            weakY,
+
+            weakY - 1.0,
+
+            weakY + 1.0
+        ];
+    }
+
+
+    var bestY =
+        enemy.posy;
+
+
+    var bestScore =
+        Infinity;
+
+
+    for (
+        var i = 0;
+        i < candidates.length;
+        i++
+    ) {
+
+        var y =
+            candidates[i];
+
+
+        if (y < 0) {
+
+            y = 0;
+        }
+
+
+        if (y > 9) {
+
+            y = 9;
+        }
+
+
+        var threat =
+            game8LineThreat(
+                y
+            );
+
+
+        var movementCost =
+            Math.abs(
+                y -
+                enemy.posy
+            ) *
+            0.08;
+
+
+        var score =
+            threat +
+            movementCost;
+
+
+        if (
+            score <
+            bestScore
+        ) {
+
+            bestScore =
+                score;
+
+            bestY =
+                y;
+        }
+    }
+
+
+    return bestY;
+}
+
+
+/* ============================================================
+ * 敌军 AI
+ *
+ * 保留原来的敌军 AI。
+ *
+ * 唯一增加：
+ * 战斗开始后，强制我方固定炮兵：
+ *
+ *     speed = 0
+ *     targetx = 当前 x
+ *     targety = 当前 y
+ *
+ * ============================================================ */
+
+window.applyEnemyAI =
+function() {
+
+    if (
+        typeof CURRENT_LEVEL_ID !==
+        'undefined' &&
+        CURRENT_LEVEL_ID !== 8
+    ) {
+
+        return;
+    }
+
+
+    var index =
+        0;
+
+
+    for (
+        var i = 0;
+        i < armys.length;
+        i++
+    ) {
+
+        var enemy =
+            armys[i];
+
+
+        if (!enemy) {
+
+            continue;
+        }
+
+
+        if (
+            enemy.color !== 'red'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            enemy.disabled
+        ) {
+
+            continue;
+        }
+
+
+        /*
+         * 敌方炮兵
+         *
+         * 保持后方阵地
+         */
+        if (
+            enemy.cls === '炮'
+        ) {
+
+            if (
+                enemy.posy < 3.5
+            ) {
+
+                enemy.targetx =
+                    7.0;
+
+                enemy.targety =
+                    2.0;
+
+            } else if (
+                enemy.posy > 6.5
+            ) {
+
+                enemy.targetx =
+                    7.0;
+
+                enemy.targety =
+                    8.0;
+
+            } else {
+
+                enemy.targetx =
+                    7.4;
+
+                enemy.targety =
+                    5.0;
+            }
+
+
+            index++;
+
+            continue;
+        }
+
+
+        /*
+         * 步兵 / 投掷兵
+         *
+         * 继续使用之前的“寻找弱点”逻辑。
+         */
+        enemy.targetx =
+            GAME8_LINE_X;
+
+
+        enemy.targety =
+            game8ChooseTargetY(
+                enemy,
+                index
+            );
+
+
+        index++;
+    }
+
+
+    /*
+     * ========================================================
+     * 本次修改的核心：
+     *
+     * 战斗中锁定我方炮兵。
+     *
+     * 注意：
+     * 不阻止鼠标点击。
+     * 不阻止 main.js。
+     * 只是让炮兵速度为 0。
+     * ========================================================
+     */
+
+    for (
+        var j = 0;
+        j < armys.length;
+        j++
+    ) {
+
+        var blue =
+            armys[j];
+
+
+        if (
+            !blue
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            blue.color !== 'blue'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            blue.cls !== '炮'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            blue.disabled
+        ) {
+
+            continue;
+        }
+
+
+        blue.speed =
+            0;
+
+
+        blue.targetx =
+            blue.posx;
+
+
+        blue.targety =
+            blue.posy;
+    }
+
+
+    if (
+        typeof renderOrderArrows ===
+        'function'
+    ) {
+
+        renderOrderArrows();
+    }
+};
+
+
+/* ============================================================
+ * 处理敌军突破
+ * ============================================================ */
+
+window.processLineBreakthroughs =
+function() {
+
+    if (
+        typeof CURRENT_LEVEL_ID !==
+        'undefined' &&
+        CURRENT_LEVEL_ID !== 8
+    ) {
+
+        return;
+    }
+
+
+    for (
+        var i = 0;
+        i < armys.length;
+        i++
+    ) {
+
+        var enemy =
+            armys[i];
+
+
+        if (!enemy) {
+
+            continue;
+        }
+
+
+        if (
+            enemy.color !== 'red'
+        ) {
+
+            continue;
+        }
+
+
+        if (
+            enemy.disabled
+        ) {
+
+            continue;
+        }
+
+
+        /*
+         * 敌军越过红线
+         */
+        if (
+            enemy.posx <=
+            GAME8_LINE_X
+        ) {
+
+            if (
+                enemy.escaped
+            ) {
+
+                continue;
+            }
+
+
+            enemy.escaped =
+                true;
+
+
+            enemy.disabled =
+                true;
+
+
+            game8BreakthroughCount++;
+
+
+            /*
+             * 从棋盘隐藏
+             */
+            var el =
+                document.getElementById(
+                    enemy.id
+                );
+
+
+            if (el) {
+
+                el.style.display =
+                    'none';
             }
 
 
             /*
-             * 非常重要：
-             *
-             * 阻止这一次点击继续传给 main.js。
-             *
-             * 否则会直接执行第一回合。
+             * 突破以后立即在旁边提示。
              */
+            game8UpdateBreakthroughTip();
+        }
+    }
 
-            e.preventDefault();
 
-            e.stopImmediatePropagation();
+    game8UpdateHUD();
+};
 
+
+/* ============================================================
+ * 突破提示
+ *
+ * 在棋盘左上角 HUD 中显示：
+ *
+ * ⚠ 已有 X 支敌军到达红线！
+ * ============================================================ */
+
+function game8UpdateBreakthroughTip() {
+
+    var hud =
+        document.getElementById(
+            'defense-hud'
+        );
+
+
+    if (!hud) {
+
+        return;
+    }
+
+
+    /*
+     * 如果还没开始战斗
+     */
+    if (!game8Started) {
+
+        return;
+    }
+
+
+    if (
+        game8BreakthroughCount <= 0
+    ) {
+
+        hud.innerHTML =
+            '最后防线 · 尚无敌军到达红线 · 剩余回合：' +
+            remain_turns;
+
+        return;
+    }
+
+
+    /*
+     * 红色警告。
+     */
+    hud.innerHTML =
+        '⚠ 已有 <b>' +
+        game8BreakthroughCount +
+        '</b> 支敌军到达红线！' +
+        '<br>' +
+        '剩余回合：' +
+        remain_turns;
+}
+
+
+/* ============================================================
+ * HUD
+ * ============================================================ */
+
+function game8UpdateHUD() {
+
+    var hud =
+        document.getElementById(
+            'defense-hud'
+        );
+
+
+    if (!hud) {
+
+        return;
+    }
+
+
+    if (!game8Started) {
+
+        var count =
+            game8PlacedArtillery.filter(
+                function(x) {
+                    return x;
+                }
+            ).length;
+
+
+        hud.innerText =
+            '部署阶段 · 炮兵：' +
+            count +
+            ' / 5';
+
+
+        return;
+    }
+
+
+    game8UpdateBreakthroughTip();
+}
+
+
+/* ============================================================
+ * 隐藏结果页面中的炮兵图片
+ *
+ * 胜利/失败后：
+ *
+ *     - 棋盘隐藏
+ *     - 左侧部署栏隐藏
+ *     - info-bar 隐藏
+ *     - enemy-info 隐藏
+ *
+ * 因此结果页面不会出现炮兵图片。
+ * ============================================================ */
+
+function game8HideBattleUI() {
+
+    if (boardContainer) {
+
+        boardContainer.style.display =
+            'none';
+    }
+
+
+    var panel =
+        document.getElementById(
+            'deployment-panel'
+        );
+
+
+    if (panel) {
+
+        panel.style.display =
+            'none';
+    }
+
+
+    var info =
+        document.getElementById(
+            'info-bar'
+        );
+
+
+    if (info) {
+
+        info.style.display =
+            'none';
+    }
+
+
+    var enemyInfo =
+        document.getElementById(
+            'enemy-info'
+        );
+
+
+    if (enemyInfo) {
+
+        enemyInfo.style.display =
+            'none';
+    }
+
+
+    /*
+     * 红线一起隐藏。
+     */
+    var line =
+        document.getElementById(
+            'defense-line'
+        );
+
+
+    if (line) {
+
+        line.style.display =
+            'none';
+    }
+
+
+    /*
+     * HUD 隐藏。
+     */
+    var hud =
+        document.getElementById(
+            'defense-hud'
+        );
+
+
+    if (hud) {
+
+        hud.style.display =
+            'none';
+    }
+}
+
+
+/* ============================================================
+ * Game8 胜利
+ * ============================================================ */
+
+function game8Win() {
+
+    if (game8Finished) {
+
+        return;
+    }
+
+
+    game8Finished =
+        true;
+
+
+    /*
+     * 先隐藏所有战斗 UI。
+     */
+    game8HideBattleUI();
+
+
+    if (buttonContainer) {
+
+        buttonContainer.style.display =
+            'none';
+    }
+
+
+    /*
+     * 胜利页面
+     */
+    var win =
+        document.getElementById(
+            'win'
+        );
+
+
+    if (win) {
+
+        win.style.display =
+            'flex';
+
+        win.style.flexDirection =
+            'column';
+
+        win.style.alignItems =
+            'center';
+    }
+
+
+    /*
+     * 星级只根据突破数。
+     *
+     * 0 -> 3星
+     * 1~2 -> 2星
+     * 3~4 -> 1星
+     *
+     * 5 -> 失败，不会进入这里
+     */
+    var star;
+
+
+    if (
+        game8BreakthroughCount === 0
+    ) {
+
+        star = 3;
+
+    } else if (
+        game8BreakthroughCount <= 2
+    ) {
+
+        star = 2;
+
+    } else {
+
+        star = 1;
+    }
+
+
+    var s1 =
+        document.getElementById(
+            '1star'
+        );
+
+
+    var s2 =
+        document.getElementById(
+            '2star'
+        );
+
+
+    var s3 =
+        document.getElementById(
+            '3star'
+        );
+
+
+    if (s1) {
+
+        s1.style.display =
+            'none';
+    }
+
+
+    if (s2) {
+
+        s2.style.display =
+            'none';
+    }
+
+
+    if (s3) {
+
+        s3.style.display =
+            'none';
+    }
+
+
+    if (
+        star === 3 &&
+        s3
+    ) {
+
+        s3.style.display =
+            '';
+
+    } else if (
+        star === 2 &&
+        s2
+    ) {
+
+        s2.style.display =
+            '';
+
+    } else if (
+        star === 1 &&
+        s1
+    ) {
+
+        s1.style.display =
+            '';
+    }
+
+
+    var detail =
+        document.getElementById(
+            'win-detail'
+        );
+
+
+    if (detail) {
+
+        detail.innerText =
+            '防线守住了！敌军共有 ' +
+            game8BreakthroughCount +
+            ' 支到达红线。';
+    }
+
+
+    var next =
+        document.getElementById(
+            'button-next-game'
+        );
+
+
+    if (next) {
+
+        next.style.display =
+            '';
+    }
+}
+
+
+/* ============================================================
+ * Game8 失败
+ * ============================================================ */
+
+function game8Lose() {
+
+    if (game8Finished) {
+
+        return;
+    }
+
+
+    game8Finished =
+        true;
+
+
+    /*
+     * 隐藏所有战斗 UI。
+     *
+     * 因此失败页面不会出现炮兵图片。
+     */
+    game8HideBattleUI();
+
+
+    if (buttonContainer) {
+
+        buttonContainer.style.display =
+            'none';
+    }
+
+
+    var lose =
+        document.getElementById(
+            'lose'
+        );
+
+
+    if (lose) {
+
+        lose.style.display =
+            'flex';
+
+        lose.style.flexDirection =
+            'column';
+
+        lose.style.alignItems =
+            'center';
+    }
+
+
+    var tips =
+        document.getElementById(
+            'loseTips'
+        );
+
+
+    if (tips) {
+
+        tips.innerText =
+            '敌军突破最后防线，阵地失守。' +
+            '\n' +
+            '共有 ' +
+            game8BreakthroughCount +
+            ' 支敌军到达红线。';
+    }
+
+
+    var replay =
+        document.getElementById(
+            'button-replay'
+        );
+
+
+    if (replay) {
+
+        replay.style.display =
+            '';
+    }
+}
+
+
+/* ============================================================
+ * Game8 胜负判断
+ * ============================================================ */
+
+window.checkWinState =
+function() {
+
+    if (game8Finished) {
+
+        return;
+    }
+
+
+    /*
+     * 统计突破
+     */
+    if (
+        typeof processLineBreakthroughs ===
+        'function'
+    ) {
+
+        processLineBreakthroughs();
+    }
+
+
+    /*
+     * 每回合 -1
+     */
+    remain_turns--;
+
+
+    /*
+     * 存活炮兵
+     */
+    var bluec =
+        0;
+
+
+    for (
+        var i = 0;
+        i < armys.length;
+        i++
+    ) {
+
+        var p =
+            armys[i];
+
+
+        if (
+            p &&
+            p.color === 'blue' &&
+            !p.disabled
+        ) {
+
+            bluec++;
+        }
+    }
+
+
+    /*
+     * 突破 5 次
+     */
+    if (
+        game8BreakthroughCount >= 5
+    ) {
+
+        game8Lose();
+
+        return;
+    }
+
+
+    /*
+     * 所有炮兵被摧毁
+     */
+    if (
+        bluec === 0
+    ) {
+
+        game8Lose();
+
+        return;
+    }
+
+
+    /*
+     * 坚持 12 回合
+     */
+    if (
+        remain_turns <= 0
+    ) {
+
+        game8Win();
+
+        return;
+    }
+
+
+    game8UpdateBreakthroughTip();
+
+
+    var footer =
+        document.getElementById(
+            'footer-bar'
+        );
+
+
+    if (footer) {
+
+        footer.innerHTML =
+            'You have ' +
+            remain_turns +
+            ' turns left.';
+    }
+};
+
+
+/* ============================================================
+ * 开始战斗
+ * ============================================================ */
+
+function game8StartBattle() {
+
+    if (game8Started) {
+
+        return;
+    }
+
+
+    /*
+     * 5 门炮必须全部部署
+     */
+
+    for (
+        var i = 0;
+        i < GAME8_ARTILLERY_COUNT;
+        i++
+    ) {
+
+        if (
+            !game8PlacedArtillery[i]
+        ) {
+
+            return;
+        }
+    }
+
+
+    game8Started =
+        true;
+
+
+    /*
+     * ========================================================
+     * 本次修改：
+     *
+     * 战斗开始后炮兵全部固定。
+     *
+     * 仍然可以：
+     *     - 被鼠标点击
+     *     - 被选中
+     *     - 显示攻击范围
+     *     - 攻击敌军
+     *
+     * 但是不能移动。
+     * ========================================================
+     */
+
+    for (
+        var j = 0;
+        j < armys.length;
+        j++
+    ) {
+
+        var p =
+            armys[j];
+
+
+        if (
+            p &&
+            p.color === 'blue' &&
+            p.cls === '炮'
+        ) {
+
+            p.speed =
+                0;
+
+
+            p.targetx =
+                p.posx;
+
+
+            p.targety =
+                p.posy;
+
+
+            p.fixedDeployment =
+                true;
+
+
+            p.game8FixedArtillery =
+                true;
+        }
+    }
+
+
+    game8RemoveDragPreview();
+
+
+    /*
+     * 战斗开始后不能继续部署。
+     */
+    var cards =
+        document.querySelectorAll(
+            '.deploy-card'
+        );
+
+
+    for (
+        var k = 0;
+        k < cards.length;
+        k++
+    ) {
+
+        cards[k].setAttribute(
+            'draggable',
+            'false'
+        );
+    }
+
+
+    var panel =
+        document.getElementById(
+            'deployment-panel'
+        );
+
+
+    if (panel) {
+
+        panel.classList.add(
+            'game8-battle-started'
+        );
+    }
+
+
+    var tip =
+        document.getElementById(
+            'deployment-tip'
+        );
+
+
+    if (tip) {
+
+        tip.innerHTML =
+            '战斗开始！<br>' +
+            '5 门炮兵已经固定。' +
+            '<br>' +
+            '阻止敌军突破最后防线。';
+    }
+
+
+    game8UpdateHUD();
+}
+
+
+/* ============================================================
+ * 开始按钮
+ * ============================================================ */
+
+function game8BindStartButton() {
+
+    var button =
+        document.getElementById(
+            'button'
+        );
+
+
+    if (!button) {
+
+        return;
+    }
+
+
+    button.addEventListener(
+        'click',
+        function() {
+
+            if (
+                !game8Started
+            ) {
+
+                game8StartBattle();
+            }
         },
         true
     );
-
-
-/* =========================================================
-   14. 最关键：初始化 Game8
-   ========================================================= */
-
-/*
- * 不读自动存档
- * 不创建弹窗
- * 不调用 showLevelIntro
- * 不重复初始化
- *
- * 只初始化一次。
- */
-
-loadGame(game8);
-
-
-/*
- * 玩家需要重新部署
- */
-
-game8Started = false;
-
-placedCount = 0;
-
-usedSlots = {};
-
-
-/*
- * 更新部署界面
- */
-
-game8UpdatePanel();
-
-
-/*
- * 刷新存档下拉框
- */
-
-if (
-    typeof refreshSlotSelect ===
-    'function'
-) {
-
-    refreshSlotSelect();
 }
 
 
-/*
- * Game8 失败提示
- */
+/* ============================================================
+ * 初始化
+ * ============================================================ */
 
-if (
-    typeof loseTips !==
-    'undefined'
-) {
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
 
-    loseTips.push(
-        'The final line is yours. Protect your position and hold the line.'
-    );
-}
+        game8Init();
+
+
+        if (
+            typeof loadGame ===
+            'function'
+        ) {
+
+            loadGame(game8);
+        }
+
+
+        game8BindDeployment();
+
+
+        game8BindStartButton();
+
+
+        game8UpdateDeploymentPanel();
+
+
+        game8UpdateHUD();
+    }
+);
