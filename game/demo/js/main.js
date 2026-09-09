@@ -541,6 +541,178 @@ function checkWinState() {
 		}
 	}) ;
 	// 计算红蓝色棋子数量
+	    // ============================================================
+    // Game8 防守关特殊结算
+    // 只新增，不影响前面 Game1~Game7 的原有逻辑
+    // ============================================================
+
+    if (
+        typeof CURRENT_GAME !== 'undefined' &&
+        CURRENT_GAME &&
+        CURRENT_GAME.objective &&
+        CURRENT_GAME.objective.type === 'defense'
+    ) {
+
+        // ----------------------------------------
+        // 情况1：我军全部死亡
+        // 防守失败
+        // ----------------------------------------
+
+        if (bluec === 0) {
+
+            boardContainer.style.display = 'none';
+            buttonContainer.style = 'display: none;';
+
+            document.getElementById('footer-bar').style =
+                'display: none';
+
+            document.getElementById('lose').style =
+                'display: flex; flex-direction: column; align-items: center;';
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // 情况2：成功坚持规定回合
+        // ----------------------------------------
+
+        if (remain_turns === 0) {
+
+            boardContainer.style.display = 'none';
+            buttonContainer.style = 'display: none;';
+
+            document.getElementById('footer-bar').style =
+                'display: none';
+
+            document.getElementById('win').style =
+                'display: flex; flex-direction: column; align-items: center;';
+
+
+            // ------------------------------------
+            // 根据剩余兵力计算星级
+            //
+            // 5~6 人：3星
+            // 3~4 人：2星
+            // 1~2 人：1星
+            // ------------------------------------
+
+            let star;
+
+            if (bluec >= 5) {
+
+                star = 3;
+
+            } else if (bluec >= 3) {
+
+                star = 2;
+
+            } else {
+
+                star = 1;
+            }
+
+
+            // ------------------------------------
+            // 显示星级
+            // ------------------------------------
+
+            if (star === 1) {
+
+                const winState =
+                    document.getElementById('1star');
+
+                if (winState) {
+                    winState.style.display = '';
+                }
+
+            } else if (star === 2) {
+
+                const winState =
+                    document.getElementById('2star');
+
+                if (winState) {
+                    winState.style.display = '';
+                }
+
+            } else {
+
+                const winState =
+                    document.getElementById('3star');
+
+                if (winState) {
+                    winState.style.display = '';
+                }
+            }
+
+
+            // ------------------------------------
+            // 如果 Game8 HTML 有自己的星级显示框
+            // 同时更新它
+            // ------------------------------------
+
+            const defenseStars =
+                document.getElementById('defense-stars');
+
+            if (defenseStars) {
+
+                if (star === 3) {
+
+                    defenseStars.innerText = '★★★';
+
+                } else if (star === 2) {
+
+                    defenseStars.innerText = '★★☆';
+
+                } else {
+
+                    defenseStars.innerText = '★☆☆';
+                }
+            }
+
+
+            const winDetail =
+                document.getElementById('win-detail');
+
+            if (winDetail) {
+
+                winDetail.innerText =
+                    '防守成功！剩余 ' +
+                    bluec +
+                    ' 个单位。';
+            }
+
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // 防守还没有结束
+        //
+        // 注意：
+        // 一定要 return
+        //
+        // 否则下面原来的 main.js
+        // 会把 remain_turns == 0 等条件
+        // 按普通关卡处理
+        // ----------------------------------------
+
+        const footer =
+            document.getElementById('footer-bar');
+
+        if (footer) {
+
+            footer.innerHTML =
+                '坚守阵地！剩余 ' +
+                remain_turns +
+                ' 回合，我军剩余 ' +
+                bluec +
+                ' 个单位。';
+        }
+
+        return;
+    }
 
 	// 追逐战（第 4 关）特殊结算：按"逃脱数"给星；逃脱≥loseEscape 判负
 	const retreatObj = (typeof CURRENT_GAME !== 'undefined' && CURRENT_GAME && CURRENT_GAME.objective &&

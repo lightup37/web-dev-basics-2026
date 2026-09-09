@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Game - Level#8</title>
+
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="./favicon.svg"
+    >
+
+    <style>
+
+        /*
+         * Game8 战前部署区域
+         */
+
+        #defense-layout {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 18px;
+            width: min(1180px, 96vw);
+            margin: 0 auto 12px;
+        }
+
+
+        #deployment-panel {
+
+            width: 190px;
+            flex: none;
+
+            background: rgba(20, 25, 30, .92);
+
+            border: 1px solid #777;
+
+            border-radius: 10px;
+
+            padding: 12px;
+
+            box-sizing: border-box;
+
+            color: #eee;
+
+        }
+
+
+        #deployment-panel h3 {
+
+            margin: 0 0 6px;
+
+            font-size: 18px;
+
+            text-align: center;
+
+        }
+
+
+        #deployment-tip {
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            color: #ccc;
+
+            margin: 0 0 10px;
+
+            text-align: center;
+
+        }
+
+
+        .deploy-card {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            width: 100%;
+
+            margin: 7px 0;
+
+            padding: 7px;
+
+            border: 1px solid #666;
+
+            border-radius: 8px;
+
+            background: #30343a;
+
+            color: #fff;
+
+            cursor: grab;
+
+            user-select: none;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .deploy-card:active {
+
+            cursor: grabbing;
+
+        }
+
+
+        .deploy-card.used {
+
+            opacity: .28;
+
+            cursor: not-allowed;
+
+            text-decoration: line-through;
+
+        }
+
+
+        .deploy-card img {
+
+            width: 38px;
+
+            height: 38px;
+
+            object-fit: contain;
+
+            pointer-events: none;
+
+        }
+
+
+        .deploy-name {
+
+            font-weight: bold;
+
+        }
+
+
+        .deploy-count {
+
+            margin-left: auto;
+
+            color: #ffd66b;
+
+        }
+
+
+        #deployment-status {
+
+            text-align: center;
+
+            font-size: 12px;
+
+            margin-top: 8px;
+
+            color: #ffd66b;
+
+        }
+
+
+        #board-wrap {
+
+            position: relative;
+
+            flex: none;
+
+        }
+
+
+        #board-wrap.deploy-locked #board {
+
+            outline: 3px dashed rgba(255, 215, 100, .75);
+
+            outline-offset: 5px;
+
+        }
+
+
+        #board-wrap.deploy-ready #board {
+
+            outline: 3px solid rgba(100, 220, 120, .65);
+
+            outline-offset: 5px;
+
+        }
+
+
+        #defense-hud {
+
+            position: absolute;
+
+            left: 10px;
+
+            top: 10px;
+
+            z-index: 20;
+
+            padding: 7px 10px;
+
+            border-radius: 7px;
+
+            background: rgba(0, 0, 0, .68);
+
+            color: #fff;
+
+            font-size: 13px;
+
+            pointer-events: none;
+
+        }
+
+
+        @media(max-width:900px) {
+
+            #defense-layout {
+
+                flex-direction: column;
+
+                align-items: center;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="game8">
+
+
+<div style="
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0%;
+">
+
+    <h2>
+        Game8 : The Defensive Line（最后防线）
+    </h2>
+
+    <footer>
+
+        <p
+            id="footer-bar"
+            style="
+                font-size:x-small;
+                margin:0 0 10px;
+            "
+        ></p>
+
+    </footer>
+
+</div>
+
+
+<div id="defense-layout">
+
+
+    <!-- 左侧部署面板 -->
+
+    <aside id="deployment-panel">
+
+        <h3>战前部署</h3>
+
+        <p id="deployment-tip">
+            从这里拖拽部队进入棋盘。<br>
+            可以放在任意位置。
+        </p>
+
+
+        <div
+            class="deploy-card"
+            draggable="true"
+            data-unit="步"
+            data-index="0"
+        >
+            <img
+                src="./img/blue_infantry.png"
+                alt="步兵"
+            >
+
+            <span class="deploy-name">
+                步兵
+            </span>
+
+            <span class="deploy-count">
+                ×1
+            </span>
+        </div>
+
+
+        <div
+            class="deploy-card"
+            draggable="true"
+            data-unit="步"
+            data-index="1"
+        >
+            <img
+                src="./img/blue_infantry.png"
+                alt="步兵"
+            >
+
+            <span class="deploy-name">
+                步兵
+            </span>
+
+            <span class="deploy-count">
+                ×1
+            </span>
+        </div>
+
+
+        <div
+            class="deploy-card"
+            draggable="true"
+            data-unit="步"
+            data-index="2"
+        >
+            <img
+                src="./img/blue_infantry.png"
+                alt="步兵"
+            >
+
+            <span class="deploy-name">
+                步兵
+            </span>
+
+            <span class="deploy-count">
+                ×1
+            </span>
+        </div>
+
+
+        <div
+            class="deploy-card"
+            draggable="true"
+            data-unit="掷"
+            data-index="0"
+        >
+            <img
+                src="./img/blue_grenadier.png"
+                alt="投掷兵"
+            >
+
+            <span class="deploy-name">
+                投掷兵
+            </span>
+
+            <span class="deploy-count">
+                ×1
+            </span>
+        </div>
+
+
+        <div
+            class="deploy-card"
+            draggable="true"
+            data-unit="掷"
+            data-index="1"
+        >
+            <img
+                src="./img/blue_grenadier.png"
+                alt="投掷兵"
+            >
+
+            <span class="deploy-name">
+                投掷兵
+            </span>
+
+            <span class="deploy-count">
+                ×1
+            </span>
+        </div>
+
+
+        <div
+            class="deploy-card"
+            draggable="true"
+            data-unit="炮"
+            data-index="0"
+        >
+            <img
+                src="./img/blue_artillery.png"
+                alt="炮兵"
+            >
+
+            <span class="deploy-name">
+                炮兵
+            </span>
+
+            <span class="deploy-count">
+                ×1
+            </span>
+        </div>
+
+
+        <div id="deployment-status">
+            已部署 0 / 6
+        </div>
+
+    </aside>
+
+
+    <!-- 棋盘 -->
+
+    <div
+        id="board-wrap"
+        class="deploy-locked"
+    >
+
+        <div id="defense-hud">
+            部署阶段 · 棋子可放在棋盘任意位置
+        </div>
+
+
+        <div id="info-bar"></div>
+
+        <div id="enemy-info"></div>
+
+        <div id="board"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     和 Game1~7 完全一致的胜利界面
+     ===================================================== -->
+
+<div id="win" style="display:none;">
+
+    <h1>You Win!</h1>
+
+    <h2
+        id="3star"
+        style="display:none;"
+    >
+        ⭐⭐⭐
+    </h2>
+
+    <h2
+        id="2star"
+        style="display:none;"
+    >
+        ⭐⭐
+    </h2>
+
+    <h2
+        id="1star"
+        style="display:none;"
+    >
+        ⭐
+    </h2>
+
+</div>
+
+
+<!-- =====================================================
+     和 Game1~7 完全一致的失败界面
+     ===================================================== -->
+
+<div id="lose" style="display:none;">
+
+    <h1>You Lose!</h1>
+
+    <p
+        id="loseTips"
+        style="font-size:x-small;"
+    ></p>
+
+</div>
+
+
+<button
+    id="button"
+    style="
+        width:100px;
+        height:50px;
+    "
+    disabled
+>
+    开始防守
+</button>
+
+
+<button
+    id="button-next-game"
+    style="display:none;"
+>
+    Next Game
+</button>
+
+
+<button
+    id="button-replay"
+    style="display:none;"
+>
+    Replay
+</button>
+
+
+<button
+    id="button-fail"
+    style="display:none;"
+>
+    View Ending: Early Defeat
+</button>
+
+
+<div id="game-actions">
+
+    <span id="save-load-btns">
+
+        <button
+            id="button-save"
+            class="game-btn"
+            title="把当前这关的中途状态存进所选手动存档槽"
+        >
+            Save
+        </button>
+
+
+        <select id="slot-select"></select>
+
+
+        <button
+            id="button-load"
+            class="game-btn"
+            title="读取所选手动存档槽的中途状态"
+        >
+            Load
+        </button>
+
+
+        <button
+            id="button-mode"
+            class="game-btn"
+            title="切换为查看敌方剩余血量"
+        >
+            查看敌人
+        </button>
+
+    </span>
+
+
+    <button
+        id="button-exit"
+        class="game-btn"
+        title="返回游戏主界面"
+    >
+        Menu
+    </button>
+
+</div>
+
+
+<script src="js/constants.js"></script>
+<script src="js/pieces.js"></script>
+<script src="js/arrow.js"></script>
+<script src="js/dialog.js"></script>
+<script src="js/account.js"></script>
+<script src="js/save.js"></script>
+<script src="js/main.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/game8.js"></script>
+
+</body>
+
+</html>
