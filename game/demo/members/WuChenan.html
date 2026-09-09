@@ -4,44 +4,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>吴宸安的个人介绍</title>
-    <link rel="stylesheet" href="./wuchenan/style.css">
+    <title>吴宸安 小组成员介绍页</title>
+    <meta name="description" content="吴宸安——小组项目成员，程序员、摄影、剪辑。">
+    <link rel="icon" type="image/svg+xml" href="wuchenan/assets/favicon.svg">
+    <link rel="stylesheet" href="wuchenan/style.css">
 </head>
 
 <body>
 
-    <header class="top">
-        <a class="back" href="../../group.html">返回小组介绍</a>
-    </header>
+    <div class="veil" aria-hidden="true"><span class="veil-dot"></span></div>
 
-    <main class="main">
+    <div class="progress" id="progress" aria-hidden="true"></div>
 
-        <section class="profile">
-            <div class="photo"></div>
-            <h1>吴宸安</h1>
+    <canvas id="fx" aria-hidden="true"></canvas>
+
+    <div class="butterflies" aria-hidden="true">
+        <svg class="bf bf-1" viewBox="0 0 64 44">
+            <g class="fw">
+                <path class="wing wl" d="M32 22C20 6 4 2 3 12c-1 8 10 14 29 10Z" />
+                <path class="wing wr" d="M32 22c12-16 28-20 29-10 1 8-10 14-29 10Z" />
+            </g>
+            <g class="fw2">
+                <path class="wing wl" d="M32 22c-10 6-16 16-9 18 6 2 11-6 9-18Z" />
+                <path class="wing wr" d="M32 22c10 6 16 16 9 18 6 2 11-6 9-18Z" />
+            </g>
+            <ellipse class="body" cx="32" cy="22" rx="2.4" ry="9" />
+            <path class="ant" d="M30 13c-2-4-6-6-8-6m12 6c2-4 6-6 8-6" />
+        </svg>
+        <svg class="bf bf-2" viewBox="0 0 64 44">
+            <g class="fw">
+                <path class="wing wl" d="M32 22C20 6 4 2 3 12c-1 8 10 14 29 10Z" />
+                <path class="wing wr" d="M32 22c12-16 28-20 29-10 1 8-10 14-29 10Z" />
+            </g>
+            <g class="fw2">
+                <path class="wing wl" d="M32 22c-10 6-16 16-9 18 6 2 11-6 9-18Z" />
+                <path class="wing wr" d="M32 22c10 6 16 16 9 18 6 2 11-6 9-18Z" />
+            </g>
+            <ellipse class="body" cx="32" cy="22" rx="2.4" ry="9" />
+            <path class="ant" d="M30 13c-2-4-6-6-8-6m12 6c2-4 6-6 8-6" />
+        </svg>
+    </div>
+
+    <div class="pendant" aria-hidden="true">
+        <span class="thread"></span>
+        <svg viewBox="0 0 64 44">
+            <g class="fw">
+                <path class="wing wl" d="M32 22C20 6 4 2 3 12c-1 8 10 14 29 10Z" />
+                <path class="wing wr" d="M32 22c12-16 28-20 29-10 1 8-10 14-29 10Z" />
+            </g>
+            <g class="fw2">
+                <path class="wing wl" d="M32 22c-10 6-16 16-9 18 6 2 11-6 9-18Z" />
+                <path class="wing wr" d="M32 22c10 6 16 16 9 18 6 2 11-6 9-18Z" />
+            </g>
+            <ellipse class="body" cx="32" cy="22" rx="2.2" ry="8" />
+            <path class="ant" d="M30 14c-2-4-5-5-7-5m12 5c2-4 5-5 7-5" />
+        </svg>
+    </div>
+
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <div class="page">
+
+        <section class="hero" id="top">
+            <div class="hero-bg" aria-hidden="true"
+                data-heroes="wuchenan/assets/hero/hero-01-fireworks.jpg, wuchenan/assets/hero/hero-02-greenbutterfly.jpg, wuchenan/assets/hero/hero-04-golden.jpg">
+            </div>
+
+            <header class="topbar">
+                <a class="back-round" href="../group.html" aria-label="返回小组介绍" title="返回小组介绍">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M19 12H5m7-7-7 7 7 7" />
+                    </svg>
+                    <span>返回</span>
+                </a>
+            </header>
+
+            <div class="hero-body">
+                <div class="avatar">
+                    <img src="wuchenan/assets/avatar.JPG"
+                        alt="头像" width="480" height="640">
+                </div>
+                <h1 class="name" id="name-h" aria-label="吴宸安"><span
+                        aria-hidden="true"><span>吴</span><span>宸</span><span>安</span></span></h1>
+                <p class="quote">薄如蝉翼的生命，也有<em>璀璨燃烧</em>的可能。</p>
+            </div>
+
+            <div class="hero-foot">
+                <a class="scroll-hint" href="#about" aria-label="向下滚动">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </a>
+            </div>
         </section>
 
-        <section class="card">
-            <h2>关于我</h2>
-        </section>
+        <main id="main" class="content">
 
-        <section class="card">
-            <h2>平时接触的方向</h2>
-            <p class="tags"><span>C++</span><span>Unreal Engine</span><span>AI 工具</span><span>摄影</span><span>剪辑</span>
-            </p>
-        </section>
-
-        <section class="card">
-            <h2>在项目中</h2>
-            <ul class="roles">
-                <li>程序员</li>
+            <ul class="chips" aria-label="平时接触的方向">
+                <li>C++</li>
+                <li>Unreal Engine</li>
+                <li>AI 工具</li>
                 <li>摄影</li>
                 <li>剪辑</li>
             </ul>
-        </section>
 
-    </main>
+            <section class="card reveal d2" id="role" aria-labelledby="role-h">
+                <h2 class="card-title" id="role-h">
+                    <svg class="ico spark" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9Z" />
+                    </svg>
+                    在项目中
+                </h2>
+                <ul class="roles" aria-label="小组分工">
+                    <li>程序员</li>
+                    <li>摄影</li>
+                    <li>剪辑</li>
+                </ul>
+            </section>
 
+            <section class="card reveal d1" id="about" aria-labelledby="about-h">
+                <h2 class="card-title" id="about-h">
+                    <svg class="ico spark" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9Z" />
+                    </svg>
+                    关于我
+                </h2>
+                <p>北京理工大学2025级计算机科学与技术学生</p>
+                <p>爱好是C++，游戏，摄影（虽然技术不咋地）</p>
+                <p>现在在玩崩铁、王者、王世杰，第五人格，部落冲突</p>
+                <p>但是日常太多了做不过来T_T</p>
+                <p>喜欢流萤小姐 </p>
+            </section>
+
+        </main>
+
+    </div>
+
+    <a class="to-top" id="toTop" href="#top" aria-label="返回顶部">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+        </svg>
+    </a>
+
+    <script src="wuchenan/assets/fx.js"></script>
 </body>
 
 </html>
