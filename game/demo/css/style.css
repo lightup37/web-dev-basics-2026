@@ -641,13 +641,42 @@ footer { margin: 0; }
 #btn-restart { margin-top: 1.5rem; }
 /* ===== game1 专属背景 ===== */
 .game1 #board {
-    background-image: url("../img/background1.png");
+    background-image: url("../img/backgrass1.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
-
+.game2 #board {
+    background-image: url("../img/backgrass2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game3 #board {
+    background-image: url("../img/backdis1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game4 #board {
+    background-image: url("../img/backdis2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game5 #board {
+    background-image: url("../img/backice1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.game6 #board {
+    background-image: url("../img/backice2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 /* 让背景图透过10×10格子显示 */
-.game1 #board .cell {
+.cell {
     background-color: transparent;
 }

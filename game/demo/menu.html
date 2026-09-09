@@ -8,6 +8,9 @@
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body>
+	<audio id="menu-music" loop>
+	<source src="mus/主界面背景音.mp3" type="audio/mpeg">
+</audio>
 	<div class="page-box">
 		<h1>游戏主界面</h1>
 		<p class="page-sub">欢迎回来，<span id="welcome-name"></span>！</p>
@@ -78,11 +81,19 @@
 					go.textContent = '继续';
 					li.appendChild(go);
 				} else if (unlocked) {
-					var start = document.createElement('a');
-					start.className = 'level-btn';
-					start.href = lv.file;
-					start.textContent = '开始';
-					li.appendChild(start);
+					var start = document.createElement('a'); 
+	start.className = 'level-btn'; 
+	start.href = lv.file; 
+	start.textContent = '开始'; 
+
+	// 第一关点击开始时，记录需要播放第一关音乐
+	if (lv.id === 1||lv.id===2) {
+		start.addEventListener('click', function () {
+			sessionStorage.setItem('game1Music', '1');
+		});
+	}
+
+	li.appendChild(start); 
 				} else {
 					var locked = document.createElement('span');
 					locked.textContent = '未解锁';
@@ -229,6 +240,21 @@
 			else document.body.appendChild(holder);
 		}
 		renderAchievements();
+		// 主界面背景音乐
+var menuMusic = document.getElementById('menu-music');
+menuMusic.volume = 0.35;
+
+// 如果是从注册/登录按钮进入主界面，则尝试播放
+if (sessionStorage.getItem('startMenuMusic') === '1') {
+	sessionStorage.removeItem('startMenuMusic');
+
+	menuMusic.play().catch(function () {
+		// 浏览器禁止自动播放时，等待用户第一次点击
+		document.addEventListener('click', function () {
+			menuMusic.play();
+		}, { once: true });
+	});
+}
 	</script>
 </body>
 </html>

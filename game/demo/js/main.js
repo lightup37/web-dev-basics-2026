@@ -551,7 +551,178 @@ function checkWinState() {
 			if(element.color == 'red') ++ redc; 
 			if(element.color == 'blue') ++ bluec; 
 		} 
-	}) ; 
+	}); 
+
+	/* =========================================================
+	 * Game6：滑铁卢·限时攻坚
+	 *
+	 * 按通关所用步数评星：
+	 * ≤13 步：3 星
+	 * 14~15 步：2 星
+	 * 16~18 步：1 星
+	 *
+	 * 回合超过 18 步仍未消灭全部红军：失败
+	 * ========================================================= */
+
+	if(typeof CURRENT_LEVEL_ID !== 'undefined' && CURRENT_LEVEL_ID === 6) {
+
+		const usedTurns = CURRENT_GAME.turns_limit - remain_turns;
+
+		/* =========================
+		 * 情况1：红军全部被消灭
+		 * ========================= */
+		if(redc === 0) {
+
+			boardContainer.style.display = 'none';
+			buttonContainer.style = 'display: none;';
+			document.getElementById('footer-bar').style = 'display: none';
+
+			document.getElementById('win').style =
+				'display: flex; flex-direction: column; align-items: center;';
+
+			document.getElementById('button-next-game').style =
+				'width: 100px; height: 50px;';
+
+			/* 根据通关步数计算星级 */
+			let star;
+
+			if(usedTurns <= 13) {
+				star = 3;
+			}
+			else if(usedTurns <= 15) {
+				star = 2;
+			}
+			else {
+				star = 1;
+			}
+
+			/* 显示星星 */
+			if(star === 1) {
+				const winState = document.getElementById('1star');
+				if(winState) winState.style.display = '';
+			}
+			else if(star === 2) {
+				const winState = document.getElementById('2star');
+				if(winState) winState.style.display = '';
+			}
+			else {
+				const winState = document.getElementById('3star');
+				if(winState) winState.style.display = '';
+			}
+
+			/* 自动存档 */
+			const quickL1 = false;
+
+			if(
+				typeof autosaveOnWin === 'function' &&
+				typeof CURRENT_LEVEL_ID !== 'undefined'
+			) {
+				autosaveOnWin(
+					CURRENT_LEVEL_ID,
+					star,
+					quickL1
+				);
+			}
+
+			/* 三星成就 */
+			if(
+				typeof tryThreeStarAchievement === 'function' &&
+				typeof CURRENT_LEVEL_ID !== 'undefined'
+			) {
+				tryThreeStarAchievement(
+					CURRENT_LEVEL_ID,
+					star
+				);
+			}
+
+			hideMidGameControls();
+
+			return;
+		}
+
+		/* =========================
+		 * 情况2：我军全部阵亡
+		 * ========================= */
+		if(bluec === 0) {
+
+			boardContainer.style.display = 'none';
+			buttonContainer.style = 'display: none;';
+
+			document.getElementById('footer-bar').style = 'display: none';
+
+			document.getElementById('lose').style =
+				'display: flex; flex-direction: column; align-items: center;';
+
+			document.getElementById('button-replay').style =
+				'width: 100px; height: 50px;';
+
+			const tip = document.getElementById('loseTips');
+
+			if(tip) {
+				tip.style = '';
+				tip.innerHTML = '我军全部阵亡，滑铁卢攻坚失败。';
+			}
+
+			hideMidGameControls();
+
+			return;
+		}
+
+		/* =========================
+		 * 情况3：18步结束仍未消灭红军
+		 * ========================= */
+		if(remain_turns <= 0) {
+
+			boardContainer.style.display = 'none';
+			buttonContainer.style = 'display: none;';
+
+			document.getElementById('footer-bar').style = 'display: none';
+
+			document.getElementById('lose').style =
+				'display: flex; flex-direction: column; align-items: center;';
+
+			document.getElementById('button-replay').style =
+				'width: 100px; height: 50px;';
+
+			const tip = document.getElementById('loseTips');
+
+			if(tip) {
+				tip.style = '';
+				tip.innerHTML =
+					'18回合已经结束，仍有 ' +
+					redc +
+					' 支敌军存活，攻坚失败。';
+			}
+
+			if(
+				typeof recordLevelFail === 'function' &&
+				typeof CURRENT_LEVEL_ID !== 'undefined'
+			) {
+				recordLevelFail(CURRENT_LEVEL_ID);
+			}
+
+			hideMidGameControls();
+
+			return;
+		}
+
+		/* =========================
+		 * Game6 尚未结束
+		 * ========================= */
+		const footer = document.getElementById('footer-bar');
+
+		if(footer) {
+			footer.innerHTML =
+				'You have ' +
+				remain_turns +
+				' turns left. ' +
+				'Used: ' +
+				usedTurns +
+				' turns.';
+		}
+
+		return;
+	}
 
 	// 计算红蓝色棋子数量 
 
