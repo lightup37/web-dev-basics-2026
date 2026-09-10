@@ -1,65 +1,79 @@
 <!DOCTYPE html>
-<html>
 
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>动画</title>
-    <link href="../css.css" rel="stylesheet" type="text/css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>动画</title>
+<link href="../css.css" rel="stylesheet" type="text/css"/>
 </head>
-
-<body>
-    <div id="box">
-        <img class="banner" src="../images/animation_banner.svg" />
-        <p id="nav"><a href="drama.html">剧情</a> <strong>动画</strong> <a href="sf.html">科幻</a> <a
-                href="action.html">动作</a> <a href="mystery.html">悬疑</a></p>
-        <p id="bread"><a href="../index.html">首页</a> > <strong>动画</strong></p>
-        <div class="grid">
-            <div class="movie">
-                <a href="nezha.html"><img class="poster" src="../images/nezha.jpg" /></a>
-                <p class="m-name"><a href="nezha.html">哪吒之魔童降世</a></p>
-                <p class="m-line">导演：饺子</p>
-                <p class="m-line">主演：吕艳婷 / 囧森瑟夫</p>
-                <p class="m-line">类型：动画 / 奇幻</p>
-            </div>
-            <div class="movie">
-                <a href="dasheng.html"><img class="poster" src="../images/dasheng.jpg" /></a>
-                <p class="m-name"><a href="dasheng.html">西游记之大圣归来</a></p>
-                <p class="m-line">导演：田晓鹏</p>
-                <p class="m-line">主演：张磊 / 林子杰</p>
-                <p class="m-line">类型：动画 / 奇幻 / 冒险</p>
-            </div>
-            <div class="movie">
-                <a href="baishe.html"><img class="poster" src="../images/baishe.jpg" /></a>
-                <p class="m-name"><a href="baishe.html">白蛇：缘起</a></p>
-                <p class="m-line">导演：黄家康 / 赵霁</p>
-                <p class="m-line">主演：张喆 / 杨天翔</p>
-                <p class="m-line">类型：动画 / 奇幻 / 爱情</p>
-            </div>
-            <div class="movie">
-                <a href="coco.html"><img class="poster" src="../images/coco.jpg" /></a>
-                <p class="m-name"><a href="coco.html">寻梦环游记</a></p>
-                <p class="m-line">导演：李·昂克里奇</p>
-                <p class="m-line">主演：安东尼·冈萨雷斯 / 盖尔·加西亚·贝纳尔</p>
-                <p class="m-line">类型：动画 / 奇幻 / 音乐</p>
-            </div>
-            <div class="movie">
-                <a href="qianxun.html"><img class="poster" src="../images/qianxun.png" /></a>
-                <p class="m-name"><a href="qianxun.html">千与千寻</a></p>
-                <p class="m-line">导演：宫崎骏</p>
-                <p class="m-line">主演：柊瑠美 / 入野自由</p>
-                <p class="m-line">类型：动画 / 奇幻 / 冒险</p>
-            </div>
-            <div class="movie">
-                <a href="zootopia.html"><img class="poster" src="../images/zootopia.jpg" /></a>
-                <p class="m-name"><a href="zootopia.html">疯狂动物城</a></p>
-                <p class="m-line">导演：拜伦·霍华德</p>
-                <p class="m-line">主演：金妮弗·古德温 / 杰森·贝特曼</p>
-                <p class="m-line">类型：动画 / 喜剧 / 冒险</p>
-            </div>
-        </div>
-    </div>
-    <script src="../js/main.js"></script>
+<body class="page-category category-animation">
+<header class="site-header">
+<div class="nav-inner">
+<a class="brand" href="../index.html"><span>电影欣赏网</span></a>
+<nav aria-label="主导航" class="main-nav"><a href="drama.html">剧情</a> <strong>动画</strong> <a href="sf.html">科幻</a> <a href="action.html">动作</a> <a href="mystery.html">悬疑</a></nav>
+<a aria-label="返回首页搜索电影" class="search-jump" href="../index.html#search"><span aria-hidden="true" class="search-icon"></span><span>搜索</span></a>
+</div>
+</header>
+<main class="category-main" id="box"><button aria-label="返回" class="page-back" type="button">返回</button>
+<section class="category-hero">
+<p class="crumb"><a href="../index.html">首页</a><span>/</span>动画</p>
+<div class="category-title-row">
+<div><h1>动画电影</h1></div>
+<p class="category-count">6 部电影</p>
+</div>
+</section>
+<section class="category-grid"><article class="movie movie-card" data-search="哪吒之魔童降世 导演：饺子 主演：吕艳婷 / 囧森瑟夫 类型：动画 / 奇幻">
+<a aria-label="查看《哪吒之魔童降世》详情" class="poster-link" href="nezha.html">
+<img alt="《哪吒之魔童降世》电影海报" class="poster" src="../images/nezha.jpg"/>
+</a>
+<div class="movie-copy">
+<h3 class="m-name"><a href="nezha.html">哪吒之魔童降世</a></h3>
+<div class="movie-meta"><p class="m-line">导演：饺子</p><p class="m-line">主演：吕艳婷 / 囧森瑟夫</p><p class="m-line">类型：动画 / 奇幻</p></div>
+</div>
+</article><article class="movie movie-card" data-search="西游记之大圣归来 导演：田晓鹏 主演：张磊 / 林子杰 类型：动画 / 奇幻 / 冒险">
+<a aria-label="查看《西游记之大圣归来》详情" class="poster-link" href="dasheng.html">
+<img alt="《西游记之大圣归来》电影海报" class="poster" src="../images/dasheng.jpg"/>
+</a>
+<div class="movie-copy">
+<h3 class="m-name"><a href="dasheng.html">西游记之大圣归来</a></h3>
+<div class="movie-meta"><p class="m-line">导演：田晓鹏</p><p class="m-line">主演：张磊 / 林子杰</p><p class="m-line">类型：动画 / 奇幻 / 冒险</p></div>
+</div>
+</article><article class="movie movie-card" data-search="白蛇：缘起 导演：黄家康 / 赵霁 主演：张喆 / 杨天翔 类型：动画 / 奇幻 / 爱情">
+<a aria-label="查看《白蛇：缘起》详情" class="poster-link" href="baishe.html">
+<img alt="《白蛇：缘起》电影海报" class="poster" src="../images/baishe.jpg"/>
+</a>
+<div class="movie-copy">
+<h3 class="m-name"><a href="baishe.html">白蛇：缘起</a></h3>
+<div class="movie-meta"><p class="m-line">导演：黄家康 / 赵霁</p><p class="m-line">主演：张喆 / 杨天翔</p><p class="m-line">类型：动画 / 奇幻 / 爱情</p></div>
+</div>
+</article><article class="movie movie-card" data-search="寻梦环游记 导演：李·昂克里奇 主演：安东尼·冈萨雷斯 / 盖尔·加西亚·贝纳尔 类型：动画 / 奇幻 / 音乐">
+<a aria-label="查看《寻梦环游记》详情" class="poster-link" href="coco.html">
+<img alt="《寻梦环游记》电影海报" class="poster" src="../images/coco.jpg"/>
+</a>
+<div class="movie-copy">
+<h3 class="m-name"><a href="coco.html">寻梦环游记</a></h3>
+<div class="movie-meta"><p class="m-line">导演：李·昂克里奇</p><p class="m-line">主演：安东尼·冈萨雷斯 / 盖尔·加西亚·贝纳尔</p><p class="m-line">类型：动画 / 奇幻 / 音乐</p></div>
+</div>
+</article><article class="movie movie-card" data-search="千与千寻 导演：宫崎骏 主演：柊瑠美 / 入野自由 类型：动画 / 奇幻 / 冒险">
+<a aria-label="查看《千与千寻》详情" class="poster-link" href="qianxun.html">
+<img alt="《千与千寻》电影海报" class="poster" src="../images/qianxun.png"/>
+</a>
+<div class="movie-copy">
+<h3 class="m-name"><a href="qianxun.html">千与千寻</a></h3>
+<div class="movie-meta"><p class="m-line">导演：宫崎骏</p><p class="m-line">主演：柊瑠美 / 入野自由</p><p class="m-line">类型：动画 / 奇幻 / 冒险</p></div>
+</div>
+</article><article class="movie movie-card" data-search="疯狂动物城 导演：拜伦·霍华德 主演：金妮弗·古德温 / 杰森·贝特曼 类型：动画 / 喜剧 / 冒险">
+<a aria-label="查看《疯狂动物城》详情" class="poster-link" href="zootopia.html">
+<img alt="《疯狂动物城》电影海报" class="poster" src="../images/zootopia.jpg"/>
+</a>
+<div class="movie-copy">
+<h3 class="m-name"><a href="zootopia.html">疯狂动物城</a></h3>
+<div class="movie-meta"><p class="m-line">导演：拜伦·霍华德</p><p class="m-line">主演：金妮弗·古德温 / 杰森·贝特曼</p><p class="m-line">类型：动画 / 喜剧 / 冒险</p></div>
+</div>
+</article></section>
+<footer class="site-footer">© 2026 电影欣赏网</footer>
+</main>
+<script src="../js/main.js"></script>
 </body>
-
 </html>
