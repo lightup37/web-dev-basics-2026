@@ -47,16 +47,30 @@ function bootGame7() {
 	loseTips.push('Break the heart of the square, and the rest will crumble.');
 }
 
-var lockOk = true;
+/* 第 7 关解锁条件：
+ * 第 1～6 关必须全部达到 3 星
+ */
+var lockOk = false;
+
 if (typeof currentUser === 'function' && currentUser()) {
-	if (typeof hiddenRouteOpen !== 'function' || !hiddenRouteOpen() ||
-		typeof hasBeatenLevel !== 'function' || !hasBeatenLevel(currentUser(), 6)) {
-		lockOk = false;
+	const user = currentUser();
+
+	lockOk = true;
+
+	for (let level = 1; level <= 6; level++) {
+		if (
+			typeof getLevelStars !== 'function' ||
+			Number(getLevelStars(user, level)) < 3
+		) {
+			lockOk = false;
+			break;
+		}
 	}
 }
+
 if (lockOk) {
 	bootGame7();
 } else {
-	alert('需要先通关第 6 关才能进入此关。');
+	alert('需要第 1～6 关全部获得 3 星，才能解锁第 7 关。');
 	window.location.replace('menu.html');
 }
