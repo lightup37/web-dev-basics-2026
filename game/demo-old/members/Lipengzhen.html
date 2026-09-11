@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>李朋真 | Personal Page</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eeeeec;
+            color: #222;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        .page {
+            width: 850px;
+            max-width: 92%;
+            margin: 70px auto;
+        }
+
+        /* 顶部 */
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            border-bottom: 2px solid #222;
+            padding-bottom: 15px;
+            margin-bottom: 45px;
+        }
+
+        .top h1 {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 3px;
+        }
+
+        .top span {
+            font-size: 13px;
+            color: #777;
+        }
+
+
+        /* 个人信息 */
+
+        .intro {
+            display: flex;
+            gap: 55px;
+            align-items: center;
+
+            margin-bottom: 60px;
+        }
+
+        .photo {
+            width: 270px;
+            height: 270px;
+            flex-shrink: 0;
+
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intro-text {
+            flex: 1;
+        }
+
+        .intro-text .small {
+            color: #e06b35;
+            font-size: 13px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .intro-text h2 {
+            font-size: 42px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .intro-text p {
+            color: #666;
+            font-size: 15px;
+            line-height: 2;
+        }
+
+
+        /* 简单信息 */
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            border-top: 1px solid #bbb;
+            border-bottom: 1px solid #bbb;
+
+            margin-bottom: 55px;
+        }
+
+        .info-item {
+            padding: 25px 20px;
+            border-right: 1px solid #bbb;
+        }
+
+        .info-item:last-child {
+            border-right: none;
+        }
+
+        .info-item h3 {
+            font-size: 13px;
+            color: #888;
+            font-weight: normal;
+            margin-bottom: 8px;
+        }
+
+        .info-item p {
+            font-size: 17px;
+        }
+
+
+        /* 兴趣 */
+
+        .section-title {
+            font-size: 13px;
+            color: #e06b35;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        .interests {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .interest {
+            background: #222;
+            color: white;
+
+            padding: 13px 25px;
+
+            font-size: 14px;
+
+            transition: 0.25s;
+        }
+
+        .interest:hover {
+            background: #e06b35;
+            transform: translateY(-3px);
+        }
+
+
+        /* 项目分工 */
+
+        .work {
+            margin-top: 55px;
+            padding-top: 30px;
+
+            border-top: 1px solid #bbb;
+        }
+
+        .work p {
+            color: #555;
+            line-height: 2;
+            font-size: 15px;
+        }
+
+        .work strong {
+            color: #222;
+        }
+
+
+        /* 底部 */
+
+        footer {
+            margin-top: 70px;
+
+            display: flex;
+            justify-content: space-between;
+
+            color: #999;
+            font-size: 12px;
+
+            border-top: 1px solid #bbb;
+            padding-top: 15px;
+        }
+
+
+        /* 手机适配 */
+
+        @media (max-width: 650px) {
+
+            .page {
+                margin: 35px auto;
+            }
+
+            .intro {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 30px;
+            }
+
+            .photo {
+                width: 210px;
+                height: 210px;
+            }
+
+            .intro-text h2 {
+                font-size: 34px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .info-item {
+                border-right: none;
+                border-bottom: 1px solid #bbb;
+            }
+
+            .info-item:last-child {
+                border-bottom: none;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <!-- 顶部标题 -->
+    <div class="top">
+        <h1>LI PENGZHEN</h1>
+        <span>PERSONAL PAGE / 2026</span>
+    </div>
+
+
+    <!-- 个人介绍 -->
+    <section class="intro">
+
+        <div class="photo">
+            <img src="./lipengzhen/avatar.png" alt="李朋真">
+        </div>
+
+        <div class="intro-text">
+
+            <div class="small">
+                COMPUTER SCIENCE STUDENT
+            </div>
+
+            <h2>李朋真</h2>
+
+            <p>
+                我是北京理工大学计算机科学与技术专业的大二学生。
+                平时喜欢研究编程和算法，也喜欢通过实际项目把自己的想法变成可以运行的作品。
+                除了计算机，我喜欢打篮球，也经常玩 CS。
+                在本次游戏网站项目中，我主要负责程序开发，同时参与宣传视频的剪辑工作。
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 基本信息 -->
+
+    <section class="info">
+
+        <div class="info-item">
+            <h3>年级</h3>
+            <p>大二</p>
+        </div>
+
+        <div class="info-item">
+            <h3>专业</h3>
+            <p>计算机科学与技术</p>
+        </div>
+
+        <div class="info-item">
+            <h3>项目职责</h3>
+            <p>程序开发 / 剪辑</p>
+        </div>
+
+    </section>
+
+
+    <!-- 兴趣 -->
+
+    <section>
+
+        <div class="section-title">
+            INTERESTS
+        </div>
+
+        <div class="interests">
+
+            <div class="interest">
+                编程
+            </div>
+
+            <div class="interest">
+                算法
+            </div>
+
+            <div class="interest">
+                篮球
+            </div>
+
+            <div class="interest">
+                CS
+            </div>
+
+            <div class="interest">
+                视频剪辑
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 项目分工 -->
+
+    <section class="work">
+
+        <div class="section-title">
+            MY ROLE
+        </div>
+
+        <p>
+            在这次游戏网站项目中，我主要负责
+            <strong>游戏程序的开发</strong>，
+            包括游戏逻辑、交互以及相关功能的实现。
+            同时参与项目宣传视频的
+            <strong>素材整理与视频剪辑</strong>，
+            将团队完成的游戏作品以更加直观的方式展示出来。
+        </p>
+
+    </section>
+
+
+    <!-- 页脚 -->
+
+    <footer>
+        <span>LI PENGZHEN</span>
+        <span>Keep coding · Keep playing</span>
+    </footer>
+
+</div>
+
+</body>
+</html>

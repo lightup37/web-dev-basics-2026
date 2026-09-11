@@ -1,0 +1,84 @@
+/* tyq-style.css */
+
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* justify-content: center; */
+	min-height: 100dvh;
+	padding: 2rem 1.5rem;
+	font-family: 'Courier New', Courier, monospace;
+	background: blanchedalmond;
+	color: black;
+	line-height: 1.6;
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	max-width: 380px;
+	/* max-width: 90%; */
+	/* width: 100%; */
+	text-align: center;
+
+	/* justify-content: center; */
+
+	padding: 1.75rem 1.75rem 2rem;
+	border-radius: 1.5rem;
+
+	background: white;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+	transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.card:hover {
+	box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+	transform: translateY(-2px);
+}
+
+.card--wide {
+  max-width: 100%;          /* 允许撑满父容器 */
+  flex-direction: row;      /* 改为水平排列 */
+  align-items: stretch;     /* 让左右高度一致 */
+	max-width: 90%;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.card__media {
+	max-width: 100%;
+  flex: 0 0 40%;
+}
+
+.card__content {
+  flex: 1;                  /* 剩余空间给文字 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* 垂直居中内容（可选） */
+}
+
+@media (max-width: 640px) {
+  .card--wide {
+    flex-direction: column;
+  }
+	.card__media {
+    flex: none;
+    width: 100%;
+    height: auto;
+  }
+} /* 移动端降级 */
+
+p, li {
+	text-align: justify; /* 强制首尾对齐 */
+	text-align-last: left; /* 最后一行居左 */
+}
