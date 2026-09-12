@@ -8,27 +8,44 @@
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body class="page-ending ending-victory">
+	<audio id="game-music" loop>
+		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
+	</audio>
+
+
 	<div class="page-box">
 		<p class="page-kicker">CAMPAIGN CONCLUDED · 战役终章</p>
 		<h1>胜利！</h1>
 		<p class="page-sub">拿破仑战争的六大战役全部获胜</p>
 		<div class="story-panel">
-			<p class="story-line"><b>拿破仑：</b>诸位，让我们数一数：军团还在，炮兵还在，而我——也还在。</p>
-			<p class="story-line"><b>副官：</b>陛下，联军已经全线后退，维也纳和柏林的大门都敞开了。</p>
-			<p class="story-line"><b>拿破仑：</b>很好。历史将走向它该走的道路——就像它本该写的那样。</p>
-			<p class="story-line"><b>副官（压低声音）：</b>只是……陛下，听说威灵顿公爵还在滑铁卢附近重整旗鼓。</p>
-			<p class="story-line"><b>拿破仑：</b>滑铁卢？哈，那会是很多年后的一场雨夜了。今夜，先让我们享受这场胜利。</p>
+			<p class="story-line"><b>加斯帕尔・古尔戈：</b>内伊元帅的进攻受挫了，我们没能拿下四臂村，不过威灵顿在得知普军失利后，主动向北撤退到<strong>滑铁卢高地</strong>构筑防线。</p>
+			<p class="story-line"><b>拿破仑：</b>可惜没有直接击败英国佬，传令让格鲁希率领部队追击撤退的普军，让他盯住普鲁士人、阻止他们与威灵顿会合。</p>
+			<p class="story-line"><b>拿破仑：</b>只要普鲁士人没有与英国人汇合，我们应该能击穿惠灵顿的防线。</p>
+			<p class="story-line"><b>拿破仑：</b>据报内伊的部队已经抵达滑铁卢前沿，传令休整所有部队，明早开始总攻。</p>
 		</div>
-		<p class="page-note">（正常结局：同正史走向——多年后的滑铁卢雨夜，将是另一场故事。而另一种可能，还藏在更深处……）</p>
+		<p class="page-note" id="normal-note">（历史正常进行，拿破仑将军正走向他的滑铁卢高地。而另一种可能，还藏在更深处……）</p>
 		<div class="form-box">
-			<p class="form-link"><a href="menu.html">返回游戏主界面</a></p>
-			<p class="form-link"><a href="game1.html">从头再战</a></p>
+			<button id="button-next" class="game-btn">Next</button>
 		</div>
 	</div>
 	<script src="js/account.js"></script>
+	<script src="js/ui.js"></script>
 	<script src="js/save.js"></script>
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('victory_end');
+
+		/* 2026-09：结局页只留一个出口 —— Next 回主界面。
+		   原先的"改写历史 · 进入隐藏关"入口已移除：隐藏关现在从主界面战役地图上的隐藏标记进入
+		   （hiddenRouteOpen() 为真时地图上才会出现它）。 */
+		document.getElementById('button-next').addEventListener('click', function () {
+			window.location.href = 'menu.html';
+		});
+	</script>
+
+	<script src="js/bgm.js"></script>
+	<script>
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		initBgm('game-music');
 	</script>
 </body>
 </html>

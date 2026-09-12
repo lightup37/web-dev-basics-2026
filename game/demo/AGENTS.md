@@ -1,313 +1,394 @@
 # 项目概况
 
-这是一个简单的 web 小游戏项目。基于 html+css+js 打造的静态页面。
+这是一个简单的 web 小游戏项目。基于 html + css + js 打造的静态页面，无需构建工具。
 
-游戏玩法是，有一个棋盘，其上有若干友方(color: blue)棋子和敌方棋子(color: red)，每回合可以给友方棋子设置移动方向，棋子会向那个方向移动。
+玩法：棋盘上若干友方（`color: 'blue'`）与敌方（`color: 'red'`）棋子，每回合给蓝方设定移动目标点，点一次 Next Turn 内部同步跑 24 帧结算，方向在一回合内固定。**在给定回合内消灭所有红方即通关**；蓝方全灭 / 回合耗尽 / 第 4 关逃脱超限判负。
 
-通关方式是在给定的回合内，消灭所有敌方棋子。
+- 棋盘尺寸：各关 `gameN.js` 里的 `n × m`，目前都是 **10 × 10**。
+- **5 个兵种**：步兵 / 炮兵 / 骑兵 / 散兵 / 掷弹兵，数值见「兵种设计」。
+- 引擎逻辑看 `js/main.js`；跨关卡信息看 `js/levels.js`；各关棋子配置在各自的 `js/gameN.js`。
 
-棋子的攻击范围，伤害和生命值在 `./js/game${id}.js` 中存储。目前只设计了步兵（基础模板），炮兵（攻击距离远，伤害高，但移动慢，血量稍低）两种兵种。
+**规模（按当前仓库实际文件）**：根目录 HTML **17** 个 + `members/` **6** 个 = 23 个页面；JS **22** 个、**7798** 行；CSS 1 个、**2446** 行；图片 **23** 个（含 `img/europe-map.svg`）；音频 **5** 首。
 
-游戏的具体运行逻辑参考 ./js/main.js 文件。
+## 工作方式（必须遵守）
 
-这是一个小学期的项目，我们的游戏是非常简单的，请你做尽可能少的修改，在做出任何修改之前提前向我汇报工作。你可以在适当的时候对代码结构进行一定的重构，但应该采用破坏最小的方式。
+- 这是一个小学期项目，游戏**非常简单**：做尽可能少的修改，**动手之前先汇报**；可以小幅重构，但要采用破坏最小的方式。
+- **一次只做一项**，做完自测、把结论同步进本文件，再交给成员验收；每次验收都要给出**可核对的关键指标**（尺寸 / 计算样式 / 计数 / 断点）。
+- 只访问本项目目录内的文件。棋子缺图时用文字占位（只给 `class`，`main.js` 会自动兜底）。
+- 临时验证脚本 / 页面**用完即删**，不留进仓库（`img/europe-map.svg` 的生成脚本就是这样处理的）。
 
-你不应该访问任何这个目录以外的文件。若需要棋子的图片，可暂时用文字替代（只赋 class，main.js 会自动处理）。
-
-这是一款策略游戏，鼓励玩家摸清楚红方策略后采取针对性解题办法通关，并获取正反馈。
+这是一款策略游戏，鼓励玩家摸清红方策略后针对性解题通关，并获取正反馈。
 
 ## 项目背景
 
 以拿破仑战争作为背景。
 
-失败结局：拿破仑提早失利
+- 失败结局：拿破仑提早失利
+- 正常结局：同正史走向
+- 隐藏结局：拿破仑统治欧洲
 
-正常结局：同正史走向
+## 范围约定：忽略项目计划与所有有关文件
 
-隐藏结局：拿破仑统治欧洲
+> **忽略项目计划与所有有关文件。** 具体指 `项目计划.md`、`项目计划.docx`、`项目计划.pdf`，以及 `docs/` 下与项目计划归档、设计文档配图、截图脚本相关的全部文件（`docs/项目计划_v1_上一版.*`、`docs/figs/*`、`docs/make_*.py`、`docs/shots/*` 等）。
+>
+> 1. 这些文件**不属于本项目的开发范围**，不作为工程依据；**本文件（`AGENTS.md`）是项目现状与工程约定的唯一来源**；
+> 2. **不要为了这些文件去修改游戏代码**（页面 / JS / CSS / 素材都算），也不要因为它们的描述与代码不一致就去"对齐"代码；
+> 3. 补全或维护本文件时，一律以仓库中**实际运行的代码与素材**为准，不引用上述文件的内容；
+> 4. 上面这些文件如需调整，属于文档事务，与开发任务分开处理。
 
 ## 项目结构
 
+> 下表中**不含**"范围约定"里要忽略的项目计划类文件。
+
 ```bash
 .
-├── index.html                # 主页：内嵌登录 + 小组介绍入口（to-do #1）
-├── register.html             # 注册页（另开页面，to-do #1）
-├── menu.html                 # 游戏主界面：展示活动档 a.save 进度；手动档可"载入/删除"（to-do #2/#3）
-├── group.html                # 小组介绍页：6 位成员容器 + 个人页链接（to-do #1）
-├── game1.html                # 第一个游戏页面
-├── game2.html                # 第二个游戏页面
-├── game3.html                # 第三个游戏页面：骑兵突袭（to-do #10）
-├── game4.html                # 第四个游戏页面：逐猎 Retreat Hunt（追逐战，逃跑结算）
-├── game5.html                # 第五个游戏页面：铁流强攻（breakthrough+strongest，to-do #10）
-├── game6.html                # 第六个游戏页面：滑铁卢·限时攻坚（The Last Assault，红方固守 18 回合）
-├── game7.html                # 第七个游戏页面：帝国黄昏（隐藏关，cluster 抱团）
-├── game8.html                # 测试关"红线拦截战"（有独立部署期；未接入 levels.js/menu，只能直接开 URL）
-├── end-game.html             # 通关 game6 后的正常结局页（to-do #13 叙事版）
-├── fail.html                 # 失败结局页：拿破仑提早失利（to-do #13）
-├── destiny-fail.html         # 隐藏第 7 关失败专属结局：命运无法改变（to-do #14/#13）
-├── hidden-end.html           # 隐藏结局页：拿破仑统治欧洲（to-do #14）
-├── mus/                      # 背景音乐（主界面 + 第 1/2 关）
-├── group.md                  # 目前的角色分配
-├── members/                  # 成员个人详情页：由成员各自制作后放入（当前还不存在）
+├── index.html                # 主页：内嵌登录 + 注册/小组介绍入口（背景音乐 #index-music）
+├── register.html             # 注册页（另开页面）
+├── menu.html                 # 游戏主界面（70 余行）：页头 +「战役地图」#campaign-map +「读取存档」+ 导航
+├── achievements.html         # 成就页（2026-09 独立成页，成就墙 #achv-area 在 .panel-card 里）
+├── group.html                # 小组介绍页：6 个成员卡片 + 个人页链接
+├── game1.html                # 第 1 关 破晓防线（20 回合）
+├── game2.html                # 第 2 关 炮火走廊（25 回合）
+├── game3.html                # 第 3 关 雪原突骑（18 回合，breakthrough）
+├── game4.html                # 第 4 关 耶拿逐猎（20 回合，红方 flee 撤退结算）
+├── game5.html                # 第 5 关 艰难攻坚（18 回合，红方站桩，按步数给星）
+├── game6.html                # 第 6 关 铁血强攻（25 回合，集火最强蓝方）
+├── game7.html                # 第 7 关 帝国黄昏（隐藏关，26 回合，cluster 抱团；入口带校验）
+├── game8.html                # 测试关"最后防线 / 红线拦截战"（自带布阵与拖拽；未接入 levels.js/menu）
+├── end-game.html             # 正常结局页（第 6 关通关后进）
+├── fail.html                 # 失败结局页（任意关判负）
+├── destiny-fail.html         # 第 7 关失败专属结局页
+├── hidden-end.html           # 隐藏结局页（第 7 关通关后进）
+├── mus/                      # 背景音乐 5 首，逐页分配（见「背景音乐」一节）
+├── group.md                  # 角色分配
+├── members/                  # 成员个人页（已完成）：6 个 HTML + 每人同名资源子目录
+│   ├── TanYiqing.html  Lipengzhen.html  WuChenan.html
+│   ├── ChenSixing.html ZhouYunhao.html  LiXinyu.html
+│   └── tanyiqinq/ lipengzhen/ wuchenan/ chensixing/ zhouyunhao/ lixinyu/
 ├── css/
-│   └── style.css             # 全局样式
-├── js/
-│   ├── account.js            # 注册/登录/登出，localStorage 账号层（to-do #1）
-│   ├── save.js               # 存档层：活动档 a.save + 手动备份 save1~3；载入=覆盖 a.save（to-do #2/#3）
-│   ├── ai.js                 # 红方 AI：stationary/breakthrough/cluster/circle（to-do #9）
-│   ├── levels.js             # 关卡注册表：顺序/标题/页面/AI 策略/hint/剧情等跨关卡信息（to-do #10/#12/#13）
-│   ├── dialog.js             # 剧情对话引擎 playDialogue(lines,onDone)（to-do #13）
-│   ├── main.js               # 网站的主要逻辑
-│   ├── arrow.js              # 指示移动方向的箭头的主要逻辑
-│   ├── pieces.js             # 用于移动棋子的主要逻辑
-│   ├── constants.js          # 用于存储 构建游戏页面所需资源 时会使用的常量
-│   ├── game1.js              # 第一个游戏页面所需要的资源，在编写 img，speed 等属性时应该一律使用常量
-│   ├── game2.js              # 第二个游戏页面所需要的资源
-│   ├── game3.js              # 第三个游戏页面资源（to-do #10）
-│   ├── game4.js              # 第四个游戏页面资源（to-do #10）
-│   ├── game5.js              # 第五个游戏页面资源（to-do #10）
-│   ├── game6.js              # 第六个游戏页面资源（滑铁卢·限时攻坚，turns_limit: 18）
-│   ├── game7.js              # 第七个游戏页面资源（隐藏关，带解锁校验）
-│   └── game8.js              # 测试关"红线拦截战"资源（独立部署期+结算，未接线）
-├── img/
-|   ├── blue_artillery.png    
-|   ├── red_infantry.png    
-|   ├── backgrass1.png ...    # 每关专属棋盘桌面（game1~game7，由 style.css 末尾的
-|   |                         #   .game-page.gameN #board 规则接管）
-|   ├── level1-intro-1.png    # 第一关教程图（① 选中/下令/攻击 四步操作教学 ② 步兵兵种介绍）
-|   ├── level1-intro-2.png    #   两张由 showIntroImages 串联，排在剧情与战前简报【之后】
-|   ├── portraits/            # 立绘对话用的人物立绘（napoleon / adjutant / courier /
-|   |                         #   coalition-commander），路径写在各关 levels.js 的 story 里
-|   └── ....                  # 图片文件，命名格式同上，需要同步更新到 constants.js 中的 IMG_BLUE_artillery 等常量中
-├── favicon.svg               # 网站图标（已精简为小型 svg）
-└── README.md                 # 项目文档（to-do #17 草稿已完成，待验收）
+│   └── style.css             # 全局样式（2446 行）：基础 UI → 各 to-do 段 →「2026 UI 重制」→ 每关桌面再声明 → 2026-09 新增段
+├── js/                       # 22 个文件、7798 行
+│   ├── constants.js          # 兵种数值原型 + 图片常量 + loseTips 初值
+│   ├── pieces.js             # 棋子 DOM 创建 / 移动落点（movePieceTo）
+│   ├── arrow.js              # 常驻方向箭头
+│   ├── dialog.js             # 立绘式剧情对话引擎 playDialogue()；顺带用 initBgm 起关卡背景音乐
+│   ├── account.js            # 注册/登录/登出（localStorage 账号层）
+│   ├── ui.js                 # UI 提示组件：toast / achievementToast / modalConfirm / modalNotice
+│   ├── bgm.js                # 背景音乐统一入口 initBgm()：先尝试播放，被拦才退回"点击播放"
+│   ├── save.js               # 存档层：a.save + save1~3；成就；隐藏路线判据；clearAuto / resetAutoSave
+│   ├── main.js               # 引擎主体（约 3000 行）：回合、移动、攻击、选择、面板、范围圈、结算、进关流程
+│   ├── fx.js                 # 表现层特效：开火烟雾 + 枪口火光 + 移动尾迹
+│   ├── ai.js                 # 红方 AI：stationary / breakthrough / cluster / circle / flee
+│   ├── levels.js             # 关卡注册表：顺序、标题、AI、hint、章节/立绘剧情、map{lon,lat}
+│   ├── menu-saves.js         # 主界面：战役地图渲染 + 「读取存档」弹卡（含重新开始）
+│   ├── menu-achv.js          # 成就墙渲染（供 achievements.html）
+│   ├── game1.js … game7.js   # 各关棋子配置（一律用 constants.js 的常量）+ 末尾 loadGame / loadSnapshot
+│   └── game8.js              # 测试关资源（约 2800 行；自带部署期、拖拽、红线结算，未接线）
+├── img/                      # 23 个文件
+│   ├── blue_infantry / blue_artillery / blue_cavalry / blue_skirmisher / blue_grenadier .png
+│   ├── red_infantry / red_artillery / red_cavalry / red_grenadier .png  # 红方无散兵图（走文字占位）
+│   ├── background1.png、backgrass1/2、backdis1/2、backice1/2 .png        # 每关棋盘桌面（style.css 末尾接管）
+│   ├── europe-map.svg        # 主界面战役地图底图（37.9KB，viewBox 0 0 1000 785）
+│   ├── level1-intro-1.png    # 第 1 关教程图①：选中/下令/攻击 四步操作
+│   ├── level1-intro-2.png    # 第 1 关教程图②：步兵兵种介绍
+│   └── portraits/            # 立绘 4 张：napoleon / adjutant / courier / coalition-commander
+├── favicon.svg               # 网站图标
+├── README.md                 # 项目文档（按"文档要求"7 问组织）
+└── AGENTS.md                 # 本文件：项目现状 + 工程约定 + 验收清单
 ```
 
-## 敌方（红方）AI 设计（想好了但还没写进代码）
+## 关卡配置一览
 
-红方不是只会站着挨打。做 1、2 关时赶工，忘了在代码里给"红方怎么移动"留接口，所以现在 main.js 里红方单位的 target 一直等于出生坐标，实际表现就是站桩。下面几套移动逻辑是已经设计好的，等做新关卡前先把接口补上（比如给每关加一个"敌方移动策略"字段，可按关选用/组合），再逐步实现并试调难度：
+| 关 | 标题（`levels.js` 的 `name`） | 页面 | 回合 | 我方 | 敌方 | AI | 特殊结算 | 星级规则 |
+|--|--|--|--|--|--|--|--|--|
+| 1 | 第 1 关 · 破晓防线 | `game1.html` | 20 | 4 步 | 5 步 | 站桩 | — | 通用 |
+| 2 | 第 2 关 · 炮火走廊 | `game2.html` | 25 | 1 步 1 炮 | 3 步 1 炮 | 站桩 | — | 通用 |
+| 3 | 第 3 关 · 雪原突骑 | `game3.html` | 18 | 步 炮 散 骑 | 炮 步 步 步 骑 | `breakthrough` | — | 通用 |
+| 4 | 第 4 关 · 耶拿逐猎 | `game4.html` | 20 | 6（掷 步 散 骑 掷 步） | 5 步 | `flee` → `{9.5,-0.5}` | `objective.type='retreat'` | 按逃脱数 |
+| 5 | 第 5 关 · 艰难攻坚 | `game5.html` | 18 | 6（炮 骑 掷 步 步 散） | 8（掷 步×5 骑 炮） | 站桩 | — | 按通关步数 |
+| 6 | 第 6 关 · 铁血强攻 | `game6.html` | 25 | 6（炮 骑 掷 步 步 散） | 6（炮 骑 步×4） | `breakthrough` + `threat:'strongest'` | — | 通用 |
+| 7 | 第 7 关 · 帝国黄昏（隐藏） | `game7.html` | 26 | 6 | 8（掷×2 步×4 骑 炮） | `cluster` + `core:0` | — | 通用 |
+| 8 | 最后防线 / 红线拦截战（测试） | `game8.html` | 12 | 5 炮（`speed=0` 固定） | 7 | 自带脚本（不走 `ai.js`） | `objective.type='line_defense'` | 按突破数 |
 
-- 集中突破型：每个单位向当前对己方威胁最大的蓝方单位移动。（"威胁最大"怎么算还没定：距离最近 / 火力最高 / 血量最低，可以再商量）
-- 聚团取暖型：所有单位优先聚到核心单位附近，抱团行动。
-- 圆圈防守型：单位初始全部部署在一个圆上，每个时刻每支军队做"填空"，往空出来的位置补位。
+- **通用星级**（`main.js` 的 `checkWinState()`）：按过关时**存活蓝方数**——0 个 = 1 星、1 个 = 2 星、**≥2 个 = 3 星**。
+- **第 4 关**：`escaped` 0 / 1 / 2 支分别 3 / 2 / 1 星；`escaped ≥ loseEscape（3）` 判负。
+- **第 5 关**：`usedTurns = turns_limit - remain_turns`，**≤13 = 3 星 / ≤15 = 2 星 / 16~18 = 1 星**；超过 18 回合未全歼判负。这一套是 `CURRENT_LEVEL_ID === 5` 的**独立分支**（三种情况都 `return`，不会落到通用规则）。
+- **第 8 关**：0 支突破 3 星 / 1~2 支 2 星 / 3~4 支 1 星 / ≥5 支判负（`main.js` 的 `line_defense` 分支）。注意它 `objective` 里写的 `breakthrough_limit` **引擎并不读**，实际阈值走 `loseEscape`（未给时默认 5）。
 
-由于这是一款策略游戏，每一关卡敌方的 AI 应该是不改变的。也不需要使用 ML/DL 的技术，直接编写策略即可。策略表现为每一回合每个棋子的移动方向。实现挂载点：每次点 Next Turn、本回合 24 帧开始前给红方按策略重设一次 target/方向，一回合内不再变，不要写进逐帧逻辑。（to-do #9 已实现：js/ai.js，main.js 的回合按钮会在 24 帧前调用 applyEnemyAI()。关卡在 CURRENT_GAME.ai 上声明 { strategy: 'stationary'|'breakthrough'|'cluster'|'circle'|'flee', threat/core/center/radius/fleeTo 等参数 }，详见 ai.js 头部注释；不配置即站桩，1/2 关保持站桩，3 关起启用。另：已交战（射程内有可命中蓝方）的红方 unit 一律原地固守不移动，aiIsEngaged 判定）
+## 结局与解锁
 
-## 兵种设计（to-do #8）
+| 结局页 | 触发 |
+|--|--|
+| `end-game.html` 正常结局 | 第 6 关通关后点结算页 `Next` |
+| `fail.html` 失败结局 | 任意关判负（蓝方全灭 / 回合耗尽 / 第 4 关逃脱超限）后点 `View Ending` |
+| `destiny-fail.html` | **第 7 关**判负时点 `View Ending: Destined to fail` |
+| `hidden-end.html` 隐藏结局 | 第 7 关通关后点结算页 `Next` |
 
-| 兵种 | class | 速度 | 射程 | 攻击 | 生命 | 定位 |
+**通关流向：结算页只留一个 `Next`，主界面地图当枢纽。**
+
+- 通关结算页只有 `#button-next-game`（文案 `Next`）：`Replay` / `View Ending` 与整条 `#game-actions`（含 `Menu`）都被隐藏。**结算页上没有任何说明文字**（原来那句"第 N 关通关！已自动存档（a.save）"已删）。
+- 目标在结算时算好写进按钮的 **`data-target`**（方便验收直接读）：
+  - 第 1~5 关 → `menu.html?unlock=<刚通关的关号>`：**回主界面看地图动画**，再由玩家点地图上下一个标记进关，**不直接跳下一关**；
+  - 第 6 关 → `end-game.html`；第 7 关 → `hidden-end.html`；
+  - "下一关是不是结局"仍以 `levels.js` 的 `nextLevelFile()` 为准（正则匹配 `end-game.html|hidden-end.html`），不写死。
+- **四个结局页只留一个 `Next` 按钮回 `menu.html`，页面上已无任何 `<a>` 链接**；`end-game.html` 上原有的"进入隐藏关"入口已删除。
+
+**隐藏路线（唯一判据：`save.js` 的 `hiddenRouteOpen()`）**
+
+- 判据：**第 1~6 关星级全部 ≥ 3**（内部逐关调 `getLevelStars(user, levelId)`，读 `a.save:<用户>.stars[levelId]`，无记录 = 0 星）。
+- 两处调用同源：主界面地图的隐藏关标记、`js/game7.js` 的入口校验。
+- 第 7 关入口校验失败时用 `modalNotice('需要第 1～6 关全部获得 3 星，才能解锁第 7 关。')`，点"知道了"后回 `menu.html`（无 ui.js 时退回原生 alert）。
+- 第 6 关通关存档时若"路线刚被打开"，`autosaveOnWin()` 会右上角浮出提示"隐藏路线开启 · 第 1～6 关全部达成 3 星 · 隐藏的第 7 关已解锁"。
+- **旧机制已停用**：原先"第 1 关 ≤12 回合通关 → 写 `hiddenUnlocked`"不再作为判据；存档里的 `hiddenUnlocked` 字段只为兼容旧档保留（手动档覆盖时仍会合并），代码不再读写它当条件。`autosaveOnWin(levelId, star, quickL1)` 的 `quickL1` 参数保留仅为兼容调用。
+
+## 敌方（红方）AI
+
+实现在 `js/ai.js`；**红方并非天生站桩**——第 1、2、5 关的"不动"是关卡设计（`ai: null`）。
+
+- **挂载点**：点 Next Turn 时，`main.js` 在连跑本回合 24 帧**之前**调用一次 `applyEnemyAI()`，按 `CURRENT_GAME.ai` 给每个存活红方重设一次 `target`；一回合内不再变。**不要**把方向决策写进逐帧逻辑。
+- **声明方式**：关卡在 `levels.js` 写 `ai` 字段，由 `attachLevelAI(id)` 挂到 `CURRENT_GAME.ai`（`gameN.js` 末尾调用）。缺省 / `null` = 站桩。
+- **策略**：`stationary`（站桩）/ `breakthrough`（向威胁最大的蓝方集中突破，`threat` 可选 `nearest`（默认）/ `strongest` / `weakest`）/ `cluster`（向 `core` 下标抱团）/ `circle`（往 `center`+`radius` 圆环填空）/ `flee`（朝 `fleeTo` 直线撤离）。
+- **两条特殊规则**：① 已交战（射程内有可命中蓝方）的红方**一律原地固守**（`aiIsEngaged()`）；② 红方**骑兵优先把蓝方炮兵**当目标（`pickThreatBlue()` 的 `cls === '骑'` 分支）。
+- 约束：每关 AI 固定、可复现，不用 ML/DL；AI 只管"往哪走"，攻击仍走引擎逻辑。
+
+## 兵种设计
+
+| 兵种 | `class` | 速度 | 射程 | 攻击 | 生命 | 原型常量 |
 |--|--|--|--|--|--|--|
-| 步兵 | 步 | 0.1 | 0.5 | 0.5 | 60 | 基础模板（有图） |
-| 炮兵 | 炮 | 0.05 | 4.0 | 0.7 | 60 | 远程高伤慢速（有图） |
-| 骑兵 | 骑 | 0.2 | 0.5 | 1.0 | 60 | 高速高攻玻璃剑 |
-| 散兵 | 散 | 0.1 | 1.0 | 0.7 | 42 | 中程脆皮骚扰 |
-| 掷弹兵 | 掷 | 0.05 | 0.5 | 0.7 | 120 | 近战肉盾 |
+| 步兵 | 步 | 0.1 | 0.5 | 0.5 | 60 | （关卡里直接写常量组合） |
+| 炮兵 | 炮 | 0.05 | 4.0 | 0.7 | 60 | — |
+| 骑兵 | 骑 | 0.2 | 0.5 | 1.0 | 60 | `UNIT_CAVALRY` |
+| 散兵 | 散 | 0.1 | 1.0 | 0.7 | 42 | `UNIT_SKIRMISHER` |
+| 掷弹兵 | 掷 | 0.05 | 0.5 | 0.7 | 120 | `UNIT_GRENADIER` |
 
-原型常量在 js/constants.js（UNIT_CAVALRY / UNIT_SKIRMISHER / UNIT_GRENADIER），class 字符用于棋盘文字占位（不给 img 即可，main.js 自动兜底；img 命名同步规则见结构树注释）。控制台可用 `__spawnUnit(color,'骑'|'散'|'掷',x,y)` 试玩；新关卡（to-do #10）将正式部署这些兵种。面板/范围圈的中文名在 main.js 的 UNIT_NAME_MAP 维护。
+数值常量都在 `js/constants.js`（`ATK_RANGE_*` / `MOVING_SPEED_*` / `LP_*` / `ATK_*`）。棋盘上无图时用 `class` 字符占位（不给 `img` 即可，`main.js` 自动兜底）。面板与范围圈里的中文名在 `main.js` 的 `UNIT_NAME_MAP`。
 
-## 代码现状与坑（通读代码后补充，动手前先看）
+> ⚠️ 命名坑：`constants.js` 的原型用 **`class`** 作键；而 `loadGame()` 建单位时把 DOM 上的类名存成 **`cls`**（`armys[i].cls`）。**对局中判断兵种请用 `u.cls`**。
 
-- end-game.html：通关 game6 后由 levels.js 注册表的 Next Game 逻辑跳到它，是个静态"恭喜通关"页（正常结局占位，to-do #13/#14 会接结局分支）。
-- README.md（to-do #17 草稿已写，按"文档要求"7 问组织，待验收；示例图部分待补充截图）。
-- 收尾清理（2026-09-05）：favicon.svg 由 2MB 换成小型矢量图标；移除 7 个游戏页里的 <icon></icon> 空标签；删除 main.js/pieces.js 的高频调试 console.log。
-- 第 4 关追逐战（收尾后新增）：红方 AI 用 strategy:'flee'（ai.js，朝 fleeTo 直线撤离）；game4 的 objective { type:'retreat', loseEscape:3, exitX, exitY } 触发 main.js 的 processTurnEscapes()/追逐结算——逃脱≥3 判负，逃脱 0/1/2 支分别 3/2/1 星；escaped 标记随快照持久化。
-- 第 6 关改版为"滑铁卢·限时攻坚"（收尾后新增）：红方 8 人（原 7 人 + 中墙 1 步）在右侧高地原地固守——levels.js 第 6 关 ai 置 null（站桩，不再 breakthrough+weakest）；`turns_limit: 18`。**星级按通关所用步数给**，实现在 main.js `checkWinState()` 里 `CURRENT_LEVEL_ID === 6` 的独立分支（该分支三种情况都 `return`，不会走到下面通用的"按存活蓝方数给星"逻辑）：`usedTurns = turns_limit - remain_turns`，≤13=3星 / ≤15=2星 / ≤18=1星；超过 18 步未全歼 = 失败。玩家在"按时出伤"与"少损子力"间取舍。
+## 脚本加载顺序与模块
 
-运行机制（对后面大部分改动都有影响）：
+- **游戏页**：`constants → pieces → arrow → bgm → dialog → account → ui → save → main → fx → ai → levels → gameN`（都是 `defer`）。
+  - `bgm.js` 放在 `dialog.js` **之前**：`dialog.js` 要用它的 `initBgm()` 把背景音乐挂到剧情弹窗的"继续"按钮上。
+  - `gameN.js` 末尾做入口校验 / `loadGame(gameN)` / `loadSnapshot()`——**`gameX.js` 一加载就建房建棋子**。
+- **其它页**：`index.html` = `account → bgm`；`register.html` = 只有 `account`；`menu.html` = `account → ui → save → levels → menu-saves → bgm`；`achievements.html` = `account → ui → save → menu-achv → bgm`；`end-game` / `fail` / `hidden-end` = `account → ui → save → bgm`；**`destiny-fail.html` 只有 `bgm.js`**（它只显示结局文字 + 一个 `Next`，不需要账号/存档/提示组件）；`group.html` 不带任何脚本。
+- **只有 `gameN.js` 存本关棋子配置**，跨关卡信息一律进 `levels.js`（方便各人维护自己那关）。
+- `main.js` 一加载就 `getElementById` 一批固定元素，**缺一个就报错**（见「页面结构与各页职责」）。
 
-- 点一次 Next Turn，内部是同步连跑 24 个"帧"（nextStep）当一回合；画面上看到的平滑移动只是 CSS transition 对最终位置补的动画，战斗结算其实一瞬间就完成了。
-- 移动模型（蓝红统一，一回合内方向固定）：每个单位本质都是"每回合做一次移动决策"。"给棋子设置移动方向"在代码里实现成"给一个目标点"：玩家在点 Next Turn 前随时能改任意棋子的目标，每回合都能改，不改就沿用上一目标，走到就停；路上只要敌方进入攻击范围就停下开打（攻击优先于移动）。所以"目标点"不等于"只能设一次"。红方 AI 同理：每回合开始按策略算一次方向/目标。一回合（24 帧）内方向不再变化。
+## 运行机制（改动前必读）
+
+- 点一次 Next Turn = 同步连跑 **24 个"帧"**（`nextStep()`）算作一回合；画面上的平滑移动只是 CSS `transition` 补的动画，战斗结算一瞬间就完成。
+- 移动模型（蓝红统一）：玩家给棋子设"目标点"，每回合可改，不改就沿用；走到就停；**路上敌方进入攻击范围就停下开打（攻击优先于移动）**。
 - 攻击没有冷却、不分先后手，每帧结算一次，基本是双方 DPS 对耗。
-- 棋子之间没有碰撞也不占格，可以互相重叠、穿行。
-- 行动顺序 = armys 数组顺序（即 gameN.js 里 push 的顺序，蓝方先 push、红方在后），每帧按这个顺序逐个结算。后果：1 号棋子这一帧移动到会被 3 号棋子攻击的位置时，同帧内排在后面的 3 号能立刻打它，而 1 号要等下一帧才能还手（如果还活着）。暂时当合理 feature 保留，写 AI / 调平衡时留意。
-- 红方当前在代码里不会动（原因见上面"敌方 AI 设计"一节），不是设计如此，是接口没留。
-- 选中与查看模式（to-do #4/#5）：指挥模式（默认）的选中集合 selectedPieces（只含存活蓝方）：单击=单选、Ctrl/Shift+单击=加减选、拖拽=画框多选、点空白/红棋=给全部选中下令移动（下令后保留选中）、对唯一选中再点一下=原地待命。左侧显示条 #info-bar（renderInfoPanel，随选中/每回合刷新）列出选中单位 类型/射程/攻击/速度 + LP 进度条。关卡内"查看敌人"按钮切换 viewMode='enemy'：左键单选或拖拽框选红方（selectedEnemies，不画外圈，右侧面板 #enemy-info（renderEnemyPanel）显示其剩余 LP）；再按一次返回指挥。UI 通过 getSelection()/addSelectionListener()/getEnemySelection()/addEnemySelectionListener() 与选择逻辑解耦（供 #6/#7 用）。
-- 脚本加载顺序固定：constants → pieces → arrow → main → gameX，且 gameX.js 一加载就调 loadGame 建房建棋子。新页面照抄这个顺序和 DOM 结构即可。
-- 攻击范围是按格算的欧氏距离（standard = 0.5 之类），棋子视觉直径 4dvh、一格约 8dvh，画攻击范围圈时要先换算。
-- 星级按过关时活着的蓝棋数量给（0 个=1 星、1 个=2 星、2 个以上=3 星），3 星是有一定难度，需要思考的。
-- 判死条件是 lp <= 0（原"lp < 0、恰好归 0 不死"的 bug 已在 to-do #4 修复）。
-- 存档层（to-do #2/#3）：活动存档 = a.save:<用户名>（menu 只展示它），结构 { unlocked, stars, snapshot }：unlocked/stars 是主界面(menu.html)的进度信息，snapshot 是当前进行关(gameN.html)的中途快照；通关自动写 a.save。手动备份 = save1/save2/save3:<用户名>，结构相同；关卡内 Save/Load 任选目标（a.save 或某手动档），"Load 存档X" = 用 X 覆盖 a.save。captureSnapshot()/loadSnapshot() 负责快照存取。menu 提供"重新开始游戏"= 清空 a.save（resetAutoSave，手动备份保留）。
-- 每回合 24 帧跑完立刻判胜负：判负条件 = 蓝方全灭或回合耗尽（红方全灭时优先判胜）；判胜/判负后 #board、按钮隐藏，只留结算界面。gameN.html 的固定 DOM（#board、#button、#win/#lose、星级、replay/next 按钮）一套不能少，main.js 一加载就 getElementById。死单位灰显到下一次点 Next Turn（clearDisable）才从棋盘消失；现在的 Replay 按钮只是整页刷新。
+- 棋子之间**没有碰撞也不占格**，可以重叠、穿行。
+- 行动顺序 = `armys` 数组顺序（`gameN.js` 里 push 的顺序，蓝方先、红方后），每帧按序逐个结算。后果：后面的棋子同帧能打到刚移动过来的前面的棋子，而前者要等下一帧才还手（当作合理 feature 保留）。
+- 判死条件是 **`lp <= 0`**（原"`lp < 0`、恰好归 0 不死"的 bug 已修）。
+- **一回合 24 帧跑完立刻判胜负**：红方全灭优先判胜；否则蓝方全灭 / `remain_turns == 0` / 第 4 关逃脱超限判负。判胜负后 `#board`、`#button` 等隐藏，只留结算区。
+- 死单位先灰显，下一次点 Next Turn（`clearDisable`）才从棋盘消失；`Replay` 只是整页刷新。
+- 响应式：`html { min-width: 320px }`；断点 `max-width: 1100px`（面板收窄）、`max-width: 760px`（棋盘边框 6px、单列堆叠）、`max-height: 680px and min-width: 761px`（压扁纵向留白）；`prefers-reduced-motion: reduce` 关掉过渡与部分动画。
+
+### 选择与查看模式
+
+- 指挥模式（默认）的选中集合 `selectedPieces`（只含存活蓝方）：单击 = 单选、Ctrl/Shift+单击 = 加减选、拖拽 = 画框多选、点空白/红棋 = 给全部选中下令移动、对唯一选中再点一下 = 原地待命。**下令后选中被清空**（箭头还在、范围圈消失）。
+- 左侧 `#info-bar`（`renderInfoPanel`，随选中/每回合刷新）列出类型 / 射程 / 攻击 / 速度 + LP 进度条；**没有选中时整条隐藏**（`display:none`，不显示空态文案）。
+- `查看敌人` 按钮把 `viewMode` 切到 `'enemy'`：左键单选或拖拽框选红方（`selectedEnemies`，不画外圈），右侧 `#enemy-info`（`renderEnemyPanel`）显示剩余 LP；再按一次返回指挥。
+- UI 通过 `getSelection()/addSelectionListener()/getEnemySelection()/addEnemySelectionListener()` 与选择逻辑解耦。
+
+### 存档层（`js/save.js`）
+
+- `a.save:<用户名>`：`{ unlocked, stars, snapshot, hiddenUnlocked }`——`unlocked` / `stars` 是主界面进度，`snapshot` 是当前进行关的中途快照（位置 / LP / 目标 / 剩余回合 / `escaped`）。
+- `save1~3:<用户名>`：手动备份，结构相同。关卡内 Save / Load 任选目标；"Load 存档X" = 用 X 覆盖 `a.save`；覆盖手动档时**合并 `hiddenUnlocked`**。
+- `achv:<用户名>` 成就、`achv-fail:<用户名>` 连败计数（**账号级**，三份手动档共用；读旧档不会回滚成就）。
+- `resetAutoSave()`（主界面"重新开始游戏"）= **清空 `a.save` + 成就 + 连败计数**，手动档保留。
+- `clearAuto(user)` = 只把 `a.save` 还原成"未开始"（`{unlocked:1, stars:{}, snapshot:null}`），**不碰成就与手动备份**（存档卡片里"载入空档"用）。
+- 调试函数：`__saveMidLevel()` / `__clearSave()` / `__spawnUnit(color,'骑'|'散'|'掷',x,y)`（提示已降级为 `console.log`）。
+
+## UI 提示约定（`js/ui.js`）
+
+玩家流程**不用原生 `alert()` / `confirm()`**（仅作 DOM 不可用时的兜底），统一走四个全局函数：
+
+- `toast(msg)`：底部轻提示（保存成功、已载入、无存档…）；
+- `achievementToast(title, desc)`：**右上角浮动**（成就解锁、隐藏路线开启），可堆叠、点击可关、4.5s 自动消失；
+- `modalConfirm(msg, onOk)`：卡片式确认（取消 / 确定），**只有点"确定"才执行 `onOk`**；
+- `modalNotice(msg, onClose)`：卡片式通知（只有"确定"）。
+
+**层级约定**：`.ui-modal-mask` = `z-index:100`，所以两个浮动层必须更高——`.ui-toast-stack` = **200**、`.ui-achv-stack` = **210**；`.ui-toast` 底色是不透明的 `#0d1c30` 并带浅色描边。**新增任何浮动提示层都要高于 100。**
+
+已引入 `ui.js` 的页面（13 个）：`menu` + `game1~8` + `end-game` / `fail` / `hidden-end` + `achievements`。⚠️ **`destiny-fail.html` 没引入 `ui.js`**，那边只能用原生 alert 兜底（目前也没用到）。
+
+## 背景音乐（`js/bgm.js`）
+
+5 首逐页分配：
+
+| 曲目 | 页面 |
+|--|--|
+| `Preussens-Gloria.mp3` | `index.html` / `menu.html` / `achievements.html` |
+| `The-British-Grenadiers.mp3` | `game1` / `game2` |
+| `La-Chanson-De-L-Oignon.mp3` | `game3` / `game4` |
+| `Chernoberg-March.mp3` | `game5` |
+| `La-Marseillaise.mp3` | `game6` / `game7` / 四个结局页 |
+
+元素 id：`#index-music`（首页）、`#menu-music`（主界面 / 成就页）、`#game-music`（关卡与结局页），都 `<audio loop>`。**`game8.html` 没有背景音乐。**
+
+**播放逻辑全站统一走 `initBgm(id, fallbackEl)`**：**先尝试播放**；只有 `play()` 被浏览器自动播放策略拦下（Promise reject 或同步抛错）**才**退回该页原本的"点击播放"——`fallbackEl` 不传就挂 `document` 首次点击，传了元素就挂那个元素。
+
+| 页面 | 调用 | 回退触发点 |
+|--|--|--|
+| `index` / `menu` / `achievements` / 四个结局页 | `initBgm('<id>-music')` | `document` 首次点击 |
+| `game1~game7` | `initBgm('game-music', next)`（在 `dialog.js` 里） | 剧情弹窗的**「继续」按钮** |
+
+- 回退监听是 `{ once: true }`；那一下若再被拦会**自动重新挂回来**；元素不存在时静默返回 `null`。
+- `volume` 统一 `0.5`。
+- 已删除的旧机制：`sessionStorage.startMenuMusic` 接力（index 写 / menu 读）、`sessionStorage.game1Music`（写了没人读，2026-09 清掉）。
+
+## 特效（`js/fx.js`）
+
+两个特效层由 `fx.js` **动态创建**在 `#board` 内，页面 DOM 不用改：
+
+- `#fx-layer`（`z-index:120`）：开火烟雾 + 枪口火光，盖在棋子之上；
+- `#fx-trail-layer`（`z-index:8`）：移动扬尘尾迹，压在棋子之下（像留在地上的土）。
+
+- 挂载点只有 4 行（`main.js`）：两处开火结算后 `fxMarkFired(element, atktar)`、移动落点后 `fxMarkMoving(element)`、24 帧循环结束后 `fxFlush()`。**不要写进逐帧逻辑。**
+- 聚合：开火 1 撮 = 6 个烟团 + 1 次火光；移动 1 条尾迹 = 沿路径等距 ≤10 个尘团（位移 < 0.3 格不画）。
+- 参数集中在 `fx.js` 顶部：`PUFFS(6) / PUFF_MS(1500) / FLASH_MS(240) / TRAIL_MAX(10) / TRAIL_MS(1400) / TRAIL_MIN_CELL(0.3) / TRAIL_SPACING(0.35) / SPAWN_DELAY(400) / MAX_NODES(200)`；外观在 `style.css` 末尾的 `.fx-puff` / `.fx-trail` / `.fx-flash`。
+- **尾迹必须"亮芯 + 暗环"双对比**（深草地底与浅冰面底都要看得清）；尘团尺寸 2.4dvh。
+- 开关：`window.fxEnabled = false` 即时关闭；`prefers-reduced-motion` 或页面不可见时不生成；调试 `fxDebug.liveCount()` / `fxDebug.clearAll()`。
+- ⚠️ 三个坑：① `.chess` 是 `overflow:hidden`，烟**不能**挂在棋子的 `::before/::after` 上；② 坐标用棋盘几何换算（与 `pieces.js` 的 `movePieceTo` 一致），`distance`/`offset` 只能靠实测 `.cell` 矩形反推；③ 判断移动路径**不能**用 `getBoundingClientRect()`。
+
+## 主界面与战役地图（`menu.html` + `js/menu-saves.js`）
+
+`menu.html`（70 余行）只有：页头卡片（kicker / `h1` / 欢迎语）→ **战役地图** `#campaign-map` → `#btn-saves`「读取存档」→ 导航卡片（小组介绍 / 成就（含计数） / 退出登录）。内联脚本只做登录校验、欢迎语、`renderMenuSaves()`、`bindMenuSaves()`、`refreshAchvLink()`、登出。
+
+**地图**
+
+- 底图 `img/europe-map.svg`（37.9KB，`viewBox="0 0 1000 785"`）：由 **Natural Earth（公有领域）** 经 `world-atlas@2` 的 `countries-50m.json` **本地生成**（等经度 + 墨卡托；`lon −10..40 / lat 34..60`）。**生成脚本是一次性的、用完已删**；来源与参数写在 SVG 顶部注释里。
+  - 不要用 Wikimedia 抓图（这台机器上 `upload.wikimedia.org` 返回 429/400）；`cdn.jsdelivr.net` / `raw.githubusercontent.com` 正常。
+- **投影必须两边一致**：`menu-saves.js` 顶部的 `MAP = { lonMin:-10, lonMax:40, latMin:34, latMax:60 }` 与 `mercY()` 必须和生成 SVG 时同一套公式。**改地图范围要同时改 SVG 与这段常量。**
+- 旗标位置来自 `levels.js` 每关的 `map:{lon,lat}`：L1 土伦 5.93/43.12、L2 图卢兹 1.44/43.60（手动西移）、L3 耶拿 11.59/50.93、L4 柏林方向 13.40/52.52（手动东北移）、L5 斯摩棱斯克以西 31.00/54.60、L6 滑铁卢 4.40/50.72、L7 巴黎 2.35/48.85（象征性）。
+- **渐进揭示**：只画 `lv.id <= a.save.unlocked` 的关卡（加上当前进行中那一关），后面的不出现标记也不画线。
+- 标记 `.map-pin`：0 尺寸的锚点（`left/top` 就是投影坐标），里面是圆钉（写关号 + 小尖脚）+ 下方一行星级；**没有名字卡牌**，关名放在原生 `title` 里。状态 `data-state` = `done` / `open` / `cont` / `hidden`。
+  - 星级两个偏移量**别随手改**：纵向 `top: 22px`（窄屏 `19px`，实测钉底到星级顶边净空隙 9px）；横向 `transform: translateX(calc(-50% + 0.05em))`（窄屏 `+0.03em`）—— 因为 `letter-spacing` 算在每个字的步进里（含最后一个字），只写 `-50%` 会让**中间那颗星偏左半个字距**。
+- **连线**（内联 SVG，viewBox 与底图等比）：已通关 = **红色静止虚线**（`dasharray 9 7`，**没有 animation**）；还没打通的下一段 = 浅灰静止虚线 `7 9`。
+  - **只有"刚通关回主界面"那一下有动画**：`?unlock=N` 时给新解锁那段叠一层遮罩（`<defs id="route-reveal-defs">` → `<mask id="route-reveal">`），遮罩里一根白粗线用 `map-route-draw 3s linear` 把 `stroke-dashoffset` 100 → 0，**被擦到的虚线才露出来**（"虚线一段一段加载"）；期间下面那根加 `--pending`（`opacity:0`）、下一关标记加 `--wait`（`visibility:hidden`）。`DRAW_MS = 3000`（**必须与 CSS 的 3s 同步**）后 `finishReveal()` 撤遮罩、放出虚线、把标记换成 `--fresh`。
+  - ⚠️ 遮罩**必须** `maskUnits="userSpaceOnUse"` 且范围写整个 viewBox：默认 `objectBoundingBox` 对水平/垂直线段会算出 0 宽度，**整根线会看不见**。
+  - 时序跑完由 `history.replaceState` 抹掉 query，刷新不重播。
+- ⚠️ `.campaign-map` **不能有 `padding`/`border`**（标记按百分比定位，参照盒子必须正好等于底图），`overflow` 保持 `visible`。
+
+**「读取存档」弹卡**（点 `#btn-saves` 懒加载）：`ui.js` 的遮罩 + 加宽类 `.ui-modal--wide`，内容只有「标题 → `#manual-list` → `#btn-restart` → 关闭」，**没有说明小字**。手动档 1~3 每行写明进度（`已通关 N 关 · 星级 x/18 ｜ 第1关 ★★★ … ｜ 第 5 关进行中（剩余 9 回合）`）；非空档给「载入 / 删除」；**空档显示 `（空）` 但同样给「载入」，走两段确认**（第一次点只弹 toast 并把按钮改成「仍要载入」，再点才走 `clearAuto()`）。关闭三条路径：`关闭` / 点遮罩 / ESC。载入或删除后弹窗与页面进度同时刷新、窗口不关。
+
+## 结算区（`#result-area`）
+
+`game1~7.html` 把 `#win` / `#lose` 与 `#button-next-game` / `#button-replay` / `#button-fail` **一起包进 `<div id="result-area">`**（`#button`（Next Turn）留在外面）。
+
+- CSS：`position: fixed; left/top: 50%; transform: translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:0.9rem; z-index:60`，并加 `pointer-events:none`（子元素 `auto`，空的时候不挡棋盘）。实测整组中心与视口中心偏差 **0.00 / 0.00**。
+- **为什么必须包一层**：只给 `#win`/`#lose` 定位是不够的——结算按钮是 `body` 的兄弟节点，会留在文档流上方。
+- **判负时 `Menu` 也要进组**：`main.js` 的 `hideMidGameControls()` 故意保留 `Menu` 作为出口，判负分支会调 `moveMenuIntoResultArea()` 把 `#button-exit` 挪进 `#result-area`——调用点是**通用判负分支 + 第 5 关自己的两条分支 + game8 的 `line_defense` 分支**（最后这个在 game8 里是空操作，那边没有 `#result-area`）；**判胜不挪**（判胜时整条 `#game-actions` 都是隐藏的，结算页只留 `Next`）。
+- **`game8.html` 没动**：它有自己的一套结算分支、也没有 `#result-area`，`moveMenuIntoResultArea()` 在那边是空操作。
+
+## 页面结构与各页职责
+
+- **游戏页固定 DOM**：`#board`、`#button`（Next Turn）、`#result-area`（内含 `#win`/`#lose`/星级/`#button-next-game`/`#button-replay`/`#button-fail`）、`#info-bar`、`#enemy-info`、`#game-actions`（`#save-load-btns`（Save / `#slot-select` / Load / 查看敌人）+ `#button-exit`（Menu））、`.game-heading`（`h2` + `#footer-bar`）。**一套都不能少**，`main.js` 一加载就取。
+- **进关流程**（`main.js` 末尾）：第 1 关 = 立绘剧情 → 战前简报（`开 战`）→ 教程图 1 → 教程图 2 → 棋盘淡入；其余关 = 立绘剧情 → 战前简报 → 淡入。每一步都裹 `try/catch`，异常直接 `revealBattlefield()`，不会卡在全黑。
+  - `level-opening` 这个 `body` 类**必须成对**：它把战场藏起来，只有 `revealBattlefield()` 会摘掉。
+- **结局页**：`.page-ending` + `.form-box` 里一个 `Next`。结局页的 `.form-box` 把背景/边框/圆角/阴影/内边距全部归零，**还必须关掉 `.page-ending .form-box::before`（`content:none`）**——那套皮肤给它挂了一个 `inset:7px` 的 1px 装饰线框，只清本体 `border`/`box-shadow` 它还在，按钮上会留一道细线。`index.html` / `register.html` 的登录注册表单走另一套皮肤（选择器带 `.page-ending` 前缀，不受影响）。
+- **成就页**：成就 4 项——`victory_end` 胜利 / `tragic_fail` 惨痛失败 / `empire` 法兰西帝国 / `rise_again` 失败乃成功之母（同关连败 ≥4 后以 3 星通关）。`menu-achv.js` 优先填充页面预置的 `#achv-area`（保留它的 `.panel-card`）。
+- **`game8.html`**：测试关，不在 `levels.js` / 地图里，只能直接开 URL；战斗是自带脚本，未接入 `ai.js` 与 `fx.js`。
+
+## 排查 CSS 问题时的两条通用经验
+
+本项目由两个 demo 合并而来（A = `demo-游戏内容多` 的玩法底座，B = `demo-美化好` 的表现层），`style.css` 里 **B 的「2026 UI 重制」段在 A 的规则之后**，它们**特异性常常相同**，于是 B 会赢。
+
+1. **"整体替换型"属性**（`filter` / `transform` / `box-shadow` / `border` / `background`）最容易出事：A 的某状态规则（`.chess.disabled` 等）与 B 的 `.game-page .X` 同特异性时会被整个替换。加新状态样式请写在**文件末尾**并用 `.game-page` 前缀把特异性抬到 (0,3,x) 以上，别指望靠顺序。
+   - 已用这条修过：阵亡单位"先变灰再消失"的**变灰阶段**失效（`.game-page .chess.disabled img`）。
+   - `.selected` / `.highlighted` / `--blue:hover img` 是 B **有意**接管皮肤，不要"修"。
+2. **`#board` 有 9px 边框（窄屏 6px）**，而棋子/箭头/范围圈/框选矩形都是 `#board` 的绝对定位子元素，坐标原点在 padding box。**任何"鼠标 → 棋盘坐标"的换算都要走 `boardContentRect()`**（用 `clientLeft`/`clientTop`），不要直接用 `getBoundingClientRect()`。目前 3 处在用：`renderOrderPreview()`、点击下令处、`updateBox()`。
+   > `.cell` 的 1px 网格线不会造成偏移（`*{box-sizing:border-box}`）。
+3. **每关棋盘桌面**靠 `style.css` **最末尾**的 `.game-page.gameN #board` 块（特异性 1,2,0）接管，必须把 `background-image / size / position / repeat` **四条一起重声明**，否则会被重制段的 `background-size: 20% 20%` 平铺成小图。
+
+## 各关特殊玩法
+
+- **第 4 关**：红方 `flee` 朝 `{9.5,-0.5}`（棋盘右上顶点）撤离；`game4.js` 的 `objective { type:'retreat', loseEscape:3, exitX:9.5, exitY:-0.5 }` 触发 `processTurnEscapes()` 的逐帧逃脱检测与追逐结算——逃脱 ≥3 判负，0/1/2 支 = 3/2/1 星；`escaped` 随快照持久化。
+- **第 5 关**：8 名红方在右侧原地固守（`ai:null`），`turns_limit: 18`，按通关步数给星（见「关卡配置一览」）。
+- **第 6 关**：6 蓝 vs 6 红（含红炮 / 红骑），`breakthrough` + `threat:'strongest'`，25 回合。
+- **第 7 关**：隐藏关，`cluster` + `core:0`，26 回合；入口校验见「结局与解锁」。
+- **第 8 关**：自带部署期与拖拽（类名 `game8-drag-piece` / `game8-artillery`），我方 5 门炮兵固定（`speed=0`），红方 7 人向右突破"红线"。
+
+## 已知缺陷与待修
+
+1. **第 5/6 关旧快照兼容**：两关的"战斗 + 回合数 + 叙事"在 2026-09 整体对调过（见「历史记录」），浏览器里遗留的旧中途快照仍记着旧布局与旧回合数，第 5 关的按步数给星会偏松。清掉这两关的快照或"重新开始"即可。
+2. **第 8 关未接线（设计如此）**：不在 `levels.js` / `menu.html`；`objective.breakthrough_limit` 未被 `main.js` 读取（实际用 `loseEscape`）。
+3. **红方散兵无图**：`img/` 没有 `red_skirmisher.png`，红方散兵走文字占位。补图时记得同步 `constants.js`。
+4. **`destiny-fail.html` 只引了 `bgm.js`**（没有 `account.js` / `ui.js` / `save.js`）：该页当前只显示文字 + `Next`，所以能用；若要在这一页加 toast / 弹窗 / 成就，先把对应脚本补上。
+5. `main.js` 的 `showWinNote(text)` 与 `.win-note` 样式**保留但当前无人调用**（结算页已不写文字）；`levels.js` 里 `quickL1` 参数同理（保留仅为兼容）。
 
 ## to-do list
 
-按顺序一个一个完成，每完成一项进行测试，并把对应的信息同步到 AGENTS.md.
+按顺序一项一项做：**每完成一项先自测、给出可核对的验收指标，再让我验收，然后进入下一项**；每项完成后把结论同步进本文件。
 
-每完成一项让我验收再进行下一项；每次验收你需要提供给我验收的关键指标让我验证。
+### 第一期（1~18）：全部完成并通过验收（2026-09-05）
 
-1. ✅ 一个主页，支持以下功能（已完成并通过验收：2026-09-05）
-   - 注册与登录（保存在本地 localStorage，不需要考虑其安全性），其中登录页面内嵌在主页，注册另开页面
-   - 在主页登录后，跳转到游戏主界面
-   - 跳转到小组介绍页面，该页面需要留出 6 个容器来负责每位成员的个人简介，并支持跳转到更详细的个人页面（这一页面不需要你来制作，将由同学们各自制作后汇总）
-2. ✅ 一个游戏主界面，支持以下功能（已完成并通过验收：2026-09-05）
-   - 存档功能（按用户独立：同一浏览器里多个账号互不干扰；活动存档 a.save 维护 menu 进度（解锁/星级）与当前关快照（位置/LP/移动目标/剩余回合），通关自动存 a.save；另有手动备份 save1~3，"载入"任一档即用其覆盖 a.save，见第 3 条）
-   - 显示当前推关进度和已获得星级：哪几关过了、每关几颗星，进主界面就能看到（数据跟着该用户自己的 a.save 走）
-3. ✅ 游戏界面需要新增存档按钮（Save 可写入 a.save 或备份到 手动档1~3；Load 选择某存档即用其覆盖 a.save 并按其快照继续），并提供"返回主界面"的出口（现在关卡内没有任何退出入口，Replay 也只是整页刷新）（已完成并通过验收：2026-09-05）
-4. ✅ 支持画框选中功能，用鼠标拖拽画框即可选中框内所有军队（实现时把全局单选 selectedPiece 一并改成"选中集合"，第 5、6 条直接基于它做，避免返工；顺手把判死条件从 lp < 0 改成 lp <= 0，即代码现状里记的 bug）（已完成并通过验收：2026-09-05）
-5. ✅ 添加左侧显示条显示当前选中的所有军队，以及它们的各项属性（包括攻击范围，atk等）和当前 LP（以类进度条的形式呈现）（已完成并通过验收：2026-09-05；含"查看敌人"模式扩展与 lpMax 满血上限修复）
-6. ✅ 同时显示条需要支持在显示条上取消选中（已完成并通过验收：2026-09-05；含"悬停卡片→对应棋子呼吸发光"联动：我方蓝光/敌方红光）
-7. ✅ 加入棋子攻击范围显示，点击棋子后可以显示其攻击范围（已完成并通过验收：2026-09-05；范围圈随棋子平滑移动，敌方模式为红圈/己方为蓝圈）
-8. ✅ 设计至少 3 个其它的兵种（如骑兵，攻击力高，速度快，血量一般，数量少）（已完成并通过验收：2026-09-05；骑兵/散兵/掷弹兵原型入 constants.js，正式部署随 #10 关卡）
-9. ✅ 给红方补上移动 AI：把上面设计好的几套逻辑（集中突破型、聚团取暖型、圆圈防守型）实现并在 3 关以及后续关卡中使用，并试调难度。注意 1，2 关设计上就是红方站着不动的，不需要 AI（已完成并通过验收：2026-09-05；引擎 12/12 自测通过，关卡 ai 配置经 levels.js 声明）
-10. ✅ 根据这些兵种和敌方 AI 设计至少 4 个其余的关卡，并修改 game2.js 来使 game2 中的链接正常跳转（顺手把"关卡注册表"建起来：js/levels.js 只放跨关卡的设计信息——标题、关卡顺序与跳转、敌方策略、剧情、hard 效果、解锁条件等；gameN.js 保留本关的棋子配置与加载。关卡可能由不同人分别维护，各自改自己那关时不用碰别人的文件；hub 的进度显示、跳转、隐藏关都从 levels.js 读；gameN.js 不再各自写死 next 跳转）（已完成并通过验收：2026-09-05；L5 后改为 breakthrough+strongest"铁流强攻"）
-11. ✅ 军队的行动指示箭头保留在画布上（已完成并通过验收：2026-09-05；常驻蓝/红箭头平滑跟随；多选预览箭头；下令后清空选中；修复红方位移无动画的 CSS 覆盖 bug）
-12. ✅ 一个教学页面，或者在每一关开始时对新机制进行介绍（已完成并通过验收：2026-09-05；levels.js 每关 hint + 进关"战前情报"弹窗）
-13. ✅ 一些简短的游戏剧情，以对话式展开即可（已完成并通过验收：2026-09-05；dialog.js + L1/L6 对话 + fail.html 提早失利结局 + end-game 正常结局（含滑铁卢伏笔））
-14. ✅ 隐藏关卡与隐藏结局，比如在某一 game 中完成某特定目标（这一目标需要在进入游戏时给出提示），下一关自动进入隐藏关，可以完成隐藏结局（特殊目标的完成状态要写进该用户存档，刷新不丢）（已完成并通过验收：2026-09-05；触发=game1 ≤12 回合通关开启隐藏路线，game6 后进高难 game7，game7 通关 → hidden-end 隐藏结局）
-15. ✅ 成就功能：主界面展示已达成/未解锁的成就（此项从第 2 条挪到这里：关卡还没设计完，成就清单暂时定不出来；实现前先把要哪些成就和关卡/兵种/隐藏关一起定下来，再做存储与展示；成就数据按用户隔离，与 a.save 同一套 localStorage key 规则）（已完成并通过验收：2026-09-05；试水 4 成就：胜利/惨痛失败/法兰西帝国/失败乃成功之母）
-16. ✅ 游戏界面再美化，如每关设计一个棋盘背景，胜利页面美化等（已完成并通过验收：2026-09-05；非棋盘表面统一为白卡片风格，核心棋盘 CSS 未动，胜利/失败结算页不卡片化）
-17. ✅ 撰写一篇项目文档，格式见下一小标题（已完成并通过验收：2026-09-05；README.md 按 7 问组织，示例图待成员补截图）
-18. ~~[可选]对每一关加入 hard-version，附加一些额外的效果，例如 [雷达干扰]: 每个单位只能在第一回合接收移动指令，[环境干扰]: 友方单位攻击力降低 30% 等~~（可选，决定不做，清单收尾 2026-09-05）
+| # | 内容 | 结果 |
+|--|--|--|
+| 1 | 主页：注册/登录（localStorage）+ 小组介绍入口 | ✅ |
+| 2 | 游戏主界面：按用户的存档 + 推关进度与星级展示 | ✅ |
+| 3 | 关卡内存/读档按钮 + 返回主界面出口 | ✅ |
+| 4 | 拖拽画框多选（顺手把判死改成 `lp <= 0`） | ✅ |
+| 5 | 左侧选中显示条（属性 + LP 进度条；含查看敌人模式、`lpMax` 修复） | ✅ |
+| 6 | 显示条上取消选中（含悬停卡片 → 棋子呼吸发光） | ✅ |
+| 7 | 点击棋子显示攻击范围 | ✅ |
+| 8 | 新增 3 个兵种（骑兵 / 散兵 / 掷弹兵原型入 `constants.js`） | ✅ |
+| 9 | 红方移动 AI（集中突破 / 聚团 / 圆圈）并试调难度 | ✅ |
+| 10 | 4+ 关卡设计 + 关卡注册表 `levels.js` | ✅ |
+| 11 | 常驻行动指示箭头 | ✅ |
+| 12 | 教学页 / 每关开始的新机制介绍（`hint` + 战前情报） | ✅ |
+| 13 | 对话式剧情（`dialog.js` + 立绘） | ✅ |
+| 14 | 隐藏关卡与隐藏结局 | ✅（判据 2026-09 改为"第 1~6 关全 3 星"） |
+| 15 | 成就功能（4 项） | ✅ |
+| 16 | 界面美化（每关棋盘桌面、结局页等） | ✅ |
+| 17 | 项目文档 `README.md`（按 7 问组织） | ✅ |
+| 18 | [可选] 每关 hard-version | 决定不做 |
 
-## 文档要求
+### 第二期（19~29）
 
-该文档至少需要回答以下问题:
+- **【高】** 19. ✅ 修复隐藏关解锁（`getLevelStars()` + `hiddenRouteOpen()` 统一判据；Node 沙箱自测 15/15）
+- **【中】**
+  - 20. 重做隐藏关（第 7 关"帝国黄昏"：玩法与难度重设计，当前是 `cluster` 抱团拆核心）
+  - 21. ✅ 主页地图（关卡目录改成 `img/europe-map.svg` 上的旗标 + 红色虚线；原文字列表已删）
+  - 22. 查看敌方功能增加数值显示（`viewMode='enemy'` 面板补攻击/射程/速度，当前只有血条）
+- **【低】**
+  - 23. 单位下方直接显示小血条
+  - 24. 重排按钮，`Next Turn` 做得更明显
+  - 25. 剧情引擎（**现状：已具备**——立绘版 `dialog.js` + 4 张立绘 + 7 关 `story`；若仍要推进请先说明还差什么，如打字机效果 / 表情差分 / 分支）
+  - 26. （选做）单位图鉴页（5 兵种数值与定位）
+  - 27. （选做）新加关卡（按 `gameN.js` + `levels.js` 注册表模式扩展）
+  - 28. 单位交战与移动的烟尘特效（**已实现**：见「特效」一节）
+  - 29. 加入更多剧情、优化场景
 
-- 项目是什么?
-- 项目的来源或背景?
-- 项目的具体内容（是否有树状图或其他方式的示意图让我们清楚知道网站即将包括的内容）？
-- 项目的技术细节，比如开发平台、运行平台等？
-- 详细的角色分工?
-- 详细的时间表（完整的3周）?
-- 是否有示例图帮助我们理解?
+## 文档要求（`README.md` 至少要回答）
 
-## 上次更改之后
+- 项目是什么？
+- 项目的来源或背景？
+- 项目的具体内容（是否有树状图或其他示意图帮助了解网站包含什么）？
+- 项目的技术细节（开发平台、运行平台等）？
+- 详细的角色分工？
+- 详细的时间表（完整的 3 周）？
+- 是否有示例图帮助理解？
 
-在上次使用 agent 开发之后，我们做出了如下改动：
+## 开发/验收工具约定
 
-### 修改一：修改范围
+- 验证方式：起本地静态服务器（`python -m http.server 8099 --bind 127.0.0.1`）+ iframe 外壳页（先写 localStorage 种子：`users` / `currentUser` / `a.save:v` / `save1:v` / `achv:v` 等），再用 headless Edge 读 DOM 指纹：
+  `& $edge @edgeArgs --dump-dom $url | Out-String`，其中 `$edgeArgs` 要**复用同一个 `--user-data-dir`**（且 **URL 用数组 splat 传**，否则会得到 0 字节输出）。
+  - ⚠️ **改完 `js/` 之后要换一个新 profile（或先删掉旧的）**：复用暖 profile 会让浏览器继续跑缓存里的 `main.js`，造成"改动没生效"的假象；`css` 改动会走 `If-Modified-Since` 重新校验，一般不受影响。
+  - headless 里**程序化点击不算用户激活**，所以"自动播放被拦 → 点击起播"这类行为要用**单元测试**（直接驱动函数并 spy `addEventListener`）来验证，别指望模拟点击。
+  - headless 截图**抓不到"页面加载后新增的 DOM"**（两次截图可能字节相同）；测特效可见性用静态对照页 + 像素偏移量。
+  - `armys` / `CURRENT_LEVEL_ID` 等是脚本顶层的 `let`/`var`，**不在 `window` 上**：测试里要用 `iframe.contentWindow.eval('armys…')`，不要用 `w.armys`。
+  - 模拟通关要连 `disabled` 一起置位：`armys.forEach(u => { if (u.color === 'red') { u.lp = 0; u.disabled = true; } }); checkWinState();`（`checkWinState` 只数 `element.disabled == false` 的单位）。
+- 写完临时脚本/页面**记得删掉**，并停掉后台服务器、清掉临时浏览器 profile。
 
-本次任务只修改棋子的移动与自动攻击逻辑，主要涉及 `js/main.js` 中的 `nextStep()`。
-除非确有必要，不要修改其他文件。
+## 历史记录
 
-### 修改一：修改移动逻辑时必须注意
-
-1. 不要破坏现有的回合系统。
-
-2. 不要直接修改各关卡 `gameN.js` 来解决公共移动逻辑问题。
-
-3. 不要让单位无视攻击范围直接穿过敌人。
-
-4. 如果单位已经处于敌方攻击范围内，应允许其向远离敌人的方向移动，而不是因为处于攻击范围内就完全无法移动。
-
-5. 如果单位从攻击范围外向敌人移动，则进入攻击范围后应停止并攻击。
-
-6. 靠近和远离敌人的判断，按照当前 `selectMinimalDistance()` 选出的最近敌人进行判断。
-
-7. 尽量保留原有 `nextStep()` 的移动、攻击和“防止移动超过目标位置”的实现方式，不要无必要地重写整个移动系统。
-
-8. 不要随意修改 `movingCounts`、回合结算、胜负判断、死亡单位处理等与本次任务无关的逻辑。
-
-9. 修改后应测试以下情况：
-   - 一开始在攻击范围内，向外撤退；
-   - 一开始在攻击范围内，向敌人靠近；
-   - 一开始在攻击范围外，向敌人移动；
-   - 从攻击范围外进入攻击范围；
-   - 移动过程中不会直接穿过敌人的攻击范围；
-   - 同时存在多个敌人；
-   - 已经死亡的棋子不能继续攻击或移动；
-   - 到达目标位置后行为正常。
-
-该修改已经全部完成。
-
-### 修改二：文本优化
-
-修改了 ``main.js`` 第 372 行的的结局提示文本；原为 ``failBtn.textContent = '看结局：命运无法改变';``，改为 ``failBtn.textContent = 'View Ending: Destined to fail';``。
-
-## 合并记录（A 为底座 ⊗ B 的美化层）
-
-本仓库由两个 demo 合并而来：
-
-- **A = `demo-游戏内容多`（底座）**：玩法与内容——第 8 关测试关、第 4 关追逐战结算、
-  AI 的 `flee` / `aiIsEngaged` / 骑兵优先打炮、背景音乐、第 1 关介绍图、每关专属棋盘桌面、
-  吴宸安个人页整套素材。
-- **B = `demo-美化好`（美化层来源）**：表现与叙事——「2026 UI 重制」设计系统、
-  立绘式对话引擎、7 关全量章节/立绘/剧情元数据、棋盘淡入揭示动画、4 张人物立绘。
-
-### 合并后各层的归属
-
-| 层 | 处理 |
-|--|--|
-| `js/main.js` | 取 A，另加 3 处 B 的移植：`revealBattlefield()`、`loadGame()` 里的 `level-opening`、以及 `showLevelIntro()` 改成「B 的立绘剧情 + 战役简报页 → A 的第一关教程图 → 淡入战场」（顺序见下） |
-| `js/dialog.js` | 整体取 B 的立绘版（A 版是它的功能子集） |
-| `js/levels.js` | A 的玩法字段（`ai` / `hint` / 第 4·6 关 `name`）+ B 的叙事字段（`chapter` / `location` / `scene` / `story`） |
-| `js/ai.js`、`js/game1~game8.js` | 全部取 A，未改动 |
-| `css/style.css` | A 全文 + B 的「2026 UI 重制」段；末尾追加「每关专属桌面」再声明块（见下） |
-| 14 个 HTML 页面 | A 的页面为底，套用 B 的类名与标记（`page-*` / `game-page` / `game-heading` / `turn-button` / `result-button` / `page-kicker`） |
-| `img/portraits/*` | 取 B（4 张立绘） |
-| `mus/*`、`img/level1-intro-*`、`img/back*` | 取 A |
-| `game8.html` + `js/game8.js` | 测试关，原样保留，**未接入 `levels.js` / `menu.html`**，只能直接访问 `game8.html` |
-
-### 四个必须知道的坑
-
-1. **每关棋盘桌面靠 `style.css` 最末尾的 `.game-page.gameN #board` 块**。
-   原因：B 的重制段用 `.game-page #board`（特异性 1,1,0）统一了棋盘底色，并设了
-   `background-size: 20% 20%`（原本给 `conic-gradient` 棋盘格用）。它与 A 的 `.gameN #board`
-   同特异性但位置更靠后，会覆盖 A 的规则；而且只覆盖 `background-image` 会让照片被平铺成小图。
-   所以末尾用更高特异性 (1,2,0) 的规则把 image / size / position / repeat 四项一起重声明。
-   **改动这段时不要把四条属性拆开写。**
-2. **`level-opening` 必须成对**：`gameN.html` 的 `<body>` 带这个类（CSS 借它隐藏战场），
-   只有 `revealBattlefield()` 会摘掉它。`showLevelIntro()` 的两个入口
-   （`loadGame()` 与 `loadSnapshot()`）都必须能走到淡入；函数体内已有 try/catch 兜底，
-   异常时也会 `revealBattlefield()`，避免页面永久全黑。
-3. **`#board` 的边框会让鼠标坐标整体偏移 —— 必须用 `boardContentRect()` 取原点**。
-   B 的美化给 `.game-page #board` 加了 `border: 9px solid #35291d`（窄屏断点 `border-width: 6px`），
-   而 A 原本的 `#board` 是没有边框的。棋子 / 常驻箭头 / 范围圈 / `#boxSel` 框选矩形都是
-   `#board` 的绝对定位子元素，**坐标原点在 padding box（边框以内）**；但
-   `getBoundingClientRect()` 返回的是 **border box（含边框）**。
-   凡是把鼠标事件坐标转成图层坐标的地方，都必须先扣掉边框宽度，否则整体偏移一个边框宽
-   （桌面 9px、窄屏 6px）。统一走 `boardContentRect()`（`main.js`，用 `clientLeft`/`clientTop`，
-   自动跟随断点变化）。目前用到它的地方共 3 处：`renderOrderPreview()`（鼠标跟随的红色预览箭头）、
-   点击下令的 `issueMoveTo()` 调用处、`updateBox()`（框选矩形）。
-   **新增任何"鼠标 → 棋盘坐标"的逻辑时都要用它，不要直接用 `getBoundingClientRect()`。**
-   > 注：`.cell` 的 1px 网格线**不会**造成偏移 —— `*{box-sizing:border-box}`（`style.css` 开头）
-   > 让边框画在网格轨道内部，轨道边界与格心都不动；`distance`/`offset` 也是由实测格心推出的。
-   > 框选命中判定用的是 `clientX/clientY` 与棋子 `getBoundingClientRect()`，本来就正确。
-4. **B 的美化段会「整体替换」同名属性，把 A 的状态样式吃掉（不只是层叠顺序问题）**。
-   已踩到的实例：阵亡单位「先变灰、再消失」的**变灰阶段**失效。
-   A 用 `.chess.disabled img { filter: brightness(0.2) }`（特异性 0,2,1）变暗，
-   B 的美化段用 `.game-page .chess img { filter: drop-shadow(...) }`（**同为 0,2,1**）
-   且位置更靠后 → `brightness(0.2)` 被整个替换，单位死亡后不再变灰，看起来"直接消失"。
-   已在 `style.css` **最末尾**用 `.game-page .chess.disabled img`（0,3,1）恢复。
-   > **排查同类问题的通用方法**：`filter` / `transform` / `box-shadow` / `border` 这类
-   > **整体替换型**属性最容易出事 —— 若 A 的某状态规则（`.chess.disabled` / `.selected` /
-   > `.highlighted` / `.hover-*`）和 B 的 `.game-page .X` 规则**特异性相同**，B 就会赢。
-   > 加新状态样式时，直接写在文件末尾并用 `.game-page` 前缀把特异性抬到 (0,3,x) 以上；
-   > 不要指望靠顺序。
-   > 注：`.selected` / `.highlighted` / `--blue:hover img` 这几处 B 是**有意**接管皮肤的
-   > （B 保留了 A 的亮度、只加了发光/描边），属于预期覆盖，不要"修"它们。
-
-### 第一关的进关流程（教程图排在剧情之后）
-
-`showLevelIntro()` 现在的顺序（`main.js` 末尾）：
-
-```
-第 1 关：立绘剧情 → 战前简报（开 战）→ 教程图1 → 教程图2 → 淡入战场
-其余关：立绘剧情 → 战前简报（开 战）→ 淡入战场
-```
-
-- 教程图 = `img/level1-intro-1.png`（① 选中/下令/攻击 四步操作教学）、
-  `img/level1-intro-2.png`（② 步兵兵种介绍），由 `showIntroImages()` 串联，
-  右上角 × 逐张关闭，**只在第 1 关出现**（`CURRENT_LEVEL_ID === 1`）。
-- 教程图**刻意排在剧情与战前简报之后**：先交代剧情、再给指令，最后用两张图把操作和
-  兵种定位讲清楚，然后进场。想调整位置只需改 `showLevelIntro()` 末尾总流程里
-  `playDialogue(story, startBattle)` 与 `startBattle` 内部
-  `showIntroImages(revealBattlefield)` 的嵌套关系。
-- `safe()` 包装器：剧情、简报、教程图、淡入每一步都裹了 try/catch，
-  任何一步抛异常都会直接 `revealBattlefield()`，不会把页面卡在全黑。
-
-### 第 6 关的星级规则（引擎实现）
-
-`turns_limit: 18`；给星在 `main.js` 的 `checkWinState()` 中 `CURRENT_LEVEL_ID === 6` 的独立分支里：
-`usedTurns = turns_limit - remain_turns`，**≤13 回合 = 3 星 / ≤15 回合 = 2 星 / ≤18 回合 = 1 星**，
-超过 18 回合未全歼 = 失败。该分支三种情况都 `return`，不会落到通用的「按存活蓝方数给星」。
-
-> ⚠️ 兼容性：若浏览器里还留着**旧的第 6 关中途快照**（`turns_limit` 为 17 时存的），
-> 载入后 `usedTurns` 会多算 1 回合，星级偏松。清掉该关快照或重新开始即可。
-
-### 第 4 关的剧情
-
-A 的第 4 关原本没有 `story`，B 的第 4 关剧情描述的是「血肉方阵」（抱团）玩法，与 A 的
-「逐猎」（红方撤往右上角）不符，因此按 A 的玩法重写了 4 句对白；`chapter` 也改为
-「第四幕 · 穷途逐北」。若不喜欢这段文案，直接改 `levels.js` 第 4 关的 `story` 即可，
-不影响逻辑。
+- **两个 demo 合并**：A（`demo-游戏内容多`：第 8 关测试关、第 4 关追逐战、AI 的 `flee` / `aiIsEngaged` / 骑兵优先打炮、背景音乐、教程图、每关桌面）为底座；B（`demo-美化好`：2026 UI 重制、立绘对话、7 关章节/剧情元数据、棋盘淡入、4 张立绘）为美化层。合并后 `main.js` 取 A 并移植了 `revealBattlefield()` / `level-opening` / 新的进关顺序；`dialog.js` 整体取 B；`levels.js` 是 A 的玩法字段 + B 的叙事字段。
+- **第 5 / 6 关对调（D-1：叙事随战斗走）**：两关的"战斗 + 叙事"整体互换，所以**第 5 关 = 18 回合攻坚（斯摩棱斯克·1812）**、**第 6 关 = 25 回合铁血强攻（滑铁卢）**；幕次已随之调成与关号一致（第五幕 / 第六幕）。页面顺序、解锁顺序、隐藏路线判据都没变。
+- **D-2 地图偏移**：第 2 关（剧情同为土伦）与第 4 关（奥尔施塔特离耶拿仅 20km）的旗标做了手动偏移，否则会与前一关重叠。
+- **移动/攻击逻辑修订（已完成）**：只改 `js/main.js` 的 `nextStep()` 相关部分——不破坏回合系统、不让单位穿过敌人攻击范围、允许"已在敌射程内时向远处撤"、从范围外进入后停下开打、按 `selectMinimalDistance()` 判断远近，并测过 9 种情形；`movingCounts` / 胜负判断 / 死亡处理未动。
+- **文本优化（已完成）**：`main.js` 第 7 关失败按钮文案改成 `View Ending: Destined to fail`。
+- **2026-09 一批界面修订**：结算区整体居中 → 四个结局页 `Next` 去掉外框（含 `::before` 装饰线）→ 战役地图改成"静止红色虚线 + 只在新解锁时加载"→ 地图星级位置/大小微调 → 删除若干重复小字（`#save-note`、"已通关 N 关"、地图下方小字、`menu.html` 里 group.md 那行）→ 背景音乐统一 `initBgm()` → 清理死代码（`startMenuMusic` / `game1Music` 接力）。

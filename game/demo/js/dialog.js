@@ -127,6 +127,10 @@ function playDialogue(lines, onDone) {
 		finish();
 	}
 
+	/* 背景音乐：进对话就先尝试播放；被浏览器拦下才退回"点这个按钮才播"
+	   —— 游戏页原本的触发点就是这个"继续"按钮（js/bgm.js）。 */
+	if (typeof initBgm === 'function') initBgm('game-music', next);
+
 	next.addEventListener('click', function (e) {
 		e.stopPropagation();
 		advance();

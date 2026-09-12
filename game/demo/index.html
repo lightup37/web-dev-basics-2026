@@ -8,6 +8,10 @@
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg"> 
 </head> 
 <body class="page-login">
+	<audio id="index-music" loop>
+		<source src="mus/Preussens-Gloria.mp3" type="audio/mpeg">
+	</audio>
+
 	<div class="page-box"> 
 		<p class="page-kicker">THE NAPOLEONIC CAMPAIGNS · 1805–1815</p>
 		<h1>拿破仑战争</h1> 
@@ -30,10 +34,6 @@
 		</div> 
 	</div> 
 
-	<!-- 登录按钮点击后准备播放主界面音乐 -->
-	<audio id="menu-music" loop>
-		<source src="mus/主界面背景音.mp3" type="audio/mpeg">
-	</audio>
  
 	<script src="js/account.js"></script> 
 	<script> 
@@ -51,12 +51,16 @@
 				return; 
 			} 
 
-			// 记录：用户是通过登录按钮进入主界面的
-			sessionStorage.setItem('startMenuMusic', '1');
-
 			// 登录成功，进入游戏主界面
 			window.location.href = 'menu.html'; 
 		}); 
 	</script> 
+
+	<script src="js/bgm.js"></script>
+	<script>
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		initBgm('index-music');
+	</script>
+
 </body> 
 </html>

@@ -10,15 +10,21 @@
 	<script src="js/constants.js" defer></script>
 	<script src="js/pieces.js" defer></script>
 	<script src="js/arrow.js" defer></script>
+	<script src="js/bgm.js" defer></script>
 	<script src="js/dialog.js" defer></script>
 	<script src="js/account.js" defer></script>
+	<script src="js/ui.js" defer></script>
 	<script src="js/save.js" defer></script>
 	<script src="js/main.js" defer></script>
+	<script src="js/fx.js" defer></script>
 	<script src="js/ai.js" defer></script>
 	<script src="js/levels.js" defer></script>
 	<script src="js/game3.js" defer></script>
 </head>
 <body class="game-page game3 level-opening">
+	<audio id="game-music" loop>
+		<source src="mus/La-Chanson-De-L-Oignon.mp3" type="audio/mpeg">
+	</audio>
 	<div class="game-heading">
 		<!--游戏上方标题-->
 		<h2>第 3 关 · 雪原突骑</h2>
@@ -27,22 +33,25 @@
 	<div id="info-bar"></div>
 	<div id="enemy-info"></div>
 	<div id="board"></div>
-	<div id="win" style="display: none;">
-		<!--结算弹窗-->
-		<h1>You Win!</h1>
-		<h2 id="3star" style="display: none;">⭐⭐⭐</h2>
-		<h2 id="2star" style="display: none;">⭐⭐</h2>
-		<h2 id="1star" style="display: none;">⭐</h2>
-	</div>
-	<div id="lose" style="display: none;">
-		<h1>You Lose!</h1>
-		<p id="loseTips" style="font-size: x-small;"></p>
+	<!--结算区：胜利/失败面板 + 结算按钮作为一个整体，固定在视口正中（见 css 的 #result-area）-->
+	<div id="result-area">
+		<div id="win" style="display: none;">
+			<!--结算弹窗-->
+			<h1>You Win!</h1>
+			<h2 id="3star" style="display: none;">⭐⭐⭐</h2>
+			<h2 id="2star" style="display: none;">⭐⭐</h2>
+			<h2 id="1star" style="display: none;">⭐</h2>
+		</div>
+		<div id="lose" style="display: none;">
+			<h1>You Lose!</h1>
+			<p id="loseTips" style="font-size: x-small;"></p>
+		</div>
+		<button id="button-next-game" class="game-btn result-button" style="display: none;"> Next </button>
+		<button id="button-replay" class="game-btn result-button" style="display: none;"> Replay </button>
+		<button id="button-fail" class="game-btn result-button" style="display: none;"> View Ending: Early Defeat </button>
 	</div>
 	<!--底部按钮-->
 	<button id="button" class="turn-button"> Next Turn </button>
-	<button id="button-next-game" class="game-btn result-button" style="display: none;"> Next Game </button>
-	<button id="button-replay" class="game-btn result-button" style="display: none;"> Replay </button>
-	<button id="button-fail" class="game-btn result-button" style="display: none;"> View Ending: Early Defeat </button>
 	<div id="game-actions">
 		<span id="save-load-btns">
 			<button id="button-save" class="game-btn" title="把当前这关的中途状态存进所选手动存档槽"> Save </button>

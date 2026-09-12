@@ -11,91 +11,104 @@
  *    与 A 的"逐猎"不符，故按 A 的玩法重写。
  *  · scene 可选值（有专属主题的）：snow / battery / embers / river / storm /
  *    twilight；其余值（如 dawn）走通用外观。
+ *  · map {lon,lat}：主界面「战役地图」上这一关旗标的位置（真实经纬度）。2026-09 新增，
+ *    由 js/menu-saves.js 按同一投影换算成百分比；第 1/2、3/4 关因原地点几乎重合而做了
+ *    地图上的手动偏移（D-2，见各自注释），第 7 关无真实地点、象征性落在巴黎。
  */
 
 var LEVELS_ORDER = [
 	{
 		id: 1, file: 'game1.html', name: '第 1 关 · 破晓防线', ai: null,
-		chapter: '第一幕 · 鹰旗初升', location: '乌尔姆近郊 · 1805', scene: 'dawn',
-		hint: '指令：选中你的步兵，点一处空地即下达移动目标，命令会一直执行到抵达为止。情报：中路守军据说从不后撤——有人嘲笑说，防御？那不过是站在原地永不挪窝罢了！',
+		chapter: '第一幕 · 鹰旗初升', location: '土伦港 · 1793', scene: 'dawn',
+		map: { lon: 5.93, lat: 43.12 },   /* 地图旗标：土伦港（经纬度；投影见 img/europe-map.svg 与 menu-saves.js 的 MAP） */
+		hint: '失去指挥的敌军不会进行机动与增援，形成局部优势逐一歼灭。消灭所有敌军，取得战役胜利！',
 		story: [
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '看见山脊上的火光了吗？敌军以为守住中央，就能拦住整支大军。' },
-			{ who: '副官', role: '帝国参谋部', side: 'right', portrait: 'img/portraits/adjutant.png', text: '他们已经下令死守，陛下。一步也不准备后退。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '不肯移动的防线，只是一扇等着被推开的门。让步兵从两翼靠近，今天由我们写下第一行战报。' }
+			{ who: '拿破仑', role: '炮兵少校', side: 'left', portrait: 'img/portraits/napoleon.png', text: '穆尔格雷夫堡已经出现在望远镜里了，控制穆尔格雷夫堡可以让我们的炮兵进入攻击阵地，从而绕过土伦北方的众多堡垒封锁土伦港。' },
+			{ who: '让・安多歇・朱诺', role: '掷弹兵上士', side: 'right', portrait: 'img/portraits/courier.png', text: '情报显示，穆尔格雷夫堡只有一些步兵驻守，他们失去了指挥，只能死守。' },
+			{ who: '拿破仑', role: '炮兵少校', side: 'left', portrait: 'img/portraits/napoleon.png', text: '很好，让我们的步兵从两翼靠近将他们包围，逐步歼灭。' }
 		]
 	},
 	{
 		id: 2, file: 'game2.html', name: '第 2 关 · 炮火走廊', ai: null,
-		chapter: '第二幕 · 雷霆之声', location: '耶拿前线 · 1806', scene: 'battery',
-		hint: '指令：炮兵射程远、伤害高但走得慢——保住它，它就是破局点。情报：敌军右翼有一门不会移动的远程炮，别让步兵冲进它四格的射程白挨打。',
+		chapter: '第二幕 · 雷霆之声', location: '土伦港 · 1793', scene: 'battery',
+		map: { lon: 1.44, lat: 43.60 },   /* 剧情同为土伦，但地图上手动西移约 4.5°（D-2：否则与第 1 关旗标重叠） */
+		hint: '敌军有固定火炮，注意谨慎进入其射程。',
 		story: [
-			{ who: '副官', role: '帝国参谋部', side: 'right', portrait: 'img/portraits/adjutant.png', text: '陛下，雨后的道路陷住了弹药车。我们的炮兵还没来得及展开，敌军已经逼近。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '一门摆正位置的火炮，胜过一整排仓促冲锋的步兵。' },
-			{ who: '副官', role: '帝国参谋部', side: 'right', portrait: 'img/portraits/adjutant.png', text: '那么步兵的任务，是替炮兵争取时间？' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '正是。守住雷霆，雷霆自然会替我们打开道路。' }
+			{ who: '拿破仑', role: '炮兵少校', side: 'left', portrait: 'img/portraits/napoleon.png', text: '穆尔格雷夫堡已经被我们拿下，炮兵已经进入战场，继续攻击，占领埃吉莱特堡，我们就能完成对港口的封锁。' },
+			{ who: '让・安多歇・朱诺', role: '掷弹兵上士', side: 'right', portrait: 'img/portraits/courier.png', text: '我们的观察员报告，要塞内有一门固定火炮，和一些死守的步兵。' },
+			{ who: '拿破仑', role: '炮兵少校', side: 'left', portrait: 'img/portraits/napoleon.png', text: '尽管我们的军队还未来得及完全靠近，但兵贵神速，即便是只有现在的小股部队，利用炮兵的火力支援仍然可以快速占领要塞。' }
 		]
 	},
 	{
 		id: 3, file: 'game3.html', name: '第 3 关 · 雪原突骑', ai: { strategy: 'breakthrough' },
-		chapter: '第三幕 · 风雪疾驰', location: '东普鲁士 · 1807', scene: 'snow',
-		hint: '指令：骑兵（骑）速度飞快、攻击最高，但别让它正面陷入包围。情报：敌军每回合都会扑向离自己最近的蓝方单位——落单的部队会被围殴，保持阵型逐个击破。另有线报：敌军的骑兵似乎对炮兵格外眼红——别让你的大炮落单。',
+		chapter: '第三幕 · 风雪疾驰', location: '耶拿 · 1806', scene: 'snow',
+		map: { lon: 11.59, lat: 50.93 },   /* 地图旗标：耶拿 */
+		hint: '敌军每回合都会扑向离自己最近的单位，注意保持阵型。',
 		story: [
-			{ who: '传令兵', role: '近卫骑兵通讯队', side: 'right', portrait: 'img/portraits/courier.png', text: '陛下！风雪遮住了敌军的旗号，但他们的右翼正在重新集结。缺口只会维持片刻。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '片刻已经足够。骑兵需要的从来不是一条大道，只是一道缝隙。' },
-			{ who: '传令兵', role: '近卫骑兵通讯队', side: 'right', portrait: 'img/portraits/courier.png', text: '我这就把命令送到前线。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '告诉他们：冲进去，但不要停在那里。速度既是长矛，也是盾牌。' }
+			{ who: '萨瓦里', role: '副官', side: 'right', portrait: 'img/portraits/adjutant.png', text: '普鲁士人已经按耐不住向我们发动冲击了，他们的攻击目标应该是威胁最大的骑兵和炮兵。' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '内伊的部队冲的太快，和主力的线列步兵脱节，他怎么没向我提前请示！？' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '应该还来得及，传令让周围的部队快速汇合集结！' }
 		]
 	},
 	{
 		/* 玩法取自 A：红方 flee 撤往右上角，到达边界即"成功撤退"（game4.js 的
 		 * objective.type='retreat'）；逃脱 ≥3 判负。B 的剧情描述的是抱团方阵，
 		 * 与这套玩法不符，故按 A 的设计重写。 */
-		id: 4, file: 'game4.html', name: '第 4 关 · 逐猎（Retreat Hunt）', ai: { strategy: 'flee', fleeTo: { x: 9.5, y: -0.5 } },
-		chapter: '第四幕 · 穷途逐北', location: '多瑙河畔 · 1809', scene: 'river',
-		hint: '目标：敌军要逃往右上角——只有到达右上角才算出界撤退。全歼=3星；放走1支=2星；放走2支=1星；放走3支以上则失败。我方分据左上、右下两翼——骑兵抢先绕前堵截，别让任何一支摸到那个角落。',
+		id: 4, file: 'game4.html', name: '第 4 关 · 耶拿逐猎', ai: { strategy: 'flee', fleeTo: { x: 9.5, y: -0.5 } },
+		chapter: '第四幕 · 穷途逐北', location: '奥尔施塔特 · 1806', scene: 'river',
+		map: { lon: 13.40, lat: 52.52 },   /* 奥尔施塔特离耶拿仅 20km，地图上手动东北移向柏林（D-2：否则与第 3 关重叠） */
+		hint: '敌军要逃往右上角——只有到达右上角才算出界撤退。利用骑兵抢先绕前堵截，别让敌人得逞。',
 		story: [
 			{ who: '联军司令', role: '联军战地指挥部', side: 'right', portrait: 'img/portraits/coalition-commander.png', text: '不必恋战。全军向东北方撤退——只要越过那道边界，法国人就再也追不上我们。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '他们想跑。逃跑的军队不会再回头，但也正因如此，他们会跑得比谁都快。' },
-			{ who: '副官', role: '帝国参谋部', side: 'right', portrait: 'img/portraits/adjutant.png', text: '敌军正朝右上角收缩。若让他们越过边界，这一仗就等于没打。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '那就抢在他们前面。骑兵绕前堵住那个角落，其余逐个截住——放走三支，我们就输了。' }
+			{ who: '萨瓦里', role: '副官', side: 'right', portrait: 'img/portraits/adjutant.png', text: '我们所对的普鲁士人正在撤退，达武元帅送来了报告，他的第三军已经击溃了普鲁士人的主力。' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '这不可能，这个近视眼怕不是把战报写错了。' },
+			{ who: '萨瓦里', role: '副官', side: 'right', portrait: 'img/portraits/adjutant.png', text: '我们的侦察兵报告，普鲁士的主力确实已经被击溃了，两股溃兵汇合，他们现在已经毫无斗志，只想着快速逃命。' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '不能让他们逃走，大好机会，准备追击！' }
 		]
 	},
 	{
-		id: 5, file: 'game5.html', name: '第 5 关 · 铁血强攻', ai: { strategy: 'breakthrough', threat: 'strongest' },
-		chapter: '第五幕 · 漫长东征', location: '斯摩棱斯克以西 · 1812', scene: 'embers',
-		hint: '指令：本关兵种齐全，注意保护高攻单位。情报：敌军会优先集火攻击力最高的蓝方——你的炮兵和骑兵是头号目标，用掷弹兵和步兵给它们当盾。',
-		story: [
-			{ who: '传令兵', role: '近卫骑兵通讯队', side: 'right', portrait: 'img/portraits/courier.png', text: '陛下，敌军没有扑向中央。他们在追逐我们的骑兵和炮兵，像是早已看穿了火力部署。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '他们看见了最锋利的剑，却忘了剑也有护手。' },
-			{ who: '副官', role: '帝国参谋部', side: 'right', portrait: 'img/portraits/adjutant.png', text: '我会命令步兵收拢，在高攻部队前建立屏障。' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '很好。让他们为每一步接近付出代价，然后用我们保存下来的火力结束战斗。' }
-		]
-	},
-	{
-		/* 玩法取自 A：红方 8 人站桩固守右侧高地（ai:null），时限 18 回合。
-		 * 星级由 main.js 的 checkWinState() 里 CURRENT_LEVEL_ID === 6 分支计算：
+		/* 2026-09：本关"战斗 + 叙事"整体取自原第 6 关，与第 6 关对调（D-1：叙事随战斗走）。
+		 * 红方 8 人站桩固守右侧高地（ai:null），时限 18 回合。
+		 * 星级由 main.js 的 checkWinState() 里 CURRENT_LEVEL_ID === 5 分支计算：
 		 * 按通关所用步数 ≤13=3星 / ≤15=2星 / ≤18=1星。 */
-		id: 6, file: 'game6.html', name: '第 6 关 · The Last Assault（滑铁卢·限时攻坚）', ai: null,
-		chapter: '第六幕 · 雨云之下', location: '滑铁卢南方 · 1815', scene: 'storm',
-		hint: '指令：这是最后一场攻坚战——敌守军 8 人占据右侧高地、原地固守不追不逃。时限 18 回合：回合耗尽即判负。情报：要按时全歼守军，就必须顶着火力压上去集火——但冲得越猛、伤亡越大。星级按通关所用步数算（≤13 回合=3星；≤15 回合=2星；≤18 回合=1星）；想满星就先把殿后的大炮拔掉，别让高伤单位白白送命。',
+		id: 5, file: 'game5.html', name: '第 5 关 · 艰难攻坚', ai: null,
+		chapter: '第五幕 · 漫长东征', location: '斯摩棱斯克以西 · 1812', scene: 'embers',
+		map: { lon: 31.00, lat: 54.60 },   /* 地图旗标：斯摩棱斯克以西（全图最东） */
+		hint: '这是一场攻坚战——敌守军占据城市、原地固守。同时对城市进行破坏，力求速战速决。要快速全歼守军，就必须顶着火力压上去集火。',
 		story: [
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '天亮之前，必须拿下那座高地。对面的守军一步也不会退。' },
-			{ who: '副官', role: '帝国参谋部', side: 'right', portrait: 'img/portraits/adjutant.png', text: '陛下，十八个回合——够我们把大炮推上前线吗？' },
-			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '够不够，天亮前自有分晓。传令：全线压上，先敲掉他们殿后的炮，再收拾残兵。' }
+			{ who: '加斯帕尔・古尔戈', role: '副官', side: 'left', portrait: 'img/portraits/adjutant.png', text: '巴克莱的军队似乎不打算和我们就斯摩棱斯克进行决战，他让一部分部队死守在城市之中，有固定炮兵提供火力支援。' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '既然决定放弃城市，为什么还要留下部队？一定有些蹊跷。' },
+			{ who: '传令兵', role: '近卫骑兵通讯队', side: 'right', portrait: 'img/portraits/courier.png', text: '殿下！俄国人在城市内执行焦土策略！他们打算摧毁这座城市！' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '不好，斯摩棱斯克本应作为向莫斯科前进的补给中心，传令！在俄国人毁灭这座城市前拿下它！' }
+		]
+	},
+	{
+		/* 2026-09：本关"战斗 + 叙事"整体取自原第 5 关，与第 5 关对调（D-1：叙事随战斗走）。
+		 * 敌方专挑攻击力最高的蓝方集火（breakthrough + threat:strongest）。 */
+		id: 6, file: 'game6.html', name: '第 6 关 · 铁血强攻', ai: { strategy: 'breakthrough', threat: 'strongest' },
+		chapter: '第六幕 · 雨云之下', location: '滑铁卢附近 · 1816', scene: 'storm',
+		map: { lon: 4.40, lat: 50.72 },   /* 地图旗标：滑铁卢 */
+		hint: '敌军会优先集火攻击你的炮兵和骑兵，用掷弹兵和步兵掩护他们。',
+		story: [
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '我们需要在普鲁士人和英国人汇合之前击败布吕歇尔率领的普鲁士部队。如果他们双方汇合，我们的兵力会极为劣势。' },
+			{ who: '加斯帕尔・古尔戈', role: '副官', side: 'right', portrait: 'img/portraits/adjutant.png', text: '敌人也急于进攻打击我方力量，应该会尝试主动出击攻击我们的炮兵与骑兵。' },
+			{ who: '拿破仑', role: '法兰西皇帝', side: 'left', portrait: 'img/portraits/napoleon.png', text: '这不成问题，我们的掷弹兵和线列步兵会掩护他们的。内伊此刻正在四臂村与威灵顿战斗，我希望他能取胜。当务之急还是先摧毁眼前的普鲁士人。' }
 		]
 	}
 ];
 
 function getLevelList() { return LEVELS_ORDER; }
 
-/* 隐藏关卡（to-do #14）：不进主菜单的常规列表；game1 在 12 回合内通关后开启，
- * game6 通关后 Next Game 进入它，game7 通关后进入隐藏结局页。 */
+/* 隐藏关卡（to-do #14/#19）：不进主菜单的常规列表。是否开启只看 save.js 的
+ * hiddenRouteOpen()（第 1~6 关全部 3 星）——为真时主界面战役地图上才长出它的标记，
+ * 点那个标记进入本关；game7 通关后进入隐藏结局页（hidden-end.html）。 */
 var HIDDEN_LEVEL = {
 	id: 7,
 	file: 'game7.html',
 	name: '第 7 关 · 帝国黄昏（隐藏）',
 	ai: { strategy: 'cluster', core: 0 },
 	chapter: '终幕 · 未写之史', location: '另一条时间线 · 1815', scene: 'twilight',
+	map: { lon: 2.35, lat: 48.85 },   /* 隐藏关无真实地点，象征性落在巴黎（帝国的中心） */
 	hint: '你踏进了被历史抹去的一页……情报：帝国的旧卫队仍然抱成一团，只有撕开他们的核心，才能改写终局。',
 	story: [
 		{ who: '传令兵', role: '近卫骑兵通讯队', side: 'right', portrait: 'img/portraits/courier.png', text: '陛下……地图上的道路变了。我们越过了史书最后标出的界线，却又看见了滑铁卢。' },

@@ -117,7 +117,7 @@ function loadSnapshot(snap) {
 	distance = POS_11.left - POS_00.left; 
 	offset = POS_00.width / 2.0; 
 	document.getElementById('footer-bar').innerHTML = `Resumed from save: Level ${snap.level}, ${remain_turns} turns left.`; 
-	alert(`已从存档继续：第 ${snap.level} 关，剩余 ${remain_turns} 回合。`); 
+	if (typeof toast === 'function') toast(`已从存档继续：第 ${snap.level} 关，剩余 ${remain_turns} 回合。`); 
 	snap.units.forEach((u, idx) => { 
 		const piece = document.createElement('div'); 
 		piece.className = `chess chess--${u.color}`; 
@@ -212,14 +212,14 @@ refreshSlotSelect();
  
 /* 验收/调试用：控制台向某目标存中途快照（默认 a.save），或清空当前用户全部存档 */ 
 window.__saveMidLevel = function (id) { 
-	if (typeof CURRENT_LEVEL_ID === 'undefined') { alert('不在关卡内'); return; } 
+	if (typeof CURRENT_LEVEL_ID === 'undefined') { console.log('[__saveMidLevel] 不在关卡内'); return; } 
 	const user = currentUserSafe(); 
-	if (!user) { alert('未登录'); return; } 
+	if (!user) { console.log('[__saveMidLevel] 未登录'); return; } 
 	id = isFileId(id) ? String(id) : AUTO_ID; 
 	const snap = captureSnapshot(); 
 	if (!snap) return; 
 	const ok = (id === AUTO_ID) ? saveSnapshotToAuto(user, snap) : saveToManual(user, id, snap); 
-	if (ok) { alert('已保存到 ' + fileName(id)); refreshSlotSelect(); } 
+	if (ok) { console.log('[__saveMidLevel] 已保存到 ' + fileName(id)); refreshSlotSelect(); } 
 }; 
 
 window.__clearSave = function () { 
@@ -228,7 +228,7 @@ window.__clearSave = function () {
 		localStorage.removeItem('a.save:' + user); 
 		MANUAL_IDS.forEach(function (id) { localStorage.removeItem('save' + id + ':' + user); }); 
 	} 
-	alert('当前用户的自动存档与手动存档已清空'); 
+	console.log('[__clearSave] 当前用户的自动存档与手动存档已清空'); 
 }; 
  
 /* 胜负结算后隐藏"存/读档"与左右显示条（Menu 按钮保留，方便直接退出） */ 
@@ -243,6 +243,14 @@ function hideMidGameControls() {
 	if (rl) rl.remove(); 
 	rangeCircles = []; 
 } 
+
+/* 结算页（2026-09）：把 Menu 按钮也并进 #result-area，跟胜负面板一起居中。
+   判胜时整条 #game-actions 本来就是隐藏的，所以只在判负分支里调动。 */
+function moveMenuIntoResultArea() {
+	const area = document.getElementById('result-area');
+	const btn = document.getElementById('button-exit');
+	if (area && btn && btn.parentNode !== area) area.appendChild(btn);
+}
  
 /* 向量归一化，方便计算棋子移动到的位置 */ 
 function normalize(vec) { 
@@ -447,7 +455,8 @@ function nextStep() {
 		) { 
 			// 已经到达目标，如果在攻击范围内，就攻击 
 			if(inAttackRange) { 
-				atktar.lp -= element.atk; 
+				atktar.lp -= element.atk;
+				if (typeof fxMarkFired === 'function') fxMarkFired(element, atktar); 
  
 				if(atktar.lp <= 0) 
 					disabledList.push(atktar); 
@@ -480,7 +489,8 @@ function nextStep() {
 			if(dot >= 0) { 
 				// 正在靠近敌人/没有离开 
 				// 保持原来的攻击逻辑 
-				atktar.lp -= element.atk; 
+				atktar.lp -= element.atk;
+				if (typeof fxMarkFired === 'function') fxMarkFired(element, atktar); 
  
 				if(atktar.lp <= 0) 
 					disabledList.push(atktar); 
@@ -511,7 +521,8 @@ function nextStep() {
 			element.posy = element.targety; 
 		} 
  
-		movePieceTo(element.id, element.posx, element.posy); 
+		movePieceTo(element.id, element.posx, element.posy);
+		if (typeof fxMarkMoving === 'function') fxMarkMoving(element); 
 	}); 
  
 	// ============================================ 
@@ -556,6 +567,19 @@ function processTurnEscapes() {
 } 
 
 
+/* 结算页上的通关提示文字（2026-09：替代通关 alert；由 save.js 的 autosaveOnWin 调用） */
+function showWinNote(text) {
+	var win = document.getElementById('win');
+	if (!win) return;
+	var note = document.getElementById('win-note');
+	if (!note) {
+		note = document.createElement('p');
+		note.id = 'win-note';
+		note.className = 'win-note';
+		win.appendChild(note);
+	}
+	note.textContent = text;
+}
 function checkWinState() { 
 	-- remain_turns; 
 	let redc = 0, bluec = 0; 
@@ -568,7 +592,7 @@ function checkWinState() {
 	}); 
 
 	/* =========================================================
-	 * Game6：滑铁卢·限时攻坚
+	 * Game5（2026-09 起：这场攻城战由第 5 关承载，与第 6 关整体对调）：滑铁卢·限时攻坚
 	 *
 	 * 按通关所用步数评星：
 	 * ≤13 步：3 星
@@ -578,7 +602,7 @@ function checkWinState() {
 	 * 回合超过 18 步仍未消灭全部红军：失败
 	 * ========================================================= */
 
-	if(typeof CURRENT_LEVEL_ID !== 'undefined' && CURRENT_LEVEL_ID === 6) {
+	if(typeof CURRENT_LEVEL_ID !== 'undefined' && CURRENT_LEVEL_ID === 5) {
 
 		const usedTurns = CURRENT_GAME.turns_limit - remain_turns;
 
@@ -670,6 +694,8 @@ function checkWinState() {
 			document.getElementById('button-replay').style =
 				'width: 100px; height: 50px;';
 
+			moveMenuIntoResultArea();
+
 			const tip = document.getElementById('loseTips');
 
 			if(tip) {
@@ -698,6 +724,8 @@ function checkWinState() {
 			document.getElementById('button-replay').style =
 				'width: 100px; height: 50px;';
 
+			moveMenuIntoResultArea();
+
 			const tip = document.getElementById('loseTips');
 
 			if(tip) {
@@ -721,7 +749,7 @@ function checkWinState() {
 		}
 
 		/* =========================
-		 * Game6 尚未结束
+		 * Game5 尚未结束
 		 * ========================= */
 		const footer = document.getElementById('footer-bar');
 
@@ -804,6 +832,8 @@ function checkWinState() {
 
 			document.getElementById('button-replay').style =
 				'width: 100px; height: 50px;';
+
+			moveMenuIntoResultArea();
 
 
 			const failBtn =
@@ -1105,6 +1135,26 @@ function checkWinState() {
 		document.getElementById('footer-bar').style = 'display: none'; 
 		document.getElementById('win').style = 'display: flex; flex-direction: column; align-items: center;' ; 
 		document.getElementById('button-next-game').style = 'width: 100px; height: 50px;'; 
+		// 2026-09：结算页只留一个 Next —— 隐藏 Replay/结局按钮与整条操作区（含 Menu 按钮），
+		// 并把这一关的"下一步去哪"算好写在 data-target 上（点击处理器只负责跳转）。
+		const _replayBtn = document.getElementById('button-replay');
+		if (_replayBtn) _replayBtn.style.display = 'none';
+		const _failBtnW = document.getElementById('button-fail');
+		if (_failBtnW) _failBtnW.style.display = 'none';
+		const _actions = document.getElementById('game-actions');
+		if (_actions) _actions.style.display = 'none';
+		const _nextBtn = document.getElementById('button-next-game');
+		if (_nextBtn && typeof CURRENT_LEVEL_ID !== 'undefined') {
+			let _go = 'menu.html';
+			if (CURRENT_LEVEL_ID === 7) {
+				_go = 'hidden-end.html';                      // 隐藏关通关 → 隐藏结局
+			} else if (typeof nextLevelFile === 'function') {
+				const _nf = nextLevelFile(CURRENT_LEVEL_ID);
+				// 下一关是结局页 → 直接进结局；下一关是关卡 → 回主界面看"路线解锁"地图动画
+				_go = /end-game\.html|hidden-end\.html/.test(_nf) ? _nf : ('menu.html?unlock=' + CURRENT_LEVEL_ID);
+			}
+			_nextBtn.dataset.target = _go;
+		}
 		// 加载胜利界面 
 		const star = retreat ? [3, 2, 1][Math.min(escaped, 2)] : ((bluec == 0) ? 1 : (bluec == 1) ? 2 : 3); 
 		if(star == 1) { 
@@ -1140,6 +1190,7 @@ function checkWinState() {
 		document.getElementById('lose').style = 'display: flex; flex-direction: column; align-items: center;' ; 
 		document.getElementById('footer-bar').style = 'display: none'; 
 		document.getElementById('button-replay').style = 'width: 100px; height: 50px;'; 
+		moveMenuIntoResultArea();
 		const failBtn = document.getElementById('button-fail'); 
 		if (failBtn) { 
 			failBtn.style.cssText = 'width:auto; margin-top:8px;'; 
@@ -1203,8 +1254,10 @@ buttonContainer.addEventListener('click', function() {
 		if(typeof processLineBreakthroughs === 'function') {
 			processLineBreakthroughs();
 		}
-	} 
-	 
+	}
+	// 开火特效（2026-09）：24 帧结算完后，给本回合开过火的单位统一生成烟雾 / 枪口火光
+	if (typeof fxFlush === 'function') fxFlush();
+
 	// 防止误触造成多次触发 
 	// 测试时会注释，发布时记得删去 
 	this.disabled = true; 
@@ -1516,152 +1569,85 @@ function selectedTarget() {
 	return AUTO_ID; 
 } 
  
-document.getElementById('button-save').addEventListener('click', function () { 
-
-	const user = currentUserSafe(); 
-
-	if (!user) { 
-		alert('未登录：请先回主界面登录，再来保存'); 
-		return; 
-	} 
-
-	if (typeof CURRENT_LEVEL_ID === 'undefined') return; 
-
-	const id = selectedTarget(); 
-	const snap = captureSnapshot(); 
-
-	if (!snap) return; 
-
-	const cur =
-		(id === AUTO_ID)
-			? getAuto(user)
-			: getManual(user, id); 
-
-	if (
-		cur &&
-		cur.snapshot &&
-		!confirm(
-			'覆盖 ' +
-			fileName(id) +
-			' 里的中途存档（第 ' +
-			cur.snapshot.level +
-			' 关）？'
-		)
-	) {
+document.getElementById('button-save').addEventListener('click', function () {
+	const user = currentUserSafe();
+	if (!user) {
+		if (typeof toast === 'function') toast('未登录：请先回主界面登录，再来保存');
 		return;
-	} 
+	}
+	if (typeof CURRENT_LEVEL_ID === 'undefined') return;
+	const id = selectedTarget();
+	const snap = captureSnapshot();
+	if (!snap) return;
+	const cur = (id === AUTO_ID) ? getAuto(user) : getManual(user, id);
 
-	const ok =
-		(id === AUTO_ID)
-			? saveSnapshotToAuto(user, snap)
-			: saveToManual(user, id, snap); 
+	function doSave() {
+		const ok = (id === AUTO_ID) ? saveSnapshotToAuto(user, snap) : saveToManual(user, id, snap);
+		if (ok) {
+			if (typeof toast === 'function') toast('已保存到 ' + fileName(id));
+			refreshSlotSelect();
+		}
+	}
 
-	if (ok) { 
-		alert('已保存到 ' + fileName(id)); 
-		refreshSlotSelect(); 
-	} 
+	if (cur && cur.snapshot) {
+		const ask = '覆盖 ' + fileName(id) + ' 里的中途存档（第 ' + cur.snapshot.level + ' 关）？';
+		if (typeof modalConfirm === 'function') { modalConfirm(ask, doSave); return; }
+		if (!confirm(ask)) return;
+	}
+	doSave();
 }); 
  
-document.getElementById('button-load').addEventListener('click', function () { 
-
-	const user = currentUserSafe(); 
-
-	if (!user) { 
-		alert('未登录'); 
-		return; 
-	} 
-
-	const id = selectedTarget(); 
-
-	let snap; 
-
-	if (id === AUTO_ID) { 
-
-		snap = autoSnapshot(user); 
-
-		if (!snap) { 
-			alert(fileName(id) + ' 里没有中途存档'); 
-			return; 
-		} 
-
-	} else { 
-
-		const f = getManual(user, id); 
-
-		if (!f || !f.snapshot) { 
-			alert(fileName(id) + ' 里没有中途存档'); 
-			return; 
-		} 
-
-		snap = f.snapshot; 
-	} 
-
-	// 关卡匹配校验：本关只能读"属于本关"的存档 
-	if (Number(snap.level) !== CURRENT_LEVEL_ID) { 
-
-		alert(
-			'该存档属于第 ' +
-			snap.level +
-			' 关，当前在第 ' +
-			CURRENT_LEVEL_ID +
-			' 关，不能在这里读取（请回主界面"载入"后，再进入对应关继续）'
-		); 
-
-		return; 
-	} 
-
-	// Load 语义：手动档先覆盖 a.save，再按它的快照继续 
-	if (id !== AUTO_ID) {
-		loadManualToAuto(user, id); 
-	} 
-
-	if (
-		!confirm(
-			'读取 ' +
-			fileName(id) +
-			'（第 ' +
-			snap.level +
-			' 关，剩 ' +
-			snap.remain_turns +
-			' 回合）会覆盖当前未保存进度，继续？'
-		)
-	) {
+document.getElementById('button-load').addEventListener('click', function () {
+	const user = currentUserSafe();
+	if (!user) {
+		if (typeof toast === 'function') toast('未登录');
 		return;
-	} 
+	}
+	const id = selectedTarget();
+	let snap;
 
-	loadSnapshot(snap); 
+	if (id === AUTO_ID) {
+		snap = autoSnapshot(user);
+		if (!snap) {
+			if (typeof toast === 'function') toast(fileName(id) + ' 里没有中途存档');
+			return;
+		}
+	} else {
+		const f = getManual(user, id);
+		if (!f || !f.snapshot) {
+			if (typeof toast === 'function') toast(fileName(id) + ' 里没有中途存档');
+			return;
+		}
+		snap = f.snapshot;
+	}
+
+	if (Number(snap.level) !== CURRENT_LEVEL_ID) {
+		const msg = '该存档属于第 ' + snap.level + ' 关，当前在第 ' + CURRENT_LEVEL_ID + ' 关，不能在这里读取（请回主界面“载入”后，再进入对应关继续）';
+		if (typeof modalNotice === 'function') modalNotice(msg); else alert(msg);
+		return;
+	}
+
+	if (id !== AUTO_ID) { loadManualToAuto(user, id); }
+
+	const ask = '读取 ' + fileName(id) + '（第 ' + snap.level + ' 关，剩 ' + snap.remain_turns + ' 回合）会覆盖当前未保存进度，继续？';
+	function doLoad() { loadSnapshot(snap); }
+	if (typeof modalConfirm === 'function') { modalConfirm(ask, doLoad); return; }
+	if (!confirm(ask)) return;
+	doLoad();
 }); 
  
 document.getElementById('button-exit').addEventListener('click', function () { 
 	window.location.href = 'menu.html'; 
 }); 
  
-/* to-do #10/#14：Next Game 跳转 */ 
+/* 结算页的 Next 跳转
+ *   · 目标在进入结算页时由 checkWinState() 算好并写在 #button-next-game 的 data-target 上：
+ *       第 7 关通关 → hidden-end.html；下一关是结局页（第 6 关 → end-game.html）→ 直接进结局；
+ *       下一关是关卡（第 1~5 关）→ menu.html?unlock=<刚通关的关号>，主界面地图会播"路线解锁"动画，
+ *       再由玩家点地图上的下一个标记进入（不再直接跳进下一关）。
+ *   · "下一关是不是结局"仍以 levels.js 的 nextLevelFile() 为准，不在这里写死。 */
 document.getElementById('button-next-game').addEventListener('click', function () { 
-
-	let go = './end-game.html'; 
-
-	if (typeof CURRENT_LEVEL_ID !== 'undefined') { 
-
-		if (CURRENT_LEVEL_ID === 7) { 
-
-			go = 'hidden-end.html'; 
-
-		} else if (
-			CURRENT_LEVEL_ID === 6 &&
-			typeof hiddenRouteOpen === 'function' &&
-			hiddenRouteOpen()
-		) { 
-
-			go = 'game7.html'; 
-
-		} else if (typeof nextLevelFile === 'function') { 
-
-			go = nextLevelFile(CURRENT_LEVEL_ID); 
-		} 
-	} 
-
-	window.location.href = go; 
+	window.location.href = this.dataset.target || 'menu.html'; 
 }); 
  
 async function showRedEffect(){ 
@@ -2417,7 +2403,7 @@ window.__spawnUnit =
 		const def = defs[unitKey]; 
 
 		if (!def) { 
-			alert('未知兵种：骑 / 散 / 掷'); 
+			console.log('[__spawnUnit] 未知兵种：骑 / 散 / 掷'); 
 			return; 
 		} 
 
@@ -2472,18 +2458,7 @@ window.__spawnUnit =
 
 		piece_cnt ++; 
 
-		alert(
-			'已生成 ' +
-			(color === 'red'
-				? '敌方'
-				: '我方') +
-			def.cls +
-			' 于 (' +
-			posx +
-			',' +
-			posy +
-			')，选中它查看属性/射程圈'
-		); 
+		console.log('[__spawnUnit] 已生成 ' + (color === 'red' ? '敌方' : '我方') + def.cls + ' 于 (' + posx + ',' + posy + ')'); 
 	}; 
  
 /* ========== to-do #11：常驻行动指示箭头 ========== */ 

@@ -1281,6 +1281,8 @@ a:hover { color: #431317; }
 .story-line:last-child { border-bottom: 0; }
 .story-line b { color: var(--ui-navy-800); }
 
+/* 结局页只留一个 Next 出口 —— 外面不要再套一层白卡片"框"，
+   只保留把按钮居中用的排版；index/register 的登录表单仍走上面的白卡片样式。 */
 .page-ending .form-box {
 	display: flex;
 	flex-wrap: wrap;
@@ -1288,7 +1290,16 @@ a:hover { color: #431317; }
 	gap: 0.7rem 1.4rem;
 	margin-top: 1.15rem;
 	text-align: center;
+	background: none;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	padding: 0;
 }
+
+/* 上面那套皮肤还给 .form-box 挂了一个 inset:7px 的 1px 装饰线框（伪元素），
+   光去掉本体的 border/shadow 它还在 —— 结局页也要一起关掉，否则按钮上会留一道细框。 */
+.page-ending .form-box::before { content: none; }
 
 /* 关卡页：深色战役桌 + 羊皮纸棋盘 */
 body.game-page {
@@ -1453,10 +1464,30 @@ body.game-page::before {
 	background: #eee0c3;
 }
 
+/* 结算区（胜利 / 失败面板 + Next / Replay / View Ending）作为一个整体固定在视口正中央。
+   只给 #win/#lose 定位是不够的 —— 结算按钮是 body 的兄弟节点，会留在文档流上方，
+   所以 gameN.html 里把面板与按钮一起包进 #result-area（见各关 HTML）。 */
+#result-area {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 60;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.9rem;
+	pointer-events: none;   /* 平时子元素都 display:none，别让这个层挡住棋盘 */
+}
+#result-area > * { pointer-events: auto; }
+/* 按钮间距交给上面的 gap，去掉各自的上外边距 */
+#result-area > .result-button { margin-top: 0; }
+
+/* 结算面板本体：在 #result-area 里按普通流排布，水平靠 align-items: center 居中 */
 #win,
 #lose {
 	min-width: 300px;
-	margin-top: 2rem;
+	margin: 0;
 	padding: 1.5rem 2rem;
 	border: 1px solid var(--ui-gold-500);
 	color: var(--ui-paper-100);
@@ -1915,8 +1946,8 @@ body.dialogue-active { overflow: hidden; }
 .game-page.game2 #board { background-image: url("../img/backgrass2.png"); background-size: cover; background-position: center; background-repeat: no-repeat; }
 .game-page.game3 #board { background-image: url("../img/backdis1.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
 .game-page.game4 #board { background-image: url("../img/backdis2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game5 #board { background-image: url("../img/backice1.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game6 #board { background-image: url("../img/backice2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game5 #board { background-image: url("../img/backice2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game6 #board { background-image: url("../img/backice1.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
 .game-page.game7 #board { background-image: url("../img/backice2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
 /* ==========================================================================
    修复：阵亡单位「先变灰、再消失」的变灰阶段被美化段覆盖
@@ -1934,3 +1965,482 @@ body.dialogue-active { overflow: hidden; }
 .game-page .chess.disabled img {
 	filter: brightness(0.2);
 }
+
+/* ==========================================================================
+   UI 提示组件（2026-09，配套 js/ui.js）
+   --------------------------------------------------------------------------
+   用项目内提示替代原生 alert() / confirm()：原生弹窗会阻塞页面 JS、样式不可控。
+   类名统一 ui-* 前缀，与既有样式无交集。
+     .ui-toast-stack / .ui-toast          底部轻提示
+     .ui-achv-stack  / .ui-achv           右上角浮动提示（成就 / 解锁）
+     .ui-modal-mask  / .ui-modal / .ui-btn 卡片式确认与通知弹窗
+   ========================================================================== */
+.ui-toast-stack {
+	position: fixed;
+	left: 50%;
+	bottom: 36px;
+	transform: translateX(-50%);
+	z-index: 200;              /* 必须高于 .ui-modal-mask(100)：弹窗打开时的提示不能被遮罩压暗 */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	pointer-events: none;
+}
+.ui-toast {
+	max-width: min(78vw, 520px);
+	padding: 10px 18px;
+	border-radius: 999px;
+	background: #0d1c30;       /* 不透明，避免叠在弹窗遮罩上时被透出的黑色削弱对比 */
+	color: var(--ui-paper-100, #f7ecd2);
+	border: 1px solid var(--ui-gold-500, #b99a55);
+	font-size: 14px;
+	line-height: 1.4;
+	box-shadow: 0 12px 30px rgba(8, 19, 33, 0.5), 0 0 0 3px rgba(255, 255, 255, 0.14);
+	opacity: 0;
+	transform: translateY(8px);
+	transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.ui-toast.is-in { opacity: 1; transform: translateY(0); }
+
+.ui-achv-stack {
+	position: fixed;
+	top: 16px;
+	right: 16px;
+	z-index: 210;              /* 同上：成就在右上角浮动提示，也要在弹窗遮罩之上 */
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	pointer-events: none;
+}
+.ui-achv {
+	pointer-events: auto;
+	cursor: pointer;
+	width: min(84vw, 320px);
+	padding: 12px 14px;
+	border-radius: 12px;
+	background: linear-gradient(145deg, #fffaf0, #ecd9ae);
+	border: 2px solid var(--ui-gold-500, #b99a55);
+	box-shadow: 0 14px 34px rgba(8, 19, 33, 0.28);
+	opacity: 0;
+	transform: translateX(18px);
+	transition: opacity 0.24s ease, transform 0.24s ease;
+}
+.ui-achv.is-in { opacity: 1; transform: translateX(0); }
+.ui-achv-title {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--ui-display, Georgia, 'Songti SC', serif);
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--ui-navy-900, #0d1c30);
+}
+.ui-achv-desc {
+	margin-top: 4px;
+	font-size: 13px;
+	line-height: 1.45;
+	color: var(--ui-muted, #76684e);
+}
+
+.ui-modal-mask {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: rgba(8, 19, 33, 0.52);
+}
+.ui-modal {
+	width: min(92vw, 460px);
+	padding: 20px 20px 16px;
+	border-radius: 14px;
+	background: #fffaf0;
+	border: 2px solid var(--ui-gold-500, #b99a55);
+	box-shadow: 0 24px 70px rgba(16, 12, 7, 0.4);
+}
+.ui-modal-text {
+	margin: 0 0 16px;
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--ui-ink, #211d18);
+}
+.ui-modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+.ui-btn {
+	padding: 7px 16px;
+	border-radius: 8px;
+	border: 1px solid var(--ui-navy-700, #234466);
+	background: #fff;
+	color: var(--ui-navy-700, #234466);
+	font-size: 14px;
+	cursor: pointer;
+}
+.ui-btn--primary {
+	background: var(--ui-navy-800, #172d49);
+	border-color: var(--ui-gold-500, #b99a55);
+	color: var(--ui-paper-100, #f7ecd2);
+}
+.ui-btn:hover { filter: brightness(1.06); }
+
+/* 结算页上的通关提示文字（替代通关 alert） */
+.win-note {
+	margin-top: 6px;
+	font-size: 14px;
+	color: var(--ui-muted, #76684e);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ui-toast, .ui-achv { transition: none; }
+}
+
+/* ==========================================================================
+   开火特效 + 移动尾迹（2026-09，配套 js/fx.js）
+   --------------------------------------------------------------------------
+   两层都由 fx.js 动态创建在 #board 内：
+     #fx-layer       (z 120) 烟雾 + 枪口火光 —— 盖在棋子（10）与选中态（100）之上
+     #fx-trail-layer (z 8)   移动尘迹 —— 压在棋子之下，像留在地上的扬尘
+   棋子本体有 overflow:hidden，所以烟只能用这两层，不能挂 .chess 的伪元素。
+   ========================================================================== */
+#fx-layer,
+#fx-trail-layer {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	overflow: visible;
+}
+#fx-layer { z-index: 120; }
+#fx-trail-layer { z-index: 8; }
+
+/* 烟团：绕棋子外圈生成，向上飘散并放大淡出（只用 transform/opacity，走合成层）
+   2026-09 加浓：更大、更亮、更久、外圈更散 */
+.fx-puff {
+	position: absolute;
+	width: 2.9dvh;
+	height: 2.9dvh;
+	margin: -1.45dvh 0 0 -1.45dvh;
+	border-radius: 50%;
+	background: radial-gradient(circle at 50% 50%,
+		rgba(248, 248, 248, 0.92),
+		rgba(226, 226, 226, 0.62) 45%,
+		rgba(203, 203, 203, 0.30) 68%,
+		rgba(196, 196, 196, 0) 82%);
+	filter: blur(1.2px);
+	opacity: 0;
+	animation: fx-puff-rise 1.5s ease-out forwards;
+}
+
+@keyframes fx-puff-rise {
+	0%   { opacity: 0;    transform: scale(0.5) translateY(0); }
+	14%  { opacity: 0.85; }
+	70%  { opacity: 0.42; }
+	100% { opacity: 0;    transform: scale(var(--fx-scale, 1.5)) translateY(-1.8dvh); }
+}
+
+/* 移动尘迹：偏土黄、带深色核心 + 浅色外晕（草地/冰面上都看得见），贴着地面铺开
+   尾→头错开出现由 animation-delay 控制 */
+.fx-trail {
+	position: absolute;
+	width: 2.4dvh;
+	height: 2dvh;
+	margin: -1dvh 0 0 -1.2dvh;
+	border-radius: 50%;
+	background: radial-gradient(circle at 50% 50%,
+		rgba(255, 252, 244, 0.92),
+		rgba(246, 202, 116, 0.8) 34%,
+		rgba(212, 128, 9, 0.62) 58%,
+		rgba(92, 70, 42, 0.45) 76%,
+		rgba(80, 60, 36, 0) 90%);
+	filter: blur(0.6px);
+	box-shadow: 0 1px 5px rgba(46, 32, 16, 0.6), 0 0 5px rgba(255, 250, 236, 0.4);
+	opacity: 0;
+	animation: fx-trail-puff 1.4s ease-out forwards;
+}
+
+@keyframes fx-trail-puff {
+	0%   { opacity: 0;    transform: scale(0.5) translateY(0); }
+	16%  { opacity: 0.95; }
+	62%  { opacity: 0.6; }
+	100% { opacity: 0;    transform: scale(var(--fx-trail-scale, 1.25)) translateY(-0.6dvh); }
+}
+
+/* 枪口火光：朝目标方向的暖色小闪光（旋转由内联 transform 给，这里只动画透明度） */
+.fx-flash {
+	position: absolute;
+	width: 3.2dvh;
+	height: 1.6dvh;
+	border-radius: 50%;
+	background: radial-gradient(circle,
+		rgba(255, 244, 208, 1),
+		rgba(255, 176, 66, 0.65) 45%,
+		rgba(255, 140, 40, 0) 76%);
+	opacity: 0;
+	animation: fx-flash-fade 0.24s ease-out forwards;
+}
+
+@keyframes fx-flash-fade {
+	0%   { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#fx-layer, #fx-trail-layer { display: none; }
+}
+
+/* ===== achievements 成就页卡片（2026-09）=====
+   成就墙自己一张卡；注意卡片内的标题与列表要改回 width:100%，
+   否则它们各自的 min(92vw, 860px) 会撑出卡片外。
+   （menu 的关卡进度条**不**做卡片，保持原来的白底 + 阴影行样式。） */
+.panel-card {
+	width: min(92vw, 900px);
+	margin: 0 auto;
+	padding: 0.6rem 1.5rem 1.7rem;
+	border-radius: 1.5rem;
+	background: #fff;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.panel-card .section-title,
+.panel-card .level-list { width: 100%; }
+
+/* ===== menu 战役地图（2026-09）：关卡目录改成地图旗标 =====
+   底图是 img/europe-map.svg（本地生成）；旗标用百分比定位，所以 .campaign-map
+   不能有 padding / border，否则百分比就对不上底图。overflow 保持 visible，
+   免得最靠边的旗标文字被裁掉。 */
+.campaign-map {
+	position: relative;
+	width: min(92vw, 900px);
+	margin: 0 auto;
+	border-radius: 1.5rem;
+	background: #fff;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+	line-height: 0;                 /* 去掉 <img> 下方的行内基线空隙 */
+}
+
+.campaign-map__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 1.5rem;
+}
+
+.campaign-map__route {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+	pointer-events: none;
+}
+
+.map-route__line {
+	fill: none;
+	stroke-width: 2.6;
+	stroke-linecap: round;
+	vector-effect: non-scaling-stroke;   /* viewBox 非等比缩放，线宽靠它保持恒定 */
+}
+
+/* 已通关 → 下一关：红色虚线（**静止**，不做流动动画 —— 只有"加载新关卡"那一下才有动画） */
+.map-route__line--done {
+	stroke: #9c1c22;
+	stroke-width: 3;
+	stroke-dasharray: 9 7;
+	filter: drop-shadow(0 0 3px rgba(156, 28, 34, 0.55));
+}
+
+/* 还没打通的下一段：浅灰静止虚线（viewBox 与底图等比，所以虚线疏密均匀） */
+.map-route__line--next {
+	stroke: rgba(91, 66, 31, 0.42);
+	stroke-width: 2;
+	stroke-dasharray: 7 9;
+}
+
+/* 刚从结算页回来：新解锁那一段要"虚线一段一段加载出来"（慢，3s），
+   做法是给虚线盖一层遮罩（#route-reveal），遮罩里一根白色粗线用 map-route-draw
+   从起点擦到终点 —— 被擦到的虚线才露出来，看起来就是虚线在往前加载。
+   跑完由 JS 撤掉遮罩与这层线、放出下面的实虚线和新标记。 */
+.map-route__line--draw {
+	stroke: #9c1c22;
+	stroke-width: 3;
+	stroke-dasharray: 9 7;
+	filter: drop-shadow(0 0 4px rgba(156, 28, 34, 0.6));
+}
+
+/* 遮罩里的"擦除线"（本身看不见，只决定虚线露出多少） */
+.map-route__mask-line {
+	fill: none;
+	stroke: #fff;
+	stroke-width: 10;
+	stroke-dasharray: 100;
+	animation: map-route-draw 3s linear both;
+}
+
+/* 延伸期间，下面那根红色虚线先藏着 */
+.map-route__line--pending { opacity: 0; }
+
+@keyframes map-route-draw {
+	from { stroke-dashoffset: 100; }
+	to   { stroke-dashoffset: 0; }
+}
+
+/* 地图标记（2026-09 改版）：锚点是 0 尺寸的点，圆钉与下方星级都相对它居中 ——
+   这样红色路线连到锚点时正好落在圆钉中心，不会看着歪。
+   .map-pin 结构：<a class="map-pin"><span class="map-pin__dot">3</span><span class="map-pin__stars">★★☆</span></a> */
+.map-pin {
+	position: absolute;
+	z-index: 3;
+	width: 0;
+	height: 0;
+	color: var(--ui-navy-900);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.map-pin__dot {
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform: translate(-50%, -50%);
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 50% 50% 50% 50%;
+	background: #fffaf0;
+	border: 2px solid var(--ui-gold-500, #b99a55);
+	box-shadow: 0 3px 10px rgba(57, 39, 17, 0.32);
+	font-family: var(--ui-display);
+	font-size: 0.82rem;
+	font-weight: 700;
+	line-height: 1;
+	transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+/* 圆钉下面那根小尖脚，看着像地图钉 */
+.map-pin__dot::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	transform: translateX(-50%);
+	border: 5px solid transparent;
+	border-top-color: var(--ui-gold-500, #b99a55);
+	border-bottom: 0;
+}
+
+/* 圆钉下方的星级（只有星级，没有名字卡牌）—— 加粗加大 + 浅色描边，在底图上更显眼。
+   top 是相对锚点的偏移：圆钉半高 13px + 小尖脚 5px = 18px，所以这里留到 22px，星级在尖脚下方一点。
+   横向：translateX(-50%) 只让"外框"居中，而每个字的步进里含末尾的 letter-spacing
+   （0.1em），所以中间那颗星的笔画其实偏左 0.05em（实测 -0.8px）；补回半个字距，
+   中间星才真正落在图钉正下方。窄屏 letter-spacing 是 0.06em，补 0.03em（见下面的断点）。 */
+.map-pin__stars {
+	position: absolute;
+	left: 0;
+	top: 22px;
+	transform: translateX(calc(-50% + 0.05em));
+	white-space: nowrap;
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	color: #7a4a12;
+	text-shadow:
+		0 0 3px rgba(255, 252, 240, 1),
+		0 0 6px rgba(255, 252, 240, 0.95),
+		0 1px 0 rgba(255, 252, 240, 1),
+		0 1px 3px rgba(57, 39, 17, 0.45);
+}
+
+.map-pin:hover .map-pin__dot {
+	transform: translate(-50%, -50%) scale(1.12);
+	background: var(--ui-gold-500, #b99a55);
+	color: #fff;
+}
+
+/* 已通关：红圈红字 */
+.map-pin--done .map-pin__dot {
+	border-color: #9c1c22;
+	color: #9c1c22;
+}
+.map-pin--done .map-pin__dot::after { border-top-color: #9c1c22; }
+
+/* 下一场战役（已解锁未通关）：金色呼吸光环，提示"来打这里" */
+.map-pin--open .map-pin__dot {
+	border-color: var(--ui-navy-800, #172d49);
+	color: var(--ui-navy-800, #172d49);
+	animation: map-pin-breathe 1.9s ease-in-out infinite;
+}
+.map-pin--open .map-pin__dot::after { border-top-color: var(--ui-navy-800, #172d49); }
+
+/* 进行中：实心深蓝 */
+.map-pin--cont .map-pin__dot {
+	border-color: var(--ui-navy-800, #172d49);
+	background: var(--ui-navy-800, #172d49);
+	color: var(--ui-paper-100, #f7ecd2);
+	animation: map-pin-breathe 1.9s ease-in-out infinite;
+}
+.map-pin--cont .map-pin__dot::after { border-top-color: var(--ui-navy-800, #172d49); }
+
+/* 隐藏关：金框 + 斜体星级 */
+.map-pin--hidden .map-pin__dot { border-style: double; border-width: 4px; }
+.map-pin--hidden .map-pin__stars { font-style: italic; color: #7a5c33; }
+
+/* 刚从结算页回来：延伸动画还没跑完时，新标记先藏着（跑完由 JS 换成 --fresh 弹出来） */
+.map-pin--wait { opacity: 0; visibility: hidden; }
+
+/* 延伸动画跑完：新解锁的标记弹一下 */
+.map-pin--fresh .map-pin__dot { animation: map-pin-pop 0.95s cubic-bezier(0.2, 1.4, 0.4, 1) both, map-pin-breathe 1.9s ease-in-out 0.95s infinite; }
+
+@keyframes map-pin-breathe {
+	0%, 100% { box-shadow: 0 3px 10px rgba(57, 39, 17, 0.32), 0 0 0 0 rgba(185, 154, 85, 0.55); }
+	50%      { box-shadow: 0 3px 10px rgba(57, 39, 17, 0.32), 0 0 0 7px rgba(185, 154, 85, 0); }
+}
+
+@keyframes map-pin-pop {
+	0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+	60%  { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
+	100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* 窄屏：星级小一点，免得相邻标记的星星叠在一起 */
+@media (max-width: 760px) {
+	.map-pin__dot { width: 22px; height: 22px; font-size: 0.72rem; }
+	.map-pin__stars { top: 19px; font-size: 0.8rem; letter-spacing: 0.06em; transform: translateX(calc(-50% + 0.03em)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.map-pin__dot,
+	.map-route__line--done,
+	.map-route__line--draw,
+	.map-route__mask-line { animation: none !important; transition: none; }
+	.map-route__line--pending { opacity: 1; }
+	.map-route__line--draw,
+	#route-reveal-defs { display: none; }
+}
+
+/* ===== menu「读取存档」弹出卡片（2026-09）=====
+   按钮与下方导航按钮同尺寸（借用 .menu-link 的边框/底色/内边距/min-width），仍单独占一行、居中。
+   弹窗复用 ui.js 的 .ui-modal-mask / .ui-modal / .ui-btn，只做加宽与内部排布。 */
+#btn-saves {
+	display: block;
+	margin: 1.4rem auto 0;
+	cursor: pointer;
+}
+
+.ui-modal--wide { width: min(92vw, 720px); }
+.ui-modal--wide .level-list { width: 100%; }
+
+.save-modal-title {
+	margin: 0 0 0.9rem;
+	font-family: var(--ui-display);
+	font-size: 1.3rem;
+	font-weight: 650;
+	color: var(--ui-navy-900);
+}
+
+.ui-modal--wide #btn-restart { display: block; margin: 1.2rem auto 0; }
+.ui-modal--wide .ui-modal-actions { margin-top: 1.1rem; }

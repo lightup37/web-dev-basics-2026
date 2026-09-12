@@ -8,6 +8,10 @@
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body class="page-ending ending-empire">
+	<audio id="game-music" loop>
+		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
+	</audio>
+
 	<div class="page-box">
 		<p class="page-kicker">THE UNWRITTEN EMPIRE · 未写帝国</p>
 		<h1>隐藏结局 · 拿破仑统治欧洲</h1>
@@ -20,14 +24,25 @@
 		</div>
 		<p class="page-note">（隐藏结局：拿破仑统治欧洲——这段历史从未被写下。）</p>
 		<div class="form-box">
-			<p class="form-link"><a href="menu.html">返回游戏主界面</a></p>
-			<p class="form-link"><a href="game1.html">从第一场战役再次出发</a></p>
+			<button id="button-next" class="game-btn">Next</button>
 		</div>
 	</div>
 	<script src="js/account.js"></script>
+	<script src="js/ui.js"></script>
 	<script src="js/save.js"></script>
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('empire');
+
+		/* 2026-09：结局页只留一个出口 —— Next 回主界面 */
+		document.getElementById('button-next').addEventListener('click', function () {
+			window.location.href = 'menu.html';
+		});
+	</script>
+
+	<script src="js/bgm.js"></script>
+	<script>
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		initBgm('game-music');
 	</script>
 </body>
 </html>

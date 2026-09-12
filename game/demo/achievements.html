@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>成就 - 拿破仑战争</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+</head>
+<body class="page-menu">
+	<audio id="menu-music" loop>
+		<source src="mus/Preussens-Gloria.mp3" type="audio/mpeg">
+	</audio>
+	<div class="page-box">
+		<p class="page-kicker">IMPERIAL HONOURS · 帝国荣誉</p>
+		<h1>成就</h1>
+		<p class="page-sub">指挥官 <span id="welcome-name"></span>，这是你的战功簿。</p>
+	</div>
+
+	<!-- 成就墙（2026-09 起独立成页）：由 js/menu-achv.js 的 renderMenuAchievements() 填充 -->
+	<div id="achv-area" class="panel-card"></div>
+
+	<div class="page-box">
+		<ul class="menu-list">
+			<li><a class="menu-link" href="menu.html">返回主界面</a></li>
+			<li><a class="menu-link" href="#" id="logout-btn">退出登录</a></li>
+		</ul>
+	</div>
+
+	<script src="js/account.js"></script>
+	<script src="js/ui.js"></script>
+	<script src="js/save.js"></script>
+	<!-- 成就系统（独立模块）：成就墙 #achv-area -->
+\t<script src="js/menu-achv.js"></script>
+	<script src="js/bgm.js"></script>
+	<script>
+		/* 本页外壳只做三件事：登录校验、欢迎语、登出；成就墙交给 menu-achv.js */
+		if (!currentUser()) { window.location.href = 'index.html'; }
+		document.getElementById('welcome-name').textContent = currentUser();
+
+		renderMenuAchievements();
+
+		document.getElementById('logout-btn').addEventListener('click', function (e) {
+			e.preventDefault();
+			logout();
+			window.location.href = 'index.html';
+		});
+
+		/* 背景音乐：进入即尝试播放，被浏览器拦截则等首次点击 */
+		initBgm('menu-music');
+		});
+	</script>
+</body>
+</html>

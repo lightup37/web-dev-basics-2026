@@ -82,26 +82,26 @@ function clearManual(user, id) {
 /* ---------- 业务操作 ---------- */
 
 /* 通关自动存档：写入活动存档 a.save。未登录忽略。
- * quickL1：第 1 关是否在 12 回合内通关（开启隐藏路线，to-do #14） */
+ * quickL1：旧参数（第 1 关 ≤12 回合开隐藏路线），已停用，保留只为兼容 main.js 的调用。
+ * 现在的隐藏路线判据统一为 hiddenRouteOpen()（第 1~6 关全 3 星）。 */
 function autosaveOnWin(levelId, star, quickL1) {
 	if (typeof currentUser !== 'function') return false;
 	var user = currentUser();
 	if (!user) return false;
 	var f = ensureAuto(user);
 	var key = String(levelId);
+	var wasHiddenOpen = hiddenRouteOpen();
 	f.stars[key] = Math.max(f.stars[key] || 0, star);
 	f.unlocked = Math.max(f.unlocked || 1, Number(levelId) + 1);
 	f.snapshot = null;
-	var openedHidden = false;
-	if (Number(levelId) === 1 && quickL1 && !f.hiddenUnlocked) {
-		f.hiddenUnlocked = true;
-		openedHidden = true;
-	}
 	putAuto(user, f);
-	if (openedHidden) {
-		alert('历史似乎发生了一点变化——秘密路线已开启，第 6 关之后将出现隐藏的第 7 关。已自动存档（a.save）');
-	} else {
-		alert('第 ' + levelId + ' 关通关！已自动存档（a.save）');
+	/* 2026-09：通关不再打断流程，结算页也不再写任何说明文字（原"第 N 关通关！已自动存档（a.save）"已删）。
+	   main.js 的 showWinNote() 保留但当前无人调用。 */
+	/* 隐藏路线刚被打开：右上角浮动提示 */
+	if (!wasHiddenOpen && hiddenRouteOpen()) {
+		if (typeof achievementToast === 'function') {
+			achievementToast('隐藏路线开启', '第 1～6 关全部达成 3 星 · 隐藏的第 7 关已解锁');
+		}
 	}
 	return true;
 }
@@ -137,6 +137,15 @@ function loadManualToAuto(user, id) {
 	return f;
 }
 
+/* 用"空档"覆盖活动存档：把 a.save 还原成"未开始"的初始内容
+ * （清空进度 / 星级 / 进行中快照；**不碰成就与手动备份**）。
+ * 供主界面存档卡片里"载入一个空的手动档"使用（玩家连点两次确认后才走这里）。 */
+function clearAuto(user) {
+	if (!user) return false;
+	putAuto(user, { unlocked: 1, stars: {}, snapshot: null, hiddenUnlocked: false });
+	return true;
+}
+
 /* a.save 当前进行中的快照（无则 null） */
 function autoSnapshot(user) {
 	var f = getAuto(user);
@@ -151,20 +160,29 @@ function manualSummaries(user) {
 	return MANUAL_IDS.map(function (id) { return { id: id, file: user ? getManual(user, id) : null }; });
 }
 
-/* 重新开始游戏：清空活动存档 a.save（进度/星级/进行中快照）。手动备份档保留，可由玩家另行删除。 */
+/* 重新开始游戏：清空活动存档 a.save（进度 / 星级 / 进行中快照），
+ * 并一并清空成就（achv:）与连败计数（achv-fail:）——2026-09 起"重新开始 = 一切重来"。
+ * 手动备份档 save1~3 仍保留，可由玩家另行删除。 */
 function resetAutoSave(user) {
 	if (!user) return false;
 	localStorage.removeItem('a.save:' + user);
+	localStorage.removeItem(achKey(user));
+	localStorage.removeItem(streakKey(user));
 	return true;
 }
 
-/* 隐藏路线是否已开启（game1 ≤12 回合通关后写入 a.save 的 hiddenUnlocked，to-do #14） */
+/* 隐藏路线是否已开启（判据唯一来源）：第 1~6 关全部拿到 3 星。
+ * menu.html 的第 7 关入口、main.js 第 6 关后的 Next Game、game7.js 的入口校验都调用它。
+ * 2026-09 变更：原先的"第 1 关 ≤12 回合通关 -> hiddenUnlocked"已停用
+ * （保存格式里的 hiddenUnlocked 字段仅为兼容旧档而保留，不再作为判据）。 */
 function hiddenRouteOpen() {
 	if (typeof currentUser !== 'function') return false;
 	var user = currentUser();
 	if (!user) return false;
-	var f = getAuto(user);
-	return !!(f && f.hiddenUnlocked);
+	for (var level = 1; level <= 6; level++) {
+		if (getLevelStars(user, level) < 3) return false;
+	}
+	return true;
 }
 
 /* 该用户是否已通关某关（有星级记录） */
@@ -172,6 +190,14 @@ function hasBeatenLevel(user, levelId) {
 	if (!user) return false;
 	var f = getAuto(user);
 	return !!(f && f.stars && f.stars[String(levelId)]);
+}
+
+/* 某关已获得的星级（无记录 = 0 星）。第 7 关解锁校验 / 主界面入口判据都从这里取数。 */
+function getLevelStars(user, levelId) {
+	if (!user) return 0;
+	var f = getAuto(user);
+	if (!f || !f.stars) return 0;
+	return Number(f.stars[String(levelId)]) || 0;
 }
 
 /* ========== to-do #15：成就（按用户隔离，key: achv:<用户名>） ========== */
@@ -210,7 +236,13 @@ function unlockAchievement(code) {
 	st[code] = true;
 	writeAch(user, st);
 	var a = achievementMeta(code);
-	if (a) alert('成就解锁：' + a.name + ' —— ' + a.desc);
+	if (a) {
+		if (typeof achievementToast === 'function') {
+			achievementToast('成就解锁 · ' + a.name, a.desc);   // 右上角浮动提示（2026-09 起替代 alert）
+		} else {
+			alert('成就解锁：' + a.name + ' —— ' + a.desc);
+		}
+	}
 	return true;
 }
 

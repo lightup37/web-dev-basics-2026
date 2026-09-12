@@ -8,6 +8,10 @@
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body class="page-ending ending-destiny">
+	<audio id="game-music" loop>
+		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
+	</audio>
+
 	<div class="page-box">
 		<p class="page-kicker">FATE REASSERTED · 命运归位</p>
 		<h1>隐藏失败 · 命运无法改变</h1>
@@ -19,9 +23,21 @@
 		</div>
 		<p class="page-note">（即便踏上隐藏之路，第七关的失利也让历史回到了它本来的轨道。）</p>
 		<div class="form-box">
-			<p class="form-link"><a href="game7.html">再战第七关，向命运讨回一次机会</a></p>
-			<p class="form-link"><a href="menu.html">返回游戏主界面</a></p>
+			<button id="button-next" class="game-btn">Next</button>
 		</div>
 	</div>
+
+	<script>
+		/* 2026-09：结局页只留一个出口 —— Next 回主界面 */
+		document.getElementById('button-next').addEventListener('click', function () {
+			window.location.href = 'menu.html';
+		});
+	</script>
+
+	<script src="js/bgm.js"></script>
+	<script>
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		initBgm('game-music');
+	</script>
 </body>
 </html>

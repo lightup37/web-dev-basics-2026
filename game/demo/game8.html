@@ -525,14 +525,14 @@
            胜负页面
            ===================================================== */
 
+        /* 结算面板的位置与居中由 css/style.css 的 #win,#lose 统一接管
+           （position:fixed + translate(-50%,-50%) 居中）。这里只保留文字居中，
+           不要再写 margin-top —— 那会把面板从视口中心往下推。 */
         #win,
         #lose {
 
             text-align:
                 center;
-
-            margin-top:
-                20px;
         }
 
 
@@ -976,9 +976,11 @@
 
     <script src="js/account.js"></script>
 
+    <script src="js/ui.js"></script>
     <script src="js/save.js"></script>
 
     <script src="js/main.js"></script>
+    <script src="js/fx.js"></script>
 
     <script src="js/ai.js"></script>
 

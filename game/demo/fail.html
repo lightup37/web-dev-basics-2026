@@ -8,6 +8,10 @@
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body class="page-ending ending-defeat">
+	<audio id="game-music" loop>
+		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
+	</audio>
+
 	<div class="page-box">
 		<p class="page-kicker">A HISTORY UNMADE · 未竟之史</p>
 		<h1>结局 · 拿破仑提早失利</h1>
@@ -17,16 +21,27 @@
 			<p class="story-line"><b>副官：</b>陛下，联军正在集结，巴黎已经传来不稳的消息。</p>
 			<p class="story-line"><b>拿破仑：</b>再给我一次机会，我会让那些人记住法兰西的名字。</p>
 		</div>
-		<p class="page-note">败局已定，拿破仑提早失利的结局就此写就——但历史可以重来。</p>
+		<p class="page-note">败局已定，拿破仑提早失利的结局就此写就——但<strong>你</strong>可以重来。</p>
 		<div class="form-box">
-			<p class="form-link"><a href="menu.html">返回游戏主界面，重新指挥</a></p>
-			<p class="form-link"><a href="index.html">退出登录</a></p>
+			<button id="button-next" class="game-btn">Next</button>
 		</div>
 	</div>
 	<script src="js/account.js"></script>
+	<script src="js/ui.js"></script>
 	<script src="js/save.js"></script>
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('tragic_fail');
+
+		/* 2026-09：结局页只留一个出口 —— Next 回主界面 */
+		document.getElementById('button-next').addEventListener('click', function () {
+			window.location.href = 'menu.html';
+		});
+	</script>
+
+	<script src="js/bgm.js"></script>
+	<script>
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		initBgm('game-music');
 	</script>
 </body>
 </html>
