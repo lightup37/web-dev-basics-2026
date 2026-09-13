@@ -5,7 +5,9 @@
  *                摆旗标（关号 + 下方星级 / 进行中 / 隐藏关；完整关名在 title 里），
  *                **只画到"已解锁到的关卡"**（后面的不出现，打到哪长到哪）；
  *                已通关的段 = 红色流动虚线，还没打通的下一段 = 浅灰静止虚线；
- *                刚通关回来（?unlock=N）时下一段先"延伸"到终点，跑完才放出下一关的标记。
+ *                刚解锁了一关时，下一段先"延伸"到终点，跑完才放出下一关的标记
+ *                —— 判据是主界面自己记的 revealSeen:<用户>（见 readRevealSeen），
+ *                ?unlock=N 只作为兼容 / 手动重放。
  *                旗标就是关卡入口（隐藏关只在 hiddenRouteOpen() 为真时出现）。
  *              （2026-09 第 4 版起页面上的 #save-note"已通关 N 关"摘要与地图下方的小字已删除）
  *   弹窗里  —— 点 #btn-saves 打开的卡片（复用 css 的 .ui-modal-mask / .ui-modal）：
@@ -61,10 +63,27 @@
 		return s > 0 ? '★'.repeat(s) + '☆'.repeat(3 - s) : '☆☆☆';
 	}
 
-	/* 带 ?unlock=<刚通关的关号> 进来 = 刚从结算页回来，播一次"路线解锁"动画 */
+	/* 结算页回来时带的参数：?unlock=<刚通关的关号>（现在的唯一判据是下面的"已展示进度"记忆，
+	   这个参数只作为兼容 / 手动重放用） */
 	function unlockParam() {
 		var m = /[?&]unlock=(\d+)/.exec(window.location.search);
 		return m ? Number(m[1]) : null;
+	}
+
+	/* "主界面已经展示到第几关"的记忆（每用户一条）：判断这次加载要不要播"新关卡加载"动画。
+	   以前只看 ?unlock=，一旦游戏页跑的是浏览器缓存里的旧 main.js（老标签页最常见），
+	   参数就没了，动画莫名消失；改成主界面自己比一下进度，就不依赖上一页传参了。 */
+	function revealSeenKey(user) { return 'revealSeen:' + user; }
+	function readRevealSeen(user, frontier) {
+		var raw = null;
+		try { raw = localStorage.getItem(revealSeenKey(user)); } catch (e) { raw = null; }
+		if (raw === null) return frontier;   /* 第一次记录：当成"已展示到当前关"，不播 */
+		var n = Number(raw);
+		if (!n || n < 1) return frontier;
+		return Math.min(n, frontier);        /* 进度回退（重新开始 / 载入旧档）时跟着退回来 */
+	}
+	function writeRevealSeen(user, frontier) {
+		try { localStorage.setItem(revealSeenKey(user), String(frontier)); } catch (e) { }
 	}
 
 	/* 关卡之间的连线：已通关 → 红色虚线（静止，无动画）；还没打通的下一段 → 浅灰静止虚线。
@@ -181,6 +200,19 @@
 		var unlockId = unlockParam();
 		var frontier = Number(auto.unlocked) || 1;   // 已解锁到第几关
 
+		/* 播不播"新关卡加载"动画：
+		   ① 主界面自己记的展示进度（revealSeen）—— frontier 正好比它大 1，说明这次新解锁了一关；
+		   ② 兼容 ?unlock=<关号>：手输地址 / 没有记忆时按它判断（且必须正好是刚解锁的那一段）。
+		   重打老关卡（frontier 不变）与"载入旧档/重新开始"（frontier 变小）都不会播。 */
+		var seen = readRevealSeen(user, frontier);
+		var revealId;
+
+		if (frontier === seen + 1) revealId = frontier - 1;
+		else if (unlockId !== null && Number(unlockId) + 1 === frontier) revealId = unlockId;
+		else revealId = null;
+
+		writeRevealSeen(user, frontier);   /* 记下这次展示到哪里（动画中途刷新也不会重播） */
+
 		// —— 只显示"已解锁到的关卡"（随进度一关一关长出来；后面的关卡先不出现）——
 		var entries = [];
 		LEVELS.forEach(function (lv) {
@@ -195,7 +227,7 @@
 				title: lv.name + ' —— ' + (cont ? '进行中，点标记继续'
 					: (s > 0 ? mapStars(s) + '，可重玩' : '未通关，点标记开始')),
 				href: cont ? (lv.file + '?resume=1') : (s > 0 || Number(lv.id) <= frontier ? lv.file : ''),
-				fresh: unlockId !== null && Number(lv.id) === unlockId + 1   // 刚解锁的这一关：弹出动画
+				fresh: revealId !== null && Number(lv.id) === revealId + 1   // 刚解锁的这一关：弹出动画
 			});
 		});
 
@@ -220,13 +252,13 @@
 		// —— 重绘：先连线（在底图之上、标记之下），再标记 ——
 		Array.prototype.forEach.call(map.querySelectorAll('.map-pin'), function (n) { n.remove(); });
 		var svg = map.querySelector('.campaign-map__route');
-		renderRoute(svg, entries, unlockId);
+		renderRoute(svg, entries, revealId);
 		entries.forEach(function (e) { map.appendChild(buildPin(e)); });
 
 		// 刚通关（带了 ?unlock=）：先让新解锁那段"延伸"到终点，跑完再放出下一关的标记。
 		// 开了"减少动态效果"就直接全部显示，不做延迟。
 		var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-		if (unlockId !== null && !reduced) {
+		if (revealId !== null && !reduced) {
 			window.setTimeout(function () { finishReveal(map, svg); }, DRAW_MS);
 		} else {
 			finishReveal(map, svg);

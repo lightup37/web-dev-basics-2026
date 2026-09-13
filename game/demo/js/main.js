@@ -251,6 +251,38 @@ function moveMenuIntoResultArea() {
 	const btn = document.getElementById('button-exit');
 	if (area && btn && btn.parentNode !== area) area.appendChild(btn);
 }
+
+/* 通关结算页的"下一步去哪"（写在 #button-next-game 的 data-target 上）：
+   · 下一关是结局页 → 直接进结局（第 7 关单独判：隐藏关通关去隐藏结局）；
+   · 否则回主界面，**只有这一关通关真的解锁了新关卡**时才带 ?unlock=N
+     —— 主界面靠它播"路线加载"动画并弹出新标记（见 js/menu-saves.js 的 revealId）。
+     重打已经通过的老关卡时战线没有前移，就不该再播一次动画。
+   注意：必须在 autosaveOnWin() 之前调用，否则读到的 unlocked 已经是推进后的值。 */
+function winTargetFor(levelId) {
+	if (Number(levelId) === 7) return 'hidden-end.html';   // 隐藏关通关 → 隐藏结局
+	if (typeof nextLevelFile === 'function') {
+		const nf = nextLevelFile(levelId);
+		if (/end-game\.html|hidden-end\.html/.test(nf)) return nf;
+	}
+	let prevUnlocked = 1;
+	try {
+		if (typeof currentUser === 'function' && currentUser() && typeof autoProgress === 'function') {
+			prevUnlocked = Number(autoProgress(currentUser()).unlocked) || 1;
+		}
+	} catch (e) { /* 读不到就当作"推进了"，宁可多播一次动画 */ }
+	const advanced = Number(levelId) >= prevUnlocked;   // 打的是战线最前沿那一关
+	return 'menu.html' + (advanced ? ('?unlock=' + levelId) : '');
+}
+
+/* 通关结算页统一收尾：只留 Next —— 隐藏 Replay / 结局按钮与整条操作区（含 Menu） */
+function hideResultAlternatives() {
+	const replay = document.getElementById('button-replay');
+	if (replay) replay.style.display = 'none';
+	const fail = document.getElementById('button-fail');
+	if (fail) fail.style.display = 'none';
+	const actions = document.getElementById('game-actions');
+	if (actions) actions.style.display = 'none';
+}
  
 /* 向量归一化，方便计算棋子移动到的位置 */ 
 function normalize(vec) { 
@@ -646,6 +678,17 @@ function checkWinState() {
 			else {
 				const winState = document.getElementById('3star');
 				if(winState) winState.style.display = '';
+			}
+
+			/* 2026-09：结算页只留一个 Next —— 与通用通关分支保持一致：
+			   隐藏 Replay / 结局按钮与整条操作区（含 Menu）；并把"下一步去哪"写进 data-target。
+			   必须放在下面的 autosaveOnWin() 之前，winTargetFor 要靠它读通关前的 unlocked。 */
+			hideResultAlternatives();
+
+			const _nextBtn5 = document.getElementById('button-next-game');
+
+			if(_nextBtn5 && typeof CURRENT_LEVEL_ID !== 'undefined') {
+				_nextBtn5.dataset.target = winTargetFor(CURRENT_LEVEL_ID);
 			}
 
 			/* 自动存档 */
@@ -1137,23 +1180,11 @@ function checkWinState() {
 		document.getElementById('button-next-game').style = 'width: 100px; height: 50px;'; 
 		// 2026-09：结算页只留一个 Next —— 隐藏 Replay/结局按钮与整条操作区（含 Menu 按钮），
 		// 并把这一关的"下一步去哪"算好写在 data-target 上（点击处理器只负责跳转）。
-		const _replayBtn = document.getElementById('button-replay');
-		if (_replayBtn) _replayBtn.style.display = 'none';
-		const _failBtnW = document.getElementById('button-fail');
-		if (_failBtnW) _failBtnW.style.display = 'none';
-		const _actions = document.getElementById('game-actions');
-		if (_actions) _actions.style.display = 'none';
+		// 带不带 ?unlock=N 由 winTargetFor() 判断（重打老关卡不带，避免白播一次地图动画）。
+		hideResultAlternatives();
 		const _nextBtn = document.getElementById('button-next-game');
 		if (_nextBtn && typeof CURRENT_LEVEL_ID !== 'undefined') {
-			let _go = 'menu.html';
-			if (CURRENT_LEVEL_ID === 7) {
-				_go = 'hidden-end.html';                      // 隐藏关通关 → 隐藏结局
-			} else if (typeof nextLevelFile === 'function') {
-				const _nf = nextLevelFile(CURRENT_LEVEL_ID);
-				// 下一关是结局页 → 直接进结局；下一关是关卡 → 回主界面看"路线解锁"地图动画
-				_go = /end-game\.html|hidden-end\.html/.test(_nf) ? _nf : ('menu.html?unlock=' + CURRENT_LEVEL_ID);
-			}
-			_nextBtn.dataset.target = _go;
+			_nextBtn.dataset.target = winTargetFor(CURRENT_LEVEL_ID);
 		}
 		// 加载胜利界面 
 		const star = retreat ? [3, 2, 1][Math.min(escaped, 2)] : ((bluec == 0) ? 1 : (bluec == 1) ? 2 : 3); 

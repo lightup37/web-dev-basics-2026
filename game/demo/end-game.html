@@ -34,6 +34,13 @@
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('victory_end');
 
+		/* 2026-09：隐藏路线已经打开时，这句"另一种可能，还藏在更深处"的暗示就不成立了
+		   （地图上已经能看见隐藏关），直接不显示。 */
+		if (typeof hiddenRouteOpen === 'function' && hiddenRouteOpen()) {
+			var _note = document.getElementById('normal-note');
+			if (_note) _note.style.display = 'none';
+		}
+
 		/* 2026-09：结局页只留一个出口 —— Next 回主界面。
 		   原先的"改写历史 · 进入隐藏关"入口已移除：隐藏关现在从主界面战役地图上的隐藏标记进入
 		   （hiddenRouteOpen() 为真时地图上才会出现它）。 */

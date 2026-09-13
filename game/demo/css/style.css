@@ -2385,9 +2385,24 @@ body.dialogue-active { overflow: hidden; }
 }
 .map-pin--cont .map-pin__dot::after { border-top-color: var(--ui-navy-800, #172d49); }
 
-/* 隐藏关：金框 + 斜体星级 */
-.map-pin--hidden .map-pin__dot { border-style: double; border-width: 4px; }
-.map-pin--hidden .map-pin__stars { font-style: italic; color: #7a5c33; }
+/* 隐藏关：单圈金框 + 金色小尖脚 + 斜体星级。**只有一圈**，别有内圈。
+   三个坑记一下：① 这里原来只写了 border-style / border-width，**没写 border-color**，
+   所以注释里说的"金框"从来没生效过 —— 颜色一直由上面的状态色（--done / --open / --cont）决定；
+   ② 原来写的 border-style: double 会画出两道线（圈里套一个小圆环），4px 又比别的图钉粗一圈
+   （内径 18px vs 22px），所以改成与其它图钉同宽的 2px 实线单圈；
+   ③ 别再往圆钉里加 ::before 内圈 —— 2026-09 已经因此返工过一次。 */
+.map-pin--hidden .map-pin__dot {
+	border-color: var(--ui-gold-500, #b99a55);
+	border-style: solid;
+	border-width: 2px;
+	color: #7a5c33;
+}
+.map-pin--hidden .map-pin__dot::after { border-top-color: var(--ui-gold-500, #b99a55); }
+/* 进行中的隐藏关：圆钉是深蓝实底，数字要用浅色才看得清 */
+.map-pin--hidden.map-pin--cont .map-pin__dot { color: var(--ui-paper-100, #f7ecd2); }
+/* 斜体星级的墨迹比正体偏右（实测宽屏 +1.24px、窄屏 +1.73px），
+   上面那条 +0.05em 的补偿是按正体调的，斜体要往左补一点，中间那颗星才落在图钉正下方。 */
+.map-pin--hidden .map-pin__stars { font-style: italic; color: #7a5c33; transform: translateX(calc(-50% - 0.03em)); }
 
 /* 刚从结算页回来：延伸动画还没跑完时，新标记先藏着（跑完由 JS 换成 --fresh 弹出来） */
 .map-pin--wait { opacity: 0; visibility: hidden; }
@@ -2410,6 +2425,7 @@ body.dialogue-active { overflow: hidden; }
 @media (max-width: 760px) {
 	.map-pin__dot { width: 22px; height: 22px; font-size: 0.72rem; }
 	.map-pin__stars { top: 19px; font-size: 0.8rem; letter-spacing: 0.06em; transform: translateX(calc(-50% + 0.03em)); }
+	.map-pin--hidden .map-pin__stars { transform: translateX(calc(-50% - 0.11em)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -23,7 +23,6 @@
 	<div class="page-box">
 		<ul class="menu-list">
 			<li><a class="menu-link" href="menu.html">返回主界面</a></li>
-			<li><a class="menu-link" href="#" id="logout-btn">退出登录</a></li>
 		</ul>
 	</div>
 
@@ -31,24 +30,18 @@
 	<script src="js/ui.js"></script>
 	<script src="js/save.js"></script>
 	<!-- 成就系统（独立模块）：成就墙 #achv-area -->
-\t<script src="js/menu-achv.js"></script>
+	<script src="js/menu-achv.js"></script>
 	<script src="js/bgm.js"></script>
 	<script>
-		/* 本页外壳只做三件事：登录校验、欢迎语、登出；成就墙交给 menu-achv.js */
+		/* 本页外壳只做两件事：登录校验、欢迎语；成就墙交给 menu-achv.js。
+		   2026-09：这页不再放"退出登录"（要登出请回主界面），所以也没有 logout 绑定。 */
 		if (!currentUser()) { window.location.href = 'index.html'; }
 		document.getElementById('welcome-name').textContent = currentUser();
 
 		renderMenuAchievements();
 
-		document.getElementById('logout-btn').addEventListener('click', function (e) {
-			e.preventDefault();
-			logout();
-			window.location.href = 'index.html';
-		});
-
 		/* 背景音乐：进入即尝试播放，被浏览器拦截则等首次点击 */
 		initBgm('menu-music');
-		});
 	</script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 - **5 个兵种**：步兵 / 炮兵 / 骑兵 / 散兵 / 掷弹兵，数值见「兵种设计」。
 - 引擎逻辑看 `js/main.js`；跨关卡信息看 `js/levels.js`；各关棋子配置在各自的 `js/gameN.js`。
 
-**规模（按当前仓库实际文件）**：根目录 HTML **17** 个 + `members/` **6** 个 = 23 个页面；JS **22** 个、**7798** 行；CSS 1 个、**2446** 行；图片 **23** 个（含 `img/europe-map.svg`）；音频 **5** 首。
+**规模（按当前仓库实际文件）**：根目录 HTML **17** 个 + `members/` **6** 个 = 23 个页面；JS **22** 个、**7798** 行；CSS 1 个、**2462** 行；图片 **23** 个（含 `img/europe-map.svg`）；音频 **5** 首。
 
 ## 工作方式（必须遵守）
 
@@ -45,7 +45,7 @@
 ├── index.html                # 主页：内嵌登录 + 注册/小组介绍入口（背景音乐 #index-music）
 ├── register.html             # 注册页（另开页面）
 ├── menu.html                 # 游戏主界面（70 余行）：页头 +「战役地图」#campaign-map +「读取存档」+ 导航
-├── achievements.html         # 成就页（2026-09 独立成页，成就墙 #achv-area 在 .panel-card 里）
+├── achievements.html         # 成就页（2026-09 独立成页，成就墙 #achv-area 在 .panel-card 里；页面只有「返回主界面」一个出口）
 ├── group.html                # 小组介绍页：6 个成员卡片 + 个人页链接
 ├── game1.html                # 第 1 关 破晓防线（20 回合）
 ├── game2.html                # 第 2 关 炮火走廊（25 回合）
@@ -66,7 +66,7 @@
 │   ├── ChenSixing.html ZhouYunhao.html  LiXinyu.html
 │   └── tanyiqinq/ lipengzhen/ wuchenan/ chensixing/ zhouyunhao/ lixinyu/
 ├── css/
-│   └── style.css             # 全局样式（2446 行）：基础 UI → 各 to-do 段 →「2026 UI 重制」→ 每关桌面再声明 → 2026-09 新增段
+│   └── style.css             # 全局样式（2462 行）：基础 UI → 各 to-do 段 →「2026 UI 重制」→ 每关桌面再声明 → 2026-09 新增段
 ├── js/                       # 22 个文件、7798 行
 │   ├── constants.js          # 兵种数值原型 + 图片常量 + loseTips 初值
 │   ├── pieces.js             # 棋子 DOM 创建 / 移动落点（movePieceTo）
@@ -128,9 +128,11 @@
 
 - 通关结算页只有 `#button-next-game`（文案 `Next`）：`Replay` / `View Ending` 与整条 `#game-actions`（含 `Menu`）都被隐藏。**结算页上没有任何说明文字**（原来那句"第 N 关通关！已自动存档（a.save）"已删）。
 - 目标在结算时算好写进按钮的 **`data-target`**（方便验收直接读）：
-  - 第 1~5 关 → `menu.html?unlock=<刚通关的关号>`：**回主界面看地图动画**，再由玩家点地图上下一个标记进关，**不直接跳下一关**；
+  - 第 1~5 关 → `menu.html?unlock=<刚通关的关号>`：**回主界面看地图动画**，再由玩家点地图上下一个标记进关，**不直接跳下一关**。⚠️ 这个参数只是"顺手带上"：**地图播不播动画不看它**（见「主界面与战役地图」的 `revealSeen`），所以游戏页跑旧缓存、参数丢了也不会再丢动画；
+  - **重打老关卡不带这个参数**：`winTargetFor(levelId)` 先读**通关前**的 `autoProgress().unlocked`，只有 `levelId >= unlocked`（确实往前推进了一关）才拼 `?unlock=`，否则回裸 `menu.html`——不然重打第 1 关也会在地图上再播一次"加载新关卡"的动画（2026-09 修的 bug）；
   - 第 6 关 → `end-game.html`；第 7 关 → `hidden-end.html`；
   - "下一关是不是结局"仍以 `levels.js` 的 `nextLevelFile()` 为准（正则匹配 `end-game.html|hidden-end.html`），不写死。
+- **判胜分支必须走同一套收尾**：`hideResultAlternatives()`（藏 `Replay` / `View Ending` / `#game-actions`）+ 写 `data-target`。第 5 关有**自己的判胜分支**（按步数给星，三种情况都 `return`，不落通用分支），也得显式调这两个函数——漏掉就会出现"第 5 关通关后回主界面没有连线延伸动画"。
 - **四个结局页只留一个 `Next` 按钮回 `menu.html`，页面上已无任何 `<a>` 链接**；`end-game.html` 上原有的"进入隐藏关"入口已删除。
 
 **隐藏路线（唯一判据：`save.js` 的 `hiddenRouteOpen()`）**
@@ -267,9 +269,16 @@
 - **渐进揭示**：只画 `lv.id <= a.save.unlocked` 的关卡（加上当前进行中那一关），后面的不出现标记也不画线。
 - 标记 `.map-pin`：0 尺寸的锚点（`left/top` 就是投影坐标），里面是圆钉（写关号 + 小尖脚）+ 下方一行星级；**没有名字卡牌**，关名放在原生 `title` 里。状态 `data-state` = `done` / `open` / `cont` / `hidden`。
   - 星级两个偏移量**别随手改**：纵向 `top: 22px`（窄屏 `19px`，实测钉底到星级顶边净空隙 9px）；横向 `transform: translateX(calc(-50% + 0.05em))`（窄屏 `+0.03em`）—— 因为 `letter-spacing` 算在每个字的步进里（含最后一个字），只写 `-50%` 会让**中间那颗星偏左半个字距**。
+  - **隐藏关图钉**（`.map-pin--hidden`，2026-09 修）：**单圈金框** = `2px` 实线金边 + 金色小尖脚 + 斜体星级 `#7a5c33`；圆钉尺寸与其它图钉一致（26px / 2px，窄屏 22px）。**圈里不要再有任何内圈。**
+    - ⚠️ 三个坑：① 原来那条规则**只写了 `border-style` / `border-width`、没写 `border-color`**，颜色一直被状态色（`--done` 暗红 / `--open`、`--cont` 深蓝）覆盖，注释里的"金框"从来没生效；② 原来的 `border-style: double` **真的会画出两道线**（圈里套一个小圆环，玩家一眼就看出来了），而且 `4px` 比别的图钉粗一圈（内径 18px vs 22px）；③ 所以既不要用 `double`，**也不要再拿 `::before` 去补内圈**——2026-09 已经因为这个返工过一次（先按"double 不生效"的猜测加了一圈内金线，玩家回"里面还是有个小圆环"）。
+    - 斜体星级的墨迹比正体偏右（实测宽屏 +1.24px、窄屏 +1.73px），所以上面那条 `+0.05em` 的居中补偿要按斜体重补：宽屏 `-0.03em`、窄屏（`max-width:760px` 段内）`-0.11em`，实测残差 ≤0.06px。
+    - 进行中的隐藏关（`.map-pin--hidden.map-pin--cont`）圆钉是深蓝实底，数字要改浅色，否则看不清。
 - **连线**（内联 SVG，viewBox 与底图等比）：已通关 = **红色静止虚线**（`dasharray 9 7`，**没有 animation**）；还没打通的下一段 = 浅灰静止虚线 `7 9`。
-  - **只有"刚通关回主界面"那一下有动画**：`?unlock=N` 时给新解锁那段叠一层遮罩（`<defs id="route-reveal-defs">` → `<mask id="route-reveal">`），遮罩里一根白粗线用 `map-route-draw 3s linear` 把 `stroke-dashoffset` 100 → 0，**被擦到的虚线才露出来**（"虚线一段一段加载"）；期间下面那根加 `--pending`（`opacity:0`）、下一关标记加 `--wait`（`visibility:hidden`）。`DRAW_MS = 3000`（**必须与 CSS 的 3s 同步**）后 `finishReveal()` 撤遮罩、放出虚线、把标记换成 `--fresh`。
+  - **只有"刚解锁一关回主界面"那一下有动画**：给新解锁那段叠一层遮罩（`<defs id="route-reveal-defs">` → `<mask id="route-reveal">`），遮罩里一根白粗线用 `map-route-draw 3s linear` 把 `stroke-dashoffset` 100 → 0，**被擦到的虚线才露出来**（"虚线一段一段加载"）；期间下面那根加 `--pending`（`opacity:0`）、下一关标记加 `--wait`（`visibility:hidden`）。`DRAW_MS = 3000`（**必须与 CSS 的 3s 同步**）后 `finishReveal()` 撤遮罩、放出虚线、把标记换成 `--fresh`。
   - ⚠️ 遮罩**必须** `maskUnits="userSpaceOnUse"` 且范围写整个 viewBox：默认 `objectBoundingBox` 对水平/垂直线段会算出 0 宽度，**整根线会看不见**。
+  - **播不播由主界面自己判断，不依赖上一页传参**（2026-09 第二次修的 bug）：`renderProgress()` 里记住"已展示到第几关"`revealSeen:<用户>`，`frontier`（=`a.save.unlocked`）正好比它大 1 才播，`revealId = frontier - 1`；`?unlock=` 退化成兼容 / 手动重放（`unlockId + 1 === frontier` 时也认）。
+    - 为什么不用 `?unlock=` 当判据：游戏页跑的是浏览器缓存里的旧 `main.js`（或老标签页、书签）时那个参数根本不会出现，动画会莫名消失；`a.save.unlocked` 是 `autosaveOnWin()` 一直在写的，稳定得多。重打老关卡（`frontier` 不变）与载入旧档 / 重新开始（`frontier` 变小 → 记忆跟着拉回）都不会播。
+    - 首次运行（没有 `revealSeen`）按"已展示到当前关"处理，不播；动画开始前就写记忆，中途刷新不会重播。
   - 时序跑完由 `history.replaceState` 抹掉 query，刷新不重播。
 - ⚠️ `.campaign-map` **不能有 `padding`/`border`**（标记按百分比定位，参照盒子必须正好等于底图），`overflow` 保持 `visible`。
 
@@ -290,7 +299,10 @@
 - **进关流程**（`main.js` 末尾）：第 1 关 = 立绘剧情 → 战前简报（`开 战`）→ 教程图 1 → 教程图 2 → 棋盘淡入；其余关 = 立绘剧情 → 战前简报 → 淡入。每一步都裹 `try/catch`，异常直接 `revealBattlefield()`，不会卡在全黑。
   - `level-opening` 这个 `body` 类**必须成对**：它把战场藏起来，只有 `revealBattlefield()` 会摘掉。
 - **结局页**：`.page-ending` + `.form-box` 里一个 `Next`。结局页的 `.form-box` 把背景/边框/圆角/阴影/内边距全部归零，**还必须关掉 `.page-ending .form-box::before`（`content:none`）**——那套皮肤给它挂了一个 `inset:7px` 的 1px 装饰线框，只清本体 `border`/`box-shadow` 它还在，按钮上会留一道细线。`index.html` / `register.html` 的登录注册表单走另一套皮肤（选择器带 `.page-ending` 前缀，不受影响）。
+  - `end-game.html` 里那句 `.page-note#normal-note`"（历史正常进行……而另一种可能，还藏在更深处……）"**只在隐藏路线还没打开时显示**：页面脚本里 `hiddenRouteOpen()` 为真就把它 `display:none`（否则"还藏在更深处"跟地图上已经出现的隐藏关自相矛盾）。其余三个结局页的 `.page-note` 是常显的。
 - **成就页**：成就 4 项——`victory_end` 胜利 / `tragic_fail` 惨痛失败 / `empire` 法兰西帝国 / `rise_again` 失败乃成功之母（同关连败 ≥4 后以 3 星通关）。`menu-achv.js` 优先填充页面预置的 `#achv-area`（保留它的 `.panel-card`）。
+  - 页面出口**只有「返回主界面」一个链接**（`logout-btn` 与"退出登录"已删，要登出请回主界面）；内联脚本因此只做**登录校验 + 欢迎语**（BGM 由 `initBgm` 起）。
+  - ⚠️ 这一页的**内联脚本必须语法自检**：2026-09 它末尾多了一个 `});`，整段 `<script>` 直接 SyntaxError、什么都不执行（表现为"成就页空白 / 打不开"：欢迎语空、成就墙空、BGM 也不起）。同一处还有一行脚本标签被写成了**字面量 `\t<script ...>`**，会在页面上显示成一段 `\t` 文字。删 DOM 元素时**记得连它的事件绑定一起删**（`getElementById` 拿到 null 再 `.addEventListener` 会抛错，同样带崩整段脚本）。
 - **`game8.html`**：测试关，不在 `levels.js` / 地图里，只能直接开 URL；战斗是自带脚本，未接入 `ai.js` 与 `fx.js`。
 
 ## 排查 CSS 问题时的两条通用经验
@@ -378,10 +390,12 @@
 - 验证方式：起本地静态服务器（`python -m http.server 8099 --bind 127.0.0.1`）+ iframe 外壳页（先写 localStorage 种子：`users` / `currentUser` / `a.save:v` / `save1:v` / `achv:v` 等），再用 headless Edge 读 DOM 指纹：
   `& $edge @edgeArgs --dump-dom $url | Out-String`，其中 `$edgeArgs` 要**复用同一个 `--user-data-dir`**（且 **URL 用数组 splat 传**，否则会得到 0 字节输出）。
   - ⚠️ **改完 `js/` 之后要换一个新 profile（或先删掉旧的）**：复用暖 profile 会让浏览器继续跑缓存里的 `main.js`，造成"改动没生效"的假象；`css` 改动会走 `If-Modified-Since` 重新校验，一般不受影响。
+  - ⚠️ **自己也一样：改完 `js/` 必须 `Ctrl+F5` 整页刷新**。局部刷新的页面、以及**改动前就打开着的老标签页**会一直跑旧 JS——2026-09 的"第 5 关通关后地图不动画"就是这么误判出来的（`#button-next-game` 的 `data-target` 是空的，因为那个标签页里根本没有新代码）。验到"新逻辑没生效"时，先看这个，再怀疑代码。
   - headless 里**程序化点击不算用户激活**，所以"自动播放被拦 → 点击起播"这类行为要用**单元测试**（直接驱动函数并 spy `addEventListener`）来验证，别指望模拟点击。
   - headless 截图**抓不到"页面加载后新增的 DOM"**（两次截图可能字节相同）；测特效可见性用静态对照页 + 像素偏移量。
   - `armys` / `CURRENT_LEVEL_ID` 等是脚本顶层的 `let`/`var`，**不在 `window` 上**：测试里要用 `iframe.contentWindow.eval('armys…')`，不要用 `w.armys`。
   - 模拟通关要连 `disabled` 一起置位：`armys.forEach(u => { if (u.color === 'red') { u.lp = 0; u.disabled = true; } }); checkWinState();`（`checkWinState` 只数 `element.disabled == false` 的单位）。
+  - **页面的内联 `<script>` 也要语法自检**（`node --check` 只管 `js/*.js`）。最快的一段：逐个 HTML 抽出内联脚本，`new Function(code)` 只解析不执行，出错就报"文件 + 起始行 + 信息"；顺便扫一遍 `\\t` 之类的**字面量转义残留**（会被当可见文字渲染出来）。2026-09 成就页就是这么挂的（末尾多一个 `});`，整段脚本不执行）。
 - 写完临时脚本/页面**记得删掉**，并停掉后台服务器、清掉临时浏览器 profile。
 
 ## 历史记录
@@ -392,3 +406,9 @@
 - **移动/攻击逻辑修订（已完成）**：只改 `js/main.js` 的 `nextStep()` 相关部分——不破坏回合系统、不让单位穿过敌人攻击范围、允许"已在敌射程内时向远处撤"、从范围外进入后停下开打、按 `selectMinimalDistance()` 判断远近，并测过 9 种情形；`movingCounts` / 胜负判断 / 死亡处理未动。
 - **文本优化（已完成）**：`main.js` 第 7 关失败按钮文案改成 `View Ending: Destined to fail`。
 - **2026-09 一批界面修订**：结算区整体居中 → 四个结局页 `Next` 去掉外框（含 `::before` 装饰线）→ 战役地图改成"静止红色虚线 + 只在新解锁时加载"→ 地图星级位置/大小微调 → 删除若干重复小字（`#save-note`、"已通关 N 关"、地图下方小字、`menu.html` 里 group.md 那行）→ 背景音乐统一 `initBgm()` → 清理死代码（`startMenuMusic` / `game1Music` 接力）。
+- **2026-09 地图动画两个 bug**（玩家报的）：① 第 5 关通关后地图没有连线延伸——第 5 关自己的判胜分支没调 `hideResultAlternatives()` / 没写 `data-target`；② 通关第 5 关后重打第 1 关也会播一次延伸动画——结算时无条件拼了 `?unlock=`。修法是抽出 `winTargetFor(levelId)`（按**通关前**的 `unlocked` 判断有没有真推进）+ `hideResultAlternatives()`，通用判胜分支与第 5 关分支共用；菜单侧 `renderProgress()` 再用 `revealId` 兜一道。
+- **2026-09 第三个 bug：动画判据改为"主界面自己比对进度"**。上面①修好后玩家仍复现"第 5 关通关后地图不动画"——查出来是他那个标签页跑的还是改动前的 `main.js`（`data-target` 为空），旧代码自然不传 `?unlock=`，而地图当时只看这个参数。根因是**跨页握手太脆**（旧缓存 / 老标签页 / 书签都会让参数消失）。于是把判断搬进 `js/menu-saves.js`：新增每用户的 `revealSeen:<用户名>` 记录"已展示到第几关"，`a.save.unlocked` 正好 +1 才播（`?unlock=` 降级为兼容 / 手动重放）；这样即便游戏页跑旧 JS，只要 `autosaveOnWin()` 写了 `unlocked`（一直如此），动画照样播。自测 5 种情形（无参数+记忆5 → 播；记忆6 重打 → 不播；无记忆 → 不播；无记忆+`?unlock=5` → 播；记忆6+进度回退到5 → 不播且记忆拉回 5）。
+- **2026-09 隐藏关图钉样式修复**（返工过一次）：玩家报"第 7 关图钉样式错误"。第一轮实测（1300×900，隐藏路线已开）它 = `4px double` + **状态色**（深蓝），内径 18px（其它图钉 22px），而 CSS 注释写的"金框"因为漏写 `border-color` 从未生效。**我误判了 `border-style: double`**（以为圆角上不画双线），于是改成 `2px` 实线金边 + `::before` 内金线 —— 玩家回"里面依旧有个小圆环"：其实 `double` **本来就画出了两道线**，我又照着重做了一遍。第二轮去掉 `::before`，最终 = **单圈** `2px` 实线金边 + 金色小尖脚 + 斜体星级 `#7a5c33`；同时补上斜体星级的居中补偿（宽屏 `-0.03em`、窄屏 `-0.11em`；实测残差 ≤0.06px），进行中的隐藏关数字改浅色。顺带核对：L6/L7 图钉与星级**无几何重叠**（圆心距 64px）。⚠️ **教训：看不到像素时不要凭"浏览器应该不会画"下结论——那是玩家的屏幕说了算；不确定就先问。**
+- **2026-09 `end-game.html` 的一句暗示改为条件显示**：`#normal-note`"（历史正常进行……而另一种可能，还藏在更深处……）"在 `hiddenRouteOpen()` 为真时 `display:none`（实测：路线开 → `display:none`、页面盒高 587px；未开 → `display:block`、627px）。
+- **2026-09 成就页打不开（玩家报的）**：`achievements.html` 的内联脚本**末尾多了一个 `});`** → 整段 `<script>` SyntaxError、一行都不执行：欢迎语空、`#achv-area` 空、登出与 BGM 全无（看着就像"页面无法显示"）。同一处还有一行脚本标签被写成了**字面量 `\t<script src="js/menu-achv.js">`**，会在页面上渲染出一段 `\t` 文字。删掉这两个字符即恢复（`js/menu-achv.js` 与 `save.js` 都没问题）。顺手把**全项目 14 段内联脚本**用 `new Function()` 逐段语法自检，确认只有这一处坏；这条已写进「开发/验收工具约定」。
+- **2026-09 成就页去掉「退出登录」**：只保留「返回主界面」一个出口（要登出回主界面）。连同内联脚本里那段 `#logout-btn` 的点击绑定一起删——只删 DOM 不删绑定的话，`getElementById('logout-btn')` 返回 null、`.addEventListener` 抛错，又会把整段脚本带崩（和上一条是同一类坑）。实测：欢迎语 `v`、标题 `成就（4/4）`、4 行、`#logout-btn` 不存在、页面内无"退出登录"字样、`.menu-link` 只剩「返回主界面」、成就区高度 458px、BGM 仍正常加载。
