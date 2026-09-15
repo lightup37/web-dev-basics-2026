@@ -15,10 +15,10 @@ game1.pieces.push({color:'blue', class: '步', img:IMG_BLUE_infantry, posx: 9.0,
 game1.pieces.push({color:'blue', class: '步', img:IMG_BLUE_infantry, posx: 9.0, posy: 9.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 
 game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 3.0, posy: 3.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
-game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 3.0, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
+game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 1.65, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 4.5, posy: 4.5, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 6.0, posy: 3.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
-game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 6.0, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
+game1.pieces.push({color: 'red', class: '步', img: IMG_RED_infantry, posx: 7.6, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 
 // game1 的所需元素
 

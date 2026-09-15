@@ -13,9 +13,9 @@ game2.pieces.push({color: "blue", class: "步", img: IMG_BLUE_infantry, posx: 0.
 game2.pieces.push({color: "blue", class: "炮", img:IMG_BLUE_artillery, posx: 1.0, posy: 1.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_far, atk: ATK_medium_high, lp: LP_standard});
 
 game2.pieces.push({color:  "red", class: "步", img:  IMG_RED_infantry, posx: 6.0, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
-game2.pieces.push({color:  "red", class: "步", img:  IMG_RED_infantry, posx: 6.0, posy: 9.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
+game2.pieces.push({color:  "red", class: "步", img:  IMG_RED_infantry, posx: 5.7, posy: 9.2, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
 game2.pieces.push({color:  "red", class: "步", img:  IMG_RED_infantry, posx: 9.0, posy: 6.0, speed: MOVING_SPEED_standard, atkrange: ATK_RANGE_standard, atk: ATK_standard, lp: LP_standard});
-game2.pieces.push({color:  "red", class: "炮", img: IMG_RED_artillery, posx: 9.0, posy: 9.0, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_far, atk: ATK_medium_high, lp: LP_standard});
+game2.pieces.push({color:  "red", class: "炮", img: IMG_RED_artillery, posx: 9.5, posy: 9.3, speed: MOVING_SPEED_slow, atkrange: ATK_RANGE_far, atk: ATK_medium_high, lp: LP_standard});
 
 // game2 的所需元素
 
