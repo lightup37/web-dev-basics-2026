@@ -30,7 +30,9 @@
 
 		var h = document.createElement('h2');
 		h.className = 'section-title';
-		h.textContent = '成就（' + done + '/' + list.length + '）';
+		h.textContent = (typeof uiT === 'function')
+			? uiT('menu.achievements', { done: done, total: list.length })
+			: ('成就（' + done + '/' + list.length + '）');
 		holder.appendChild(h);
 
 		var ul = document.createElement('ul');
@@ -45,7 +47,9 @@
 			li.appendChild(info);
 			var badge = document.createElement('span');
 			badge.className = 'level-btn ' + (a.unlocked ? '' : 'level-btn-disabled');
-			badge.textContent = a.unlocked ? '✓ 已达成' : '🔒 未解锁';
+			badge.textContent = (typeof uiT === 'function')
+				? uiT(a.unlocked ? 'menu.achieved' : 'menu.notAchieved')
+				: (a.unlocked ? '✓ 已达成' : '🔒 未解锁');
 			li.appendChild(badge);
 			ul.appendChild(li);
 		});

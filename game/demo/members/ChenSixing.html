@@ -13,10 +13,16 @@
             background-size: cover;
         }
         body {
-             overflow: hidden;
+            /* B13：原来 body{overflow:hidden; height:100vh} 把超出视口的正文直接裁掉，
+               手机上无法滚动查看。改成允许纵向滚动；背景仍由 html 铺满。 */
+            overflow-x: hidden;
+            overflow-y: auto;
             text-align: center;
-            height:100vh;
+            min-height: 100vh;
             width: 100%;
+            margin: 0;
+            padding: 0 12px 32px;
+            box-sizing: border-box;
             color: black;
         }
         img {
@@ -25,6 +31,7 @@
         .avatar-big {
     width: 300px;   
     height: auto;  
+    max-width: 80vw;
     }
         div {
             background-color: rgba(255, 255, 255, 0.6);
@@ -34,14 +41,46 @@
             border-style: solid;
             border-color: wheat;
             border-radius: 6px;
-            width: 800px;
+            /* B13：原来是固定 width:800px，390px 手机上正文盒宽 806px、文档宽 814px，
+               文字整段跑到屏幕外。改成自适应：宽屏仍是 800px，窄屏自动收窄。 */
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
             margin-top: 30px;
             text-indent: 45px;
             font-size: larger;
         }
+        /* B13：返回小组入口（其他成员页都有，这一页原先没有）。
+           悬浮在右上角，不占正文位置、不改变原有排版风格。 */
+        .member-back {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            display: inline-block;
+            padding: 7px 14px;
+            border: 2px solid wheat;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.82);
+            color: #3a2b12;
+            font-size: 15px;
+            line-height: 1.2;
+            text-decoration: none;
+            text-indent: 0;
+        }
+        .member-back:hover,
+        .member-back:focus-visible {
+            background-color: #fffaf0;
+        }
+        @media (max-width: 520px) {
+            div { text-indent: 24px; font-size: medium; }
+            .avatar-big { width: 220px; }
+            .member-back { padding: 6px 11px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
+    <a class="member-back" href="../group.html">← 返回小组</a>
     <img src="./chensixing/CSX-photo.jpg" alt="pig" class="avatar-big">
     <div>
         <p>大家好，我是陈思行，来自四川，BIT大二计算机科学与技术专业在读，对计算机科学，生物技术方面比较感兴趣，性格较为内向、积极、乐观</p>

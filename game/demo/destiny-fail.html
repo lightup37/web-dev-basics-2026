@@ -4,26 +4,26 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>隐藏失败：命运无法改变 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-ending ending-destiny">
+<body class="page-ending ending-destiny" data-title-i18n="ending.destinyTitle">
 	<audio id="game-music" loop>
 		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
 	</audio>
 
 	<div class="page-box">
-		<p class="page-kicker">FATE REASSERTED · 命运归位</p>
-		<h1>隐藏失败 · 命运无法改变</h1>
-		<p class="page-sub">你绕过了史书，却没有绕开命运……</p>
+		<p class="page-kicker" data-localize>FATE REASSERTED · 命运归位</p>
+		<h1 data-localize>隐藏失败 · 命运无法改变</h1>
+		<p class="page-sub" data-localize>你绕过了史书，却没有绕开命运……</p>
 		<div class="story-panel">
-			<p class="story-line"><b>拿破仑：</b>又是滑铁卢……我明明已经绕开了那一天的雨。</p>
-			<p class="story-line"><b>副官：</b>陛下，我们确实走到了另一条路上——可守在那条路尽头的，依旧是命运本人。</p>
-			<p class="story-line"><b>拿破仑：</b>……原来有些结局，连第二次机会也无法改写。</p>
+			<p class="story-line" data-localize><b>拿破仑：</b>又是滑铁卢……我明明已经绕开了那一天的雨。</p>
+			<p class="story-line" data-localize><b>副官：</b>陛下，我们确实走到了另一条路上——可守在那条路尽头的，依旧是命运本人。</p>
+			<p class="story-line" data-localize><b>拿破仑：</b>……原来有些结局，连第二次机会也无法改写。</p>
 		</div>
-		<p class="page-note">（即便踏上隐藏之路，第七关的失利也让历史回到了它本来的轨道。）</p>
+		<p class="page-note" data-localize>（即便踏上隐藏之路，第七关的失利也让历史回到了它本来的轨道。）</p>
 		<div class="form-box">
-			<button id="button-next" class="game-btn">Next</button>
+			<button id="button-next" class="game-btn" data-localize>Next</button>
 		</div>
 	</div>
 
@@ -34,9 +34,10 @@
 		});
 	</script>
 
-	<script src="js/bgm.js"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
 	<script>
-		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js?v=20260914-gameplay2） */
 		initBgm('game-music');
 	</script>
 </body>

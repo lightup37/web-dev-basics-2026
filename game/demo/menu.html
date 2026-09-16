@@ -4,45 +4,66 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>游戏主界面 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-menu">
+<body class="page-menu" data-title-i18n="menu.title">
+	<!-- 登录序章的下一镜：先保持全屏欧洲地图，再渐进收束到主界面地图框。 -->
+	<div id="campaign-arrival" class="campaign-arrival" aria-hidden="true">
+		<div class="campaign-arrival__map" aria-hidden="true"></div>
+		<div class="campaign-arrival__seal" aria-hidden="true"><strong>N</strong><span>EUROPEAN THEATER</span></div>
+	</div>
+	<script>
+		if (new URLSearchParams(window.location.search).get('intro') === '1') {
+			document.body.classList.add('campaign-arriving');
+			document.getElementById('campaign-arrival').setAttribute('aria-hidden', 'false');
+		}
+	</script>
 	<audio id="menu-music" loop>
 		<source src="mus/Preussens-Gloria.mp3" type="audio/mpeg">
 	</audio>
 	<div class="page-box">
-		<p class="page-kicker">IMPERIAL HEADQUARTERS · 帝国统帅部</p>
-		<h1>游戏主界面</h1>
-		<p class="page-sub">欢迎回来，<span id="welcome-name"></span>！</p>
+		<p class="page-kicker" data-i18n="kicker.menu">IMPERIAL HEADQUARTERS · 帝国统帅部</p>
+		<h1 data-i18n="menu.title">游戏主界面</h1>
+		<p class="page-sub"><span data-i18n="menu.welcome">欢迎回来，</span><span id="welcome-name"></span><span data-i18n="menu.welcomeEnd">！</span></p>
 	</div>
 
-	<!-- 战役地图（关卡目录）：底图是本地生成的 img/europe-map.svg；
-	     标记（.map-pin）与流动虚线由 js/menu-saves.js 按存档进度渲染。
-	     注意：section 不能有 padding/border，标记的百分比坐标才对得上底图。 -->
-	<section class="campaign-map" id="campaign-map" aria-label="战役地图 · 关卡目录">
-		<img class="campaign-map__img" src="img/europe-map.svg" alt="欧洲战役地图">
-		<svg class="campaign-map__route" viewBox="0 0 1000 785" aria-hidden="true"></svg>
-	</section>
+	<!-- 外层负责液态玻璃与 HUD；内层地图仍无 padding/border，避免改变图钉坐标。 -->
+	<div class="campaign-map-shell">
+		<div class="campaign-map-shell__top">
+			<span data-i18n="menu.mapTheater">EUROPEAN THEATER · 欧洲战区</span>
+			<span class="campaign-map-shell__signal" data-i18n="menu.mapSignal">战役网络在线</span>
+		</div>
+		<section class="campaign-map" id="campaign-map" aria-label="战役地图 · 关卡目录">
+			<img class="campaign-map__img" src="img/europe-map.svg" alt="欧洲战役地图">
+			<svg class="campaign-map__route" viewBox="0 0 1000 785" aria-hidden="true"></svg>
+		</section>
+		<div class="campaign-map-shell__bottom">
+			<span data-i18n="menu.mapHint">选择战役节点 · 推进帝国战线</span>
+			<span aria-hidden="true">1805 — 1815</span>
+		</div>
+	</div>
 
 	<!-- 读取存档：点按钮弹出卡片（手动备份 1~3 的载入删除 + 重新开始），由 js/menu-saves.js 构建 -->
-	<button id="btn-saves" class="menu-link" title="读取手动备份 存档1~3（载入 / 删除 / 重新开始）">读取存档</button>
+	<!-- “读取存档”按钮已移入底部导航行（.menu-list），与小组介绍/成就/退出登录同一行 -->
 
 	<div class="page-box">
 		<ul class="menu-list">
-			<li><a class="menu-link" href="group.html">小组介绍</a></li>
+			<li><a class="menu-link" href="mode.html" data-i18n="menu.mode">模式选择</a></li>
+			<li><a class="menu-link" href="group.html" data-i18n="menu.group">小组介绍</a></li>
 			<li><a class="menu-link" href="achievements.html" id="achv-link">成就</a></li>
-			<li><a class="menu-link" href="#" id="logout-btn">退出登录</a></li>
+			<li><button type="button" id="btn-saves" class="menu-link" data-i18n="menu.loadSaves" data-i18n-title="menu.loadSavesTitle" title="读取手动备份 存档1~3（载入 / 删除 / 重新开始）">读取存档</button></li>
+			<li><a class="menu-link" href="#" id="logout-btn" data-i18n="menu.logout">退出登录</a></li>
 		</ul>
 	</div>
 
-	<script src="js/account.js"></script>
-	<script src="js/ui.js"></script>
-	<script src="js/save.js"></script>
-	<script src="js/levels.js"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/save.js?v=20260916-fixB34"></script>
+	<script src="js/levels.js?v=20260916-fixB34"></script>
 	<!-- 存档 / 进度系统（独立模块）：页面进度 + 弹出式存档卡片 -->
-	<script src="js/menu-saves.js"></script>
-	<script src="js/bgm.js"></script>
+	<script src="js/menu-saves.js?v=20260916-fixB34"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
 	<script>
 		/* 本页外壳只做四件事：登录校验、欢迎语、登出、背景音乐。
 		   存档与进度 → js/menu-saves.js；成就已独立成页 achievements.html */
@@ -52,6 +73,27 @@
 		renderMenuSaves();   // 摘要 + 关卡进度（"存档 / 读档"弹窗里的内容在点开时渲染）
 		bindMenuSaves();     // "存档 / 读档"按钮
 
+		/* 序章与地图之间的跨页接力：地图节点已经渲染完后才打开幕布，
+		   所以玩家看到的是一张完整地图从雾化状态逐步变清晰、落入 HUD。 */
+		if (document.body.classList.contains('campaign-arriving')) {
+			window.requestAnimationFrame(function () {
+				window.requestAnimationFrame(function () {
+					document.body.classList.add('campaign-arriving--reveal');
+				});
+			});
+			window.setTimeout(function () {
+				document.body.classList.remove('campaign-arriving', 'campaign-arriving--reveal');
+				var arrival = document.getElementById('campaign-arrival');
+				if (arrival) arrival.remove();
+				if (window.history && window.history.replaceState) {
+					try { window.history.replaceState(null, '', window.location.pathname); } catch (e) { }
+				}
+			}, 1900);
+		} else {
+			var unusedArrival = document.getElementById('campaign-arrival');
+			if (unusedArrival) unusedArrival.remove();
+		}
+
 		/* 成就入口显示进度计数（成就墙本体在 achievements.html） */
 		function refreshAchvLink() {
 			if (typeof achievementState !== 'function') return;
@@ -59,9 +101,12 @@
 			if (!link) return;
 			var list = achievementState(currentUser());
 			var done = list.filter(function (a) { return a.unlocked; }).length;
-			link.textContent = '成就（' + done + '/' + list.length + '）';
+			link.textContent = (typeof uiT === 'function')
+				? uiT('menu.achievements', { done: done, total: list.length }, '成就（' + done + '/' + list.length + '）')
+				: ('成就（' + done + '/' + list.length + '）');
 		}
 		refreshAchvLink();
+		window.addEventListener('ui:languagechange', refreshAchvLink);
 
 		document.getElementById('logout-btn').addEventListener('click', function (e) {
 			e.preventDefault();

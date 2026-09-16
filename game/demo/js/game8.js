@@ -254,6 +254,14 @@ var CURRENT_LEVEL_ID = 8;
 var CURRENT_GAME = game8;
 
 
+/* 三语文案：统一走 ui.js 的 uiT（zh-TW 缺词条时 uiT 内部自动转繁体），未加载 ui.js 时用 fallback */
+
+function game8Text(key, vars, fallback) {
+
+    return (typeof uiT === 'function') ? uiT(key, vars, fallback) : fallback;
+}
+
+
 /* 红线 */
 
 var GAME8_LINE_X = 4.5;
@@ -826,10 +834,11 @@ function game8UpdateDeploymentPanel() {
     if (status) {
 
         status.innerText =
-            '已部署炮兵：' +
-            count +
-            ' / ' +
-            GAME8_ARTILLERY_COUNT;
+            game8Text(
+                'game8.deployedCount',
+                { count: count, total: GAME8_ARTILLERY_COUNT },
+                '已部署炮兵：' + count + ' / ' + GAME8_ARTILLERY_COUNT
+            );
     }
 
 
@@ -851,7 +860,7 @@ function game8UpdateDeploymentPanel() {
             false;
 
         button.innerText =
-            'Next Turn';
+            (typeof uiT === 'function' ? uiT('game.nextTurn') : '下一步');
 
         return;
     }
@@ -866,7 +875,7 @@ function game8UpdateDeploymentPanel() {
             false;
 
         button.innerText =
-            '开始防守';
+            game8Text('game8.startDefense', null, '开始防守');
 
 
         var tip =
@@ -878,8 +887,9 @@ function game8UpdateDeploymentPanel() {
         if (tip) {
 
             tip.innerHTML =
-                '5 门炮兵部署完毕。<br>' +
-                '敌军重炮已经进入阵地。';
+                game8Text('game8.readyTip1', null, '5 门炮兵部署完毕。') +
+                '<br>' +
+                game8Text('game8.readyTip2', null, '敌军重炮已经进入阵地。');
         }
 
     } else {
@@ -888,11 +898,11 @@ function game8UpdateDeploymentPanel() {
             true;
 
         button.innerText =
-            '请部署全部炮兵（' +
-            count +
-            '/' +
-            GAME8_ARTILLERY_COUNT +
-            '）';
+            game8Text(
+                'game8.deployAll',
+                { count: count, total: GAME8_ARTILLERY_COUNT },
+                '请部署全部炮兵（' + count + '/' + GAME8_ARTILLERY_COUNT + '）'
+            );
     }
 }
 
@@ -1030,6 +1040,14 @@ function game8DeployArtillery(
         game8FixedArtillery:
             true
     });
+
+
+    if (typeof updateUnitHealth === 'function') {
+
+        updateUnitHealth(
+            armys[armys.length - 1]
+        );
+    }
 
 
     movePieceTo(
@@ -2041,8 +2059,11 @@ function game8UpdateBreakthroughTip() {
     ) {
 
         hud.innerHTML =
-            '最后防线 · 尚无敌军到达红线 · 剩余回合：' +
-            remain_turns;
+            game8Text(
+                'game8.hudSafe',
+                { turns: remain_turns },
+                '最后防线 · 尚无敌军到达红线 · 剩余回合：' + remain_turns
+            );
 
         return;
     }
@@ -2052,12 +2073,11 @@ function game8UpdateBreakthroughTip() {
      * 红色警告。
      */
     hud.innerHTML =
-        '⚠ 已有 <b>' +
-        game8BreakthroughCount +
-        '</b> 支敌军到达红线！' +
-        '<br>' +
-        '剩余回合：' +
-        remain_turns;
+        game8Text(
+            'game8.hudBreach',
+            { count: game8BreakthroughCount, turns: remain_turns },
+            '⚠ 已有 <b>' + game8BreakthroughCount + '</b> 支敌军到达红线！<br>剩余回合：' + remain_turns
+        );
 }
 
 
@@ -2090,9 +2110,11 @@ function game8UpdateHUD() {
 
 
         hud.innerText =
-            '部署阶段 · 炮兵：' +
-            count +
-            ' / 5';
+            game8Text(
+                'game8.hudDeploy',
+                { count: count, total: 5 },
+                '部署阶段 · 炮兵：' + count + ' / 5'
+            );
 
 
         return;
@@ -2352,9 +2374,11 @@ function game8Win() {
     if (detail) {
 
         detail.innerText =
-            '防线守住了！敌军共有 ' +
-            game8BreakthroughCount +
-            ' 支到达红线。';
+            game8Text(
+                'game8.winDetail',
+                { count: game8BreakthroughCount },
+                '防线守住了！敌军共有 ' + game8BreakthroughCount + ' 支到达红线。'
+            );
     }
 
 
@@ -2368,6 +2392,34 @@ function game8Win() {
 
         next.style.display =
             '';
+    }
+
+
+    /* 实验关也走统一的战后剧情，再回到已经准备好的战果卡。 */
+    if (
+        typeof showVictoryDialogue ===
+        'function'
+    ) {
+
+        if (win) {
+
+            win.style.display =
+                'none';
+        }
+
+        if (next) {
+
+            next.style.display =
+                'none';
+        }
+
+        showVictoryDialogue(
+            star,
+            {
+                saved: false,
+                openedHidden: false
+            }
+        );
     }
 }
 
@@ -2430,12 +2482,28 @@ function game8Lose() {
 
     if (tips) {
 
-        tips.innerText =
-            '敌军突破最后防线，阵地失守。' +
-            '\n' +
-            '共有 ' +
-            game8BreakthroughCount +
-            ' 支敌军到达红线。';
+        var failureText =
+            (typeof localizedText === 'function')
+                ? localizedText(
+                    '敌军突破最后防线，阵地失守。共有 ' + game8BreakthroughCount + ' 支敌军到达红线。',
+                    'The final line has fallen. ' + game8BreakthroughCount + ' enemy units reached the red line.'
+                )
+                : '敌军突破最后防线，阵地失守。';
+
+        if (
+            typeof registerLevelDefeat ===
+            'function'
+        ) {
+
+            registerLevelDefeat(
+                failureText
+            );
+
+        } else {
+
+            tips.innerText =
+                failureText;
+        }
     }
 
 
@@ -2707,10 +2775,10 @@ function game8StartBattle() {
     if (tip) {
 
         tip.innerHTML =
-            '战斗开始！<br>' +
-            '5 门炮兵已经固定。' +
+            game8Text('game8.started1', null, '战斗开始！') + '<br>' +
+            game8Text('game8.started2', null, '5 门炮兵已经固定。') +
             '<br>' +
-            '阻止敌军突破最后防线。';
+            game8Text('game8.started3', null, '阻止敌军突破最后防线。');
     }
 
 

@@ -4,32 +4,32 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>隐藏结局：帝国 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-ending ending-empire">
+<body class="page-ending ending-empire" data-title-i18n="ending.empireTitle">
 	<audio id="game-music" loop>
 		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
 	</audio>
 
 	<div class="page-box">
-		<p class="page-kicker">THE UNWRITTEN EMPIRE · 未写帝国</p>
-		<h1>隐藏结局 · 拿破仑统治欧洲</h1>
-		<p class="page-sub">你撕开了史书的另一页……</p>
+		<p class="page-kicker" data-localize>THE UNWRITTEN EMPIRE · 未写帝国</p>
+		<h1 data-localize>隐藏结局 · 拿破仑统治欧洲</h1>
+		<p class="page-sub" data-localize>你撕开了史书的另一页……</p>
 		<div class="story-panel">
-			<p class="story-line"><b>拿破仑：</b>联军崩溃了。威灵顿的望远镜落在泥里，再没有人能把它捡起来。</p>
-			<p class="story-line"><b>副官：</b>陛下，伦敦、柏林、维也纳的电报都在往同一个方向发——向您称臣。</p>
-			<p class="story-line"><b>拿破仑：</b>欧洲？不，从现在起，欧洲就是法兰西，而法兰西就是我。</p>
-			<p class="story-line"><b>传令兵（远处）：</b>为皇帝陛下欢呼——帝国万岁！</p>
+			<p class="story-line" data-localize><b>拿破仑：</b>联军崩溃了。威灵顿的望远镜落在泥里，再没有人能把它捡起来。</p>
+			<p class="story-line" data-localize><b>副官：</b>陛下，伦敦、柏林、维也纳的电报都在往同一个方向发——向您称臣。</p>
+			<p class="story-line" data-localize><b>拿破仑：</b>欧洲？不，从现在起，欧洲就是法兰西，而法兰西就是我。</p>
+			<p class="story-line" data-localize><b>传令兵（远处）：</b>为皇帝陛下欢呼——帝国万岁！</p>
 		</div>
-		<p class="page-note">（隐藏结局：拿破仑统治欧洲——这段历史从未被写下。）</p>
+		<p class="page-note" data-localize>（隐藏结局：拿破仑统治欧洲——这段历史从未被写下。）</p>
 		<div class="form-box">
-			<button id="button-next" class="game-btn">Next</button>
+			<button id="button-next" class="game-btn" data-localize>Next</button>
 		</div>
 	</div>
-	<script src="js/account.js"></script>
-	<script src="js/ui.js"></script>
-	<script src="js/save.js"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/save.js?v=20260916-fixB34"></script>
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('empire');
 
@@ -39,9 +39,9 @@
 		});
 	</script>
 
-	<script src="js/bgm.js"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
 	<script>
-		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js?v=20260914-gameplay2） */
 		initBgm('game-music');
 	</script>
 </body>

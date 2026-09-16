@@ -1,5 +1,5 @@
 /* 第五关代码 */
-/* 设计思路：攻坚战（滑铁卢·限时攻垒）。
+/* 设计思路：攻坚战（斯摩棱斯克·限时攻垒）。
    —— 2026-09：本关战斗与叙事整体取自原第 6 关，与第 6 关对调（D-1：叙事随战斗走）。
    红方 8 人占据右侧高地、原地固守。
    回合上限 18：
@@ -49,7 +49,8 @@ if (wantResume() && typeof currentUser === 'function' && currentUser()) {
 	if (_s && Number(_s.level) === CURRENT_LEVEL_ID) snapToResume = _s;
 }
 if (snapToResume) {
-	loadSnapshot(snapToResume);   // URL 带 resume=1 且 a.save 有本关快照 -> 继续
+	/* 继续存档：直接回到战场，不重播剧情 / 简报 / 教程图（与关卡内读档一致）。 */
+	loadSnapshot(snapToResume, { skipIntro: true });
 } else {
 	loadGame(game5);              // 否则按关卡配置全新开局
 }

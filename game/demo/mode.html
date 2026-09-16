@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>选择作战模式 - 拿破仑战争</title>
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
+	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+</head>
+<body class="page-mode" data-title-i18n="mode.pageTitle">
+	<audio id="mode-music" loop>
+		<source src="mus/Preussens-Gloria.mp3" type="audio/mpeg">
+	</audio>
+	<main class="mode-shell">
+		<header class="mode-heading">
+			<p class="page-kicker" data-i18n="mode.kicker">THEATER OF WAR · 作战方式</p>
+			<h1 data-i18n="mode.title">选择作战模式</h1>
+			<p><span data-i18n="mode.welcome">指挥官 </span><strong id="mode-user"></strong><span data-i18n="mode.choose">，请选择今日的战场。</span></p>
+		</header>
+		<section class="mode-cards" aria-label="作战模式">
+			<button id="campaign-mode" class="mode-card mode-card--campaign" type="button">
+				<span class="mode-card__number" aria-hidden="true">I</span>
+				<span class="mode-card__eyebrow" data-i18n="mode.campaignEyebrow">1793—1815 · 历史战役</span>
+				<strong data-i18n="mode.campaignTitle">通关模式</strong>
+				<span class="mode-card__copy" data-i18n="mode.campaignCopy">沿拿破仑的战役年表推进，观看电影式剧情、积累星级并挑战隐藏的滑铁卢终幕。</span>
+				<span class="mode-card__cta" data-i18n="mode.campaignCta">展开帝国战图 →</span>
+			</button>
+			<button id="online-mode" class="mode-card mode-card--online" type="button">
+				<span class="mode-card__number" aria-hidden="true">II</span>
+				<span class="mode-card__eyebrow" data-i18n="mode.onlineEyebrow">RED VS BLUE · 实时对抗</span>
+				<strong data-i18n="mode.onlineTitle">联机模式</strong>
+				<span class="mode-card__copy" data-i18n="mode.onlineCopy">创建或加入房间，自定义公平编制，以掷骰决定先手，在限时内轮流下达整军命令。</span>
+				<span class="mode-card__cta" data-i18n="mode.onlineCta">进入联机军帐 →</span>
+			</button>
+		</section>
+		<footer class="mode-footer">
+			<a href="index.html" id="mode-logout" class="menu-link" data-i18n="menu.logout">退出登录</a>
+		</footer>
+	</main>
+	<div class="page-route-curtain" aria-hidden="true"><span>N</span></div>
+
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
+	<script src="js/dialog.js?v=20260916-fixB34"></script>
+	<script src="js/levels.js?v=20260916-fixB34"></script>
+	<script>
+		(function () {
+			var user = currentUser();
+			if (!user) { window.location.replace('index.html'); return; }
+			document.getElementById('mode-user').textContent = user;
+			var leaving = false;
+			function route(url) {
+				if (leaving) return;
+				leaving = true;
+				document.body.classList.add('is-routing');
+				window.setTimeout(function () { window.location.href = url; }, 620);
+			}
+			document.getElementById('campaign-mode').addEventListener('click', function () {
+				/* 与 index.html 的"序章按账号记忆"合流：
+				   · 看过的账号 → 直接进主界面（不重播序章）；
+				   · 没看过 → 交给 index.html?prologue=1 播完整序章
+				     （含地图接镜与 markPrologueSeen），播完再进主界面。 */
+				var seen = (typeof hasSeenPrologue === 'function') && hasSeenPrologue(user);
+				route(seen ? 'menu.html?intro=1' : 'index.html?prologue=1');
+			});
+			document.getElementById('online-mode').addEventListener('click', function () { route('multiplayer.html'); });
+			document.getElementById('mode-logout').addEventListener('click', function (event) {
+				event.preventDefault();
+				logout();
+				route('index.html');
+			});
+			initBgm('mode-music');
+		})();
+	</script>
+</body>
+</html>

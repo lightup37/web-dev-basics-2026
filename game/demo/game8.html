@@ -14,7 +14,7 @@
 
     <link
         rel="stylesheet"
-        href="css/style.css"
+        href="css/style.css?v=20260916-fixB34"
     >
 
     <link
@@ -458,6 +458,9 @@
                 nowrap;
         }
 
+        html[lang="zh-TW"] #defense-line::before { content: "最後防線"; }
+        html[lang="en"] #defense-line::before { content: "Final Line"; }
+
 
         /* =====================================================
            HUD
@@ -584,7 +587,7 @@
 </head>
 
 
-<body class="game8">
+<body class="game8" data-title-i18n="game8.title">
 
 
     <!-- =====================================================
@@ -600,9 +603,7 @@
         "
     >
 
-        <h2>
-            Game8 : The Last Defensive Line（最后防线）
-        </h2>
+        <h2 data-i18n="game8.title">Game8：最后防线</h2>
 
 
         <footer>
@@ -633,16 +634,14 @@
 
         <aside id="deployment-panel">
 
-            <h3>
-                战前部署
-            </h3>
+            <h3 data-i18n="game8.deployTitle">战前部署</h3>
 
 
             <p id="deployment-tip">
 
-                5 门炮兵可以部署在棋盘任意位置。<br>
+                <span data-i18n="game8.deployTip1">5 门炮兵可以部署在棋盘任意位置。</span><br>
 
-                但炮兵必须位于红线左侧。
+                <span data-i18n="game8.deployTip2">但炮兵必须位于红线左侧。</span>
 
             </p>
 
@@ -655,12 +654,12 @@
             >
 
                 <img
-                    src="./img/blue_artillery.png"
+                    src="./img/blue_artillery.webp"
                     alt="炮兵"
                     draggable="false"
                 >
 
-                <span class="deploy-name">
+                <span class="deploy-name" data-i18n="unit.artillery">
                     炮兵
                 </span>
 
@@ -679,12 +678,12 @@
             >
 
                 <img
-                    src="./img/blue_artillery.png"
+                    src="./img/blue_artillery.webp"
                     alt="炮兵"
                     draggable="false"
                 >
 
-                <span class="deploy-name">
+                <span class="deploy-name" data-i18n="unit.artillery">
                     炮兵
                 </span>
 
@@ -703,12 +702,12 @@
             >
 
                 <img
-                    src="./img/blue_artillery.png"
+                    src="./img/blue_artillery.webp"
                     alt="炮兵"
                     draggable="false"
                 >
 
-                <span class="deploy-name">
+                <span class="deploy-name" data-i18n="unit.artillery">
                     炮兵
                 </span>
 
@@ -727,12 +726,12 @@
             >
 
                 <img
-                    src="./img/blue_artillery.png"
+                    src="./img/blue_artillery.webp"
                     alt="炮兵"
                     draggable="false"
                 >
 
-                <span class="deploy-name">
+                <span class="deploy-name" data-i18n="unit.artillery">
                     炮兵
                 </span>
 
@@ -751,12 +750,12 @@
             >
 
                 <img
-                    src="./img/blue_artillery.png"
+                    src="./img/blue_artillery.webp"
                     alt="炮兵"
                     draggable="false"
                 >
 
-                <span class="deploy-name">
+                <span class="deploy-name" data-i18n="unit.artillery">
                     炮兵
                 </span>
 
@@ -767,7 +766,7 @@
             </div>
 
 
-            <div id="deployment-status">
+            <div id="deployment-status" data-localize>
 
                 已部署炮兵：0 / 5
 
@@ -783,7 +782,7 @@
         <div id="board-wrap">
 
 
-            <div id="defense-hud">
+            <div id="defense-hud" data-localize>
 
                 部署阶段 · 炮兵：0 / 5
 
@@ -806,18 +805,12 @@
     </div>
 
 
-    <!-- =====================================================
-         胜利
-         ===================================================== -->
+    <!-- 胜负面板与结算按钮统一放进中央结算区，行为和正式关卡一致。 -->
+    <div id="result-area">
 
-    <div
-        id="win"
-        style="display:none;"
-    >
+    <div id="win" style="display:none;">
 
-        <h1>
-            防线守住了！
-        </h1>
+        <h1 data-i18n="game.win">防线守住了！</h1>
 
 
         <h2
@@ -849,18 +842,9 @@
     </div>
 
 
-    <!-- =====================================================
-         失败
-         ===================================================== -->
+    <div id="lose" style="display:none;">
 
-    <div
-        id="lose"
-        style="display:none;"
-    >
-
-        <h1>
-            防线失守
-        </h1>
+        <h1 data-i18n="game.lose">防线失守</h1>
 
 
         <p id="loseTips"></p>
@@ -868,44 +852,14 @@
     </div>
 
 
-    <!-- =====================================================
-         主按钮
-         ===================================================== -->
+    <button id="button-next-game" class="game-btn result-button" style="display:none;" data-i18n="game.nextGame">Next Game</button>
+    <button id="button-replay" class="game-btn result-button" style="display:none;" data-i18n="game.replay">Replay</button>
+    <button id="button-fail" class="game-btn result-button" style="display:none;" data-i18n="game.endingEarly">View Ending</button>
 
-    <button
-        id="button"
-        style="
-            width:120px;
-            height:50px;
-        "
-        disabled
-    >
-        请部署全部炮兵
-    </button>
+    </div>
 
-
-    <button
-        id="button-next-game"
-        style="display:none;"
-    >
-        Next Game
-    </button>
-
-
-    <button
-        id="button-replay"
-        style="display:none;"
-    >
-        Replay
-    </button>
-
-
-    <button
-        id="button-fail"
-        style="display:none;"
-    >
-        View Ending
-    </button>
+    <!-- 部署完成后 game8.js 会把文字切换为三语“下一步”。 -->
+    <button id="button" class="turn-button" disabled>请部署全部炮兵</button>
 
 
     <!-- =====================================================
@@ -924,6 +878,8 @@
             <button
                 id="button-save"
                 class="game-btn"
+                data-i18n="game.save"
+                data-i18n-title="game.saveTitle"
             >
                 Save
             </button>
@@ -937,6 +893,8 @@
             <button
                 id="button-load"
                 class="game-btn"
+                data-i18n="game.load"
+                data-i18n-title="game.loadTitle"
             >
                 Load
             </button>
@@ -945,6 +903,8 @@
             <button
                 id="button-mode"
                 class="game-btn"
+                data-i18n="game.viewEnemy"
+                data-i18n-title="game.modeTitle"
             >
                 查看敌人
             </button>
@@ -955,6 +915,8 @@
         <button
             id="button-exit"
             class="game-btn"
+            data-i18n="game.menu"
+            data-i18n-title="game.menuTitle"
         >
             Menu
         </button>
@@ -972,21 +934,21 @@
 
     <script src="js/arrow.js"></script>
 
-    <script src="js/dialog.js"></script>
+    <script src="js/dialog.js?v=20260916-fixB34"></script>
 
-    <script src="js/account.js"></script>
+    <script src="js/account.js?v=20260916-fixB34"></script>
 
-    <script src="js/ui.js"></script>
-    <script src="js/save.js"></script>
+    <script src="js/ui.js?v=20260916-fixB34"></script>
+    <script src="js/save.js?v=20260916-fixB34"></script>
 
-    <script src="js/main.js"></script>
-    <script src="js/fx.js"></script>
+    <script src="js/main.js?v=20260916-fixB34"></script>
+    <script src="js/fx.js?v=20260916-fixB34"></script>
 
-    <script src="js/ai.js"></script>
+    <script src="js/ai.js?v=20260916-fixB34"></script>
 
-    <script src="js/levels.js"></script>
+    <script src="js/levels.js?v=20260916-fixB34"></script>
 
-    <script src="js/game8.js"></script>
+    <script src="js/game8.js?v=20260916-fixB34"></script>
 
 
 </body>

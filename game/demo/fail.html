@@ -4,31 +4,31 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>结局：提早失利 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-ending ending-defeat">
+<body class="page-ending ending-defeat" data-title-i18n="ending.failTitle">
 	<audio id="game-music" loop>
 		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
 	</audio>
 
 	<div class="page-box">
-		<p class="page-kicker">A HISTORY UNMADE · 未竟之史</p>
-		<h1>结局 · 拿破仑提早失利</h1>
-		<p class="page-sub">历史在这里拐了一个弯……</p>
+		<p class="page-kicker" data-localize>A HISTORY UNMADE · 未竟之史</p>
+		<h1 data-localize>结局 · 拿破仑提早失利</h1>
+		<p class="page-sub" data-localize>历史在这里拐了一个弯……</p>
 		<div class="story-panel">
-			<p class="story-line"><b>拿破仑：</b>不……不可能，我们只是输了一场小仗！</p>
-			<p class="story-line"><b>副官：</b>陛下，联军正在集结，巴黎已经传来不稳的消息。</p>
-			<p class="story-line"><b>拿破仑：</b>再给我一次机会，我会让那些人记住法兰西的名字。</p>
+			<p class="story-line" data-localize><b>拿破仑：</b>不……不可能，我们只是输了一场小仗！</p>
+			<p class="story-line" data-localize><b>副官：</b>陛下，联军正在集结，巴黎已经传来不稳的消息。</p>
+			<p class="story-line" data-localize><b>拿破仑：</b>再给我一次机会，我会让那些人记住法兰西的名字。</p>
 		</div>
-		<p class="page-note">败局已定，拿破仑提早失利的结局就此写就——但<strong>你</strong>可以重来。</p>
+		<p class="page-note" data-localize>败局已定，拿破仑提早失利的结局就此写就——但<strong>你</strong>可以重来。</p>
 		<div class="form-box">
-			<button id="button-next" class="game-btn">Next</button>
+			<button id="button-next" class="game-btn" data-localize>Next</button>
 		</div>
 	</div>
-	<script src="js/account.js"></script>
-	<script src="js/ui.js"></script>
-	<script src="js/save.js"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/save.js?v=20260916-fixB34"></script>
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('tragic_fail');
 
@@ -38,9 +38,9 @@
 		});
 	</script>
 
-	<script src="js/bgm.js"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
 	<script>
-		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js?v=20260914-gameplay2） */
 		initBgm('game-music');
 	</script>
 </body>

@@ -4,34 +4,38 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>注册 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-register">
+<body class="page-register" data-title-i18n="auth.registerTitle">
 	<div class="page-box">
-		<p class="page-kicker">ENLISTMENT RECORD · 帝国征募处</p>
-		<h1>注册新账号</h1>
-		<p class="page-sub">账号只保存在本地浏览器（localStorage），换浏览器/清缓存会丢失</p>
+		<p class="page-kicker" data-i18n="kicker.register">ENLISTMENT RECORD · 帝国征募处</p>
+		<h1 data-i18n="auth.registerTitle">注册新账号</h1>
+		<p class="page-sub" data-i18n="auth.localWarning">账号只保存在本地浏览器（localStorage），换浏览器/清缓存会丢失</p>
 
 		<div class="form-box">
 			<form id="register-form" autocomplete="on">
-				<label>用户名
-					<input type="text" id="reg-name" autocomplete="username" placeholder="请输入用户名">
+				<label><span data-i18n="auth.username">用户名</span>
+					<input type="text" id="reg-name" autocomplete="username" placeholder="请输入用户名" data-i18n-placeholder="auth.usernamePlaceholder">
 				</label>
-				<label>密码
-					<input type="password" id="reg-pass" autocomplete="new-password" placeholder="请输入密码">
+				<label><span data-i18n="auth.password">密码</span>
+					<input type="password" id="reg-pass" autocomplete="new-password" placeholder="请输入密码" data-i18n-placeholder="auth.passwordPlaceholder">
 				</label>
-				<label>确认密码
-					<input type="password" id="reg-pass2" autocomplete="new-password" placeholder="再输一遍密码">
+				<label><span data-i18n="auth.confirmPassword">确认密码</span>
+					<input type="password" id="reg-pass2" autocomplete="new-password" placeholder="再输一遍密码" data-i18n-placeholder="auth.confirmPlaceholder">
 				</label>
-				<button type="submit">注 册</button>
+				<button type="submit" data-i18n="auth.registerButton">注 册</button>
 			</form>
 			<p id="reg-msg" class="form-msg"></p>
-			<p class="form-link">已有账号？<a href="index.html">返回登录</a></p>
+			<p class="form-link"><span data-i18n="auth.hasAccount">已有账号？</span> <a href="index.html" data-i18n="auth.backLogin">返回登录</a></p>
 		</div>
 	</div>
 
-	<script src="js/account.js"></script>
+	<!-- 注册成功后的换场幕布（远端 2026-09-15 引入，与 index.html / mode.html 同一套） -->
+	<div class="page-route-curtain" aria-hidden="true"><span>N</span></div>
+
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
 	<script>
 		document.getElementById('register-form').addEventListener('submit', function (e) {
 			e.preventDefault();
@@ -39,12 +43,16 @@
 			var name = document.getElementById('reg-name').value;
 			var pass = document.getElementById('reg-pass').value;
 			var pass2 = document.getElementById('reg-pass2').value;
-			if (!name.trim() || !pass) { msg.textContent = '用户名和密码都不能为空'; return; }
-			if (pass !== pass2) { msg.textContent = '两次输入的密码不一致'; return; }
+			if (!name.trim() || !pass) { msg.textContent = uiT('auth.empty'); return; }
+			if (pass !== pass2) { msg.textContent = uiT('auth.mismatch'); return; }
 			var res = register(name, pass);
 			if (!res.ok) { msg.textContent = res.msg; return; }
-			// 注册成功视为已登录，直接进主界面
-			window.location.href = 'menu.html';
+			/* 2026-09-16 玩家要求：注册成功后**先进模式选择**，和登录走同一条流向 ——
+			   由 mode.html 让玩家选"通关模式 / 联机模式"，再分流到主界面或联机大厅。
+			   新账号的序章由「通关模式」按钮补播（它按 hasSeenPrologue 决定去
+			   index.html?prologue=1 还是 menu.html），所以这里不再直接跳序章页。 */
+			document.body.classList.add('is-routing');
+			window.setTimeout(function () { window.location.href = 'mode.html'; }, 560);
 		});
 	</script>
 </body>

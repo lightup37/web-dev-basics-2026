@@ -32,7 +32,8 @@ if (wantResume() && typeof currentUser === 'function' && currentUser()) {
 	if (_s && Number(_s.level) === CURRENT_LEVEL_ID) snapToResume = _s;
 }
 if (snapToResume) {
-	loadSnapshot(snapToResume);   // URL 带 resume=1 且 a.save 有本关快照 -> 继续
+	/* 继续存档：直接回到战场，不重播剧情 / 简报 / 教程图（与关卡内读档一致）。 */
+	loadSnapshot(snapToResume, { skipIntro: true });
 } else {
 	loadGame(game1);              // 否则按关卡配置全新开局
 }

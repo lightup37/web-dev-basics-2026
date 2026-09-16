@@ -3,31 +3,31 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="css/style.css">
-	<title>第 4 关 · 逐猎（Retreat Hunt） | 拿破仑战争</title>
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
+	<title>第 4 关 · 双胜逐猎 | 拿破仑战争</title>
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 	<!--把js文件放在头部，方便查阅-->
 	<script src="js/constants.js" defer></script>
 	<script src="js/pieces.js" defer></script>
 	<script src="js/arrow.js" defer></script>
-	<script src="js/bgm.js" defer></script>
-	<script src="js/dialog.js" defer></script>
-	<script src="js/account.js" defer></script>
-	<script src="js/ui.js" defer></script>
-	<script src="js/save.js" defer></script>
-	<script src="js/main.js" defer></script>
-	<script src="js/fx.js" defer></script>
-	<script src="js/ai.js" defer></script>
-	<script src="js/levels.js" defer></script>
+	<script src="js/bgm.js?v=20260916-fixB34" defer></script>
+	<script src="js/dialog.js?v=20260916-fixB34" defer></script>
+	<script src="js/account.js?v=20260916-fixB34" defer></script>
+	<script src="js/ui.js?v=20260916-fixB34" defer></script>
+	<script src="js/save.js?v=20260916-fixB34" defer></script>
+	<script src="js/main.js?v=20260916-fixB34" defer></script>
+	<script src="js/fx.js?v=20260916-fixB34" defer></script>
+	<script src="js/ai.js?v=20260916-fixB34" defer></script>
+	<script src="js/levels.js?v=20260916-fixB34" defer></script>
 	<script src="js/game4.js" defer></script>
 </head>
-<body class="game-page game4 level-opening">
+<body class="game-page game4 level-opening" data-title-i18n="site.title">
 	<audio id="game-music" loop>
 		<source src="mus/La-Chanson-De-L-Oignon.mp3" type="audio/mpeg">
 	</audio>
 	<div class="game-heading">
 		<!--游戏上方标题-->
-		<h2>第 4 关 · 逐猎（Retreat Hunt）</h2>
+		<h2 data-localize>第 4 关 · 双胜逐猎</h2>
 		<footer><p id="footer-bar"></p></footer>
 	</div>
 	<div id="info-bar"></div>
@@ -37,29 +37,29 @@
 	<div id="result-area">
 		<div id="win" style="display: none;">
 			<!--结算弹窗-->
-			<h1>You Win!</h1>
+			<h1 data-i18n="game.win">You Win!</h1>
 			<h2 id="3star" style="display: none;">⭐⭐⭐</h2>
 			<h2 id="2star" style="display: none;">⭐⭐</h2>
 			<h2 id="1star" style="display: none;">⭐</h2>
 		</div>
 		<div id="lose" style="display: none;">
-			<h1>You Lose!</h1>
+			<h1 data-i18n="game.lose">You Lose!</h1>
 			<p id="loseTips" style="font-size: x-small;"></p>
 		</div>
-		<button id="button-next-game" class="game-btn result-button" style="display: none;"> Next </button>
-		<button id="button-replay" class="game-btn result-button" style="display: none;"> Replay </button>
-		<button id="button-fail" class="game-btn result-button" style="display: none;"> View Ending: Early Defeat </button>
+		<button id="button-next-game" class="game-btn result-button" style="display: none;" data-i18n="game.nextGame"> Next </button>
+		<button id="button-replay" class="game-btn result-button" style="display: none;" data-i18n="game.replay"> Replay </button>
+		<button id="button-fail" class="game-btn result-button" style="display: none;" data-i18n="game.endingEarly"> View Ending: Early Defeat </button>
 	</div>
 	<!--底部按钮-->
-	<button id="button" class="turn-button"> Next Turn </button>
+	<button id="button" class="turn-button" data-i18n="game.nextTurn"> 下一步 </button>
 	<div id="game-actions">
 		<span id="save-load-btns">
-			<button id="button-save" class="game-btn" title="把当前这关的中途状态存进所选手动存档槽"> Save </button>
+			<button id="button-save" class="game-btn" title="把当前这关的中途状态存进所选手动存档槽" data-i18n="game.save" data-i18n-title="game.saveTitle"> Save </button>
 			<select id="slot-select"></select>
-			<button id="button-load" class="game-btn" title="读取所选手动存档槽的中途状态（覆盖当前进度）"> Load </button>
-			<button id="button-mode" class="game-btn" title="切换为查看敌方剩余血量，再按一次返回指挥"> 查看敌人 </button>
+			<button id="button-load" class="game-btn" title="读取所选手动存档槽的中途状态（覆盖当前进度）" data-i18n="game.load" data-i18n-title="game.loadTitle"> Load </button>
+			<button id="button-mode" class="game-btn" title="切换为查看敌方剩余血量，再按一次返回指挥" data-i18n="game.viewEnemy" data-i18n-title="game.modeTitle"> 查看敌人 </button>
 		</span>
-		<button id="button-exit" class="game-btn" title="返回游戏主界面"> Menu </button>
+		<button id="button-exit" class="game-btn" title="返回游戏主界面" data-i18n="game.menu" data-i18n-title="game.menuTitle"> Menu </button>
 	</div>
 </body>
 

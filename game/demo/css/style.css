@@ -53,7 +53,7 @@ body {
 }
 
 .chess--blue:hover img {
-	filter: brightness(0.8);   
+	filter: brightness(0.8);
 	transition: filter 0.3s ease;
 }
 
@@ -85,12 +85,8 @@ body {
 }
 
 .chess.disabled img {
-	filter: brightness(0.2);   
+	filter: brightness(0.2);
 	transition: filter 0.2s ease;
-}
-
-#arrowSvg {
-  pointer-events: none; /* 让鼠标事件穿透，不干扰点击 */
 }
 
 /* ===== to-do #1：主页 / 注册 / 小组介绍 / 游戏主界面 ===== */
@@ -641,43 +637,43 @@ footer { margin: 0; }
 #btn-restart { margin-top: 1.5rem; }
 /* ===== game1 专属背景 ===== */
 .game1 #board {
-    background-image: url("../img/backgrass1.png");
+    background-image: url("../img/backgrass1.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .game2 #board {
-    background-image: url("../img/backgrass2.png");
+    background-image: url("../img/backgrass2.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .game3 #board {
-    background-image: url("../img/backdis1.png");
+    background-image: url("../img/backdis1.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .game4 #board {
-    background-image: url("../img/backdis2.png");
+    background-image: url("../img/backdis2.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .game5 #board {
-    background-image: url("../img/backice1.png");
+    background-image: url("../img/backice1.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .game6 #board {
-    background-image: url("../img/backice2.png");
+    background-image: url("../img/backice2.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .game7 #board {
-    background-image: url("../img/backice2.png");
+    background-image: url("../img/backice1.webp?v=20260916-img2");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -963,12 +959,12 @@ a:hover { color: #431317; }
 
 .page-login::after {
 	left: max(-3rem, calc(50vw - 740px));
-	background-image: url('../img/portraits/napoleon.png');
+	background-image: url('../img/portraits/napoleon.webp');
 }
 
 .page-register::after {
 	right: max(-3rem, calc(50vw - 740px));
-	background-image: url('../img/portraits/adjutant.png');
+	background-image: url('../img/portraits/adjutant.webp');
 }
 
 .form-box {
@@ -1247,7 +1243,7 @@ a:hover { color: #431317; }
 .page-ending::after {
 	left: max(-5rem, calc(50vw - 780px));
 	opacity: 0.18;
-	background-image: url('../img/portraits/napoleon.png');
+	background-image: url('../img/portraits/napoleon.webp');
 }
 
 .ending-defeat::after,
@@ -1369,8 +1365,8 @@ body.game-page::before {
 #red-hinter { color: #f0a0a0; cursor: pointer; }
 
 .game-page #board {
-	width: min(72dvh, calc(100vw - 450px));
-	height: min(72dvh, calc(100vw - 450px));
+	width: min(78dvh, calc(100vw - 440px));
+	height: min(78dvh, calc(100vw - 440px));
 	min-width: 410px;
 	min-height: 410px;
 	border: 9px solid #35291d;
@@ -1444,7 +1440,9 @@ body.game-page::before {
 	justify-content: center;
 	flex-wrap: wrap;
 	margin-top: 8px;
-	transition: opacity 0.65s ease, transform 0.65s ease, visibility 0.65s;
+	/* visibility 不参与过渡：Chrome 在开场淡入时序下会把 visibility 永久卡在 hidden，
+	   导致保存/读取整组按钮消失；淡入淡出由 opacity 负责，level-opening 另有 pointer-events 兜底。 */
+	transition: opacity 0.65s ease, transform 0.65s ease;
 }
 
 #save-load-btns {
@@ -1498,6 +1496,23 @@ body.game-page::before {
 
 #win h1,
 #lose h1 { font-family: var(--ui-display); font-weight: 500; }
+
+#loseTips.is-strategy-advice {
+	box-sizing: border-box;
+	width: min(620px, calc(100vw - 72px));
+	margin: 0.85rem auto 0;
+	padding: 0.9rem 1rem 0.9rem 1.15rem;
+	border: 1px solid rgba(218, 196, 136, 0.34);
+	border-left: 4px solid #d1ad58;
+	border-radius: 4px;
+	white-space: pre-line;
+	font-size: 0.9rem !important;
+	line-height: 1.72;
+	text-align: left;
+	color: #f0dfb7;
+	background: rgba(5, 15, 27, 0.58);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+}
 
 #info-bar,
 #enemy-info {
@@ -1593,6 +1608,12 @@ body.dialogue-active { overflow: hidden; }
 
 .dialog-overlay[data-scene='snow'] {
 	background: radial-gradient(circle at 50% 32%, rgba(222, 226, 219, 0.26), transparent 32rem), linear-gradient(180deg, #495763, #27323b 48%, #101820);
+}
+
+.dialog-overlay[data-scene='fog'] {
+	background:
+		radial-gradient(ellipse at 52% 38%, rgba(224, 222, 205, 0.34), transparent 35rem),
+		linear-gradient(180deg, #667078, #3f494d 50%, #151c20);
 }
 
 .dialog-overlay[data-scene='battery'],
@@ -1808,8 +1829,8 @@ body.dialogue-active { overflow: hidden; }
 	body.game-page { padding-right: 12px; padding-left: 12px; }
 
 	.game-page #board {
-		width: min(70dvh, 82vw);
-		height: min(70dvh, 82vw);
+		width: min(76dvh, 86vw);
+		height: min(76dvh, 86vw);
 	}
 
 	#info-bar,
@@ -1853,8 +1874,8 @@ body.dialogue-active { overflow: hidden; }
 	#footer-bar { max-width: 94vw; font-size: 0.58rem; line-height: 1.35; }
 
 	.game-page #board {
-		width: min(94vw, 72dvh);
-		height: min(94vw, 72dvh);
+		width: min(94vw, 78dvh);
+		height: min(94vw, 78dvh);
 		min-width: 0;
 		min-height: 0;
 		border-width: 6px;
@@ -1908,8 +1929,8 @@ body.dialogue-active { overflow: hidden; }
 
 @media (max-height: 680px) and (min-width: 761px) {
 	.game-page #board {
-		width: 66dvh;
-		height: 66dvh;
+		width: 72dvh;
+		height: 72dvh;
 		min-width: 360px;
 		min-height: 360px;
 	}
@@ -1942,13 +1963,13 @@ body.dialogue-active { overflow: hidden; }
    因此这里用特异性更高 (1,2,0) 的 `.game-page.gameN #board`
    把 image / size / position / repeat 四项一次性重新声明。
    ========================================================================== */
-.game-page.game1 #board { background-image: url("../img/backgrass1.png"); background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game2 #board { background-image: url("../img/backgrass2.png"); background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game3 #board { background-image: url("../img/backdis1.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game4 #board { background-image: url("../img/backdis2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game5 #board { background-image: url("../img/backice2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game6 #board { background-image: url("../img/backice1.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
-.game-page.game7 #board { background-image: url("../img/backice2.png");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game1 #board { background-image: url("../img/backgrass1.webp?v=20260916-img2"); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game2 #board { background-image: url("../img/backgrass2.webp?v=20260916-img2"); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game3 #board { background-image: url("../img/backdis1.webp?v=20260916-img2");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game4 #board { background-image: url("../img/backdis2.webp?v=20260916-img2");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game5 #board { background-image: url("../img/backice2.webp?v=20260916-img2");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game6 #board { background-image: url("../img/backice1.webp?v=20260916-img2");   background-size: cover; background-position: center; background-repeat: no-repeat; }
+.game-page.game7 #board { background-image: url("../img/backice1.webp?v=20260916-img2");   background-size: cover; background-position: center; background-repeat: no-repeat; }
 /* ==========================================================================
    修复：阵亡单位「先变灰、再消失」的变灰阶段被美化段覆盖
    --------------------------------------------------------------------------
@@ -2240,24 +2261,43 @@ body.dialogue-active { overflow: hidden; }
 
 .map-route__line {
 	fill: none;
-	stroke-width: 2.6;
+	stroke-width: 3.4;
 	stroke-linecap: round;
+	stroke-linejoin: round;
 	vector-effect: non-scaling-stroke;   /* viewBox 非等比缩放，线宽靠它保持恒定 */
 }
 
-/* 已通关 → 下一关：红色虚线（**静止**，不做流动动画 —— 只有"加载新关卡"那一下才有动画） */
-.map-route__line--done {
-	stroke: #9c1c22;
-	stroke-width: 3;
-	stroke-dasharray: 9 7;
-	filter: drop-shadow(0 0 3px rgba(156, 28, 34, 0.55));
+/* 深色墨迹底边让路线像压在参谋地图上的宽头推进箭头，不再像网页虚线。 */
+.map-route__underlay {
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	vector-effect: non-scaling-stroke;
 }
 
-/* 还没打通的下一段：浅灰静止虚线（viewBox 与底图等比，所以虚线疏密均匀） */
+.map-route__underlay--done {
+	stroke: rgba(42, 17, 19, 0.56);
+	stroke-width: 7;
+}
+
+.map-route__underlay--next {
+	stroke: rgba(36, 31, 22, 0.26);
+	stroke-width: 5;
+	stroke-dasharray: 3 8;
+}
+
+/* 已通关 → 下一关：绛红实线箭头；只有刚解锁的那一段会播放显影。 */
+.map-route__line--done {
+	stroke: #a73535;
+	stroke-width: 3.5;
+	filter: drop-shadow(0 2px 1px rgba(34, 14, 15, 0.42));
+}
+
+/* 下一段只作战略预告：细金灰短划线，同样保留明确箭头方向。 */
 .map-route__line--next {
-	stroke: rgba(91, 66, 31, 0.42);
-	stroke-width: 2;
-	stroke-dasharray: 7 9;
+	stroke: rgba(126, 103, 54, 0.7);
+	stroke-width: 2.2;
+	stroke-dasharray: 3 8;
 }
 
 /* 刚从结算页回来：新解锁那一段要"虚线一段一段加载出来"（慢，3s），
@@ -2265,17 +2305,16 @@ body.dialogue-active { overflow: hidden; }
    从起点擦到终点 —— 被擦到的虚线才露出来，看起来就是虚线在往前加载。
    跑完由 JS 撤掉遮罩与这层线、放出下面的实虚线和新标记。 */
 .map-route__line--draw {
-	stroke: #9c1c22;
-	stroke-width: 3;
-	stroke-dasharray: 9 7;
-	filter: drop-shadow(0 0 4px rgba(156, 28, 34, 0.6));
+	stroke: #c84d45;
+	stroke-width: 4;
+	filter: drop-shadow(0 2px 2px rgba(52, 17, 18, 0.52));
 }
 
 /* 遮罩里的"擦除线"（本身看不见，只决定虚线露出多少） */
 .map-route__mask-line {
 	fill: none;
 	stroke: #fff;
-	stroke-width: 10;
+	stroke-width: 15;
 	stroke-dasharray: 100;
 	animation: map-route-draw 3s linear both;
 }
@@ -2296,6 +2335,10 @@ body.dialogue-active { overflow: hidden; }
 	z-index: 3;
 	width: 0;
 	height: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	font: inherit;
 	color: var(--ui-navy-900);
 	text-decoration: none;
 	cursor: pointer;
@@ -2404,6 +2447,62 @@ body.dialogue-active { overflow: hidden; }
    上面那条 +0.05em 的补偿是按正体调的，斜体要往左补一点，中间那颗星才落在图钉正下方。 */
 .map-pin--hidden .map-pin__stars { font-style: italic; color: #7a5c33; transform: translateX(calc(-50% - 0.03em)); }
 
+/* 未解锁的第 7 关仍作为情报节点显示：数字保留，右上角叠加小锁，
+   下方用紧凑铭牌显示主线总星数，点击或键盘聚焦均可读取完整条件。 */
+.map-pin--locked { cursor: not-allowed; }
+.map-pin--locked .map-pin__dot {
+	border-color: #81765f;
+	background: linear-gradient(145deg, #e8e0cf, #bcb19d);
+	color: #514a3e;
+	box-shadow: 0 3px 9px rgba(34, 28, 20, 0.28);
+	animation: none;
+}
+.map-pin--locked .map-pin__dot::after { border-top-color: #81765f; }
+.map-pin--locked:hover .map-pin__dot {
+	transform: translate(-50%, -50%);
+	background: linear-gradient(145deg, #e8e0cf, #bcb19d);
+	color: #514a3e;
+}
+.map-pin--locked:focus-visible .map-pin__dot {
+	outline: 3px solid rgba(185, 154, 85, 0.48);
+	outline-offset: 3px;
+}
+.map-pin__lock {
+	position: absolute;
+	z-index: 4;
+	left: 8px;
+	top: -17px;
+	width: 11px;
+	height: 9px;
+	border: 1.5px solid #625844;
+	border-radius: 2px;
+	background: #c8b98f;
+	box-shadow: 0 1px 3px rgba(24, 19, 12, 0.35);
+}
+.map-pin__lock::before {
+	content: '';
+	position: absolute;
+	left: 1px;
+	top: -7px;
+	width: 6px;
+	height: 7px;
+	border: 1.5px solid #625844;
+	border-bottom: 0;
+	border-radius: 6px 6px 0 0;
+}
+.map-pin--locked .map-pin__stars {
+	top: 23px;
+	padding: 2px 6px;
+	border: 1px solid rgba(98, 88, 68, 0.42);
+	border-radius: 999px;
+	background: rgba(255, 250, 240, 0.88);
+	color: #514a3e;
+	font-size: 0.78rem;
+	font-style: normal;
+	letter-spacing: 0.02em;
+	transform: translateX(-50%);
+}
+
 /* 刚从结算页回来：延伸动画还没跑完时，新标记先藏着（跑完由 JS 换成 --fresh 弹出来） */
 .map-pin--wait { opacity: 0; visibility: hidden; }
 
@@ -2426,6 +2525,8 @@ body.dialogue-active { overflow: hidden; }
 	.map-pin__dot { width: 22px; height: 22px; font-size: 0.72rem; }
 	.map-pin__stars { top: 19px; font-size: 0.8rem; letter-spacing: 0.06em; transform: translateX(calc(-50% + 0.03em)); }
 	.map-pin--hidden .map-pin__stars { transform: translateX(calc(-50% - 0.11em)); }
+	.map-pin--locked .map-pin__stars { top: 20px; font-size: 0.68rem; letter-spacing: 0; transform: translateX(-50%); }
+	.map-pin__lock { left: 7px; top: -15px; transform: scale(0.9); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2460,3 +2561,4856 @@ body.dialogue-active { overflow: hidden; }
 
 .ui-modal--wide #btn-restart { display: block; margin: 1.2rem auto 0; }
 .ui-modal--wide .ui-modal-actions { margin-top: 1.1rem; }
+
+/* 全站三语 / 夜览组件                                                        */
+/* ========================================================================== */
+
+.ui-toolbar {
+	position: fixed;
+	z-index: 900;
+	top: 12px;
+	right: 12px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px;
+	border: 1px solid rgba(218, 196, 136, 0.52);
+	border-radius: 6px;
+	background: rgba(9, 21, 36, 0.88);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.24);
+	backdrop-filter: blur(8px);
+}
+
+.ui-language,
+.ui-theme {
+	min-height: 34px;
+	margin: 0;
+	border: 1px solid rgba(218, 196, 136, 0.45);
+	border-radius: 3px;
+	color: #fff5dc;
+	background: #172d49;
+	cursor: pointer;
+}
+
+.ui-language {
+	max-width: 118px;
+	padding: 0 0.48rem;
+	font-size: 0.75rem;
+}
+
+.ui-theme {
+	display: grid;
+	width: 34px;
+	padding: 0;
+	place-items: center;
+	font-size: 1.08rem;
+	line-height: 1;
+}
+
+.ui-language:focus-visible,
+.ui-theme:focus-visible,
+.password-toggle:focus-visible {
+	outline: 2px solid var(--ui-gold-300);
+	outline-offset: 2px;
+}
+
+/* 密码框的小眼睛由 ui.js 自动插入；按钮不参与表单提交。 */
+.password-field {
+	position: relative;
+	display: block;
+	margin-top: 0.35rem;
+}
+
+.form-box .password-field input {
+	margin-top: 0;
+	padding-right: 3rem;
+}
+
+.form-box .password-toggle,
+.form-box .password-toggle:hover,
+.form-box .password-toggle:active {
+	position: absolute;
+	top: 50%;
+	right: 0.42rem;
+	display: grid;
+	width: 2.25rem;
+	height: 2.25rem;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	transform: translateY(-50%);
+	place-items: center;
+	border: 0;
+	border-radius: 50%;
+	color: #4f5d6c;
+	background: transparent;
+	box-shadow: none;
+	filter: none;
+	cursor: pointer;
+}
+
+.form-box .password-toggle:hover {
+	color: var(--ui-red-800);
+	background: rgba(35, 68, 102, 0.1);
+}
+
+.password-toggle svg {
+	width: 1.25rem;
+	height: 1.25rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
+}
+
+.password-toggle .eye-slash { display: none; }
+.password-toggle.is-visible .eye-slash { display: block; }
+
+.ui-notices {
+	position: fixed;
+	z-index: 950;
+	right: 14px;
+	bottom: 14px;
+	display: grid;
+	width: min(390px, calc(100vw - 28px));
+	gap: 8px;
+}
+
+.ui-notice {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 0.78rem 0.9rem;
+	border: 1px solid var(--ui-gold-500);
+	border-left: 5px solid var(--ui-navy-700);
+	color: #2f291f;
+	background: #fff8e8;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.ui-notice--achievement { border-left-color: var(--ui-gold-500); }
+
+.ui-notice button {
+	flex: 0 0 auto;
+	border: 0;
+	color: inherit;
+	background: transparent;
+	font-size: 1.2rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+/* 对话框固定贴住页面底边并占满宽度，正文仍限制在舒适阅读宽度。 */
+.dialog-box {
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	max-width: none;
+	min-height: 190px;
+	padding: 1.25rem max(1.25rem, calc((100vw - 900px) / 2)) 1.2rem;
+	transform: none;
+	border-right: 0;
+	border-bottom: 0;
+	border-left: 0;
+	border-radius: 0;
+	box-shadow: 0 -18px 54px rgba(0, 0, 0, 0.5), inset 0 5px rgba(255, 255, 255, 0.22);
+}
+
+.dialog-heading,
+.dialog-text {
+	width: 100%;
+	max-width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.dialog-next { right: max(1.25rem, calc((100vw - 900px) / 2)); }
+
+@keyframes dialogueRise {
+	from { opacity: 0; transform: translateY(18px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+/* 胜利卡片和“下一关”按钮属于同一块结果面板，始终在视口正中央。 */
+body.game-page.result-active { justify-content: center; }
+
+body.game-page.result-active #win {
+	position: fixed;
+	z-index: 360;
+	top: 50%;
+	left: 50%;
+	width: min(430px, calc(100vw - 32px));
+	min-width: 0;
+	margin: 0;
+	transform: translate(-50%, -50%);
+}
+
+body.game-page.result-active #win #button-next-game {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+/* 夜览：普通页面由羊皮纸切换为深蓝战地档案，关卡页再压低环境亮度。 */
+html[data-theme='dark'] body:not(.game-page) {
+	color: #eee3cb;
+	background:
+		radial-gradient(circle at 12% 8%, rgba(79, 94, 107, 0.28), transparent 32rem),
+		linear-gradient(145deg, #152436, #070e18 74%);
+}
+
+html[data-theme='dark'] .page-box h1,
+html[data-theme='dark'] .section-title,
+html[data-theme='dark'] .member-card h3,
+html[data-theme='dark'] .level-name,
+html[data-theme='dark'] .form-box h2 { color: #f5e8c6; text-shadow: none; }
+
+html[data-theme='dark'] .page-sub,
+html[data-theme='dark'] .page-note,
+html[data-theme='dark'] .save-note,
+html[data-theme='dark'] .member-card p,
+html[data-theme='dark'] .level-stars { color: #c9b991; }
+
+html[data-theme='dark'] .form-box,
+html[data-theme='dark'] .level-row,
+html[data-theme='dark'] .member-card,
+html[data-theme='dark'] .story-panel {
+	color: #eee3cb;
+	border-color: rgba(218, 196, 136, 0.42);
+	background: linear-gradient(135deg, rgba(28, 45, 63, 0.97), rgba(10, 23, 38, 0.98));
+	box-shadow: 0 16px 46px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(218, 196, 136, 0.09);
+}
+
+html[data-theme='dark'] .form-box label,
+html[data-theme='dark'] .story-line { color: #e7dac0; }
+html[data-theme='dark'] .story-line b { color: #f0cd85; }
+
+html[data-theme='dark'] .form-box input,
+html[data-theme='dark'] #slot-select,
+html[data-theme='dark'] .file-selector select {
+	color: #f4ead4;
+	border-color: #786947;
+	background: rgba(5, 15, 27, 0.72);
+}
+
+html[data-theme='dark'] a { color: #e3c67f; }
+html[data-theme='dark'] a:hover { color: #fff0bd; }
+html[data-theme='dark'] .menu-link { color: #fff8e7; }
+
+html[data-theme='dark'] body.game-page {
+	background:
+		radial-gradient(circle at 50% 38%, rgba(46, 64, 78, 0.25), transparent 38rem),
+		linear-gradient(150deg, #0b1622, #030810 78%);
+}
+
+html[data-theme='dark'] .game-page #board { filter: brightness(0.78) saturate(0.82); }
+
+html[data-theme='dark'] #info-bar,
+html[data-theme='dark'] #enemy-info {
+	color: #eee3cb;
+	border-color: #75623d;
+	background: rgba(15, 28, 42, 0.97);
+}
+
+html[data-theme='dark'] .info-head,
+html[data-theme='dark'] .info-title,
+html[data-theme='dark'] .info-stats,
+html[data-theme='dark'] .info-lptext { color: #e8d9b6; }
+
+html[data-theme='dark'] .dialog-box {
+	color: #efe4cd;
+	background:
+		linear-gradient(105deg, rgba(23, 39, 56, 0.99), rgba(8, 20, 34, 0.99)),
+		repeating-linear-gradient(0deg, transparent 0 5px, rgba(255, 255, 255, 0.025) 6px);
+	box-shadow: 0 -18px 54px rgba(0, 0, 0, 0.72), inset 0 5px rgba(218, 196, 136, 0.08);
+}
+
+html[data-theme='dark'] .dialog-text { color: #eee3cb; }
+html[data-theme='dark'] .dialog-role,
+html[data-theme='dark'] .dialog-progress { color: #bdad89; }
+html[data-theme='dark'] .dialog-heading { border-bottom-color: rgba(218, 196, 136, 0.24); }
+html[data-theme='dark'] .dialog-box--briefing .dialog-who { color: #a9cae7; }
+html[data-theme='dark'] .ui-notice { color: #eee3cb; background: #102235; }
+
+@media (max-width: 760px) {
+	.ui-toolbar { top: 6px; right: 6px; }
+	.ui-language { max-width: 105px; font-size: 0.7rem; }
+	.dialog-box {
+		bottom: 0;
+		width: 100%;
+		min-height: 205px;
+		padding: 1rem 1rem 3.7rem;
+		transform: none;
+	}
+	.dialog-next { right: 1rem; }
+}
+
+@media (max-height: 680px) and (min-width: 761px) {
+	.dialog-box { bottom: 0; min-height: 168px; }
+}
+
+/* ========================================================================== */
+/* 2026-09-13 UI 精修：电影化对话 / 动态登录 / 液态玻璃战役地图 / 自适应布局 */
+/* ========================================================================== */
+
+html,
+body {
+	width: 100%;
+	max-width: 100%;
+}
+
+/* 全站按钮统一为更柔和的圆角，并让点击反馈与原有 transform 定位互不冲突。 */
+button,
+.form-box button,
+.game-btn,
+.level-btn,
+.menu-link,
+.turn-button,
+.result-button,
+.ui-theme,
+.ui-btn {
+	border-radius: 14px;
+	transition:
+		scale 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+		transform 0.18s ease,
+		filter 0.18s ease,
+		box-shadow 0.18s ease;
+}
+
+button:not(:disabled):active,
+.game-btn:active,
+.level-btn:active,
+.menu-link:active,
+.turn-button:active,
+.result-button:active,
+.ui-btn:active {
+	scale: 0.96;
+}
+
+.ui-clicked {
+	animation: uiControlClick 0.38s cubic-bezier(0.2, 0.85, 0.25, 1) both;
+}
+
+@keyframes uiControlClick {
+	0% { scale: 1; }
+	34% { scale: 0.92; filter: brightness(1.18); }
+	68% { scale: 1.035; }
+	100% { scale: 1; }
+}
+
+/* 登录页：动态军情室背景 + 居中的液态玻璃登录卡。 */
+body.page-login {
+	height: 100svh;
+	min-height: 560px;
+	padding: clamp(52px, 7vh, 76px) 1rem 1.2rem;
+	overflow: hidden;
+	background:
+		radial-gradient(circle at 18% 18%, rgba(58, 100, 135, 0.34), transparent 31rem),
+		radial-gradient(circle at 82% 74%, rgba(148, 97, 42, 0.22), transparent 29rem),
+		linear-gradient(145deg, #14263a 0%, #091522 58%, #030811 100%);
+}
+
+.page-login::before {
+	z-index: -1;
+	opacity: 1;
+	background:
+		linear-gradient(115deg, transparent 16%, rgba(229, 203, 138, 0.08) 16.15% 16.35%, transparent 16.5%),
+		repeating-radial-gradient(circle at 50% 52%, transparent 0 76px, rgba(211, 189, 131, 0.055) 77px 78px),
+		repeating-linear-gradient(92deg, transparent 0 8.9vw, rgba(255, 255, 255, 0.025) 9vw),
+		linear-gradient(120deg, rgba(53, 96, 132, 0.18), transparent 48%);
+	background-size: 130% 130%, 100% 100%, 100% 100%, 150% 150%;
+	animation: loginCommandDrift 17s ease-in-out infinite alternate;
+}
+
+.page-login::after {
+	z-index: 0;
+	opacity: 0.34;
+	filter: sepia(0.08) saturate(0.78) contrast(1.08) drop-shadow(18px 18px 34px rgba(0, 0, 0, 0.45));
+	animation: loginPortraitFloat 6.5s ease-in-out infinite;
+}
+
+.page-login .page-box {
+	z-index: 2;
+	display: flex;
+	width: min(92vw, 540px);
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	text-align: center;
+	transition: opacity 0.65s ease, filter 0.65s ease, transform 0.65s ease;
+}
+
+.page-login .page-kicker { color: #e2c981; }
+
+.page-login .page-box h1 {
+	color: #fff3d2;
+	text-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+
+.page-login .page-sub { color: #cec3aa; }
+
+.page-login .form-box {
+	width: 100%;
+	padding: clamp(1.15rem, 3vh, 1.65rem) clamp(1.25rem, 4vw, 1.8rem);
+	overflow: hidden;
+	border: 1px solid rgba(247, 226, 171, 0.46);
+	border-radius: 28px;
+	color: #f6edd8;
+	text-align: center;
+	background:
+		linear-gradient(145deg, rgba(42, 64, 84, 0.66), rgba(8, 19, 31, 0.72)),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent 48%);
+	box-shadow:
+		0 28px 76px rgba(0, 0, 0, 0.48),
+		inset 0 1px rgba(255, 255, 255, 0.24),
+		inset 0 -1px rgba(218, 196, 136, 0.16),
+		0 0 0 1px rgba(255, 255, 255, 0.035);
+	-webkit-backdrop-filter: blur(26px) saturate(1.3);
+	backdrop-filter: blur(26px) saturate(1.3);
+}
+
+.page-login .form-box::before {
+	inset: 7px;
+	border: 1px solid rgba(255, 255, 255, 0.11);
+	border-radius: 21px;
+}
+
+.page-login .form-box::after {
+	content: '';
+	position: absolute;
+	top: -80%;
+	left: -55%;
+	width: 46%;
+	height: 250%;
+	pointer-events: none;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+	transform: rotate(21deg);
+	animation: loginGlassSweep 7s ease-in-out infinite;
+}
+
+.page-login .form-box h2 {
+	color: #fff1cb;
+	text-align: center;
+	border-bottom-color: rgba(218, 196, 136, 0.24);
+}
+
+.page-login #login-form {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	justify-items: stretch;
+}
+
+.page-login .form-box label {
+	color: #dfd4bd;
+	text-align: center;
+}
+
+.page-login .form-box label > span:first-child {
+	display: block;
+	text-align: center;
+}
+
+.page-login .form-box input {
+	color: #fff9e8;
+	text-align: left;
+	border-color: rgba(218, 196, 136, 0.4);
+	border-radius: 13px;
+	background: rgba(3, 12, 22, 0.58);
+}
+
+.page-login .form-box input::placeholder { color: rgba(232, 220, 194, 0.58); }
+
+.page-login .form-box button[type='submit'] {
+	justify-self: center;
+	min-width: 158px;
+	margin-top: 0.65rem;
+}
+
+.page-login .form-msg,
+.page-login .form-link {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	text-align: center;
+}
+
+.page-login .form-msg { color: #ffb2ac; }
+.page-login .form-link { color: #d8ccb2; }
+.page-login .form-link a { color: #f1d48e; }
+
+body.is-deploying .page-box {
+	opacity: 0;
+	filter: blur(16px);
+	transform: scale(1.04);
+}
+
+@keyframes loginCommandDrift {
+	0% { background-position: 0% 0%, center, center, 0% 50%; transform: scale(1); }
+	100% { background-position: 100% 35%, center, 4vw 0, 100% 50%; transform: scale(1.06); }
+}
+
+@keyframes loginPortraitFloat {
+	0%, 100% { transform: translate3d(0, 0, 0); }
+	50% { transform: translate3d(9px, -10px, 0); }
+}
+
+@keyframes loginGlassSweep {
+	0%, 22% { left: -55%; opacity: 0; }
+	35% { opacity: 1; }
+	58%, 100% { left: 128%; opacity: 0; }
+}
+
+/* 登录剧情结束后的地图接镜，可立即跳转。 */
+.campaign-prologue {
+	position: fixed;
+	z-index: 1200;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	visibility: hidden;
+	overflow: hidden;
+	opacity: 0;
+	color: #fff3d1;
+	background:
+		radial-gradient(circle at 50% 45%, rgba(72, 104, 126, 0.32), transparent 34rem),
+		linear-gradient(150deg, #17283b, #060d16 72%);
+	transition: opacity 0.72s ease, visibility 0.72s;
+}
+
+.campaign-prologue.is-visible {
+	visibility: visible;
+	opacity: 1;
+}
+
+.campaign-prologue::before,
+.campaign-prologue::after {
+	content: '';
+	position: absolute;
+	pointer-events: none;
+}
+
+.campaign-prologue::before {
+	inset: 0;
+	background: linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 25% 75%, rgba(0, 0, 0, 0.72));
+}
+
+.campaign-prologue::after {
+	left: 50%;
+	bottom: 9vh;
+	width: min(62vw, 680px);
+	height: 1px;
+	background: linear-gradient(90deg, transparent, #b99a55, transparent);
+	transform: translateX(-50%) scaleX(0);
+	animation: prologueRule 1.8s 0.2s ease both;
+}
+
+.campaign-prologue__map {
+	position: absolute;
+	inset: -9%;
+	opacity: 0.16;
+	background: url('../img/europe-map.svg') center / min(1160px, 116vw) auto no-repeat;
+	filter: grayscale(1) invert(1) sepia(0.45) hue-rotate(160deg) brightness(0.88);
+	animation: prologueMapPush 2.4s ease-out both;
+}
+
+.campaign-prologue__copy {
+	position: relative;
+	z-index: 2;
+	width: min(88vw, 850px);
+	padding: 2rem;
+	text-align: center;
+	text-shadow: 0 4px 22px rgba(0, 0, 0, 0.92);
+}
+
+.campaign-prologue__kicker {
+	margin-bottom: clamp(1rem, 3vh, 1.8rem);
+	font-size: clamp(0.65rem, 1.2vw, 0.82rem);
+	font-weight: 700;
+	letter-spacing: 0.3em;
+	color: #d9be79;
+}
+
+.campaign-prologue__line {
+	margin: 0.85rem 0;
+	opacity: 0;
+	font-family: var(--ui-display);
+	font-size: clamp(1.05rem, 2.35vw, 1.65rem);
+	line-height: 1.7;
+	letter-spacing: 0.055em;
+	transform: translateY(18px);
+}
+
+.campaign-prologue.is-visible .campaign-prologue__line--1 { animation: prologueLine 0.72s 0.55s ease forwards; }
+.campaign-prologue.is-visible .campaign-prologue__line--2 { animation: prologueLine 0.72s 1.65s ease forwards; }
+.campaign-prologue.is-visible .campaign-prologue__line--3 { animation: prologueLine 0.72s 2.75s ease forwards; }
+
+.campaign-prologue__enter {
+	margin-top: 0;
+	opacity: 0;
+	font-size: 0.74rem;
+	letter-spacing: 0.2em;
+	color: #c7b78f;
+	animation: prologueLine 0.55s 0.28s ease forwards, mapStatusPulse 1.2s 0.9s ease-in-out infinite;
+}
+
+.campaign-prologue__skip {
+	margin-top: 1.25rem;
+	padding: 0.55rem 1.15rem;
+	border: 1px solid rgba(218, 196, 136, 0.42);
+	color: #e7d7b1;
+	background: rgba(8, 21, 35, 0.56);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	cursor: pointer;
+}
+
+@keyframes prologueLine {
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes prologueRule {
+	0% { transform: translateX(-50%) scaleX(0); opacity: 0; }
+	25%, 78% { transform: translateX(-50%) scaleX(1); opacity: 1; }
+	100% { transform: translateX(-50%) scaleX(0.35); opacity: 0.2; }
+}
+
+@keyframes prologueMapPush {
+	from { transform: scale(1.12) translate3d(-1.5%, 1%, 0); filter: blur(5px) grayscale(1) invert(1) sepia(0.45) hue-rotate(160deg) brightness(0.7); }
+	to { transform: scale(1) translate3d(0, 0, 0); filter: blur(0) grayscale(1) invert(1) sepia(0.45) hue-rotate(160deg) brightness(0.88); }
+}
+
+@keyframes mapStatusPulse {
+	0%, 100% { opacity: 0.55; }
+	50% { opacity: 1; }
+}
+
+/* 主菜单变成紧凑的战役指挥屏，地图本身保持原坐标系。 */
+body.page-menu {
+	gap: clamp(0.35rem, 1vh, 0.7rem);
+	padding: clamp(54px, 6vh, 66px) 1rem clamp(10px, 1.5vh, 18px);
+	color: #efe6d2;
+	background:
+		radial-gradient(circle at 50% 34%, rgba(50, 84, 112, 0.34), transparent 34rem),
+		repeating-linear-gradient(118deg, transparent 0 42px, rgba(255, 255, 255, 0.018) 43px 44px),
+		linear-gradient(150deg, #14263a, #050b13 76%);
+}
+
+.page-menu::before {
+	opacity: 0.2;
+	background:
+		repeating-radial-gradient(circle at 50% 45%, transparent 0 96px, rgba(211, 188, 130, 0.075) 97px 98px),
+		linear-gradient(90deg, transparent 49.9%, rgba(218, 196, 136, 0.08) 50%, transparent 50.1%);
+}
+
+.page-menu > .page-box:first-child {
+	width: min(94vw, 940px);
+	padding: 0;
+}
+
+.page-menu .page-box h1 {
+	margin: 0;
+	font-size: clamp(1.65rem, 4vh, 2.9rem);
+	color: #fff2d0;
+	text-shadow: 0 7px 26px rgba(0, 0, 0, 0.56);
+}
+
+.page-menu .page-kicker {
+	margin-bottom: 0.18rem;
+	color: #d9bd78;
+}
+
+.page-menu .page-sub {
+	margin: 0.12rem auto 0;
+	color: #c8bda7;
+}
+
+.campaign-map-shell {
+	position: relative;
+	z-index: 1;
+	width: min(94vw, 1000px, calc(100svh - 215px));
+	min-width: 520px;
+	padding: 8px;
+	overflow: hidden;
+	border: 1px solid rgba(234, 215, 163, 0.42);
+	border-radius: 28px;
+	background:
+		linear-gradient(145deg, rgba(63, 85, 103, 0.48), rgba(7, 18, 30, 0.72)),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent 44%);
+	box-shadow:
+		0 28px 74px rgba(0, 0, 0, 0.54),
+		inset 0 1px rgba(255, 255, 255, 0.24),
+		inset 0 -1px rgba(218, 196, 136, 0.2),
+		0 0 0 1px rgba(255, 255, 255, 0.035);
+	-webkit-backdrop-filter: blur(24px) saturate(1.28);
+	backdrop-filter: blur(24px) saturate(1.28);
+}
+
+.campaign-map-shell::before {
+	content: '';
+	position: absolute;
+	z-index: 5;
+	inset: 7px;
+	pointer-events: none;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 21px;
+}
+
+.campaign-map-shell__top,
+.campaign-map-shell__bottom {
+	position: relative;
+	z-index: 6;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 0.72rem;
+	font-size: clamp(0.55rem, 1.1vw, 0.68rem);
+	font-weight: 700;
+	line-height: 32px;
+	letter-spacing: 0.13em;
+	color: #d8c9a6;
+}
+
+.campaign-map-shell__top { height: 32px; }
+.campaign-map-shell__bottom { height: 29px; color: #9f998b; }
+
+.campaign-map-shell__signal {
+	display: flex;
+	align-items: center;
+	gap: 0.46rem;
+	color: #9dd1bb;
+}
+
+.campaign-map-shell__signal::before {
+	content: '';
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #72d7a8;
+	box-shadow: 0 0 0 4px rgba(114, 215, 168, 0.12), 0 0 12px #72d7a8;
+	animation: mapSignal 1.9s ease-in-out infinite;
+}
+
+@keyframes mapSignal {
+	50% { opacity: 0.46; box-shadow: 0 0 0 7px rgba(114, 215, 168, 0), 0 0 5px #72d7a8; }
+}
+
+.campaign-map-shell .campaign-map {
+	width: 100%;
+	margin: 0;
+	overflow: visible;
+	border-radius: 19px;
+	background: #101b27;
+	box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.48);
+}
+
+.campaign-map-shell .campaign-map::before {
+	content: '';
+	position: absolute;
+	z-index: 1;
+	inset: 0;
+	pointer-events: none;
+	border-radius: inherit;
+	background:
+		radial-gradient(circle at 48% 44%, transparent 35%, rgba(3, 9, 15, 0.52) 100%),
+		linear-gradient(115deg, rgba(33, 67, 92, 0.28), transparent 40%, rgba(124, 77, 30, 0.12));
+	box-shadow: inset 0 0 0 1px rgba(229, 209, 153, 0.22), inset 0 0 54px rgba(0, 0, 0, 0.46);
+}
+
+.campaign-map-shell .campaign-map__img {
+	position: relative;
+	z-index: 0;
+	border-radius: 19px;
+	opacity: 0.92;
+	filter: brightness(0.62) contrast(1.2) saturate(0.55) sepia(0.18) hue-rotate(166deg);
+}
+
+.campaign-map-shell .map-route__line--done,
+.campaign-map-shell .map-route__line--draw {
+	stroke: #cf615b;
+	filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.65));
+}
+
+.campaign-map-shell .map-route__line--next {
+	stroke: rgba(221, 199, 139, 0.66);
+}
+
+.campaign-map-shell .map-route__underlay--done { stroke: rgba(22, 7, 10, 0.76); }
+.campaign-map-shell .map-route__underlay--next { stroke: rgba(6, 13, 19, 0.54); }
+
+.campaign-map-shell .map-pin__dot {
+	color: #fff1ca;
+	border-color: rgba(231, 205, 139, 0.88);
+	background: linear-gradient(145deg, rgba(39, 67, 91, 0.98), rgba(8, 21, 34, 0.98));
+	box-shadow:
+		0 7px 18px rgba(0, 0, 0, 0.58),
+		inset 0 1px rgba(255, 255, 255, 0.3),
+		0 0 0 3px rgba(8, 20, 33, 0.4);
+}
+
+.campaign-map-shell .map-pin__stars {
+	color: #f0cd78;
+	text-shadow: 0 1px 4px #050b12, 0 0 8px rgba(238, 201, 111, 0.55);
+}
+
+.campaign-map-shell .map-pin--done .map-pin__dot {
+	color: #ffd8d1;
+	border-color: #d96661;
+	background: linear-gradient(145deg, #743135, #2c151b);
+}
+
+.campaign-map-shell .map-pin--done .map-pin__dot::after { border-top-color: #d96661; }
+
+.campaign-map-shell .map-pin--open .map-pin__dot,
+.campaign-map-shell .map-pin--cont .map-pin__dot {
+	color: #fff1ca;
+	border-color: #e0c177;
+	background: linear-gradient(145deg, #31587a, #0b2034);
+}
+
+.campaign-map-shell .map-pin--open .map-pin__dot::after,
+.campaign-map-shell .map-pin--cont .map-pin__dot::after { border-top-color: #e0c177; }
+
+.campaign-map-shell .map-pin--locked .map-pin__dot {
+	color: #a99f8b;
+	border-color: rgba(180, 166, 132, 0.72);
+	background: linear-gradient(145deg, #34404a, #151d24);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.52), inset 0 1px rgba(255, 255, 255, 0.12);
+}
+.campaign-map-shell .map-pin--locked .map-pin__dot::after { border-top-color: rgba(180, 166, 132, 0.72); }
+.campaign-map-shell .map-pin--locked:hover .map-pin__dot {
+	color: #a99f8b;
+	background: linear-gradient(145deg, #34404a, #151d24);
+}
+.campaign-map-shell .map-pin--locked .map-pin__stars {
+	color: #e4d3a3;
+	border-color: rgba(221, 199, 139, 0.34);
+	background: rgba(7, 16, 24, 0.82);
+	text-shadow: 0 1px 3px #02070b;
+}
+.campaign-map-shell .map-pin__lock {
+	border-color: #d0ba7e;
+	background: #76643c;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.62);
+}
+.campaign-map-shell .map-pin__lock::before { border-color: #d0ba7e; }
+
+#btn-saves {
+	margin: 0.1rem auto 0;
+	min-width: 180px;
+}
+
+.page-menu > .page-box:last-of-type {
+	width: min(94vw, 760px);
+	padding: 0;
+}
+
+.page-menu .menu-list {
+	flex-direction: row;
+	margin-top: 0;
+	gap: 8px;
+}
+
+.page-menu .menu-link { min-width: 145px; }
+
+/* “自动存档”是 select 的首项：把整个选择器做成与两侧按钮相同的指挥按钮。 */
+#slot-select,
+.file-selector select {
+	min-height: 38px;
+	padding: 0.5rem 2rem 0.5rem 0.8rem;
+	border: 1px solid #091629;
+	border-radius: 14px;
+	color: #fff8e7;
+	background-color: #172d49;
+	background-image:
+		linear-gradient(45deg, transparent 50%, #d9c17d 50%),
+		linear-gradient(135deg, #d9c17d 50%, transparent 50%),
+		linear-gradient(180deg, #294d72, #0d1c30);
+	background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%, 0 0;
+	background-size: 5px 5px, 5px 5px, 100% 100%;
+	background-repeat: no-repeat;
+	box-shadow: inset 0 0 0 1px rgba(218, 196, 136, 0.25), 0 3px 8px rgba(9, 18, 31, 0.24);
+	-webkit-appearance: none;
+	appearance: none;
+	cursor: pointer;
+}
+
+#slot-select option,
+.file-selector select option {
+	color: #fff8e7;
+	background: #172d49;
+}
+
+/* 对话：底部全宽液态玻璃指挥台，背景和台面分别入场。 */
+.dialog-overlay {
+	animation: dialogueBackdropIn 0.68s ease both;
+}
+
+.dialog-overlay::before {
+	animation: dialogueAtmosphere 13s ease-in-out infinite alternate;
+}
+
+.dialog-chapter {
+	animation: dialogueChapterIn 0.72s 0.18s ease both;
+}
+
+.dialog-box {
+	position: fixed;
+	bottom: 0;
+	min-height: clamp(190px, 27svh, 258px);
+	padding: clamp(1.15rem, 2.6vh, 1.65rem) max(1.25rem, calc((100vw - 960px) / 2)) clamp(1.15rem, 2.5vh, 1.5rem);
+	overflow: hidden;
+	border-top: 1px solid rgba(239, 214, 151, 0.72);
+	color: #f6ecd4;
+	background:
+		linear-gradient(108deg, rgba(34, 58, 79, 0.94), rgba(7, 18, 31, 0.965) 68%),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent 42%);
+	box-shadow:
+		0 -24px 72px rgba(0, 0, 0, 0.62),
+		inset 0 1px rgba(255, 255, 255, 0.22),
+		inset 0 8px 30px rgba(42, 79, 106, 0.12);
+	-webkit-backdrop-filter: blur(24px) saturate(1.26);
+	backdrop-filter: blur(24px) saturate(1.26);
+	animation: dialogueCommandEnter 0.78s cubic-bezier(0.16, 0.82, 0.22, 1) both;
+}
+
+.dialog-box::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: min(88vw, 980px);
+	height: 3px;
+	background: linear-gradient(90deg, transparent, #8c2d32 18%, #e2c67f 50%, #8c2d32 82%, transparent);
+	transform: translateX(-50%);
+	box-shadow: 0 0 18px rgba(224, 193, 116, 0.35);
+}
+
+.dialog-box::after {
+	content: '';
+	position: absolute;
+	inset: 8px max(8px, calc((100vw - 1040px) / 2));
+	pointer-events: none;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 15px 15px 0 0;
+}
+
+.dialog-heading,
+.dialog-text {
+	position: relative;
+	z-index: 1;
+	max-width: 960px;
+}
+
+.dialog-heading {
+	border-bottom-color: rgba(218, 196, 136, 0.24);
+}
+
+.dialog-who { color: #f1cf7b; }
+.dialog-role { color: #c0b496; }
+.dialog-progress { color: #d6c18c; }
+
+.dialog-text {
+	max-width: 810px;
+	color: #f2e9d5;
+	text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.dialog-box.is-line-entering .dialog-heading {
+	animation: dialogueLineIn 0.35s ease both;
+}
+
+.dialog-box.is-line-entering .dialog-text {
+	animation: dialogueLineIn 0.52s 0.08s ease both;
+}
+
+.dialog-next {
+	right: max(1.25rem, calc((100vw - 960px) / 2));
+	bottom: clamp(1rem, 2.3vh, 1.45rem);
+	min-width: 124px;
+	border-color: rgba(232, 206, 140, 0.6);
+	background: linear-gradient(180deg, rgba(50, 91, 126, 0.96), rgba(13, 34, 55, 0.98));
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.dialog-portrait::after {
+	content: '';
+	position: absolute;
+	left: 12%;
+	right: 12%;
+	bottom: 3vh;
+	height: 7vh;
+	border-radius: 50%;
+	opacity: 0;
+	background: radial-gradient(ellipse, rgba(218, 196, 136, 0.2), transparent 68%);
+	filter: blur(12px);
+	transition: opacity 0.35s ease;
+}
+
+.dialog-portrait.is-speaking::after { opacity: 1; }
+
+.dialog-portrait.is-listening img {
+	animation: portraitListeningBreath 4.8s ease-in-out infinite;
+}
+
+.dialog-portrait--left.is-speaking.is-gesturing img {
+	transform-origin: 42% 96%;
+	animation: portraitCommandGestureLeft 1.15s cubic-bezier(0.18, 0.82, 0.24, 1) both;
+}
+
+.dialog-portrait--right.is-speaking.is-gesturing img {
+	transform-origin: 58% 96%;
+	animation: portraitCommandGestureRight 1.15s cubic-bezier(0.18, 0.82, 0.24, 1) both;
+}
+
+@keyframes dialogueBackdropIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes dialogueAtmosphere {
+	from { transform: scale(1.02) translateX(-1.2%); opacity: 0.32; }
+	to { transform: scale(1.08) translateX(1.2%); opacity: 0.54; }
+}
+
+@keyframes dialogueChapterIn {
+	from { opacity: 0; transform: translate(-50%, -12px); letter-spacing: 0.22em; }
+	to { opacity: 1; transform: translate(-50%, 0); letter-spacing: normal; }
+}
+
+/* ⚠️ 2026-09-16：**不要给 .dialog-box 的入场动画加 filter: blur()**。
+ * blur 会把元素提升为独立合成层，个别 Chromium/GPU 组合下会出现
+ * "DOM 与几何全部正常（opacity:1 / visibility:visible / rect 正确），
+ * 但整块内容就是不绘制"的现象 —— 表现为主页序章只剩一个 N 徽章、
+ * 玩家以为页面卡在加载（新账号首次进游戏必现，老账号跳过序章所以看不到）。
+ * 入场只保留 opacity + translate，纯粹、可靠。 */
+@keyframes dialogueCommandEnter {
+	0% { opacity: 0; transform: translateY(42px); }
+	58% { opacity: 1; transform: translateY(-5px); }
+	100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 逐句淡入同理：不用 blur。 */
+@keyframes dialogueLineIn {
+	from { opacity: 0; transform: translateY(10px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes portraitListeningBreath {
+	0%, 100% { transform: translateY(0) scale(1); }
+	50% { transform: translateY(-4px) scale(1.004); }
+}
+
+@keyframes portraitCommandGestureLeft {
+	0% { transform: translate3d(-24px, 18px, 0) scale(0.97) rotate(-1.8deg); filter: brightness(0.72); }
+	38% { transform: translate3d(8px, -12px, 0) scale(1.035) rotate(0.9deg); filter: brightness(1.12); }
+	66% { transform: translate3d(-2px, -4px, 0) scale(1.012) rotate(-0.25deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1); filter: brightness(1); }
+}
+
+@keyframes portraitCommandGestureRight {
+	0% { transform: translate3d(24px, 18px, 0) scale(0.97) rotate(1.8deg); filter: brightness(0.72); }
+	38% { transform: translate3d(-8px, -12px, 0) scale(1.035) rotate(-0.9deg); filter: brightness(1.12); }
+	66% { transform: translate3d(2px, -4px, 0) scale(1.012) rotate(0.25deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1); filter: brightness(1); }
+}
+
+/* 关卡布局优先装进一个视口；窄屏仍允许必要的纵向滚动。 */
+@media (min-width: 761px) and (min-height: 620px) {
+	body.page-menu,
+	body.game-page {
+		height: 100svh;
+		overflow: hidden;
+	}
+}
+
+@media (max-width: 760px) {
+	body.page-login {
+		min-height: 520px;
+		padding: 58px 0.75rem 0.75rem;
+	}
+
+	.page-login::after {
+		left: -28vw;
+		width: 78vw;
+		opacity: 0.13;
+	}
+
+	.page-login .page-kicker { margin-bottom: 0.2rem; }
+	.page-login .page-box h1 { font-size: clamp(2.25rem, 11vw, 3.1rem); }
+	.page-login .page-sub { margin-bottom: 0.7rem; font-size: 0.86rem; }
+	.page-login .form-box { padding: 1rem 1.05rem; border-radius: 22px; }
+	.page-login .form-box::before { border-radius: 16px; }
+
+	body.page-menu {
+		padding: 54px 0.55rem 12px;
+		overflow-x: hidden;
+	}
+
+	.page-menu .page-kicker { display: none; }
+	.page-menu .page-sub { font-size: 0.82rem; }
+
+	.campaign-map-shell {
+		width: min(96vw, 620px);
+		min-width: 0;
+		padding: 5px;
+		border-radius: 20px;
+	}
+
+	.campaign-map-shell::before { inset: 4px; border-radius: 16px; }
+	.campaign-map-shell__top,
+	.campaign-map-shell__bottom { padding: 0 0.45rem; font-size: 0.49rem; letter-spacing: 0.06em; }
+	.campaign-map-shell__top { height: 25px; line-height: 25px; }
+	.campaign-map-shell__bottom { height: 23px; line-height: 23px; }
+	.campaign-map-shell .campaign-map,
+	.campaign-map-shell .campaign-map__img,
+	.campaign-map-shell .campaign-map::before { border-radius: 14px; }
+
+	#btn-saves { margin-top: 0; min-width: 145px; }
+
+	.page-menu .menu-list {
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: 5px;
+	}
+
+	.page-menu .menu-link {
+		min-width: 0;
+		padding: 0.45rem 0.68rem;
+		font-size: 0.72rem;
+	}
+
+	body.game-page {
+		padding: 5px 5px 10px;
+	}
+
+	.game-heading { min-height: 48px; }
+	.game-page #board {
+		width: min(92vw, 66svh);
+		height: min(92vw, 66svh);
+	}
+
+	#button,
+	.turn-button {
+		min-height: 38px;
+		margin-top: 6px;
+		padding: 0.5rem 1rem;
+	}
+
+	#game-actions { margin-top: 5px; gap: 5px; }
+
+	.dialog-chapter { top: 12px; }
+	.dialog-portrait { bottom: 19vh; }
+	.dialog-box {
+		min-height: 200px;
+		padding: 1rem 1rem 3.65rem;
+		border-radius: 0;
+	}
+	.dialog-box::after { inset: 6px 7px 0; }
+	.dialog-next { right: 1rem; bottom: 0.85rem; }
+	.campaign-prologue__copy { padding: 1rem; }
+	.campaign-prologue__line { margin: 0.72rem 0; }
+}
+
+@media (max-height: 680px) and (min-width: 761px) {
+	body.page-login { min-height: 0; padding-top: 48px; }
+	.page-login .page-box h1 { font-size: 2.4rem; }
+	.page-login .page-sub { margin-bottom: 0.55rem; }
+	.page-login .form-box { padding: 0.85rem 1.35rem; }
+	.page-login .form-box h2 { margin-bottom: 0.5rem; }
+	.page-login .form-box label { margin-bottom: 0.48rem; }
+
+	.campaign-map-shell {
+		width: min(82vw, 760px, calc(100svh - 170px));
+	}
+
+	.page-menu .page-box h1 { font-size: 1.7rem; }
+	.page-menu .page-sub { font-size: 0.8rem; }
+	.dialog-box { min-height: 168px; padding-top: 0.9rem; padding-bottom: 0.85rem; }
+	.dialog-text { line-height: 1.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ui-clicked,
+	.page-login::before,
+	.page-login::after,
+	.page-login .form-box::after,
+	.campaign-prologue,
+	.campaign-prologue *,
+	.campaign-map-shell__signal::before,
+	.dialog-overlay,
+	.dialog-overlay::before,
+	.dialog-chapter,
+	.dialog-box,
+	.dialog-box.is-line-entering .dialog-heading,
+	.dialog-box.is-line-entering .dialog-text,
+	.dialog-portrait img {
+		animation: none !important;
+		transition-duration: 0.01ms !important;
+	}
+
+	.campaign-prologue__line,
+	.campaign-prologue__enter { opacity: 1; transform: none; }
+}
+
+/* ========================================================================== */
+/* 2026-09-14 玩法反馈：主题对比 / 精细战场 / 回退 / 血条 / 行军与交火动效 */
+/* ========================================================================== */
+
+body,
+.form-box,
+.campaign-map-shell,
+.game-page #board,
+.ui-toolbar {
+	transition: background 0.48s ease, background-color 0.48s ease, color 0.35s ease, filter 0.48s ease, box-shadow 0.48s ease, border-color 0.35s ease;
+}
+
+html.theme-switching .ui-theme { animation: themeSwitchConfirm 0.58s ease both; }
+
+@keyframes themeSwitchConfirm {
+	35% { scale: 0.88; filter: brightness(1.5); }
+	72% { scale: 1.08; }
+}
+
+.ui-theme {
+	width: 46px;
+	border-radius: 999px;
+	font-size: 1rem;
+	box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.28);
+}
+
+html[data-theme='light'] .ui-theme {
+	color: #422f16;
+	border-color: #d6b86e;
+	background: linear-gradient(145deg, #ffe4a0, #d6a84b);
+}
+
+html[data-theme='dark'] .ui-theme {
+	color: #e9d9a7;
+	border-color: #58769a;
+	background: linear-gradient(145deg, #1d3d5d, #071524);
+	box-shadow: inset 0 0 0 1px rgba(211,224,240,0.13), 0 0 18px rgba(72,129,179,0.32);
+}
+
+/* 日间是偏暖的战役桌，夜览则明显切到深蓝黑色作战室。 */
+html[data-theme='light'] body.game-page {
+	background:
+		radial-gradient(circle at 50% 34%, rgba(202, 181, 132, 0.32), transparent 38rem),
+		repeating-linear-gradient(115deg, transparent 0 38px, rgba(255,255,255,0.035) 39px 40px),
+		linear-gradient(145deg, #5f737b, #263744 76%);
+}
+
+html[data-theme='dark'] body.game-page {
+	background:
+		radial-gradient(circle at 50% 34%, rgba(41, 76, 104, 0.22), transparent 35rem),
+		repeating-linear-gradient(115deg, transparent 0 38px, rgba(255,255,255,0.012) 39px 40px),
+		linear-gradient(150deg, #0b1825, #01040a 82%);
+}
+
+html[data-theme='light'] body.page-menu {
+	background:
+		radial-gradient(circle at 50% 32%, rgba(191, 161, 99, 0.3), transparent 34rem),
+		linear-gradient(150deg, #526b78, #1e3040 78%);
+}
+
+html[data-theme='dark'] body.page-menu {
+	background:
+		radial-gradient(circle at 50% 32%, rgba(34, 70, 99, 0.2), transparent 34rem),
+		linear-gradient(150deg, #0a1724, #01040a 80%);
+}
+
+html[data-theme='light'] body.page-login {
+	background:
+		radial-gradient(circle at 18% 18%, rgba(112, 151, 178, 0.46), transparent 31rem),
+		radial-gradient(circle at 82% 74%, rgba(199, 151, 81, 0.32), transparent 29rem),
+		linear-gradient(145deg, #415c70, #172c3e 72%);
+}
+
+html[data-theme='dark'] body.page-login {
+	background:
+		radial-gradient(circle at 18% 18%, rgba(38, 77, 108, 0.24), transparent 31rem),
+		linear-gradient(145deg, #0a1724, #01040a 78%);
+}
+
+html[data-theme='light'] .game-page #board { filter: brightness(1.06) saturate(1.08); }
+html[data-theme='dark'] .game-page #board { filter: brightness(0.66) saturate(0.76) contrast(1.08); }
+
+/* 自动存档下拉和回退按钮统一为蓝底黄字。 */
+#slot-select,
+.file-selector select,
+.game-btn--undo {
+	color: #f4d477 !important;
+	font-weight: 750;
+	border-color: #c8a956 !important;
+	background-color: #173b61 !important;
+	background-image: linear-gradient(180deg, #315f8c, #112b49) !important;
+	box-shadow: inset 0 1px rgba(255,255,255,0.2), 0 5px 14px rgba(3,12,24,0.3);
+}
+
+#slot-select option,
+.file-selector select option { color: #f4d477; background: #143556; }
+
+.game-btn--undo:disabled {
+	color: #9d967f !important;
+	border-color: #526273;
+	background: #253545;
+	box-shadow: none;
+	cursor: not-allowed;
+}
+
+/* 高分辨率 WebP 地形 + 地形色调、等高线、压暗边缘和精细边框。 */
+.game-page.game1 #board { --board-terrain: url('../img/backgrass1.webp?v=20260916-img2'); --terrain-tint: rgba(76, 108, 66, 0.2); }
+.game-page.game2 #board { --board-terrain: url('../img/backgrass2.webp?v=20260916-img2'); --terrain-tint: rgba(114, 91, 54, 0.19); }
+.game-page.game3 #board { --board-terrain: url('../img/backdis1.webp?v=20260916-img2');   --terrain-tint: rgba(104, 84, 61, 0.22); }
+.game-page.game4 #board { --board-terrain: url('../img/backdis2.webp?v=20260916-img2');   --terrain-tint: rgba(77, 99, 100, 0.2); }
+.game-page.game5 #board { --board-terrain: url('../img/backice2.webp?v=20260916-img2');   --terrain-tint: rgba(82, 107, 124, 0.18); }
+.game-page.game6 #board { --board-terrain: url('../img/backice1.webp?v=20260916-img2');   --terrain-tint: rgba(73, 91, 111, 0.2); }
+.game-page.game7 #board { --board-terrain: url('../img/backice2.webp?v=20260916-img2');   --terrain-tint: rgba(74, 65, 88, 0.22); }
+
+.game-page #board {
+	isolation: isolate;
+	overflow: visible;
+	border: 10px solid #1c2932;
+	border-radius: 18px;
+	outline-color: rgba(228, 199, 126, 0.78);
+	background-image:
+		linear-gradient(135deg, rgba(255,255,255,0.08), var(--terrain-tint, rgba(72,87,71,0.2))),
+		var(--board-terrain);
+	background-size: cover, cover;
+	background-position: center, center;
+	background-repeat: no-repeat;
+	background-blend-mode: soft-light, normal;
+	box-shadow:
+		0 28px 72px rgba(0,0,0,0.55),
+		0 0 0 2px #050b11,
+		0 0 0 7px rgba(190,155,82,0.34),
+		inset 0 0 58px rgba(8,13,16,0.52);
+}
+
+.game-page #board::before,
+.game-page #board::after {
+	content: '';
+	position: absolute;
+	pointer-events: none;
+}
+
+.game-page #board::before {
+	z-index: 1;
+	inset: 0;
+	border-radius: 8px;
+	opacity: 0.44;
+	background:
+		repeating-radial-gradient(ellipse at 26% 32%, transparent 0 26px, rgba(31,43,35,0.2) 27px 28px, transparent 29px 42px),
+		linear-gradient(122deg, transparent 0 47%, rgba(239,219,165,0.2) 48% 48.4%, transparent 49.4%);
+	mix-blend-mode: multiply;
+}
+
+.game-page #board::after {
+	z-index: 3;
+	inset: 0;
+	border: 1px solid rgba(247,224,162,0.24);
+	border-radius: 8px;
+	background: radial-gradient(circle at 50% 46%, transparent 48%, rgba(6,12,15,0.34) 100%);
+	box-shadow: inset 0 0 0 4px rgba(15,26,31,0.2), inset 0 0 42px rgba(2,7,10,0.36);
+}
+
+.game-page #board .cell {
+	position: relative;
+	z-index: 2;
+	border-color: rgba(38,51,42,0.13);
+	background: linear-gradient(145deg, rgba(255,255,255,0.022), rgba(0,0,0,0.018));
+}
+
+/* 实时生命条悬浮在棋子上方，不参与点击。 */
+.game-page .chess,
+body.game8 .chess { overflow: visible; }
+
+.unit-health {
+	position: absolute;
+	z-index: 35;
+	top: -10px;
+	left: 50%;
+	display: block;
+	width: 118%;
+	height: 6px;
+	overflow: hidden;
+	transform: translateX(-50%);
+	border: 1px solid rgba(240,226,188,0.82);
+	border-radius: 999px;
+	background: rgba(5,10,14,0.86);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.62);
+}
+
+.unit-health__fill {
+	display: block;
+	width: var(--unit-health, 100%);
+	height: 100%;
+	border-radius: inherit;
+	background: linear-gradient(90deg, #3c9c68, #75d38e);
+	box-shadow: 0 0 5px rgba(89,211,130,0.7);
+	transition: width 0.28s ease, background 0.25s ease;
+}
+
+.unit-health.is-wounded .unit-health__fill { background: linear-gradient(90deg, #d08b27, #f1c55f); }
+.unit-health.is-critical .unit-health__fill {
+	background: linear-gradient(90deg, #972c31, #e05b55);
+	animation: healthCriticalPulse 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes healthCriticalPulse { to { filter: brightness(1.45); box-shadow: 0 0 8px rgba(226,75,67,0.9); } }
+
+/* 棋子本体随行军轻微颠簸，开火时后坐；位置仍由 left/top 过渡负责。 */
+.chess.is-marching > img { animation: unitMarch 0.22s ease-in-out 3; }
+.chess.is-firing > img { animation: unitFireRecoil 0.4s cubic-bezier(0.2,0.8,0.2,1) both; }
+
+@keyframes unitMarch {
+	0%,100% { transform: translateY(0) rotate(-0.5deg); }
+	50% { transform: translateY(-7%) rotate(0.7deg); }
+}
+
+@keyframes unitFireRecoil {
+	0% { transform: translateX(0) scale(1); filter: brightness(1); }
+	24% { transform: translateX(-7%) scale(1.05); filter: brightness(1.3); }
+	62% { transform: translateX(3%) scale(0.98); }
+	100% { transform: translateX(0) scale(1); }
+}
+
+.fx-tracer {
+	position: absolute;
+	height: 2px;
+	transform-origin: 0 50%;
+	border-radius: 999px;
+	background: linear-gradient(90deg, rgba(255,236,180,0), #fff2ba 18%, #ffb84e 64%, rgba(255,116,30,0));
+	box-shadow: 0 0 6px #ffbd55;
+	opacity: 0;
+	animation: fxTracerFlight 0.32s ease-out forwards;
+}
+
+.fx-tracer--artillery { height: 4px; box-shadow: 0 0 10px #ff9f38; }
+
+@keyframes fxTracerFlight {
+	0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+	18% { opacity: 1; }
+	70% { opacity: 0.92; clip-path: inset(0 0 0 0); }
+	100% { opacity: 0; clip-path: inset(0 0 0 72%); }
+}
+
+.fx-impact {
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	margin: -6px 0 0 -6px;
+	border: 2px solid rgba(255,210,112,0.92);
+	border-radius: 50%;
+	background: radial-gradient(circle, #fff7cb 0 12%, #e58a32 18%, rgba(118,55,24,0) 66%);
+	box-shadow: 0 0 12px #ef9a3e;
+	animation: fxImpactBurst 0.76s ease-out forwards;
+}
+
+@keyframes fxImpactBurst {
+	0% { opacity: 1; transform: scale(0.3); }
+	42% { opacity: 0.95; transform: scale(1.8); }
+	100% { opacity: 0; transform: scale(3.4); }
+}
+
+/* 教程图已提前解码；网络较慢时用军令环代替空白等待。 */
+.level-intro-image-overlay { animation: tutorialOverlayIn 0.28s ease both; }
+.level-intro-image-box.is-loading {
+	min-width: min(72vw, 520px);
+	min-height: min(50vh, 340px);
+	border: 1px solid rgba(225,198,127,0.48);
+	border-radius: 18px;
+	background: rgba(7,18,29,0.78);
+}
+
+.level-intro-image-box.is-loading::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 38px;
+	height: 38px;
+	margin: -19px;
+	border: 3px solid rgba(231,207,145,0.24);
+	border-top-color: #e5c873;
+	border-radius: 50%;
+	animation: tutorialLoading 0.75s linear infinite;
+}
+
+@keyframes tutorialOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tutorialLoading { to { transform: rotate(360deg); } }
+
+@media (max-width: 760px) {
+	.game-page #board { border-width: 7px; border-radius: 14px; }
+	.unit-health { top: -8px; height: 5px; }
+	.game-btn--undo { min-width: 88px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chess.is-marching > img,
+	.chess.is-firing > img,
+	.unit-health.is-critical .unit-health__fill,
+	.fx-tracer,
+	.fx-impact,
+	.level-intro-image-overlay,
+	.level-intro-image-box.is-loading::before,
+	html.theme-switching .ui-theme { animation: none !important; }
+}
+
+/* ========================================================================== */
+/* 2026-09-14 玩法曲线与剧情军令台：战况条 / 声音键 / 时代化对话结构 */
+/* ========================================================================== */
+
+/* 战况条固定在左上角，不占棋盘纵向空间；悬停可看本关专属机制。 */
+.battle-status {
+	position: fixed;
+	z-index: 82;
+	top: 12px;
+	left: 12px;
+	display: flex;
+	align-items: center;
+	gap: 0;
+	min-height: 38px;
+	padding: 5px 8px;
+	border: 1px solid rgba(214, 187, 116, 0.42);
+	border-radius: 14px;
+	color: #e9dfc9;
+	background: linear-gradient(145deg, rgba(22, 50, 76, 0.93), rgba(7, 20, 34, 0.96));
+	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.12);
+	backdrop-filter: blur(16px) saturate(1.15);
+	transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.battle-status__item {
+	padding: 0.18rem 0.62rem;
+	font-size: 0.66rem;
+	font-weight: 700;
+	letter-spacing: 0.055em;
+	white-space: nowrap;
+}
+
+.battle-status__item + .battle-status__item { border-left: 1px solid rgba(214, 187, 116, 0.27); }
+.battle-status__item.is-active {
+	color: #ffe08a;
+	text-shadow: 0 0 13px rgba(255, 199, 73, 0.42);
+}
+.game-page.level-opening .battle-status { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+
+/* 右上角声音控制与语言/昼夜按钮组成同一工具组。 */
+.ui-sound {
+	display: grid;
+	width: 42px;
+	min-height: 34px;
+	padding: 0;
+	place-items: center;
+	border: 1px solid rgba(218, 196, 136, 0.45);
+	border-radius: 999px;
+	color: #f4df9e;
+	background: linear-gradient(145deg, #244d73, #0b2137);
+	box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.28);
+	cursor: pointer;
+	transition: scale 0.18s ease, filter 0.18s ease, background 0.35s ease;
+}
+
+.ui-sound:hover { filter: brightness(1.16); }
+.ui-sound:active { scale: 0.9; }
+.ui-sound svg {
+	width: 19px;
+	height: 19px;
+	fill: currentColor;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.ui-sound .sound-wave,
+.ui-sound .sound-slash { fill: none; }
+html[data-theme='light'] .ui-sound { color: #ffe4a0; background: linear-gradient(145deg, #315f8c, #112b49); }
+html[data-theme='dark'] .ui-sound[aria-pressed='true'] { color: #9ca9b6; background: linear-gradient(145deg, #263543, #101a25); }
+
+/* 对话不再是一块“加粗边框的玻璃条”，而是军令台 + 蜡封 + 羊皮军报三层结构。 */
+.dialog-overlay .dialog-box {
+	left: 0;
+	right: 0;
+	display: grid;
+	width: 100vw;
+	max-width: none;
+	box-sizing: border-box;
+	grid-template-columns: 96px minmax(420px, 900px) 138px;
+	align-items: stretch;
+	justify-content: center;
+	gap: 16px;
+	min-height: clamp(205px, 29svh, 286px);
+	padding: clamp(1rem, 2.1vh, 1.4rem) max(18px, calc((100vw - 1210px) / 2));
+	border: 0;
+	border-top: 5px solid #b99145;
+	border-radius: 0;
+	color: #211b13;
+	background:
+		linear-gradient(90deg, rgba(255,255,255,0.035), transparent 18%, transparent 82%, rgba(255,255,255,0.025)),
+		repeating-linear-gradient(4deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 10px),
+		linear-gradient(180deg, rgba(19, 37, 54, 0.98), rgba(6, 16, 26, 0.995));
+	box-shadow: 0 -24px 80px rgba(0,0,0,0.72), inset 0 16px 30px rgba(255,255,255,0.035);
+	backdrop-filter: blur(22px) saturate(1.16);
+	transform: none;
+	overflow: visible;
+}
+
+.dialog-overlay .dialog-box::before {
+	content: '';
+	position: absolute;
+	top: -10px;
+	left: 0;
+	width: 100%;
+	height: 6px;
+	transform: none;
+	background: linear-gradient(90deg, transparent, #6e4c20 8%, #efcf7d 50%, #6e4c20 92%, transparent);
+	box-shadow: 0 0 20px rgba(222, 181, 87, 0.38);
+}
+.dialog-overlay .dialog-box::after { content: none; }
+
+.dialog-crest {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	align-self: center;
+	width: 90px;
+	height: 90px;
+	border: 3px double rgba(255, 209, 116, 0.76);
+	border-radius: 50%;
+	color: #ffe1a0;
+	background:
+		radial-gradient(circle at 35% 30%, rgba(255,255,255,0.2), transparent 18%),
+		radial-gradient(circle, #a92e2c, #6d1519 70%);
+	box-shadow: 0 9px 23px rgba(0,0,0,0.42), inset 0 0 0 5px rgba(69, 8, 12, 0.3), inset 0 0 22px rgba(255,194,91,0.18);
+	transform: rotate(-3deg);
+}
+
+.dialog-crest::before,
+.dialog-crest::after {
+	content: '';
+	position: absolute;
+	bottom: -27px;
+	width: 25px;
+	height: 42px;
+	background: linear-gradient(#8f2424, #571014);
+	clip-path: polygon(0 0, 100% 0, 82% 100%, 50% 77%, 18% 100%);
+	z-index: -1;
+}
+.dialog-crest::before { left: 19px; transform: rotate(7deg); }
+.dialog-crest::after { right: 19px; transform: rotate(-7deg); }
+.dialog-crest__monogram {
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: 2.65rem;
+	font-style: italic;
+	line-height: 0.9;
+	text-shadow: 0 2px 0 #4d0d13, 0 0 12px rgba(255,223,148,0.28);
+}
+.dialog-crest__label {
+	margin-top: 0.25rem;
+	font-size: 0.41rem;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+}
+.dialog-crest--briefing { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), transparent 18%), radial-gradient(circle, #315f87, #112d4b 72%); }
+
+.dialog-paper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-width: 0;
+	padding: clamp(1rem, 2vh, 1.35rem) clamp(1.15rem, 2.4vw, 2rem);
+	clip-path: polygon(0.8% 4%, 4% 1%, 28% 2.5%, 53% 0, 78% 2.4%, 96% 1%, 99.2% 5%, 98.6% 48%, 100% 95%, 96% 99%, 74% 97.4%, 50% 100%, 24% 97.6%, 3% 99%, 0.6% 94%, 1.4% 52%);
+	background:
+		linear-gradient(90deg, rgba(82,55,25,0.13) 1px, transparent 1px) 0 0 / 54px 54px,
+		linear-gradient(rgba(82,55,25,0.11) 1px, transparent 1px) 0 0 / 54px 54px,
+		radial-gradient(circle at 18% 22%, rgba(255,255,255,0.5), transparent 28%),
+		linear-gradient(102deg, #d7bd87, #f1dfb4 43%, #d2b57c);
+	box-shadow: 0 14px 28px rgba(0,0,0,0.36);
+}
+.dialog-paper::before {
+	content: 'ORDRE DU JOUR · QUARTIER GÉNÉRAL';
+	position: absolute;
+	top: 9px;
+	right: 18px;
+	font-family: Georgia, serif;
+	font-size: 0.43rem;
+	font-weight: 700;
+	letter-spacing: 0.17em;
+	color: rgba(83, 54, 28, 0.48);
+}
+.dialog-paper::after {
+	content: '';
+	position: absolute;
+	inset: 8px;
+	pointer-events: none;
+	border: 1px solid rgba(91, 57, 22, 0.2);
+	clip-path: inherit;
+}
+
+.dialog-overlay .dialog-paper .dialog-heading,
+.dialog-overlay .dialog-paper .dialog-text {
+	width: auto;
+	max-width: none;
+	margin-right: 0;
+	margin-left: 0;
+}
+.dialog-overlay .dialog-paper .dialog-heading {
+	align-items: center;
+	margin: 0 0 0.65rem;
+	padding: 0 0 0.58rem;
+	border-bottom: 1px solid rgba(78, 48, 20, 0.35);
+}
+.dialog-overlay .dialog-paper .dialog-identity {
+	padding: 0.32rem 0.65rem 0.34rem;
+	border-left: 4px solid #a6312d;
+	background: linear-gradient(90deg, rgba(111, 28, 26, 0.12), transparent);
+}
+.dialog-overlay .dialog-paper .dialog-who {
+	color: #6b171b;
+	font-family: Georgia, 'Noto Serif SC', 'Songti SC', serif;
+	font-size: clamp(1.06rem, 1.8vw, 1.36rem);
+	text-shadow: none;
+}
+.dialog-overlay .dialog-paper .dialog-role,
+.dialog-overlay .dialog-paper .dialog-progress { color: #705b39; }
+.dialog-overlay .dialog-paper .dialog-text {
+	min-height: 3.5em;
+	padding: 0;
+	white-space: pre-line;
+	color: #282015;
+	font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+	font-size: clamp(0.94rem, 1.45vw, 1.08rem);
+	font-weight: 560;
+	line-height: 1.78;
+	text-shadow: none;
+}
+
+.dialog-overlay .dialog-next {
+	position: relative;
+	right: auto;
+	bottom: auto;
+	align-self: end;
+	min-width: 132px;
+	margin: 0 0 0.15rem;
+	border: 1px solid #d2ad5e;
+	color: #ffe8ad;
+	background: linear-gradient(180deg, #315f89, #112b48);
+	box-shadow: 0 11px 24px rgba(0,0,0,0.38), inset 0 1px rgba(255,255,255,0.18);
+}
+
+/* 每类发言动作时长 1.35~1.8 秒，之后进入缓慢呼吸；避免“快速跑动式”抽动。 */
+.dialog-overlay .dialog-portrait.is-speaking.is-action-command img {
+	animation: portraitOrderCommand 1.55s cubic-bezier(.18,.72,.22,1) both, portraitSpeakerIdle 4.8s 1.55s ease-in-out infinite;
+}
+.dialog-overlay .dialog-portrait.is-speaking.is-action-report img {
+	animation: portraitReportNod 1.45s cubic-bezier(.2,.7,.24,1) both, portraitSpeakerIdle 4.8s 1.45s ease-in-out infinite;
+}
+.dialog-overlay .dialog-portrait.is-speaking.is-action-challenge img {
+	animation: portraitChallengeLean 1.7s cubic-bezier(.2,.74,.2,1) both, portraitSpeakerIdle 4.8s 1.7s ease-in-out infinite;
+}
+.dialog-overlay .dialog-portrait.is-speaking.is-action-resolve img {
+	animation: portraitResolveTurn 1.8s cubic-bezier(.2,.72,.22,1) both, portraitSpeakerIdle 4.8s 1.8s ease-in-out infinite;
+}
+.dialog-overlay .dialog-portrait.is-listening.is-reacting img {
+	animation: portraitAcknowledge 1.5s ease both, portraitListeningBreath 5.4s 1.5s ease-in-out infinite;
+}
+
+@keyframes portraitOrderCommand {
+	0% { transform: translate3d(-14px, 10px, 0) scale(.985) rotate(-1deg); }
+	42% { transform: translate3d(7px, -8px, 0) scale(1.022) rotate(.45deg); }
+	72% { transform: translate3d(-2px, -3px, 0) scale(1.008) rotate(-.12deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes portraitReportNod {
+	0% { transform: translate3d(12px, 8px, 0) scale(.985) rotate(.8deg); }
+	38% { transform: translate3d(-3px, -5px, 0) scale(1.012) rotate(-.3deg); }
+	63% { transform: translate3d(0, 3px, 0) scale(1.004) rotate(.12deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes portraitChallengeLean {
+	0% { transform: translate3d(16px, 8px, 0) scale(.98) rotate(1.2deg); filter: brightness(.78); }
+	48% { transform: translate3d(-7px, -7px, 0) scale(1.025) rotate(-.45deg); filter: brightness(1.08); }
+	100% { transform: translate3d(0, 0, 0) scale(1); filter: brightness(1); }
+}
+@keyframes portraitResolveTurn {
+	0% { transform: translate3d(-7px, 5px, 0) scale(.99) rotate(-.5deg); }
+	50% { transform: translate3d(3px, -5px, 0) scale(1.014) rotate(.22deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes portraitAcknowledge {
+	0%, 100% { transform: translateY(0) scale(1); }
+	44% { transform: translateY(5px) scale(.996); }
+	70% { transform: translateY(1px) scale(1.002); }
+}
+@keyframes portraitSpeakerIdle {
+	0%, 100% { transform: translateY(0) scale(1); }
+	50% { transform: translateY(-3px) scale(1.003); }
+}
+
+@media (max-width: 760px) {
+	.battle-status { top: 52px; left: 6px; max-width: calc(100vw - 12px); min-height: 32px; padding: 3px 5px; }
+	.battle-status__item { padding: 0.12rem 0.34rem; font-size: 0.53rem; letter-spacing: 0.02em; }
+	.ui-sound { width: 36px; min-height: 34px; }
+	.dialog-overlay .dialog-box {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+		min-height: 218px;
+		padding: 14px 10px 62px;
+	}
+	.dialog-crest {
+		position: absolute;
+		top: -39px;
+		left: 15px;
+		width: 66px;
+		height: 66px;
+		z-index: 3;
+	}
+	.dialog-crest__monogram { font-size: 1.8rem; }
+	.dialog-crest__label { font-size: 0.3rem; }
+	.dialog-crest::before,
+	.dialog-crest::after { bottom: -19px; width: 17px; height: 29px; }
+	.dialog-crest::before { left: 14px; }
+	.dialog-crest::after { right: 14px; }
+	.dialog-paper { padding: 1.05rem 1rem 0.9rem; }
+	.dialog-paper::before { top: 7px; right: 13px; font-size: 0.34rem; }
+	.dialog-overlay .dialog-paper .dialog-heading { margin-bottom: 0.4rem; padding-bottom: 0.38rem; }
+	.dialog-overlay .dialog-paper .dialog-text { min-height: 0; font-size: 0.9rem; line-height: 1.58; }
+	.dialog-overlay .dialog-next { position: absolute; right: 12px; bottom: 10px; min-width: 118px; }
+	.dialog-portrait { bottom: 218px; }
+}
+
+@media (max-height: 680px) and (min-width: 761px) {
+	.dialog-overlay .dialog-box { min-height: 178px; grid-template-columns: 76px minmax(360px, 820px) 124px; padding-top: 0.7rem; padding-bottom: 0.7rem; }
+	.dialog-crest { width: 70px; height: 70px; }
+	.dialog-crest__monogram { font-size: 2rem; }
+	.dialog-overlay .dialog-paper .dialog-text { min-height: 2.7em; line-height: 1.5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dialog-overlay .dialog-portrait img { animation: none !important; }
+}
+
+/* ========================================================================== */
+/* 2026-09-14 两阶段军令箭头：虚线瞄准预览 / 纪录片式沙盘行军箭头          */
+/* ========================================================================== */
+
+.game-page .order-layer {
+	overflow: visible;
+	z-index: 9;
+}
+
+/* 已确认的命令使用厚实的地图军势箭头：低饱和军蓝、墨色轮廓和轻微纸面纹理。
+ * 箭头层位于棋子下方，因此路径会像从部队脚下向目标延伸，而不会盖住兵种头像。 */
+.game-page .order-arrow {
+	--oa-main: #416b7f;
+	--oa-deep: #173747;
+	--oa-light: #7895a0;
+	--oa-edge: #d9c89a;
+	--oa-shadow: rgba(12, 18, 20, 0.78);
+	position: absolute;
+	height: 18px;
+	transform-origin: 0 9px;
+	opacity: 0.96;
+	filter: drop-shadow(0 2px 2px var(--oa-shadow));
+	transition: left 0.35s ease, top 0.35s ease, width 0.22s ease, transform 0.22s ease;
+	will-change: width, transform, clip-path;
+}
+
+.game-page .order-arrow .oa-origin { display: none; }
+
+.game-page .order-arrow .oa-line {
+	position: absolute;
+	left: 4px;
+	right: 25px;
+	top: 5px;
+	height: 9px;
+	box-sizing: border-box;
+	overflow: hidden;
+	border: 1px solid rgba(229, 214, 171, 0.82);
+	border-radius: 3px 7px 7px 3px;
+	background: linear-gradient(180deg, var(--oa-light), var(--oa-main) 43%, var(--oa-deep));
+	box-shadow:
+		0 0 0 2px rgba(28, 29, 25, 0.72),
+		inset 0 1px rgba(255, 247, 220, 0.32),
+		inset 0 -2px rgba(8, 23, 29, 0.34);
+}
+
+/* 不规则斜纹模拟纪录片沙盘标绘的刷痕；移动速度刻意压低，避免霓虹跑马灯感。 */
+.game-page .order-arrow .oa-line::before {
+	content: '';
+	position: absolute;
+	inset: 1px 0;
+	background: repeating-linear-gradient(112deg, transparent 0 9px, rgba(239, 222, 177, 0.2) 9px 11px, transparent 11px 17px);
+	background-position: 0 0;
+	opacity: 0.8;
+	animation: orderMapHatching 1.8s linear infinite;
+}
+
+.game-page .order-arrow .oa-line::after {
+	content: '';
+	position: absolute;
+	left: -34px;
+	top: 3px;
+	width: 28px;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(255, 242, 203, 0.7), transparent);
+	animation: orderDirectionTrace 2.2s linear infinite;
+}
+
+/* 历史纪录片常见的宽杆尖头，而非发光图标或燕尾军旗。 */
+.game-page .order-arrow .oa-head {
+	position: absolute;
+	right: -4px;
+	top: -3px;
+	width: 31px;
+	height: 25px;
+	border: 0;
+	clip-path: polygon(0 30%, 43% 30%, 43% 4%, 100% 50%, 43% 96%, 43% 70%, 0 70%);
+	background:
+		repeating-linear-gradient(112deg, transparent 0 8px, rgba(239, 222, 177, 0.17) 8px 10px, transparent 10px 15px),
+		linear-gradient(145deg, var(--oa-light), var(--oa-main) 48%, var(--oa-deep));
+	filter:
+		drop-shadow(1px 0 0 var(--oa-edge))
+		drop-shadow(-1px 0 0 rgba(28, 29, 25, 0.9))
+		drop-shadow(0 2px 1px var(--oa-shadow));
+}
+
+.game-page .order-arrow .oa-head::after {
+	content: '';
+	position: absolute;
+	left: 43%;
+	top: 27%;
+	width: 1px;
+	height: 46%;
+	background: rgba(242, 226, 184, 0.48);
+}
+
+.game-page .order-arrow--red {
+	--oa-main: #8f4940;
+	--oa-deep: #4d2524;
+	--oa-light: #b87865;
+	--oa-edge: #d4bd8c;
+	--oa-shadow: rgba(35, 12, 11, 0.76);
+}
+
+/* 新军令才从士兵位置向目标位置完整铺开；后续行军缩短路径时不重复播放。 */
+.game-page .order-arrow--deploying {
+	animation: orderDocumentaryDeploy 0.72s cubic-bezier(0.2, 0.76, 0.22, 1) both;
+}
+
+/* 选目标阶段严格保留原来的轻量红色虚线，不带军势箭头的铺展/流光动效。 */
+.game-page .order-arrow--preview {
+	z-index: 2;
+	height: 18px;
+	opacity: 0.9;
+	filter: drop-shadow(0 1px 1px rgba(18, 10, 8, 0.78));
+	transition: none;
+	animation: none;
+}
+
+.game-page .order-arrow--preview .oa-line {
+	left: 2px;
+	right: 12px;
+	top: 8px;
+	height: 2px;
+	border: 0;
+	border-radius: 0;
+	background: repeating-linear-gradient(90deg, #f05a52 0 7px, transparent 7px 12px);
+	box-shadow: none;
+}
+
+.game-page .order-arrow--preview .oa-line::before,
+.game-page .order-arrow--preview .oa-line::after { content: none; }
+
+.game-page .order-arrow--preview .oa-head {
+	right: 0;
+	top: 4px;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 11px solid #f05a52;
+	clip-path: none;
+	background: none;
+	filter: drop-shadow(0 1px 1px rgba(18, 10, 8, 0.72));
+	animation: none;
+}
+
+.game-page .order-arrow--preview .oa-head::after { content: none; }
+
+.game-page #board.is-order-aiming { cursor: crosshair; }
+.game-page #board.is-order-aiming .chess.selected {
+	animation: selectedOrderSignal 1.45s ease-in-out infinite;
+}
+
+@keyframes orderMapHatching {
+	to { background-position: 34px 0; }
+}
+
+@keyframes orderDirectionTrace {
+	from { left: -34px; }
+	to { left: calc(100% + 8px); }
+}
+
+@keyframes orderDocumentaryDeploy {
+	0% { opacity: 0.42; clip-path: inset(-16px 100% -16px -16px); }
+	72% { opacity: 0.96; clip-path: inset(-16px 12% -16px -16px); }
+	100% { opacity: 0.96; clip-path: inset(-16px -16px -16px -16px); }
+}
+
+@keyframes selectedOrderSignal {
+	0%, 100% { box-shadow: 0 0 18px 4px rgba(60,150,255,0.82), 0 0 0 0 rgba(244,204,106,0); }
+	50% { box-shadow: 0 0 24px 6px rgba(60,150,255,0.95), 0 0 0 5px rgba(244,204,106,0.28); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.game-page .order-arrow,
+	.game-page .order-arrow *,
+	.game-page #board.is-order-aiming .chess.selected { animation: none !important; }
+}
+
+/* ========================================================================== */
+/* 2026-09-14 小组介绍统一主页视觉 + 可感知的剧情人物动作                       */
+/* ========================================================================== */
+
+/* 小组页沿用主页的深蓝军情室、帝国金标题和液态玻璃，而不是旧版米黄纸卡。 */
+body.page-group {
+	min-height: 100svh;
+	padding: clamp(56px, 7vh, 78px) 1rem clamp(22px, 4vh, 42px);
+	gap: clamp(0.7rem, 1.8vh, 1.25rem);
+	color: #f3e8ce;
+	background:
+		radial-gradient(circle at 18% 16%, rgba(58, 100, 135, 0.34), transparent 31rem),
+		radial-gradient(circle at 82% 76%, rgba(148, 97, 42, 0.22), transparent 29rem),
+		linear-gradient(145deg, #14263a 0%, #091522 58%, #030811 100%);
+}
+
+.page-group::before {
+	z-index: -1;
+	opacity: 1;
+	background:
+		linear-gradient(115deg, transparent 16%, rgba(229, 203, 138, 0.08) 16.15% 16.35%, transparent 16.5%),
+		repeating-radial-gradient(circle at 50% 52%, transparent 0 76px, rgba(211, 189, 131, 0.055) 77px 78px),
+		repeating-linear-gradient(92deg, transparent 0 8.9vw, rgba(255, 255, 255, 0.025) 9vw),
+		linear-gradient(120deg, rgba(53, 96, 132, 0.18), transparent 48%);
+	background-size: 130% 130%, 100% 100%, 100% 100%, 150% 150%;
+	animation: loginCommandDrift 17s ease-in-out infinite alternate;
+}
+
+.page-group::after {
+	content: '';
+	position: fixed;
+	z-index: 0;
+	inset: -7%;
+	pointer-events: none;
+	opacity: 0.075;
+	background: url('../img/europe-map.svg') center / min(1180px, 112vw) auto no-repeat;
+	filter: grayscale(1) invert(1) sepia(0.45) hue-rotate(160deg);
+	animation: groupMapDrift 15s ease-in-out infinite alternate;
+}
+
+/* 排除 ui.js 动态挂到 body 下的浮动层：否则这条通配会把固定在右上角的
+ * #ui-toolbar / #ui-notices 改成 position:relative，工具栏会掉到页面底部。 */
+.page-group > *:not(#ui-toolbar):not(#ui-notices) {
+	position: relative;
+	z-index: 1;
+}
+
+.page-group .page-box {
+	width: min(94vw, 1040px);
+	padding: 0;
+	text-align: center;
+}
+
+.page-group .page-kicker {
+	margin-bottom: 0.25rem;
+	color: #e2c981;
+}
+
+.page-group .page-box h1 {
+	margin: 0;
+	font-size: clamp(2.15rem, 5.2vw, 4.15rem);
+	color: #fff3d2;
+	text-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+
+.page-group .page-sub {
+	margin: 0.38rem auto 0;
+	color: #cec3aa;
+	font-size: clamp(0.78rem, 1.25vw, 0.96rem);
+}
+
+.page-group .member-grid {
+	position: relative;
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	width: min(94vw, 1040px);
+	gap: clamp(0.7rem, 1.45vw, 1.05rem) !important;
+	margin: 0;
+	padding: clamp(0.78rem, 1.6vw, 1.1rem);
+	overflow: hidden;
+	border: 1px solid rgba(247, 226, 171, 0.44);
+	border-radius: 28px;
+	background:
+		linear-gradient(145deg, rgba(49, 73, 94, 0.58), rgba(7, 18, 30, 0.74)),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent 48%);
+	box-shadow:
+		0 28px 76px rgba(0, 0, 0, 0.48),
+		inset 0 1px rgba(255, 255, 255, 0.24),
+		inset 0 -1px rgba(218, 196, 136, 0.16),
+		0 0 0 1px rgba(255, 255, 255, 0.035);
+	-webkit-backdrop-filter: blur(26px) saturate(1.3);
+	backdrop-filter: blur(26px) saturate(1.3);
+}
+
+.page-group .member-grid::before {
+	content: '';
+	position: absolute;
+	z-index: 2;
+	inset: 7px;
+	pointer-events: none;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 21px;
+}
+
+.page-group .member-grid::after {
+	content: '';
+	position: absolute;
+	z-index: 3;
+	top: -90%;
+	left: -38%;
+	width: 24%;
+	height: 280%;
+	pointer-events: none;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+	transform: rotate(20deg);
+	animation: groupGlassSweep 8.5s ease-in-out infinite;
+}
+
+.page-group .member-card {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	min-width: 0;
+	min-height: clamp(142px, 17vh, 176px);
+	padding: clamp(1.05rem, 2.2vh, 1.35rem) 1rem 1rem;
+	justify-content: center;
+	border: 1px solid rgba(218, 196, 136, 0.28);
+	border-radius: 20px;
+	color: #f5ead1;
+	background:
+		linear-gradient(145deg, rgba(40, 70, 94, 0.66), rgba(8, 20, 33, 0.76)),
+		linear-gradient(100deg, rgba(255, 255, 255, 0.07), transparent 58%);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.15), 0 12px 30px rgba(0, 0, 0, 0.24);
+	transition: transform 0.28s cubic-bezier(.2,.8,.2,1), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+}
+
+.page-group .member-card::before {
+	content: attr(data-member);
+	position: absolute;
+	top: 0.72rem;
+	left: 0.86rem;
+	margin: 0;
+	font-family: Georgia, serif;
+	font-size: 0.62rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	color: rgba(230, 203, 132, 0.68);
+}
+
+.page-group .member-card::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 18%;
+	right: 18%;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(234, 208, 140, 0.78), transparent);
+	transform: scaleX(0.35);
+	transition: transform 0.32s ease;
+}
+
+.page-group .member-card:hover,
+.page-group .member-card:focus-visible {
+	color: #fff5dc;
+	border-color: rgba(236, 209, 139, 0.68);
+	background:
+		linear-gradient(145deg, rgba(49, 87, 116, 0.82), rgba(10, 27, 44, 0.9)),
+		linear-gradient(100deg, rgba(255, 255, 255, 0.1), transparent 58%);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.22), 0 18px 38px rgba(0, 0, 0, 0.38), 0 0 24px rgba(209, 174, 93, 0.12);
+	transform: translateY(-5px);
+}
+
+.page-group .member-card:hover::after,
+.page-group .member-card:focus-visible::after { transform: scaleX(1); }
+
+.page-group .member-card:active { transform: translateY(-1px) scale(0.975); }
+
+.page-group .member-card h3 {
+	margin: 0 0 0.45rem;
+	font-size: clamp(1.2rem, 2vw, 1.48rem);
+	color: #fff0c8;
+}
+
+.page-group .member-card p {
+	margin: 0;
+	color: #cfc3aa;
+	line-height: 1.55;
+}
+
+.page-group .member-more {
+	margin-top: 0.75rem;
+	color: #e9ca7c;
+	font-size: 0.76rem;
+	letter-spacing: 0.06em;
+}
+
+.page-group .page-back { margin: 2.4rem 0 0.6rem; }
+
+.page-group .page-back .menu-link {
+	min-width: 154px;
+	border-color: rgba(218, 196, 136, 0.48);
+	color: #f0d894;
+	background: linear-gradient(180deg, rgba(45, 82, 112, 0.88), rgba(11, 29, 47, 0.92));
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.17), 0 8px 20px rgba(0, 0, 0, 0.28);
+}
+
+@keyframes groupMapDrift {
+	from { transform: translate3d(-1.2%, 0.8%, 0) scale(1.03); }
+	to { transform: translate3d(1.2%, -0.8%, 0) scale(1.08); }
+}
+
+@keyframes groupGlassSweep {
+	0%, 24% { left: -38%; opacity: 0; }
+	38% { opacity: 1; }
+	62%, 100% { left: 118%; opacity: 0; }
+}
+
+html[data-theme='light'] body.page-group {
+	background:
+		radial-gradient(circle at 18% 18%, rgba(112, 151, 178, 0.46), transparent 31rem),
+		radial-gradient(circle at 82% 74%, rgba(199, 151, 81, 0.32), transparent 29rem),
+		linear-gradient(145deg, #415c70, #172c3e 72%);
+}
+
+html[data-theme='dark'] body.page-group {
+	background:
+		radial-gradient(circle at 18% 18%, rgba(38, 77, 108, 0.24), transparent 31rem),
+		linear-gradient(145deg, #0a1724, #01040a 78%);
+}
+
+/* 动作类会由 dialog.js 逐句强制重启；这里把四类动作拉开到肉眼可辨的幅度。 */
+.dialog-overlay .dialog-portrait img {
+	backface-visibility: hidden;
+	will-change: transform;
+}
+
+.dialog-overlay .dialog-portrait.is-speaking.is-gesturing::before {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	left: 10%;
+	right: 10%;
+	bottom: 1vh;
+	height: 30%;
+	border-radius: 50%;
+	background: radial-gradient(ellipse, rgba(239, 210, 138, 0.2), transparent 70%);
+	filter: blur(14px);
+	animation: portraitCommandAura 1.8s ease-out both;
+}
+
+.dialog-overlay .dialog-portrait--left.is-speaking.is-action-command img {
+	transform-origin: 42% 96%;
+	animation: portraitCommandVisibleLeft 1.85s cubic-bezier(.16,.76,.2,1) both, portraitSpeakerIdleVisible 4.8s 1.85s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-speaking.is-action-command img {
+	transform-origin: 58% 96%;
+	animation: portraitCommandVisibleRight 1.85s cubic-bezier(.16,.76,.2,1) both, portraitSpeakerIdleVisible 4.8s 1.85s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait.is-speaking.is-action-report img {
+	transform-origin: 50% 94%;
+	animation: portraitReportVisible 1.75s cubic-bezier(.2,.74,.22,1) both, portraitSpeakerIdleVisible 4.8s 1.75s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--left.is-speaking.is-action-challenge img {
+	transform-origin: 44% 95%;
+	animation: portraitChallengeVisibleLeft 2s cubic-bezier(.16,.78,.2,1) both, portraitSpeakerIdleVisible 4.8s 2s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-speaking.is-action-challenge img {
+	transform-origin: 56% 95%;
+	animation: portraitChallengeVisibleRight 2s cubic-bezier(.16,.78,.2,1) both, portraitSpeakerIdleVisible 4.8s 2s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait.is-speaking.is-action-resolve img {
+	transform-origin: 50% 96%;
+	animation: portraitResolveVisible 1.9s cubic-bezier(.2,.72,.22,1) both, portraitSpeakerIdleVisible 4.8s 1.9s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait.is-listening.is-reacting img {
+	transform-origin: 50% 96%;
+	animation: portraitAcknowledgeVisible 1.65s ease both, portraitListeningVisible 5.2s 1.65s ease-in-out infinite;
+}
+
+@keyframes portraitCommandVisibleLeft {
+	0% { transform: translate3d(-42px, 24px, 0) scale(.955) rotate(-3.2deg); }
+	38% { transform: translate3d(19px, -13px, 0) scale(1.055) rotate(1.45deg); }
+	68% { transform: translate3d(-7px, -4px, 0) scale(1.016) rotate(-.4deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitCommandVisibleRight {
+	0% { transform: translate3d(42px, 24px, 0) scale(.955) rotate(3.2deg); }
+	38% { transform: translate3d(-19px, -13px, 0) scale(1.055) rotate(-1.45deg); }
+	68% { transform: translate3d(7px, -4px, 0) scale(1.016) rotate(.4deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitReportVisible {
+	0% { transform: translate3d(0, 18px, 0) scale(.97) rotate(.9deg); }
+	31% { transform: translate3d(0, -12px, 0) scale(1.025) rotate(-.55deg); }
+	54% { transform: translate3d(0, 9px, 0) scale(.994) rotate(.3deg); }
+	76% { transform: translate3d(0, -4px, 0) scale(1.008) rotate(-.12deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitChallengeVisibleLeft {
+	0% { transform: translate3d(-34px, 18px, 0) scale(.96) rotate(-3deg); }
+	43% { transform: translate3d(24px, -16px, 0) scale(1.065) rotate(2deg); }
+	72% { transform: translate3d(-8px, -5px, 0) scale(1.018) rotate(-.55deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitChallengeVisibleRight {
+	0% { transform: translate3d(34px, 18px, 0) scale(.96) rotate(3deg); }
+	43% { transform: translate3d(-24px, -16px, 0) scale(1.065) rotate(-2deg); }
+	72% { transform: translate3d(8px, -5px, 0) scale(1.018) rotate(.55deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitResolveVisible {
+	0% { transform: translate3d(0, 15px, 0) scale(.965) rotate(-1.8deg); }
+	38% { transform: translate3d(10px, -10px, 0) scale(1.032) rotate(1.15deg); }
+	67% { transform: translate3d(-5px, -3px, 0) scale(1.012) rotate(-.4deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitAcknowledgeVisible {
+	0% { transform: translate3d(0, -4px, 0) scale(1.008) rotate(0); }
+	37% { transform: translate3d(0, 13px, 0) scale(.985) rotate(.65deg); }
+	68% { transform: translate3d(0, 2px, 0) scale(1.004) rotate(-.22deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@keyframes portraitSpeakerIdleVisible {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+	50% { transform: translate3d(0, -6px, 0) scale(1.006); }
+}
+
+@keyframes portraitListeningVisible {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+	50% { transform: translate3d(0, -4px, 0) scale(1.003); }
+}
+
+@keyframes portraitCommandAura {
+	0% { opacity: 0; transform: scale(.68); }
+	42% { opacity: 1; transform: scale(1.12); }
+	100% { opacity: .32; transform: scale(1); }
+}
+
+@media (max-width: 820px) {
+	body.page-group { height: auto; padding-top: 58px; overflow-y: auto; }
+	.page-group .member-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.page-group .member-card { min-height: 138px; }
+}
+
+@media (max-width: 520px) {
+	.page-group .member-grid { grid-template-columns: 1fr; padding: 0.72rem; border-radius: 22px; }
+	.page-group .member-grid::before { border-radius: 16px; }
+	.page-group .member-card { min-height: 128px; border-radius: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-group::before,
+	.page-group::after,
+	.page-group .member-grid::after { animation: none !important; }
+}
+
+/* ========================================================================== */
+/* 2026-09-14 剧情表演返工：拿破仑持续动作 + 序章到战役地图的跨页接镜             */
+/* ========================================================================== */
+
+/* 把“角色入场/说话动作”与图片本身拆成两层。旧版只让静态图片在开场晃一下，
+   一秒后就近似站桩；actor 层现在会在整句台词期间持续表演，并能逐句重启。 */
+.dialog-overlay .dialog-portrait__actor {
+	display: flex;
+	align-items: flex-end;
+	width: 100%;
+	height: 100%;
+	transform: translate3d(0, 0, 0);
+	transform-origin: 50% 96%;
+	backface-visibility: hidden;
+	will-change: transform;
+}
+
+/* transform 只交给 actor，避免旧的 img 动画与新动作互相覆盖。 */
+.dialog-overlay .dialog-portrait.is-speaking.is-gesturing img,
+.dialog-overlay .dialog-portrait.is-listening.is-reacting img {
+	/* 只重置旧版的单图摇晃；保持普通优先级，让文件末尾的真实姿态帧
+	   可以接管 animation/transform。 */
+	animation: none;
+	transform: none;
+}
+
+.dialog-overlay .dialog-portrait--left.is-speaking.is-action-command .dialog-portrait__actor {
+	animation: portraitActorCommandLeft 3.5s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-speaking.is-action-command .dialog-portrait__actor {
+	animation: portraitActorCommandRight 3.5s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait.is-speaking.is-action-report .dialog-portrait__actor {
+	animation: portraitActorReport 3.3s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--left.is-speaking.is-action-challenge .dialog-portrait__actor {
+	animation: portraitActorChallengeLeft 3.45s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-speaking.is-action-challenge .dialog-portrait__actor {
+	animation: portraitActorChallengeRight 3.45s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--left.is-speaking.is-action-resolve .dialog-portrait__actor {
+	animation: portraitActorResolveLeft 3.7s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-speaking.is-action-resolve .dialog-portrait__actor {
+	animation: portraitActorResolveRight 3.7s ease-in-out infinite;
+}
+
+.dialog-overlay .dialog-portrait.is-listening.is-reacting .dialog-portrait__actor {
+	animation: portraitActorListen 5.2s ease-in-out infinite;
+}
+
+/* 拿破仑单独加强：每句台词中都会两次向画面中央迈身、抬肩下令，
+   动幅约 38px / 7%，即使玩家没有盯着开场第一帧也能清楚看到。 */
+.dialog-overlay .dialog-portrait--left.is-napoleon.is-speaking.is-action-command .dialog-portrait__actor {
+	animation: napoleonCommandLeft 3.05s cubic-bezier(.42, 0, .24, 1) infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-napoleon.is-speaking.is-action-command .dialog-portrait__actor {
+	animation: napoleonCommandRight 3.05s cubic-bezier(.42, 0, .24, 1) infinite;
+}
+
+.dialog-overlay .dialog-portrait--left.is-napoleon.is-speaking.is-action-resolve .dialog-portrait__actor {
+	animation: napoleonResolveLeft 3.35s cubic-bezier(.42, 0, .24, 1) infinite;
+}
+
+.dialog-overlay .dialog-portrait--right.is-napoleon.is-speaking.is-action-resolve .dialog-portrait__actor {
+	animation: napoleonResolveRight 3.35s cubic-bezier(.42, 0, .24, 1) infinite;
+}
+
+.dialog-overlay .dialog-portrait.is-napoleon.is-speaking::before {
+	left: 2%;
+	right: 2%;
+	height: 42%;
+	background:
+		radial-gradient(ellipse at 50% 72%, rgba(244, 209, 116, 0.36), transparent 55%),
+		repeating-radial-gradient(ellipse at 50% 72%, transparent 0 22px, rgba(238, 202, 111, 0.1) 23px 24px);
+	animation: napoleonCommandAura 1.52s ease-in-out infinite;
+}
+
+@keyframes portraitActorCommandLeft {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	18% { transform: translate3d(24px, -11px, 0) scale(1.04) rotate(1.25deg); }
+	34% { transform: translate3d(8px, -4px, 0) scale(1.016) rotate(.35deg); }
+	62% { transform: translate3d(18px, -8px, 0) scale(1.03) rotate(.85deg); }
+	78% { transform: translate3d(3px, -2px, 0) scale(1.008) rotate(.12deg); }
+}
+
+@keyframes portraitActorCommandRight {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	18% { transform: translate3d(-24px, -11px, 0) scale(1.04) rotate(-1.25deg); }
+	34% { transform: translate3d(-8px, -4px, 0) scale(1.016) rotate(-.35deg); }
+	62% { transform: translate3d(-18px, -8px, 0) scale(1.03) rotate(-.85deg); }
+	78% { transform: translate3d(-3px, -2px, 0) scale(1.008) rotate(-.12deg); }
+}
+
+@keyframes portraitActorReport {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	18% { transform: translate3d(0, 14px, 0) scale(.985) rotate(.8deg); }
+	34% { transform: translate3d(0, -8px, 0) scale(1.025) rotate(-.5deg); }
+	58% { transform: translate3d(0, 7px, 0) scale(.994) rotate(.32deg); }
+	72% { transform: translate3d(0, -3px, 0) scale(1.008) rotate(-.12deg); }
+}
+
+@keyframes portraitActorChallengeLeft {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	20% { transform: translate3d(29px, -15px, 0) scale(1.052) rotate(1.8deg); }
+	38% { transform: translate3d(10px, -5px, 0) scale(1.018) rotate(.5deg); }
+	66% { transform: translate3d(22px, -10px, 0) scale(1.038) rotate(1.1deg); }
+	82% { transform: translate3d(4px, -2px, 0) scale(1.006) rotate(.15deg); }
+}
+
+@keyframes portraitActorChallengeRight {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	20% { transform: translate3d(-29px, -15px, 0) scale(1.052) rotate(-1.8deg); }
+	38% { transform: translate3d(-10px, -5px, 0) scale(1.018) rotate(-.5deg); }
+	66% { transform: translate3d(-22px, -10px, 0) scale(1.038) rotate(-1.1deg); }
+	82% { transform: translate3d(-4px, -2px, 0) scale(1.006) rotate(-.15deg); }
+}
+
+@keyframes portraitActorResolveLeft {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	22% { transform: translate3d(-10px, 4px, 0) scale(.992) rotate(-1.1deg); }
+	42% { transform: translate3d(17px, -9px, 0) scale(1.034) rotate(1.15deg); }
+	62% { transform: translate3d(5px, -3px, 0) scale(1.012) rotate(.3deg); }
+	78% { transform: translate3d(13px, -6px, 0) scale(1.025) rotate(.7deg); }
+}
+
+@keyframes portraitActorResolveRight {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	22% { transform: translate3d(10px, 4px, 0) scale(.992) rotate(1.1deg); }
+	42% { transform: translate3d(-17px, -9px, 0) scale(1.034) rotate(-1.15deg); }
+	62% { transform: translate3d(-5px, -3px, 0) scale(1.012) rotate(-.3deg); }
+	78% { transform: translate3d(-13px, -6px, 0) scale(1.025) rotate(-.7deg); }
+}
+
+@keyframes portraitActorListen {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	46% { transform: translate3d(0, -6px, 0) scale(1.006) rotate(.2deg); }
+	54% { transform: translate3d(0, -6px, 0) scale(1.006) rotate(-.2deg); }
+}
+
+@keyframes napoleonCommandLeft {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	13% { transform: translate3d(14px, -7px, 0) scale(1.025) rotate(.65deg); }
+	24% { transform: translate3d(38px, -18px, 0) scale(1.07) rotate(2.25deg); }
+	38% { transform: translate3d(12px, -6px, 0) scale(1.025) rotate(.55deg); }
+	54% { transform: translate3d(3px, -2px, 0) scale(1.008) rotate(0); }
+	69% { transform: translate3d(30px, -14px, 0) scale(1.055) rotate(1.55deg); }
+	82% { transform: translate3d(9px, -4px, 0) scale(1.018) rotate(.35deg); }
+}
+
+@keyframes napoleonCommandRight {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	13% { transform: translate3d(-14px, -7px, 0) scale(1.025) rotate(-.65deg); }
+	24% { transform: translate3d(-38px, -18px, 0) scale(1.07) rotate(-2.25deg); }
+	38% { transform: translate3d(-12px, -6px, 0) scale(1.025) rotate(-.55deg); }
+	54% { transform: translate3d(-3px, -2px, 0) scale(1.008) rotate(0); }
+	69% { transform: translate3d(-30px, -14px, 0) scale(1.055) rotate(-1.55deg); }
+	82% { transform: translate3d(-9px, -4px, 0) scale(1.018) rotate(-.35deg); }
+}
+
+@keyframes napoleonResolveLeft {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	17% { transform: translate3d(-13px, 6px, 0) scale(.988) rotate(-1.65deg); }
+	34% { transform: translate3d(28px, -14px, 0) scale(1.055) rotate(1.8deg); }
+	50% { transform: translate3d(8px, -5px, 0) scale(1.02) rotate(.45deg); }
+	68% { transform: translate3d(22px, -11px, 0) scale(1.044) rotate(1.25deg); }
+	84% { transform: translate3d(5px, -3px, 0) scale(1.012) rotate(.2deg); }
+}
+
+@keyframes napoleonResolveRight {
+	0%, 100% { transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+	17% { transform: translate3d(13px, 6px, 0) scale(.988) rotate(1.65deg); }
+	34% { transform: translate3d(-28px, -14px, 0) scale(1.055) rotate(-1.8deg); }
+	50% { transform: translate3d(-8px, -5px, 0) scale(1.02) rotate(-.45deg); }
+	68% { transform: translate3d(-22px, -11px, 0) scale(1.044) rotate(-1.25deg); }
+	84% { transform: translate3d(-5px, -3px, 0) scale(1.012) rotate(-.2deg); }
+}
+
+@keyframes napoleonCommandAura {
+	0%, 100% { opacity: .18; transform: scale(.76); }
+	26% { opacity: .88; transform: scale(1.13); }
+	56% { opacity: .28; transform: scale(.94); }
+	72% { opacity: .68; transform: scale(1.06); }
+}
+
+/* 登录序章退场：文字先收束，地图推近并增亮，为下一页的同图接镜做准备。 */
+.campaign-prologue.is-leaving .campaign-prologue__copy {
+	pointer-events: none;
+	animation: prologueCopyHandoff .62s ease both;
+}
+
+.campaign-prologue.is-leaving .campaign-prologue__map {
+	animation: prologueMapHandoff .98s cubic-bezier(.2, .72, .18, 1) both;
+}
+
+.campaign-prologue.is-leaving::before {
+	animation: prologueShadeHandoff .98s ease both;
+}
+
+.campaign-prologue.is-leaving::after {
+	animation: prologueRuleHandoff .82s ease both;
+}
+
+@keyframes prologueCopyHandoff {
+	to { opacity: 0; transform: translateY(-24px) scale(.98); filter: blur(7px); }
+}
+
+@keyframes prologueMapHandoff {
+	from { opacity: .16; transform: scale(1); filter: blur(0) grayscale(1) invert(1) sepia(.45) hue-rotate(160deg) brightness(.88); }
+	to { opacity: .62; transform: scale(1.16); filter: blur(1px) grayscale(.48) invert(.72) sepia(.3) hue-rotate(160deg) brightness(1.08); }
+}
+
+@keyframes prologueShadeHandoff {
+	from { opacity: 1; }
+	to { opacity: .25; }
+}
+
+@keyframes prologueRuleHandoff {
+	to { opacity: 0; transform: translateX(-50%) scaleX(.08); }
+}
+
+/* 主界面接镜层：新页面先保持全屏地图，再逐渐退去；真实地图框同时从雾中落位。 */
+.campaign-arrival {
+	display: none;
+	position: fixed;
+	z-index: 1200;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+	color: #ecd496;
+	background:
+		radial-gradient(circle at 50% 45%, rgba(67, 102, 130, .42), transparent 34rem),
+		linear-gradient(150deg, #17283b, #060d16 72%);
+}
+
+.page-menu.campaign-arriving .campaign-arrival {
+	display: grid;
+	place-items: center;
+}
+
+.campaign-arrival::before,
+.campaign-arrival::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.campaign-arrival::before {
+	z-index: 2;
+	background:
+		linear-gradient(90deg, rgba(0, 0, 0, .72), transparent 24% 76%, rgba(0, 0, 0, .72)),
+		repeating-linear-gradient(0deg, transparent 0 4px, rgba(255, 255, 255, .018) 5px);
+}
+
+.campaign-arrival::after {
+	z-index: 4;
+	border: clamp(10px, 2vw, 24px) solid rgba(3, 8, 14, .58);
+	box-shadow: inset 0 0 90px rgba(0, 0, 0, .62);
+}
+
+.campaign-arrival__map {
+	position: absolute;
+	z-index: 1;
+	inset: -10%;
+	background: url('../img/europe-map.svg') center / min(1280px, 124vw) auto no-repeat;
+	opacity: .62;
+	filter: grayscale(.48) invert(.72) sepia(.3) hue-rotate(160deg) brightness(1.08);
+	transform: scale(1.16);
+}
+
+.campaign-arrival__seal {
+	position: relative;
+	z-index: 3;
+	display: grid;
+	place-items: center;
+	gap: .45rem;
+	text-align: center;
+	text-shadow: 0 5px 24px #000;
+}
+
+.campaign-arrival__seal strong {
+	display: grid;
+	place-items: center;
+	width: 68px;
+	height: 68px;
+	border: 1px solid rgba(238, 207, 126, .78);
+	border-radius: 50%;
+	font-family: Georgia, serif;
+	font-size: 2rem;
+	font-weight: 500;
+	background: rgba(10, 26, 43, .7);
+	box-shadow: 0 0 0 7px rgba(225, 192, 107, .09), 0 0 36px rgba(225, 192, 107, .2);
+}
+
+.campaign-arrival__seal span {
+	font-size: .66rem;
+	font-weight: 700;
+	letter-spacing: .28em;
+}
+
+.page-menu > .page-box,
+.page-menu > .campaign-map-shell,
+.page-menu > #btn-saves {
+	transition: opacity .82s ease, transform .95s cubic-bezier(.18, .76, .2, 1), filter .82s ease;
+}
+
+.page-menu.campaign-arriving {
+	overflow: hidden;
+}
+
+.page-menu.campaign-arriving > .page-box:first-of-type {
+	opacity: 0;
+	filter: blur(10px);
+	transform: translateY(-18px);
+}
+
+.page-menu.campaign-arriving > .campaign-map-shell {
+	opacity: 0;
+	filter: blur(18px) saturate(.5);
+	transform: perspective(900px) translateY(34px) scale(1.13);
+	transform-origin: center;
+}
+
+.page-menu.campaign-arriving > #btn-saves,
+.page-menu.campaign-arriving > .page-box:last-of-type {
+	opacity: 0;
+	filter: blur(8px);
+	transform: translateY(18px);
+}
+
+.page-menu.campaign-arriving--reveal .campaign-arrival {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 1.12s .22s ease, visibility 1.12s .22s;
+}
+
+.page-menu.campaign-arriving--reveal .campaign-arrival__map {
+	animation: campaignArrivalMap 1.42s cubic-bezier(.18, .72, .2, 1) both;
+}
+
+.page-menu.campaign-arriving--reveal .campaign-arrival__seal {
+	animation: campaignArrivalSeal .74s ease both;
+}
+
+.page-menu.campaign-arriving--reveal > .page-box:first-of-type,
+.page-menu.campaign-arriving--reveal > .campaign-map-shell,
+.page-menu.campaign-arriving--reveal > #btn-saves,
+.page-menu.campaign-arriving--reveal > .page-box:last-of-type {
+	opacity: 1;
+	filter: none;
+	transform: none;
+}
+
+.page-menu.campaign-arriving--reveal > .campaign-map-shell { transition-delay: .32s; }
+.page-menu.campaign-arriving--reveal > .page-box:first-of-type { transition-delay: .52s; }
+.page-menu.campaign-arriving--reveal > #btn-saves { transition-delay: .68s; }
+.page-menu.campaign-arriving--reveal > .page-box:last-of-type { transition-delay: .78s; }
+
+@keyframes campaignArrivalMap {
+	0% { opacity: .62; transform: scale(1.16); filter: grayscale(.48) invert(.72) sepia(.3) hue-rotate(160deg) brightness(1.08); }
+	55% { opacity: .78; transform: scale(1.04); filter: grayscale(.68) invert(.82) sepia(.32) hue-rotate(160deg) brightness(.94); }
+	100% { opacity: .18; transform: scale(.9); filter: blur(9px) grayscale(1) invert(1) sepia(.42) hue-rotate(160deg) brightness(.68); }
+}
+
+@keyframes campaignArrivalSeal {
+	0%, 30% { opacity: 1; transform: scale(1); }
+	100% { opacity: 0; transform: scale(.72); filter: blur(6px); }
+}
+
+@media (max-width: 760px) {
+	.dialog-overlay .dialog-portrait.is-napoleon.is-speaking .dialog-portrait__actor {
+		animation-duration: 3.6s;
+	}
+	.campaign-arrival__map { background-size: auto 92vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dialog-overlay .dialog-portrait__actor,
+	.campaign-prologue.is-leaving .campaign-prologue__copy,
+	.campaign-prologue.is-leaving .campaign-prologue__map,
+	.campaign-prologue.is-leaving::before,
+	.campaign-prologue.is-leaving::after,
+	.page-menu.campaign-arriving--reveal .campaign-arrival__map,
+	.page-menu.campaign-arriving--reveal .campaign-arrival__seal {
+		animation: none !important;
+	}
+	.page-menu > .page-box,
+	.page-menu > .campaign-map-shell,
+	.page-menu > #btn-saves,
+	.page-menu.campaign-arriving--reveal .campaign-arrival {
+		transition-duration: .18s !important;
+		transition-delay: 0s !important;
+	}
+}
+
+/* ========================================================================== */
+/* 实际姿态动作帧：静止帧 → 肢体姿态改变后的动作帧，只执行一次并停住            */
+/* ========================================================================== */
+
+/* 取消旧版施加在整个人物容器上的循环位移。人物现在靠第二张真实姿态帧表演。 */
+.dialog-overlay .dialog-portrait .dialog-portrait__actor {
+	position: relative;
+	display: block;
+	animation: none !important;
+	transform: none !important;
+	will-change: auto;
+}
+
+.dialog-overlay .dialog-portrait.is-speaking.is-gesturing::before,
+.dialog-overlay .dialog-portrait.is-napoleon.is-speaking::before {
+	content: none !important;
+	animation: none !important;
+}
+
+.dialog-overlay .dialog-portrait__neutral,
+.dialog-overlay .dialog-portrait__action {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: bottom center;
+	animation: none !important;
+	transform: none;
+	transform-origin: 50% 92%;
+	backface-visibility: hidden;
+	filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.52));
+}
+
+.dialog-overlay .dialog-portrait__neutral { opacity: 1; }
+.dialog-overlay .dialog-portrait__action { opacity: 0; }
+
+/* 0.9 秒内从静止姿态过渡到伸手/递信/举剑等动作姿态；此后保持动作帧。
+   左右两侧只带 6px 的一次性重心前移，用来连接两个真实姿态，而非反复摇晃。 */
+.dialog-overlay .dialog-portrait--left.is-performing .dialog-portrait__neutral {
+	animation: portraitNeutralYield .48s .08s ease both !important;
+}
+
+.dialog-overlay .dialog-portrait--right.is-performing .dialog-portrait__neutral {
+	animation: portraitNeutralYield .48s .08s ease both !important;
+}
+
+.dialog-overlay .dialog-portrait--left.is-performing .dialog-portrait__action {
+	animation: portraitPoseTakeLeft .9s cubic-bezier(.2, .72, .2, 1) both !important;
+}
+
+.dialog-overlay .dialog-portrait--right.is-performing .dialog-portrait__action {
+	animation: portraitPoseTakeRight .9s cubic-bezier(.2, .72, .2, 1) both !important;
+}
+
+@keyframes portraitNeutralYield {
+	0%, 18% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@keyframes portraitPoseTakeLeft {
+	0%, 10% { opacity: 0; transform: translate3d(-6px, 3px, 0) scale(.992); }
+	48% { opacity: 1; }
+	100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes portraitPoseTakeRight {
+	0%, 10% { opacity: 0; transform: translate3d(6px, 3px, 0) scale(.992); }
+	48% { opacity: 1; }
+	100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* ========================================================================== */
+/* 纪录片沙盘军势箭头：平涂宽杆尖头，删除金边、金属渐变和循环跑马纹理          */
+/* ========================================================================== */
+
+.game-page .order-arrow:not(.order-arrow--preview) {
+	--oa-ink: #2f6f96;
+	height: 18px;
+	opacity: .9;
+	filter: drop-shadow(0 2px 1px rgba(17, 21, 22, .62));
+	transition: left .35s ease, top .35s ease, width .22s ease, transform .22s ease;
+}
+
+.game-page .order-arrow--red:not(.order-arrow--preview) {
+	--oa-ink: #b5423d;
+}
+
+.game-page .order-arrow:not(.order-arrow--preview) .oa-origin { display: none; }
+
+.game-page .order-arrow:not(.order-arrow--preview) .oa-line {
+	left: 3px;
+	right: 18px;
+	top: 5px;
+	height: 8px;
+	overflow: visible;
+	border: 0;
+	border-radius: 2px 0 0 2px;
+	background: var(--oa-ink);
+	box-shadow: none;
+}
+
+.game-page .order-arrow:not(.order-arrow--preview) .oa-line::before,
+.game-page .order-arrow:not(.order-arrow--preview) .oa-line::after {
+	content: none;
+	animation: none;
+}
+
+.game-page .order-arrow:not(.order-arrow--preview) .oa-head {
+	right: -1px;
+	top: 0;
+	width: 22px;
+	height: 18px;
+	border: 0;
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+	background: var(--oa-ink);
+	filter: none;
+	animation: none;
+}
+
+.game-page .order-arrow:not(.order-arrow--preview) .oa-head::after { content: none; }
+
+/* 每次新军令只播放一次由士兵端向目标端展开的动画，行军缩短时不会重播。 */
+.game-page .order-arrow--deploying:not(.order-arrow--preview) {
+	animation: orderDocumentaryDeploy .68s cubic-bezier(.22, .72, .18, 1) both;
+}
+
+@keyframes orderDocumentaryDeploy {
+	0% { opacity: .9; clip-path: inset(-6px 100% -6px -6px); }
+	100% { opacity: .9; clip-path: inset(-6px -6px -6px -6px); }
+}
+
+/* 选目标仍沿用旧的细红虚线，不套用上面的宽军势箭头。 */
+.game-page .order-arrow--preview {
+	height: 18px;
+	opacity: .9;
+	filter: drop-shadow(0 1px 1px rgba(18, 10, 8, .78));
+	animation: none;
+	transition: none;
+}
+
+.game-page .order-arrow--preview .oa-line {
+	left: 2px;
+	right: 12px;
+	top: 8px;
+	height: 2px;
+	border: 0;
+	border-radius: 0;
+	background: repeating-linear-gradient(90deg, #f05a52 0 7px, transparent 7px 12px);
+	box-shadow: none;
+}
+
+.game-page .order-arrow--preview .oa-line::before,
+.game-page .order-arrow--preview .oa-line::after { content: none; }
+
+.game-page .order-arrow--preview .oa-head {
+	right: 0;
+	top: 4px;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 11px solid #f05a52;
+	clip-path: none;
+	background: none;
+	filter: drop-shadow(0 1px 1px rgba(18, 10, 8, .72));
+	animation: none;
+}
+
+.game-page .order-arrow--preview .oa-head::after { content: none; }
+
+@media (prefers-reduced-motion: reduce) {
+	.dialog-overlay .dialog-portrait__neutral,
+	.dialog-overlay .dialog-portrait__action {
+		animation-duration: .01ms !important;
+		animation-delay: 0s !important;
+	}
+	.game-page .order-arrow--deploying:not(.order-arrow--preview) {
+		animation: none !important;
+		clip-path: none;
+	}
+}
+
+/* ==========================================================================
+   2026-09-16 交互与布局修订（玩家反馈 6 项中的布局/手感部分）
+   1) 框选拖拽：JS 把 mousemove/mouseup 挂到 window，拖出棋盘不失效；
+      拖拽期间用 body.is-box-dragging 禁止选中文本、统一十字光标；
+   2) 宽屏游戏页（≥1101px）：操作按钮收进右侧"指挥停靠坞"，棋盘下方不再堆三行；
+      窄屏（≤1100px / 手机）保持原来的棋盘下方流式排布；
+   3) 左上战况条新增"剩余 N 回合"醒目 pill，≤5 回合红色呼吸；
+   4) 主界面底部导航行里的 button.menu-link 与 a.menu-link 同皮肤。
+   ========================================================================== */
+
+/* 1) 拖拽框选进行中：全局禁止选中文本，光标统一为十字（鼠标在棋盘外也一样）。 */
+body.is-box-dragging,
+body.is-box-dragging * {
+	user-select: none !important;
+	-webkit-user-select: none !important;
+	cursor: crosshair !important;
+}
+
+/* 4) 导航行里的"读取存档"是 <button>：外观完全交给 .menu-link 同款规则，
+   只抵消历史 #btn-saves 专属规则（id 特异性更高，这里用同 id 选择器覆盖）。 */
+.menu-list #btn-saves {
+	display: inline-block;
+	width: auto;
+	min-width: 145px;   /* 与 .page-menu .menu-link 同款宽度（≤760px 在下方媒体查询归零） */
+	margin: 0;
+	cursor: pointer;
+	text-align: center;
+}
+
+@media (max-width: 760px) {
+	.menu-list #btn-saves { min-width: 0; }
+}
+
+/* 3) 剩余回合 pill：金色描边，和威胁/敌军/战意区分开。 */
+.battle-status__item.battle-status__turns {
+	color: #ffe1a0;
+	border-left-color: rgba(214, 187, 116, 0.55);
+	background: rgba(214, 187, 116, 0.14);
+}
+
+.battle-status__item.battle-status__turns.is-urgent {
+	color: #ffb3a6;
+	background: rgba(181, 64, 45, 0.22);
+	animation: turnsUrgentPulse 1.1s ease-in-out infinite;
+}
+
+@keyframes turnsUrgentPulse {
+	0%, 100% { box-shadow: 0 0 0 0 rgba(181, 64, 45, 0); }
+	50% { box-shadow: 0 0 0 4px rgba(181, 64, 45, 0.22); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.battle-status__item.battle-status__turns.is-urgent { animation: none; }
+}
+
+/* 窄屏流式布局下，"下一步"在六个辅助按钮之下，并与它们拉开距离。 */
+body.game-page #button { margin-top: 22px; }
+
+/* 2) 宽屏：右侧指挥停靠坞（只作用于 game1~game7 的 .game-page；game8 自定义布局不受影响）。
+   六个辅助按钮成一列贴棋盘右缘（留 20px 缝隙，不贴屏幕边），"下一步"加宽、置底、
+   与上组隔开；横向位置跟随棋盘宽度（与 #board 的 min() 公式保持一致）。
+   DOM 顺序由 main.js 初始化时调整为 #game-actions 在前、#button 在后。 */
+@media (min-width: 1101px) {
+	body.game-page #game-actions {
+		position: fixed;
+		left: calc(50% + min(78dvh, calc(100vw - 440px)) / 2 + 20px);
+		top: calc(50% - 158px);
+		width: 188px;
+		margin: 0;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 7px;
+		z-index: 70;
+	}
+
+	body.game-page #button {
+		position: fixed;
+		left: calc(50% + min(78dvh, calc(100vw - 440px)) / 2 + 20px);
+		top: calc(50% + 122px);
+		width: 188px;
+		min-height: 48px;
+		margin: 0;
+		padding: 0.72rem 1rem;
+		font-size: 1rem;
+		letter-spacing: 0.16em;
+		z-index: 70;
+	}
+
+	body.game-page #save-load-btns {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 7px;
+		width: 100%;
+	}
+
+	body.game-page #save-load-btns > .game-btn,
+	body.game-page #game-actions > .game-btn {
+		width: 100%;
+		margin: 0;
+	}
+
+	body.game-page #slot-select { width: 100%; }
+
+	/* 下拉箭头：蓝渐变 !important 规则曾把两层三角覆盖掉，这里重画一对更亮更大的金色三角。 */
+	body.game-page #slot-select {
+		padding-right: 2.3rem;
+		background-image:
+			linear-gradient(45deg, transparent 52%, #ffd978 52%),
+			linear-gradient(135deg, #ffd978 48%, transparent 48%),
+			linear-gradient(180deg, #315f8c, #112b49) !important;
+		background-position:
+			calc(100% - 19px) calc(50% - 2px),
+			calc(100% - 12px) calc(50% - 2px),
+			0 0 !important;
+		background-size: 8px 8px, 8px 8px, 100% 100% !important;
+		background-repeat: no-repeat !important;
+	}
+
+	/* 判负结算时 #game-actions 里可能只剩孤零零的回退按钮，统一隐藏（Menu 已被挪进结算区）。 */
+	body.game-page.result-active #game-actions { display: none; }
+
+	/* 查看敌人模式：敌方信息面板挪到左侧，给右侧停靠坞让位。 */
+	body.game-page.view-enemy #enemy-info {
+		right: auto;
+		left: 12px;
+	}
+}
+
+/* ==========================================================
+   2026-09-16 第二批界面修订（玩家反馈 6 项）
+   ========================================================== */
+
+/* 6) 教学图：放大到接近窗口尺寸，保持原始比例（contain），不超出视口。 */
+.level-intro-image-overlay { padding: 16px; box-sizing: border-box; }
+.level-intro-image-box {
+	max-width: 96vw;
+	max-height: 94vh;
+	width: auto;
+	height: auto;
+}
+.level-intro-image {
+	max-width: 96vw;
+	max-height: 94vh;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+}
+@media (max-width: 760px) {
+	.level-intro-image-overlay { padding: 8px; }
+	.level-intro-image-box,
+	.level-intro-image { max-width: 98vw; max-height: 92vh; }
+	.level-intro-close { top: -14px; right: -6px; width: 36px; height: 36px; }
+}
+
+/* 自动存档下拉箭头（全局，含窄屏）：重画一对更亮更大的金色三角，避免被蓝渐变 !important 吞掉。 */
+body.game-page #slot-select {
+	padding-right: 2.3rem;
+	background-image:
+		linear-gradient(45deg, transparent 52%, #ffd978 52%),
+		linear-gradient(135deg, #ffd978 48%, transparent 48%),
+		linear-gradient(180deg, #315f8c, #112b49) !important;
+	background-position:
+		calc(100% - 19px) calc(50% - 2px),
+		calc(100% - 12px) calc(50% - 2px),
+		0 0 !important;
+	background-size: 8px 8px, 8px 8px, 100% 100% !important;
+	background-repeat: no-repeat !important;
+}
+
+/* ==========================================================
+   2026-09-16 第三批界面修订（玩家反馈 8 项）fixpack4
+   ========================================================== */
+
+/* 5) 进场淡入：#game-actions 自带的 transition 在开场时序下会偶发卡在
+   opacity:0/visibility:hidden（保存/读取按钮整组消失，导致无法存档）。
+   改用与 #board 同款、fill both 的 reveal 关键帧，终态必然可见。 */
+.game-page.level-revealing #game-actions {
+	animation: gameActionsReveal 0.55s 0.08s ease both;
+}
+@keyframes gameActionsReveal {
+	from { opacity: 0; transform: translateY(10px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+/* 8) 剩余回合 pill 移到标题下方、随标题居中，不再固定左上角；只显示剩余回合。 */
+body.game-page .game-heading .battle-status {
+	position: static;
+	margin: 0 auto 4px;
+	min-height: 0;
+	padding: 3px 16px;
+	border-radius: 12px;
+}
+
+/* 7) “下一步”与上方六个辅助按钮的间距要明显大于按钮之间的 7px 间隙。 */
+body.game-page #button { margin-top: 34px; }
+@media (min-width: 1101px) {
+	body.game-page #button { top: calc(50% + 150px); }
+}
+
+/* 3) 主界面中间战役地图整体适当上移。 */
+body.page-menu { padding-top: clamp(24px, 3.2vh, 40px); }
+
+/* ========================================================================== */
+/* 2026-09-15 统帅部扩展：字体系统、模式选择、联机会战与统一可用性            */
+/* ========================================================================== */
+
+:root {
+	/* 战役标题采用古典高反差衬线，作战数据采用紧凑无衬线；中文分别回退到
+	   系统宋体与黑体，保持 GitHub Pages 零字体下载也能稳定呈现。 */
+	--ui-display: 'Bodoni 72', Didot, Baskerville, 'Noto Serif CJK SC', 'Source Han Serif SC', 'Songti SC', STSong, SimSun, serif;
+	--ui-command: 'DIN Condensed', 'Roboto Condensed', 'Arial Narrow', 'Segoe UI', 'Microsoft YaHei UI', sans-serif;
+	--ui-body: Inter, 'Segoe UI', 'Noto Sans CJK SC', 'Microsoft YaHei UI', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+button,
+[role='button'],
+.game-btn,
+.level-btn,
+.menu-link,
+.turn-button,
+.result-button,
+.mode-card,
+.mp-piece,
+.mp-roster-row {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+button,
+.game-btn,
+.turn-button,
+.menu-link,
+.battle-status,
+.campaign-map-shell__top,
+.campaign-map-shell__bottom,
+.mp-overline,
+.mp-budget,
+.mp-turn-state {
+	font-family: var(--ui-command);
+}
+
+.page-route-curtain {
+	position: fixed;
+	z-index: 9999;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	pointer-events: none;
+	opacity: 0;
+	visibility: hidden;
+	background:
+		radial-gradient(circle, rgba(48, 76, 99, .38), transparent 36rem),
+		linear-gradient(145deg, #14283b, #040a12 74%);
+	transition: opacity .52s ease, visibility .52s;
+}
+
+.page-route-curtain span {
+	display: grid;
+	width: 96px;
+	height: 96px;
+	place-items: center;
+	border: 2px solid #d7ba72;
+	border-radius: 50%;
+	font-family: var(--ui-display);
+	font-size: 3rem;
+	font-style: italic;
+	color: #f3d992;
+	box-shadow: 0 0 0 8px rgba(215, 186, 114, .08), 0 20px 70px #000;
+	transform: scale(.72) rotate(-8deg);
+	transition: transform .62s cubic-bezier(.18,.78,.2,1);
+}
+
+body.is-routing .page-route-curtain { opacity: 1; visibility: visible; }
+body.is-routing .page-route-curtain span { transform: scale(1) rotate(0); }
+
+/* 登录与注册共用同一座深色军情室，并整体放大可读尺寸。 */
+body.page-login,
+body.page-register {
+	height: auto;
+	min-height: 100svh;
+	padding: clamp(62px, 7vh, 82px) 1rem 1.6rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background:
+		radial-gradient(circle at 18% 18%, rgba(58, 100, 135, .34), transparent 31rem),
+		radial-gradient(circle at 82% 74%, rgba(148, 97, 42, .22), transparent 29rem),
+		linear-gradient(145deg, #14263a 0%, #091522 58%, #030811 100%);
+}
+
+.page-register::before {
+	z-index: -1;
+	opacity: 1;
+	background:
+		linear-gradient(115deg, transparent 16%, rgba(229,203,138,.08) 16.15% 16.35%, transparent 16.5%),
+		repeating-radial-gradient(circle at 50% 52%, transparent 0 76px, rgba(211,189,131,.055) 77px 78px),
+		repeating-linear-gradient(92deg, transparent 0 8.9vw, rgba(255,255,255,.025) 9vw),
+		linear-gradient(120deg, rgba(53,96,132,.18), transparent 48%);
+	background-size: 130% 130%, 100% 100%, 100% 100%, 150% 150%;
+	animation: loginCommandDrift 17s ease-in-out infinite alternate;
+}
+
+.page-login .page-box,
+.page-register .page-box {
+	z-index: 2;
+	display: flex;
+	width: min(94vw, 660px);
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	text-align: center;
+}
+
+.page-register .page-kicker { color: #e2c981; }
+.page-register .page-box h1 { color: #fff3d2; text-shadow: 0 8px 30px rgba(0,0,0,.55); }
+.page-register .page-sub { color: #cec3aa; }
+
+.page-login .form-box,
+.page-register .form-box {
+	box-sizing: border-box;
+	width: 100%;
+	padding: clamp(1.65rem, 3.6vh, 2.25rem) clamp(1.65rem, 5vw, 2.5rem);
+	border: 1px solid rgba(247,226,171,.46);
+	border-radius: 30px;
+	color: #f6edd8;
+	text-align: center;
+	background:
+		linear-gradient(145deg, rgba(42,64,84,.72), rgba(8,19,31,.78)),
+		linear-gradient(90deg, rgba(255,255,255,.09), transparent 48%);
+	box-shadow: 0 30px 82px rgba(0,0,0,.5), inset 0 1px rgba(255,255,255,.24), inset 0 -1px rgba(218,196,136,.16);
+	-webkit-backdrop-filter: blur(26px) saturate(1.3);
+	backdrop-filter: blur(26px) saturate(1.3);
+}
+
+.page-register .form-box::before {
+	inset: 7px;
+	border-color: rgba(255,255,255,.11);
+	border-radius: 22px;
+}
+
+.page-login .form-box h2,
+.page-register .form-box h2 {
+	margin-bottom: 1.25rem;
+	padding-bottom: .72rem;
+	font-size: clamp(1.8rem, 3vw, 2.2rem);
+	color: #fff1cb;
+	text-align: center;
+	border-bottom-color: rgba(218,196,136,.24);
+}
+
+.page-login .form-box label,
+.page-register .form-box label {
+	margin-bottom: 1rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #e6dac2;
+	text-align: left;
+}
+
+.page-login .form-box label > span:first-child,
+.page-register .form-box label > span:first-child { display: block; margin-bottom: .28rem; }
+
+.page-login .form-box input,
+.page-register .form-box input {
+	box-sizing: border-box;
+	min-height: 54px;
+	padding: .82rem 1rem;
+	font-size: 1.06rem;
+	color: #fff9e8;
+	border-color: rgba(218,196,136,.44);
+	border-radius: 14px;
+	background: rgba(3,12,22,.62);
+}
+
+.page-register .form-box input::placeholder { color: rgba(232,220,194,.58); }
+.page-login .form-box button[type='submit'],
+.page-register .form-box button[type='submit'] {
+	min-width: 190px;
+	min-height: 52px;
+	margin-top: .65rem;
+	font-size: 1rem;
+}
+
+.page-login .form-msg,
+.page-register .form-msg,
+.page-login .form-link,
+.page-register .form-link { font-size: 1rem; line-height: 1.6; }
+
+.page-register .form-msg { color: #ffb2ac; }
+.page-register .form-link { color: #d8ccb2; }
+.page-register .form-link a { color: #f1d48e; }
+
+/* 剧情始终给出明确跳过出口；退场时先收起电影幕布，再进入下一层页面。 */
+.dialog-skip {
+	position: fixed;
+	z-index: 9;
+	top: max(66px, 7vh);
+	right: max(18px, 3vw);
+	min-height: 42px;
+	padding: .55rem 1rem;
+	border: 1px solid rgba(226,201,137,.5);
+	border-radius: 999px;
+	font-family: var(--ui-command);
+	font-size: .78rem;
+	font-weight: 750;
+	letter-spacing: .08em;
+	color: #f3e4bd;
+	background: rgba(8,21,34,.74);
+	box-shadow: 0 8px 24px rgba(0,0,0,.3), inset 0 1px rgba(255,255,255,.1);
+	backdrop-filter: blur(14px);
+	cursor: pointer;
+}
+
+.dialog-skip:hover { color: #fff3cf; background: rgba(40,73,101,.9); }
+.dialog-overlay.is-leaving { animation: dialogueLeave .26s ease both; pointer-events: none; }
+@keyframes dialogueLeave { to { opacity: 0; filter: blur(5px); } }
+
+/* 登录后的模式选择：两张阵营级入口卡就是唯一主任务。 */
+body.page-mode {
+	min-height: 100svh;
+	justify-content: center;
+	padding: clamp(64px, 8vh, 92px) clamp(16px, 4vw, 64px) 2rem;
+	color: #eee4cd;
+	background:
+		radial-gradient(circle at 25% 40%, rgba(42,85,121,.4), transparent 34rem),
+		radial-gradient(circle at 78% 48%, rgba(139,40,43,.26), transparent 32rem),
+		linear-gradient(145deg, #14293e, #050b13 75%);
+}
+
+.page-mode::before {
+	opacity: .34;
+	background:
+		linear-gradient(90deg, transparent 49.9%, rgba(225,200,135,.18) 50%, transparent 50.1%),
+		repeating-radial-gradient(circle at 50% 49%, transparent 0 105px, rgba(221,197,132,.07) 106px 107px),
+		url('../img/europe-map.svg') center / min(92vw, 1180px) auto no-repeat;
+	filter: grayscale(1) invert(.84) sepia(.34) hue-rotate(160deg);
+}
+
+.mode-shell { position: relative; z-index: 2; width: min(1180px, 94vw); }
+.mode-heading { margin: 0 auto clamp(1.4rem, 4vh, 2.5rem); text-align: center; }
+.mode-heading h1 {
+	margin: .12rem 0 .48rem;
+	font-family: var(--ui-display);
+	font-size: clamp(2.5rem, 6vw, 5.15rem);
+	font-weight: 500;
+	letter-spacing: .04em;
+	color: #fff0c9;
+	text-shadow: 0 16px 48px rgba(0,0,0,.58);
+}
+.mode-heading > p:last-child { margin: 0; font-family: var(--ui-display); font-size: 1.05rem; color: #cfc2a6; }
+.mode-heading strong { color: #efd17f; }
+.mode-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(18px, 3vw, 34px); }
+
+.mode-card {
+	position: relative;
+	display: flex;
+	min-height: clamp(330px, 43vh, 470px);
+	padding: clamp(1.5rem, 4vw, 2.75rem);
+	overflow: hidden;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-end;
+	border: 1px solid rgba(232,207,146,.5);
+	border-radius: 28px;
+	color: #f3ead6;
+	text-align: left;
+	box-shadow: 0 28px 68px rgba(0,0,0,.48), inset 0 1px rgba(255,255,255,.14);
+	cursor: pointer;
+	isolation: isolate;
+	transition: transform .38s cubic-bezier(.2,.8,.2,1), border-color .3s, filter .3s, box-shadow .3s;
+}
+
+.mode-card::before,
+.mode-card::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.mode-card::before { opacity: .58; transition: transform .7s ease, opacity .4s ease; }
+.mode-card::after { background: linear-gradient(180deg, transparent 7%, rgba(3,10,18,.2) 37%, rgba(3,9,16,.96) 88%); }
+.mode-card--campaign { background: linear-gradient(145deg, #335f83, #0a1d2f); }
+.mode-card--campaign::before { background: url('../img/europe-map.svg') 48% 21% / 155% auto no-repeat; filter: grayscale(.8) sepia(.18) brightness(.7); }
+.mode-card--online { background: linear-gradient(145deg, #733438, #210e15); }
+.mode-card--online::before {
+	background:
+		linear-gradient(118deg, transparent 46%, rgba(243,210,133,.45) 46.4% 47%, transparent 47.4%),
+		radial-gradient(circle at 25% 30%, #417ca9 0 7%, transparent 7.4%),
+		radial-gradient(circle at 74% 25%, #a73d3e 0 7%, transparent 7.4%),
+		repeating-radial-gradient(circle at 50% 44%, transparent 0 44px, rgba(237,211,146,.12) 45px 46px);
+}
+.mode-card:hover { transform: translateY(-8px) scale(1.012); border-color: #f2d489; filter: brightness(1.08); box-shadow: 0 38px 86px rgba(0,0,0,.58), 0 0 0 5px rgba(227,197,124,.08); }
+.mode-card:hover::before { transform: scale(1.06); opacity: .72; }
+.mode-card__number { position: absolute; top: .2rem; right: 1.3rem; font-family: var(--ui-display); font-size: clamp(6rem, 13vw, 10rem); font-style: italic; color: rgba(246,222,163,.08); }
+.mode-card__eyebrow { margin-bottom: .55rem; font-family: var(--ui-command); font-size: .72rem; font-weight: 800; letter-spacing: .16em; color: #e2c476; }
+.mode-card > strong { font-family: var(--ui-display); font-size: clamp(2rem, 4vw, 3.3rem); font-weight: 500; letter-spacing: .05em; color: #fff1cb; }
+.mode-card__copy { max-width: 32rem; margin-top: .85rem; font-size: 1rem; line-height: 1.8; color: #d7ccb7; }
+.mode-card__cta { margin-top: 1.3rem; font-family: var(--ui-command); font-size: .88rem; font-weight: 800; letter-spacing: .08em; color: #f0cf7c; }
+.mode-footer { display: flex; justify-content: center; margin-top: 1.35rem; }
+.mode-footer .menu-link { min-width: 160px; text-align: center; }
+
+/* 联机大厅与战场。 */
+body.page-multiplayer {
+	min-height: 100svh;
+	justify-content: flex-start;
+	padding: clamp(58px, 7vh, 76px) clamp(12px, 2vw, 28px) 2rem;
+	color: #eee4cf;
+	background:
+		radial-gradient(circle at 20% 28%, rgba(44,87,120,.35), transparent 31rem),
+		radial-gradient(circle at 82% 48%, rgba(136,45,48,.23), transparent 31rem),
+		linear-gradient(145deg, #142638, #050b13 76%);
+}
+.page-multiplayer::before { opacity: .21; background: repeating-radial-gradient(circle at 50% 48%, transparent 0 78px, rgba(224,201,141,.09) 79px 80px); }
+.mp-page-heading { position: relative; z-index: 2; display: flex; width: min(1380px, 97vw); align-items: center; justify-content: space-between; margin: 0 auto 1rem; }
+.mp-page-heading .page-kicker { justify-content: flex-start; margin: 0; }
+.mp-page-heading .page-kicker::before { display: none; }
+.mp-page-heading h1 { margin: .12rem 0 0; font-family: var(--ui-display); font-size: clamp(2rem, 4.5vw, 3.8rem); font-weight: 500; color: #fff0c9; }
+.mp-back { display: inline-flex; min-height: 42px; padding: .62rem 1rem; align-items: center; }
+.mp-shell { position: relative; z-index: 2; width: min(1380px, 97vw); margin: 0 auto; }
+.mp-lobby { display: grid; grid-template-columns: minmax(250px, .62fr) minmax(600px, 1.55fr); gap: 20px; align-items: stretch; }
+.mp-briefing,
+.mp-setup,
+.mp-dice-stage {
+	border: 1px solid rgba(224,199,133,.38);
+	border-radius: 24px;
+	background: linear-gradient(145deg, rgba(34,58,78,.84), rgba(6,17,28,.9));
+	box-shadow: 0 24px 62px rgba(0,0,0,.4), inset 0 1px rgba(255,255,255,.1);
+	backdrop-filter: blur(20px);
+}
+.mp-briefing { padding: clamp(1.35rem, 3vw, 2.2rem); }
+.mp-overline { margin: 0 0 .42rem; font-size: .67rem; font-weight: 800; letter-spacing: .16em; color: #d8b966; }
+.mp-briefing h2 { margin: 0 0 1.2rem; font-family: var(--ui-display); font-size: 2rem; font-weight: 500; color: #fff0c7; }
+.mp-briefing ol { margin: 0; padding-left: 1.35rem; }
+.mp-briefing li { margin: 0 0 .9rem; line-height: 1.7; color: #d8cdb8; }
+.mp-network-note { margin: 1.3rem 0 0; padding: .85rem; border-left: 3px solid #c5a453; font-size: .82rem; line-height: 1.65; color: #bcb29f; background: rgba(0,0,0,.18); }
+.mp-offline-state { margin: .65rem 0 0; padding: .62rem .75rem; border-radius: 10px; font-size: .72rem; line-height: 1.55; color: #cdbf9f; background: rgba(0,0,0,.16); }
+.mp-offline-state[data-ready='true'] { color: #bfe4d0; box-shadow: inset 3px 0 #58b48e; }
+.mp-offline-state[data-ready='false'] { color: #efbf9c; box-shadow: inset 3px 0 #b77a49; }
+.mp-setup { padding: clamp(1rem, 2vw, 1.45rem); }
+.mp-connect-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.mp-connect-card { position: relative; min-height: 160px; padding: 1.1rem 1.15rem; border: 1px solid rgba(224,199,133,.22); border-radius: 18px; background: rgba(3,12,21,.38); }
+.mp-connect-card--blue { box-shadow: inset 4px 0 #3e779f; }
+.mp-connect-card--red { box-shadow: inset 4px 0 #9c3c40; }
+.mp-connect-card h3 { margin: 0 0 .45rem; font-family: var(--ui-display); font-size: 1.25rem; color: #f3dfae; }
+.mp-connect-card p { min-height: 2.8em; margin: 0 0 .75rem; font-size: .82rem; line-height: 1.55; color: #bfb49f; }
+.mp-faction-dot { position: absolute; top: 15px; right: 15px; width: 10px; height: 10px; border-radius: 50%; }
+.mp-connect-card--blue .mp-faction-dot { background: #5e9dca; box-shadow: 0 0 12px #5e9dca; }
+.mp-connect-card--red .mp-faction-dot { background: #ce5658; box-shadow: 0 0 12px #ce5658; }
+.mp-connect-card .game-btn { min-height: 40px; padding: .55rem 1rem; }
+.mp-room-input { display: flex; align-items: center; gap: 8px; margin-bottom: .5rem; font-size: .72rem; color: #d6c596; }
+.mp-room-input input { box-sizing: border-box; width: 116px; padding: .48rem .58rem; border: 1px solid rgba(217,190,124,.5); border-radius: 9px; font-family: var(--ui-command); font-size: .92rem; font-weight: 800; letter-spacing: .14em; color: #fff1c9; text-transform: uppercase; background: rgba(1,8,15,.62); }
+.mp-room-share { display: flex; align-items: center; gap: 8px; margin-top: .65rem; font-size: .72rem; color: #bfb49f; }
+.mp-room-share strong { font-family: var(--ui-command); font-size: 1.12rem; letter-spacing: .16em; color: #ffe09a; }
+.mp-copy { padding: .38rem .65rem; border: 1px solid rgba(218,195,135,.35); border-radius: 999px; color: #ead7a5; background: rgba(28,57,80,.72); cursor: pointer; }
+.mp-handshake,
+.mp-handshake-field { display: grid; gap: 7px; margin-top: .72rem; }
+.mp-handshake[hidden] { display: none; }
+.mp-handshake label,
+.mp-handshake-field { font-size: .7rem; line-height: 1.45; color: #d6c596; }
+.mp-handshake textarea,
+.mp-handshake-field textarea {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 74px;
+	margin-top: 5px;
+	padding: .55rem .62rem;
+	resize: vertical;
+	border: 1px solid rgba(217,190,124,.42);
+	border-radius: 10px;
+	font: 600 .66rem/1.38 ui-monospace, SFMono-Regular, Consolas, monospace;
+	letter-spacing: .015em;
+	color: #f7e7bd;
+	word-break: break-all;
+	background: rgba(1,8,15,.66);
+}
+.mp-handshake textarea:focus,
+.mp-handshake-field textarea:focus { outline: 2px solid rgba(100,165,207,.7); outline-offset: 1px; }
+.mp-handshake textarea[readonly] { color: #cbd8df; background: rgba(6,25,38,.72); }
+.mp-handshake .mp-copy { width: fit-content; }
+.mp-handshake .game-btn { justify-self: start; }
+.mp-army-builder { margin-top: 12px; padding: 1rem 1.1rem; border: 1px solid rgba(222,197,133,.25); border-radius: 18px; opacity: .5; background: rgba(2,10,18,.3); transition: opacity .3s, border-color .3s; }
+.mp-army-builder.is-enabled { opacity: 1; border-color: rgba(222,197,133,.42); }
+.mp-builder-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.mp-builder-heading h3 { margin: 0; font-family: var(--ui-display); font-size: 1.35rem; color: #f3dfae; }
+.mp-budget { font-size: .82rem; letter-spacing: .04em; color: #bfb49d; }
+.mp-budget strong { color: #ffe099; font-size: 1.02rem; }
+.mp-unit-inputs { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; margin-top: .85rem; }
+.mp-unit-inputs label { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 8px; padding: .65rem; border: 1px solid rgba(220,195,132,.2); border-radius: 12px; font-size: .76rem; color: #e0d3b7; background: rgba(0,0,0,.2); }
+.mp-unit-inputs small { color: #927f58; font-size: .58rem; }
+.mp-unit-inputs input { grid-column: 1 / -1; box-sizing: border-box; width: 100%; min-height: 36px; padding: .4rem; border: 1px solid rgba(212,186,121,.38); border-radius: 8px; color: #fff0c7; text-align: center; background: rgba(4,14,24,.72); }
+.mp-unit-inputs input:disabled { opacity: .78; }
+.mp-builder-footer { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; margin-top: .8rem; }
+.mp-builder-footer label { display: flex; align-items: center; gap: 7px; font-size: .76rem; color: #cdbf9f; }
+.mp-builder-footer select { min-height: 38px; padding: .42rem .65rem; border: 1px solid rgba(214,187,116,.42); border-radius: 9px; color: #fff0c7; background: #10263a; }
+#mp-validation { margin: 0; font-size: .72rem; line-height: 1.45; color: #9dbcae; }
+#mp-validation[data-valid='false'] { color: #efa09d; }
+#mp-ready { min-height: 40px; padding: .55rem .9rem; }
+.mp-connection-state { margin-top: 12px; padding: .72rem 1rem; border-radius: 12px; font-size: .82rem; line-height: 1.5; color: #d6c9ad; background: rgba(0,0,0,.24); }
+.mp-connection-state[data-kind='connected'] { box-shadow: inset 3px 0 #58b48e; }
+.mp-connection-state[data-kind='waiting'] { box-shadow: inset 3px 0 #d2ad58; }
+.mp-connection-state[data-kind='error'] { color: #ffc1bd; box-shadow: inset 3px 0 #bd4a4d; }
+
+.mp-dice-stage { width: min(720px, 92vw); margin: 8vh auto 0; padding: 2.4rem; text-align: center; }
+.mp-dice-stage h2 { margin: .2rem 0 1.3rem; font-family: var(--ui-display); font-size: clamp(2rem, 5vw, 3.5rem); color: #fff0c7; }
+.mp-dice-pair { display: flex; justify-content: center; gap: clamp(38px, 10vw, 100px); }
+.mp-die { display: flex; flex-direction: column; gap: .7rem; align-items: center; color: #c9bda5; }
+.mp-die strong { display: grid; width: 92px; height: 92px; place-items: center; border: 2px solid #d7ba72; border-radius: 19px; font-family: var(--ui-command); font-size: 3.5rem; color: #fff0c7; background: #15344d; box-shadow: 0 18px 34px rgba(0,0,0,.4); animation: mpDiceRoll .18s linear infinite; }
+.mp-die--red strong { background: #67282d; }
+.mp-dice-stage.is-settled .mp-die strong { animation: mpDiceSettle .52s cubic-bezier(.2,1.3,.3,1) both; }
+#mp-dice-result { min-height: 1.5em; margin: 1.3rem 0 0; color: #edce7e; }
+@keyframes mpDiceRoll { 50% { transform: rotate(8deg) translateY(-5px); filter: brightness(1.35); } }
+@keyframes mpDiceSettle { 0% { transform: scale(.7) rotate(-18deg); } 65% { transform: scale(1.14) rotate(5deg); } 100% { transform: scale(1); } }
+
+.mp-battle { width: 100%; }
+.mp-battle-hud { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; width: min(980px, 95vw); margin: 0 auto 10px; border: 1px solid rgba(220,195,132,.38); border-radius: 18px; overflow: hidden; background: rgba(5,16,27,.82); box-shadow: 0 15px 36px rgba(0,0,0,.3); }
+.mp-faction-badge { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: .75rem 1rem; font-family: var(--ui-command); }
+.mp-faction-badge--blue { box-shadow: inset 5px 0 #4e8fbd; }
+.mp-faction-badge--red { text-align: right; box-shadow: inset -5px 0 #b64549; }
+.mp-faction-badge span { font-size: .68rem; font-weight: 800; letter-spacing: .1em; color: #a99b80; }
+.mp-faction-badge strong { color: #f0dfb7; }
+.mp-faction-badge small { display: grid; min-width: 30px; height: 30px; place-items: center; border-radius: 50%; color: #fff4d2; background: rgba(255,255,255,.08); }
+.mp-turn-state { min-width: 210px; padding: .55rem 1.15rem; border-right: 1px solid rgba(220,195,132,.22); border-left: 1px solid rgba(220,195,132,.22); text-align: center; }
+.mp-turn-state > span { display: block; font-size: .58rem; letter-spacing: .13em; color: #a99b80; }
+.mp-turn-state > strong { display: block; margin: .1rem 0; font-size: 1.5rem; letter-spacing: .08em; color: #ffe099; font-variant-numeric: tabular-nums; }
+.mp-turn-state p { margin: 0; font-size: .7rem; color: #d2c4a6; }
+.mp-battle-layout { display: grid; grid-template-columns: minmax(155px, 190px) minmax(520px, 1fr) minmax(155px, 190px); gap: 12px; align-items: center; }
+.mp-tactical-column { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: center; }
+.mp-board { position: relative; display: grid; grid-template-columns: repeat(10, 1fr); width: min(68svh, calc(100vw - 430px)); min-width: 510px; aspect-ratio: 1; border: 8px solid #32271d; border-radius: 8px; outline: 1px solid #b79a57; outline-offset: -4px; background-color: #d5c198; background-image: conic-gradient(#c4ae7e 25%, #ddcca4 0 50%, #c4ae7e 0 75%, #ddcca4 0); background-size: 20% 20%; box-shadow: 0 25px 60px rgba(0,0,0,.55), inset 0 0 36px rgba(63,43,22,.34); touch-action: manipulation; }
+.mp-cell { border: 1px solid rgba(72,52,28,.12); pointer-events: none; }
+.mp-piece { position: absolute; z-index: 5; display: grid; width: 7.4%; aspect-ratio: 1; padding: 0; place-items: center; border: 2px solid rgba(255,244,213,.76); border-radius: 50%; background: rgba(13,24,34,.42); box-shadow: 0 4px 12px rgba(0,0,0,.5); transform: translate(-50%,-50%); cursor: pointer; transition: left .62s ease, top .62s ease, opacity .2s, box-shadow .2s; }
+.mp-piece img { width: 118%; height: 118%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0,0,0,.42)); }
+.mp-piece--red.mp-piece--skirmisher img { filter: hue-rotate(128deg) saturate(1.5) brightness(.86) drop-shadow(0 2px 2px rgba(0,0,0,.42)); }
+.mp-piece--blue { border-color: #89c9f0; }
+.mp-piece--red { border-color: #f08c87; }
+.mp-piece.is-selected { z-index: 8; box-shadow: 0 0 0 3px rgba(255,239,181,.85), 0 0 24px 7px rgba(65,154,220,.92); }
+.mp-piece__badge { position: absolute; right: -5px; bottom: -4px; display: grid; width: 18px; height: 18px; place-items: center; border-radius: 50%; font-family: var(--ui-command); font-size: .58rem; font-weight: 800; color: #fff7de; background: #183e5e; box-shadow: 0 2px 6px rgba(0,0,0,.5); pointer-events: none; }
+.mp-piece--red .mp-piece__badge { background: #7d272c; }
+.mp-piece__health { position: absolute; top: -8px; left: 5%; width: 90%; height: 5px; overflow: hidden; border-radius: 99px; background: #391c1c; pointer-events: none; }
+.mp-piece__health::after { content: ''; display: block; width: var(--health); height: 100%; background: linear-gradient(90deg,#3c893f,#7fd06e); }
+.mp-order-layer { position: absolute; z-index: 3; inset: 0; overflow: hidden; pointer-events: none; }
+.mp-order-arrow { position: absolute; display: block; height: 8px; border-radius: 4px 0 0 4px; background: #347ba6; box-shadow: 0 2px 3px rgba(0,0,0,.5); transform-origin: 0 50%; opacity: .82; transition: left .6s ease, top .6s ease, width .35s ease, transform .35s ease; }
+.mp-order-arrow::after { content: ''; position: absolute; right: -13px; top: -5px; border-top: 9px solid transparent; border-bottom: 9px solid transparent; border-left: 15px solid #347ba6; }
+.mp-order-arrow--red { background: #b34748; }
+.mp-order-arrow--red::after { border-left-color: #b34748; }
+.mp-roster { box-sizing: border-box; max-height: min(68svh, 620px); padding: .75rem; overflow-y: auto; border: 1px solid rgba(216,190,126,.33); border-radius: 16px; background: rgba(4,15,25,.76); box-shadow: 0 15px 36px rgba(0,0,0,.32), inset 0 1px rgba(255,255,255,.08); scrollbar-width: thin; }
+.mp-roster--blue { border-top: 4px solid #4c8db8; }
+.mp-roster--red { border-top: 4px solid #a73e42; }
+.mp-roster h3 { margin: 0 0 .55rem; font-family: var(--ui-display); font-size: 1rem; font-weight: 500; color: #eedcb3; }
+.mp-roster-row { position: relative; display: grid; grid-template-columns: 1fr auto; width: 100%; margin: 0 0 5px; padding: .48rem .5rem .7rem; border: 1px solid rgba(214,188,124,.18); border-radius: 9px; color: #d8cdb6; text-align: left; background: rgba(255,255,255,.035); cursor: pointer; }
+.mp-roster-row:disabled { opacity: .86; cursor: default; }
+.mp-roster-row.is-selected { border-color: #7bbce7; background: rgba(57,121,164,.22); }
+.mp-roster-row span { font-size: .7rem; font-weight: 700; }
+.mp-roster-row small { font-size: .62rem; color: #a79a80; }
+.mp-roster-row i { position: absolute; left: 7px; right: 7px; bottom: 4px; height: 3px; overflow: hidden; border-radius: 99px; background: #3a2524; }
+.mp-roster-row i::after { content: ''; display: block; width: var(--health); height: 100%; background: #5aaa62; }
+.mp-selected-detail { box-sizing: border-box; width: min(100%, 660px); margin: 0 0 7px; padding: .55rem .8rem; border-left: 4px solid #4f91bf; border-radius: 10px; font-family: var(--ui-command); font-size: .76rem; color: #ddcfaf; background: rgba(5,18,30,.82); box-shadow: 0 8px 22px rgba(0,0,0,.28); }
+.mp-command-bar { display: flex; width: min(100%, 720px); align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.mp-command-bar p { flex: 1; margin: 0; font-size: .75rem; line-height: 1.5; color: #bdb19b; }
+.mp-command-bar .turn-button { flex: 0 0 auto; margin: 0; }
+.mp-result { position: fixed; z-index: 500; inset: 0; display: grid; place-items: center; padding: 1rem; background: rgba(2,8,14,.82); backdrop-filter: blur(12px); }
+.mp-result[hidden] { display: none; }
+.mp-result__card { width: min(520px, 92vw); padding: 2rem; border: 1px solid #d5b76d; border-radius: 26px; color: #e8dcc2; text-align: center; background: linear-gradient(145deg,#183650,#071522); box-shadow: 0 34px 90px rgba(0,0,0,.68), inset 0 0 0 5px rgba(222,197,133,.07); }
+.mp-result[data-winner='red'] .mp-result__card { background: linear-gradient(145deg,#6a292e,#180b12); }
+.mp-result__card h2 { margin: .25rem 0 .7rem; font-family: var(--ui-display); font-size: 2.7rem; font-weight: 500; color: #ffe09a; }
+.mp-result__card p { line-height: 1.75; }
+.mp-result__card .game-btn { display: inline-flex; margin: .5rem .25rem 0; padding: .68rem 1rem; }
+
+@media (max-width: 980px) {
+	.mode-cards { grid-template-columns: 1fr; }
+	.mode-card { min-height: 300px; }
+	body.page-mode { overflow-y: auto; }
+	.mp-lobby { grid-template-columns: 1fr; }
+	.mp-battle-layout { grid-template-columns: 120px minmax(420px,1fr) 120px; gap: 7px; }
+	.mp-board { width: min(64svh, calc(100vw - 275px)); min-width: 420px; }
+	.mp-roster { padding: .48rem; }
+	.mp-roster-row { padding-inline: .35rem; }
+}
+
+@media (max-width: 720px) {
+	.page-login .page-box,
+	.page-register .page-box { width: min(96vw, 600px); }
+	.page-login .form-box,
+	.page-register .form-box { padding: 1.45rem 1.2rem; border-radius: 24px; }
+	.mode-card { min-height: 275px; }
+	.mp-page-heading { align-items: flex-end; gap: 8px; }
+	.mp-page-heading h1 { font-size: 2rem; }
+	.mp-connect-grid { grid-template-columns: 1fr; }
+	.mp-unit-inputs { grid-template-columns: repeat(2, 1fr); }
+	.mp-builder-footer { grid-template-columns: 1fr; }
+	.mp-battle-hud { grid-template-columns: 1fr 1fr; }
+	.mp-turn-state { grid-column: 1 / -1; grid-row: 1; border-bottom: 1px solid rgba(220,195,132,.2); }
+	.mp-battle-layout { display: flex; flex-wrap: wrap; justify-content: center; }
+	.mp-tactical-column { order: -1; width: 100%; }
+	.mp-board { width: min(92vw, 620px); min-width: 0; }
+	.mp-roster { width: calc(50% - 5px); max-height: 190px; }
+	.mp-command-bar { align-items: stretch; flex-direction: column; }
+	.mp-command-bar .turn-button { width: 100%; }
+	.dialog-skip { top: 60px; right: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-route-curtain,
+	.page-route-curtain span,
+	.mode-card,
+	.mode-card::before,
+	.mp-die strong,
+	.mp-piece,
+	.mp-order-arrow,
+	.dialog-overlay.is-leaving { animation: none !important; transition-duration: .01ms !important; }
+}
+
+/* ========================================================================== */
+/* 2026-09-15 战场与战役地图终版：信息层级、战果冲击、隐藏会战主节点          */
+/* ========================================================================== */
+
+/* 阵亡单位彻底退出画面；不再保留过去由亮度滤镜形成的黑色圆点。 */
+.game-page .chess.disabled {
+	display: none !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* 地图尽量占满首屏，同时给标题、操作区和地图军令栏留下稳定高度。 */
+@media (min-width: 761px) {
+	.campaign-map-shell {
+		width: min(97vw, 1280px, calc((100svh - 188px) * 1.274));
+		min-width: 620px;
+	}
+}
+
+.campaign-map-shell .map-route__underlay--done { stroke-width: 11; }
+.campaign-map-shell .map-route__underlay--next { stroke-width: 8; stroke-dasharray: 5 11; }
+.campaign-map-shell .map-route__line--done,
+.campaign-map-shell .map-route__line--draw { stroke-width: 5.2; }
+.campaign-map-shell .map-route__line--next { stroke-width: 3.1; stroke-dasharray: 5 11; }
+
+.campaign-map-shell .map-pin__dot {
+	width: 36px;
+	height: 36px;
+	border-width: 2.5px;
+	font-size: 1.02rem;
+}
+.campaign-map-shell .map-pin__dot::after { border-width: 7px; border-bottom: 0; }
+.campaign-map-shell .map-pin__stars {
+	top: 31px;
+	display: inline-flex;
+	align-items: center;
+	gap: .08em;
+	font-size: 1.08rem;
+	line-height: 1;
+	letter-spacing: 0;
+}
+.campaign-map-shell .map-pin--hidden .map-pin__dot {
+	width: 52px;
+	height: 52px;
+	border-width: 3px;
+	font-size: 1.42rem;
+	box-shadow: 0 10px 28px rgba(0,0,0,.66), inset 0 1px rgba(255,255,255,.28), 0 0 0 6px rgba(203,170,91,.13);
+}
+.campaign-map-shell .map-pin--hidden .map-pin__stars {
+	top: 44px;
+	font-size: 1.34rem;
+	font-style: normal;
+	transform: translateX(-50%);
+}
+.campaign-map-shell .map-pin--hidden.map-pin--locked .map-pin__stars {
+	top: 45px;
+	padding: 5px 10px;
+	font-family: var(--ui-command);
+	font-size: 1.12rem;
+	font-weight: 800;
+	letter-spacing: .035em;
+}
+.campaign-map-shell .map-pin--hidden .map-pin__lock {
+	left: 15px;
+	top: -27px;
+	transform: scale(1.22);
+}
+
+/* 地图与战果星共用“钉入 + 墙灰震落”的力量感语言。 */
+.map-star {
+	position: relative;
+	display: inline-block;
+	min-width: .9em;
+	text-align: center;
+}
+.map-star--impact {
+	opacity: 0;
+	transform-origin: 50% 55%;
+	animation: mapStarNail .74s cubic-bezier(.12,.72,.22,1.28) var(--map-star-delay, 0ms) both;
+}
+.map-star__dust,
+.victory-star__dust {
+	position: absolute;
+	z-index: -1;
+	left: 50%;
+	top: 52%;
+	width: 3.5em;
+	height: 2.1em;
+	pointer-events: none;
+	opacity: 0;
+	transform: translate(-50%, -50%) scale(.2);
+	background:
+		radial-gradient(circle at 10% 56%, rgba(225,211,177,.82) 0 3%, transparent 4%),
+		radial-gradient(circle at 27% 36%, rgba(161,145,112,.7) 0 4%, transparent 5%),
+		radial-gradient(circle at 74% 37%, rgba(226,210,172,.76) 0 3%, transparent 4%),
+		radial-gradient(circle at 92% 60%, rgba(141,125,94,.66) 0 4%, transparent 5%),
+		radial-gradient(ellipse at 50% 57%, rgba(204,188,151,.48), transparent 58%);
+	filter: blur(.2px);
+}
+.map-star--impact .map-star__dust {
+	animation: starDustFall .78s ease-out calc(var(--map-star-delay, 0ms) + .29s) both;
+}
+@keyframes mapStarNail {
+	0% { opacity: 0; transform: translateY(-58px) scale(1.8) rotate(-14deg); filter: brightness(1.5); }
+	48% { opacity: 1; transform: translateY(2px) scale(.62) rotate(2deg); filter: brightness(1.8); }
+	67% { transform: translateY(-2px) scale(1.26) rotate(-1deg); }
+	82% { transform: translateY(0) scale(.92); }
+	100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
+}
+@keyframes starDustFall {
+	0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+	18% { opacity: .95; transform: translate(-50%, -47%) scale(1.12); }
+	100% { opacity: 0; transform: translate(-50%, 28%) scale(1.7); filter: blur(1.7px); }
+}
+
+#win,
+#lose,
+body.game-page.result-active #win {
+	border-radius: 24px;
+}
+.victory-stars {
+	display: flex;
+	min-height: 94px;
+	margin: .25rem 0 .45rem;
+	align-items: center;
+	justify-content: center;
+	gap: .24em;
+	font-size: clamp(3rem, 7vw, 4.65rem);
+	line-height: 1;
+	color: #f2c85f;
+	text-shadow: 0 4px 0 #7b5718, 0 10px 20px rgba(0,0,0,.5), 0 0 16px rgba(255,215,105,.4);
+}
+.victory-star {
+	position: relative;
+	display: inline-block;
+	opacity: 0;
+	transform-origin: 50% 58%;
+	animation: victoryStarNail .82s cubic-bezier(.1,.72,.18,1.27) var(--star-delay, 0ms) both;
+}
+.victory-star .victory-star__dust {
+	animation: starDustFall .88s ease-out calc(var(--star-delay, 0ms) + .34s) both;
+}
+@keyframes victoryStarNail {
+	0% { opacity: 0; transform: translateY(-135px) scale(1.72) rotate(-16deg); filter: brightness(1.7); }
+	46% { opacity: 1; transform: translateY(5px) scale(.58) rotate(2deg); filter: brightness(2); }
+	63% { transform: translateY(-5px) scale(1.28) rotate(-1deg); }
+	80% { transform: translateY(1px) scale(.9); }
+	100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+/* 战场标题改为真正的指挥信息带，字号不再依赖狭小页头。 */
+.game-page .game-heading {
+	min-height: 88px;
+	justify-content: center;
+}
+.game-page .game-heading::before {
+	font-size: .68rem;
+	letter-spacing: .25em;
+}
+.game-page .game-heading h2 {
+	margin: .12rem 0 .22rem;
+	font-size: clamp(1.5rem, 2.4vw, 2.05rem);
+}
+.game-page #footer-bar {
+	max-width: min(720px, 64vw);
+	font-family: var(--ui-command);
+	font-size: .86rem;
+	font-weight: 650;
+	line-height: 1.4;
+	letter-spacing: .04em;
+}
+
+/* 左上战况区和右上全局控制统一加大；释义气泡支持悬停与键盘聚焦。 */
+.game-page .battle-status {
+	top: 14px;
+	left: 14px;
+	min-height: 48px;
+	padding: 7px 10px;
+	border-radius: 17px;
+}
+.game-page .battle-status__item {
+	display: inline-flex;
+	align-items: center;
+	gap: .38rem;
+	padding: .28rem .72rem;
+	font-size: .78rem;
+	letter-spacing: .045em;
+}
+.battle-term-info {
+	position: relative;
+	display: inline-grid;
+	width: 18px;
+	height: 18px;
+	padding: 0;
+	place-items: center;
+	border: 1px solid rgba(255,226,151,.74);
+	border-radius: 50%;
+	font-family: Georgia, serif;
+	font-size: .71rem;
+	font-weight: 800;
+	font-style: italic;
+	line-height: 1;
+	color: #ffe39a;
+	background: rgba(255,255,255,.06);
+	cursor: help;
+}
+.battle-term-tooltip {
+	position: absolute;
+	z-index: 950;
+	top: calc(100% + 12px);
+	left: -12px;
+	box-sizing: border-box;
+	width: 270px;
+	padding: .74rem .82rem;
+	border: 1px solid rgba(220,193,124,.55);
+	border-radius: 12px;
+	font-family: var(--ui-body);
+	font-size: .75rem;
+	font-weight: 500;
+	line-height: 1.62;
+	letter-spacing: 0;
+	white-space: normal;
+	color: #f0e4ca;
+	background: rgba(5,15,25,.98);
+	box-shadow: 0 16px 34px rgba(0,0,0,.5);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-5px);
+	transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.battle-term-info:hover .battle-term-tooltip,
+.battle-term-info:focus-visible .battle-term-tooltip {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+.battle-term-info:focus-visible { outline: 2px solid #f0ce78; outline-offset: 2px; }
+
+.game-page .ui-toolbar {
+	top: 14px;
+	right: 14px;
+	gap: 8px;
+	padding: 7px;
+	border-radius: 14px;
+}
+.game-page .ui-language { min-height: 40px; max-width: 142px; padding: 0 .68rem; font-size: .84rem; }
+.game-page .ui-theme,
+.game-page .ui-sound { width: 42px; min-height: 40px; font-size: 1.12rem; }
+
+/* 双侧常驻编制栏；选中详情位于编制栏与棋盘之间。 */
+.army-roster {
+	position: fixed;
+	z-index: 205;
+	top: 50%;
+	box-sizing: border-box;
+	width: 154px;
+	max-height: min(64svh, 620px);
+	padding: .7rem;
+	overflow-y: auto;
+	border: 1px solid rgba(214,188,124,.4);
+	border-radius: 16px;
+	color: #ddd0b4;
+	background: rgba(5,17,28,.92);
+	box-shadow: 0 18px 42px rgba(0,0,0,.42), inset 0 1px rgba(255,255,255,.09);
+	transform: translateY(-50%);
+	scrollbar-width: thin;
+}
+.army-roster--blue { left: 12px; border-top: 4px solid #5797c2; }
+.army-roster--red { right: 12px; border-top: 4px solid #b74a4d; }
+.army-roster__heading {
+	margin-bottom: .58rem;
+	font-family: var(--ui-display);
+	font-size: .92rem;
+	color: #f0dbab;
+	text-align: center;
+}
+.army-roster__row {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0 0 5px;
+	padding: .46rem .48rem .7rem;
+	border: 1px solid rgba(217,192,130,.18);
+	border-radius: 9px;
+	font-family: var(--ui-command);
+	color: #ddd1b8;
+	text-align: left;
+	background: rgba(255,255,255,.035);
+	cursor: pointer;
+}
+.army-roster__row:hover { border-color: rgba(231,207,146,.58); background: rgba(255,255,255,.08); }
+.army-roster--blue .army-roster__row.is-selected { border-color: #7bc0ea; background: rgba(55,126,173,.25); }
+.army-roster--red .army-roster__row.is-selected { border-color: #ed8985; background: rgba(154,53,57,.25); }
+.army-roster__name { overflow: hidden; font-size: .7rem; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.army-roster__row small { font-size: .6rem; color: #a99a7d; }
+.army-roster__row i {
+	position: absolute;
+	left: 7px;
+	right: 7px;
+	bottom: 4px;
+	height: 4px;
+	overflow: hidden;
+	border-radius: 999px;
+	background: #4c2424;
+}
+.army-roster__row i::after { content: ''; display: block; width: var(--roster-health); height: 100%; background: linear-gradient(90deg,#388c52,#7ac96c); }
+.game-page.level-opening .army-roster,
+.game-page.result-active .army-roster { opacity: 0; visibility: hidden; pointer-events: none; }
+
+@media (min-width: 1181px) {
+	body.game-page { padding-right: 355px; padding-left: 355px; }
+	.game-page #board {
+		width: min(72dvh, calc(100vw - 740px));
+		height: min(72dvh, calc(100vw - 740px));
+		min-width: 410px;
+		min-height: 410px;
+	}
+	#info-bar { left: 176px; width: 158px; }
+	#enemy-info { right: 176px; width: 158px; }
+	/* 第 8 关棋盘左侧还保留炮兵部署架，略收棋盘以免部署架、详情栏互相覆盖。 */
+	.game-page.game8 #board {
+		width: min(68dvh, calc(100vw - 820px));
+		height: min(68dvh, calc(100vw - 820px));
+		min-width: 390px;
+		min-height: 390px;
+	}
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+	body.game-page { padding-right: 252px; padding-left: 252px; }
+	.game-page #board {
+		width: min(65dvh, calc(100vw - 530px));
+		height: min(65dvh, calc(100vw - 530px));
+		min-width: 400px;
+		min-height: 400px;
+	}
+	.army-roster { width: 124px; padding: .5rem; }
+	.army-roster--blue { left: 6px; }
+	.army-roster--red { right: 6px; }
+	#info-bar { left: 135px; width: 105px; padding: 9px; font-size: .75rem; }
+	#enemy-info { right: 135px; width: 105px; padding: 9px; font-size: .75rem; }
+	.game-page .battle-status { top: 8px; left: 8px; }
+	.game-page .battle-status__item { padding-inline: .48rem; font-size: .69rem; }
+	.game-page .ui-toolbar { top: 8px; right: 8px; }
+}
+
+/* 中等窄屏已经容不下“序列栏 + 详情栏 + 棋盘”三列：改为纵向排列，
+   保留双方序列与选中详情，不让它们彼此覆盖或压住棋盘。 */
+@media (min-width: 761px) and (max-width: 900px) {
+	body.game-page {
+		height: auto;
+		min-height: 100svh;
+		padding: 8px 12px 18px;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+	.game-page #board {
+		width: min(78vw, 64dvh);
+		height: min(78vw, 64dvh);
+		min-width: 0;
+		min-height: 0;
+	}
+	.game-page.game8 #board {
+		width: min(76vw, 60dvh);
+		height: min(76vw, 60dvh);
+		min-width: 0;
+		min-height: 0;
+	}
+	#info-bar,
+	#enemy-info,
+	.army-roster {
+		position: relative;
+		top: auto;
+		right: auto;
+		bottom: auto;
+		left: auto;
+		width: min(94vw, 620px);
+		max-height: 180px;
+		margin: 6px auto;
+		transform: none;
+	}
+}
+
+@media (max-width: 760px) {
+	.campaign-map-shell .map-pin__dot { width: 28px; height: 28px; font-size: .82rem; }
+	.campaign-map-shell .map-pin__stars { top: 24px; font-size: .88rem; }
+	.campaign-map-shell .map-pin--hidden .map-pin__dot { width: 40px; height: 40px; font-size: 1.1rem; }
+	.campaign-map-shell .map-pin--hidden .map-pin__stars { top: 34px; font-size: 1rem; }
+	.campaign-map-shell .map-pin--hidden.map-pin--locked .map-pin__stars { top: 35px; padding: 3px 6px; font-size: .94rem; }
+	.campaign-map-shell .map-pin--hidden .map-pin__lock { left: 11px; top: -22px; transform: scale(1); }
+
+	body.game-page { height: auto; min-height: 100svh; overflow-y: auto; }
+	.game-page .game-heading { min-height: 72px; }
+	.game-page .game-heading::before { font-size: .54rem; }
+	.game-page .game-heading h2 { font-size: 1.25rem; }
+	.game-page #footer-bar { max-width: 94vw; font-size: .72rem; }
+	.game-page .battle-status { position: relative; top: auto; left: auto; order: -1; max-width: 96vw; margin: 48px auto 4px; flex-wrap: wrap; }
+	.game-page .battle-status__item { padding: .22rem .45rem; font-size: .65rem; }
+	.battle-term-tooltip { position: fixed; top: 112px; right: 10px; left: 10px; width: auto; }
+	.game-page .ui-toolbar { top: 6px; right: 6px; }
+
+	#info-bar,
+	#enemy-info {
+		position: relative;
+		top: auto;
+		right: auto;
+		bottom: auto;
+		left: auto;
+		width: min(94vw, 520px);
+		max-height: 170px;
+		margin: 4px auto;
+		transform: none;
+	}
+	.army-roster {
+		position: relative;
+		top: auto;
+		right: auto;
+		left: auto;
+		width: min(94vw, 520px);
+		max-height: 150px;
+		margin: 7px auto 0;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.map-star--impact,
+	.map-star--impact .map-star__dust,
+	.victory-star,
+	.victory-star .victory-star__dust { animation: none !important; opacity: 1; transform: none; }
+}
+
+/* 追加：B08/B12 —— 真模态的背景隔离（ui.js 的 buildModal 在打开时给 body 加 .ui-modal-open）。
+   规则放在文件末尾并按项目约定抬特异性，避免被前面同特异性的规则替换掉。 */
+body.ui-modal-open {
+	overflow: hidden;
+}
+/* 背景不可交互：弹窗遮罩之外的直接子节点一律屏蔽指针事件。
+   .ui-modal-mask 自身保持可交互（它承载弹窗本体），
+   浮动提示层（toast / 成就）也保持可交互，否则弹窗期间玩家连"保存成功"都点不掉。 */
+body.ui-modal-open > *:not(.ui-modal-mask):not(.ui-toast-stack):not(.ui-achv-stack) {
+	pointer-events: none !important;
+}
+/* 背景控件退出 Tab 顺序（焦点陷阱在 JS 里循环，这里只是双保险）。 */
+body.ui-modal-open > *:not(.ui-modal-mask):not(.ui-toast-stack):not(.ui-achv-stack) button,
+body.ui-modal-open > *:not(.ui-modal-mask):not(.ui-toast-stack):not(.ui-achv-stack) a,
+body.ui-modal-open > *:not(.ui-modal-mask):not(.ui-toast-stack):not(.ui-achv-stack) select,
+body.ui-modal-open > *:not(.ui-modal-mask):not(.ui-toast-stack):not(.ui-achv-stack) input {
+	pointer-events: none !important;
+}
+
+/* ==========================================================================
+   追加：B05 —— 手机端顶部不再互相遮挡
+   问题：≤760px 时 #ui-toolbar 是 position:fixed（top:6px; right:6px，高 56px），
+         而 .game-heading（内含"剩余 N 回合"pill 和 h2 关卡名）在文档流顶部 y≈5 起，
+         两者纵向 6~62px 完全压在一起；工具栏还盖住关卡标题。
+         另外战况条写的 margin-top:48px 在 flex 列容器里会被相邻项挤压后垂直居中，
+         实测仍停在 y=5，等于没有让位。
+   做法：给游戏页正文留出工具栏高度的顶部内边距（工具栏继续固定不动），
+         并让战况条与标题各占正常的一行。
+   注意：game8 是 body.game8（没有 .game-page），本条不套用。
+   ========================================================================== */
+@media (max-width: 760px) {
+	body.game-page {
+		/* 工具栏固定占位（top 6 + 高 6 + 底部留 6），正文从它下面开始 */
+		padding-top: 74px;
+	}
+	/* 战况条与标题独立占行：不再依赖会被压缩的 margin-top */
+	.game-page .game-heading {
+		min-height: 0;
+	}
+	.game-page .battle-status {
+		margin: 0 auto 8px;
+		position: static;
+		top: auto;
+		left: auto;
+		order: -1;
+	}
+	/* 回退/存档等按钮组与"下一步"在同一布局流里，用间距控制距离 */
+	.game-page #game-actions { margin-bottom: 14px; }
+	.game-page #button { margin-top: 14px; }
+}
+
+/* ==========================================================================
+   追加：对话框徽章（N 徽记）摆正并居中
+   玩家的反馈是"徽章歪了，放中间一点"。
+   原因有两处：
+     1) .dialog-crest 从早期版本就带 `transform: rotate(-3deg)` —— 整个金环是斜的；
+     2) 桌面布局里 .dialog-box 是「徽章 | 羊皮纸 | 继续」三列网格，
+        徽章挤在左侧 90px 一列里，视觉上偏在左下角。
+   做法：只把徽章摆正、并让它在自己那一列里垂直居中留出呼吸感。
+   ⚠️ 不要动 .dialog-box 的 grid-template-columns —— 那会牵动羊皮纸与继续按钮的排布，
+      也影响 .dialog-overlay .dialog-next 的定位。
+   ========================================================================== */
+.dialog-crest {
+	/* 摆正：去掉历史遗留的 -3° 倾斜 */
+	transform: none;
+}
+.dialog-crest__monogram {
+	/* 字母本身也不要再单独倾斜（原设计是斜体衬线，这里保持直立更稳） */
+	font-style: normal;
+}
+
+/* 窄屏（≤760px）：徽章从"绝对定位到左上角"改为居中悬在羊皮纸上方。
+   原来的 top:-39px; left:15px 把 -39px 塞进了 .dialog-box 的上边框区域，
+   在矮视口下会被裁掉一半，玩家只看到一个歪在角落的徽记。 */
+@media (max-width: 760px) {
+	.dialog-crest {
+		position: absolute;
+		top: -38px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 72px;
+		height: 72px;
+	}
+	.dialog-crest::before,
+	.dialog-crest::after { bottom: -17px; width: 16px; height: 27px; }
+	.dialog-crest::before { left: 15px; }
+	.dialog-crest::after { right: 15px; }
+}
+
+/* ==========================================================================
+   追加：修"主界面看不到每关星级"（矮视口下被裁掉）
+   玩家报"游戏主界面没显示每关获得的星"。实测根因：
+     · .campaign-map-shell 是 `overflow: hidden`（用来裁圆角）；
+     · 而它的宽度被 `calc(100svh - 215px)` 限住 —— 1280×600 / 1366×768 /
+       1024×768 这类"宽而矮"的笔记本屏上地图会明显变窄；
+     · 于是靠地图左下的土伦（第 1 关）、图卢兹（第 2 关）图钉，
+       它们下方那行 49px 宽的星级会越过 shell 的左右边界，被 overflow 切掉。
+       实测 1366×768 与 1024×768 下第 1、2 关星级 "被shell裁切"，
+       第 1 关那颗还被 BODY 盖住；1440×900 则正常 —— 所以只在部分机器上复现。
+   修法：让 shell 不再裁剪，圆角交给内层 .campaign-map 自己那层负责
+        （`.campaign-map-shell .campaign-map` 本身就是 `overflow: visible`
+         + `border-radius: 19px`，裁切职责已经在那里了）。
+   ⚠️ 不要改用 clip-path 去"保留圆角"——那同样会切掉边缘图钉的星级。
+   ========================================================================== */
+.campaign-map-shell {
+	overflow: visible;
+}
+
+/* ==========================================================================
+   追加：桌面端 N 徽记居中（玩家要求"放中间一点"）
+   上一版只把徽记"摆正"（去掉 rotate(-3deg)）并让窄屏居中；桌面端它仍在
+   「徽章 | 羊皮纸 | 继续」三列网格的左侧列，离视口中心 −538px，看着还是偏左下。
+   这一版让桌面端也居中。
+
+   ⚠️ 走通它必须**三件事一起做**，缺一样布局就会塌（我上一次返工过一遍）：
+     1) 第一列 96px -> 0：徽记改成绝对定位后不再需要那一列；
+     2) padding 基准同步 −96（原 `(100vw - 1210px)/2` -> `(100vw - 960px)/2`）：
+        原公式把「3 列 96+900+138 + 2 个 16px gap」= 1210 当作内容宽度，
+        列数一变就得跟着变，否则内容整体偏移；
+     3) 羊皮纸改成 `grid-column: 1 / -1` + `justify-self: center`：
+        徽记脱离网格后，**grid 的自动放置会把羊皮纸丢进那个 0 宽的第一列**
+        （实测被挤成 145px 宽、正文 81px），必须显式给它跨列居中。
+     4) 「继续」按钮改为绝对定位贴右下：它原本占第三列，列结构变了之后
+        留在网格里会被挤走（实测宽度异常到 900px）。
+   实测（1440×900 / 1366×768 / 1024×768）：羊皮纸 cx 与徽记 cx **都精确等于视口中心**
+   （偏差 0.0px），羊皮纸宽 893 / 893 / 771，正文 829 / 829 / 722，继续按钮 132。
+   ⚠️ 窄屏（≤760px）本就是单列 + 徽记居中，下面的媒体查询把桌面这套覆盖回去。
+   ========================================================================== */
+.dialog-overlay .dialog-box {
+	grid-template-columns: 0 minmax(420px, 900px);
+	padding-left: max(18px, calc((100vw - 960px) / 2));
+	padding-right: max(18px, calc((100vw - 960px) / 2));
+}
+.dialog-overlay .dialog-crest {
+	position: absolute;
+	top: -46px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 84px;
+	height: 84px;
+	align-self: auto;
+	z-index: 6;
+}
+.dialog-overlay .dialog-paper {
+	grid-column: 1 / -1;
+	grid-row: 1;
+	justify-self: center;
+}
+.dialog-overlay .dialog-next {
+	position: absolute;
+	right: max(18px, calc((100vw - 960px) / 2));
+	bottom: 1.1rem;
+}
+
+/* 矮视口把徽记上移量收一点，避免顶到屏幕外 */
+@media (max-height: 680px) {
+	.dialog-overlay .dialog-crest { top: -38px; width: 72px; height: 72px; }
+	.dialog-crest__monogram { font-size: 1.95rem; }
+	.dialog-crest::before,
+	.dialog-crest::after { bottom: -17px; width: 15px; height: 26px; }
+	.dialog-crest::before { left: 14px; }
+	.dialog-crest::after { right: 14px; }
+}
+
+/* 窄屏（≤760px）：恢复单列布局，徽记居中悬在羊皮纸上方，「继续」回到流内右下 */
+@media (max-width: 760px) {
+	.dialog-overlay .dialog-box {
+		grid-template-columns: minmax(0, 1fr);
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.dialog-overlay .dialog-paper {
+		grid-column: auto;
+		grid-row: auto;
+		justify-self: stretch;
+	}
+	.dialog-overlay .dialog-next {
+		position: absolute;
+		right: 12px;
+		bottom: 10px;
+	}
+	.dialog-overlay .dialog-crest {
+		top: -38px;
+		width: 72px;
+		height: 72px;
+	}
+}
+
+/* ==========================================================================
+   追加：去掉对话框的 backdrop-filter（修"序章对话框看不见 / 玩家以为卡在加载"）
+   现象：序章与关卡剧情弹窗在部分渲染路径下**整块不绘制** ——
+         DOM、几何、computed style（opacity:1 / visibility:visible / rect 正确）全都正常，
+         elementFromPoint 命中也是它，但屏幕上只能看到背后那张地图和一个 N 徽记，
+         玩家以为页面卡在加载。
+   定位：项目文档里已记过一次同类问题（"高屏幕下绝对定位对话框因遮罩滤镜产生 12px 渲染偏移"）。
+         这次用最小对照页确认：同一块板，**只加/去 `backdrop-filter` 就会改变整页渲染结果**
+         （整页截图哈希不同），说明是 backdrop-filter 的合成层在作祟。
+   修法：去掉 `.dialog-box` 的 backdrop-filter。它的背景本来就是 .98/.995 不透明度的
+         深色渐变，去掉毛玻璃后观感几乎不变（后面那层是地图，透不出多少）。
+   ⚠️ 不要再给 .dialog-box 加 backdrop-filter / filter 动画 ——
+      两者都会创建独立合成层，是这类"看不见"问题的来源。
+      其它元素的毛玻璃（工具条、地图外壳、弹卡等）保持原样，那些没有报告问题。
+   ========================================================================== */
+.dialog-box,
+.dialog-overlay .dialog-box {
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+/* ⚠️ 上面那段注释的"病因"判断是错的，2026-09-16 已复盘更正（代码保留，无害）：
+   对话框"看不见"的真凶不是 backdrop-filter，而是 **全屏换场幕布 .page-route-curtain
+   （z-index:9999）压在对话层（z-index:600）之上** —— index.html 在注册后进
+   index.html?prologue=1 时先给 body 挂了 is-routing 就没再撤下来，
+   玩家整段序章只看到幕布上那个金圈 N（所以 elementFromPoint 怎么测都"正常"：
+   pointer-events:none 的幕布不参与命中测试，但它照常绘制在最上层）。
+   修法在下面「追加：撤掉序章期间的全屏换场幕布」一段。 */
+
+/* ==========================================================================
+   追加：问题⑤ —— 主界面底部导航被裁，玩家报"缩放错误，看不到下面的按钮"
+   实测（1366×768 / 1920×1080 / 1024×768 / 1440×900 … 全部命中）：
+     · 上一段 `@media (min-width:761px)` 把地图外壳写成
+       `width: min(97vw, 1280px, calc((100svh - 188px) * 1.274))`
+       —— 只预留了 188px 给上下所有非地图内容；
+     · 可外壳自身还有 8px×2 内边距 + 顶部 32px + 底部 29px 军令栏
+       （换算过来外壳高度 = (宽−16)/1.274 + 77），加上页头约 90~110px、
+       底部导航行 96px、body 上下内边距，真正需要的是 ~1.13×视口高度；
+     · 于是外壳底边在 1366×768 落在 y=790（视口 768）、1920×1080 落在 y=1129，
+       整页高 926 / 1267，而 body 是 `height:100svh; overflow:hidden`
+       —— 底部导航（模式选择/小组介绍/成就/读取存档/退出登录）被裁掉且**无法滚动**。
+   修法：
+     1) 预留高度按"实测纵向预算"重算，去掉 min-width —— `calc(112svh - 320px)`
+        是照 620~1080 十三个高度的真实预算（页头 + 外壳自有 77px 军令栏 +
+        底部导航行 + 内外边距）拟合的，每个高度都留 9~14px 余量，**不出现滚动条**；
+     2) 压缩底部导航行的上下留白：`.page-box` 默认 `padding: 1rem 0`，
+        而这行只是 5 个按钮，32px 纯留白换成了地图高度。
+        玩家明确要求："宁可排版紧一点，也要一页放得下，不要为一点点内容去滚动"。
+     3) 兜底：主界面 body 由 `height:100svh` 改成 `min-height:100svh` + `overflow-y:auto`，
+        万一以后再有超高内容，至少能滚到按钮，不会再"看不见也点不到"。
+   ⚠️ 只动 body.page-menu；body.game-page 的 100svh 锁屏是棋盘布局的前提，不要一起改。
+   ⚠️ min-width 不要再加回去：960×640 / 768×640 / 762×620 这类"宽而矮"的窗口
+      一旦被 floor 顶住，外壳就比视口还高，底部导航又会掉出去。
+   ========================================================================== */
+@media (min-width: 761px) {
+	.campaign-map-shell {
+		width: min(97vw, 1280px, calc(112svh - 320px));
+		min-width: 0;
+	}
+
+	/* ⚠️ 这里必须用 :has()，不能写 :last-of-type。
+	   实测（2026-09-16）：`ui.js` 会在 body 末尾 append 一个 `.ui-toolbar`，
+	   它是 body 的**最后一个 div**，于是 .page-menu > .page-box:last-of-type
+	   匹配不到任何元素 —— 本项目里那条规则（以及 :first-child 那条）其实一直是死的。
+	   同理也不能用 :first-of-type：带 ?intro=1 时 #campaign-arrival 才是第一个 div。 */
+	.page-menu > .page-box:has(> .menu-list) {
+		padding: 0.25rem 0;
+	}
+}
+
+/* ==========================================================================
+   追加：撤掉序章期间的全屏换场幕布（问题④真凶）
+   `.page-route-curtain` 是 z-index:9999 的不透明全屏层，只该用在"登录/注册 →
+   下一页"那 560ms 的换场上（那时页面上没有别的内容）。一旦有对话层
+   （z-index:600）在演，幕布就必须让位 —— 否则玩家只看得见幕布上那枚金圈 N，
+   以为整个页面卡在加载（这就是"注册完一直进不去、约 1 分钟"的真相：
+   在 30s 兜底与转场计时器跑完之前，屏幕上只有这块幕布）。
+   JS 侧已在 playCampaignPrologue() 里摘掉 body.is-routing；这里再加一道 CSS 保险，
+   保证任何将来忘记摘幕布的路径都不会再挡住剧情。
+   ========================================================================== */
+body.dialogue-active .page-route-curtain {
+	opacity: 0;
+	visibility: hidden;
+}
+
+/* ==========================================================================
+   追加：矮视口"压缩排版换一页放得下"（玩家要求，2026-09-16 第三轮）
+   原则：宁可把留白压紧一点，也不要让玩家为了看全一页去滚动；
+        尤其是 body 为 `overflow:hidden` 的页面 —— 那里超出部分**滚都滚不到**。
+   适用：**901px 以上宽**、720px 以下高的"宽而矮"窗口（1280×720 / 1152×700 /
+        1024×640 / 960×640 这类）。
+   ⚠️ 为什么下限取 901px：761–900px 那一段（下面 `@media (min-width:761px) and
+      (max-width:900px)`）是**有意改成纵向排列 + `overflow-y:auto`** 的
+      ——"中等窄屏容不下序列栏+详情栏+棋盘三列"，那边本来就要滚动，
+      不该再被我这里缩棋盘。≤760px 的移动端同理（纵向堆叠，设计上就滚动）。
+   ---- 游戏页 ----
+   实测 game1@960×640：docH 670 / 视口 640，被裁掉的正是「下一步」按钮
+        （top 626 → bottom 670）。链条是
+        棋盘 bottom 501 +13 `#game-actions`(89) +24 `#button`(44)。
+       game1@901×700：overflow 18px —— 正好是"就差一点点"那类。
+   修法：按视口高度收棋盘，并把棋盘→操作区→「下一步」之间的留白压紧。
+   ⚠️ 只在矮视口生效；高视口仍旧用上面 1181px / 901–1180px 两段的棋盘尺寸。
+   ========================================================================== */
+@media (min-width: 901px) and (max-height: 720px) {
+	.game-page #board {
+		width: min(56dvh, calc(100vw - 440px));
+		height: min(56dvh, calc(100vw - 440px));
+		min-width: 300px;
+		min-height: 300px;
+	}
+	.game-page .game-heading { min-height: 60px; }
+	.game-page #game-actions { margin-top: 6px; margin-bottom: 6px; }
+	body.game-page #button { margin-top: 8px; }
+}
+
+/* 761–900px 这一段本身就是纵向排列 + 滚动（序列栏在棋盘下方），
+   整页不可能一屏放下，也不该动它的排版；但「下一步」是主操作，
+   不能让它掉出首屏 —— 差的那几像素（860×660 差 7px、768×640 差 14px）
+   用收棋盘 + 压按钮上边距补回来，序列栏该滚动还是滚动。 */
+@media (min-width: 761px) and (max-width: 900px) and (max-height: 700px) {
+	.game-page #board {
+		width: min(72vw, 58dvh);
+		height: min(72vw, 58dvh);
+	}
+	body.game-page #button { margin-top: 6px; }
+}
+
+@media (min-width: 761px) and (min-height: 620px) {
+	body.page-menu {
+		height: auto;
+		min-height: 100svh;
+		overflow-y: auto;
+	}
+}
+
+/* ==========================================================================
+   追加：登录 / 注册页在矮视口的紧凑排版
+   原来"紧凑档"的门槛写在 `@media (max-height: 680px)`，实测门槛太高：
+   1280×760 溢出 9px、1280×720 溢出 47px、1280×700 溢出 67px、
+   1280×640 溢出 67px —— 全是"只差一点点"，却要先滚动才看得到「登录 / 注册」。
+   玩家要求：差一点点就压缩排版，别让人滚。
+   修法：把门槛抬到 820px，并把页头、表单内边距、行距整体收紧一档。
+   ⚠️ 只压登录 / 注册这两张卡；别的页面不动。
+   ========================================================================== */
+@media (min-width: 761px) and (max-height: 820px) {
+	body.page-login,
+	body.page-register {
+		min-height: 0;
+		padding-top: 26px;
+		padding-bottom: 12px;
+	}
+	.page-login .page-kicker,
+	.page-register .page-kicker { margin-bottom: 0.12rem; font-size: 0.62rem; }
+	.page-login .page-box,
+	.page-register .page-box { padding: 0.35rem 0; }
+	.page-login .page-box h1,
+	.page-register .page-box h1 { margin-bottom: 0.06em; font-size: 2.05rem; }
+	.page-login .page-sub,
+	.page-register .page-sub { margin-bottom: 0.5rem; font-size: 0.78rem; line-height: 1.5; }
+	.page-login .form-box,
+	.page-register .form-box { padding: 0.85rem 1.25rem 0.9rem; border-radius: 20px; }
+	.page-login .form-box h2,
+	.page-register .form-box h2 { margin-bottom: 0.45rem; font-size: 1.12rem; }
+	.page-login .form-box label,
+	.page-register .form-box label { margin-bottom: 0.4rem; }
+	.page-login .form-box input,
+	.page-register .form-box input { padding: 0.4rem 0.62rem; }
+	.page-login .form-box button,
+	.page-register .form-box button { margin-top: 0.45rem; padding: 0.52rem; }
+	.page-login .form-msg,
+	.page-register .form-msg { margin-top: 0.35rem; }
+	.page-login .form-link,
+	.page-register .form-link { margin-top: 0.35rem; }
+}
+
+/* ==========================================================================
+   追加：结局页 / 小组页 / 成就页 在矮视口同样"压缩排版换一页放得下"
+   实测（2026-09-16）：
+     · 结局页 `.page-ending` 的 body 内边距是 `clamp(2.5rem,7vw,6rem)` + `4rem`
+       —— 1280×720 下光内边距就吃掉 153px，页面底部那个 `Next` 被顶到 y=726
+       （视口 720，差 6px）；1152×700 差 17px；960×640 差 50px。
+     · 小组页 / 成就页同理，`.page-group` 顶部内边距 + 卡片留白在矮屏把
+       「返回主页 / 返回主界面」顶出首屏（800×660 差 34px、768×640 差 50px）。
+   玩家要求：差一点点就压缩排版，不要让人为了一个按钮去滚动。
+   ⚠️ 只压这几页的留白与标题字号，不动卡片内容与栅格。
+   ========================================================================== */
+@media (min-width: 761px) and (max-height: 820px) {
+	.page-ending { padding-top: 26px; padding-bottom: 22px; }
+	.page-ending .page-box { padding: 0.4rem 0; }
+	.page-ending .page-box h1 { font-size: 2.3rem; }
+	.page-ending .page-note { line-height: 1.55; }
+	.page-ending .form-box { padding-top: 0.4rem; padding-bottom: 0.4rem; }
+
+	body.page-group { padding: 30px 1rem 16px; gap: 0.6rem; }
+
+	.page-menu .panel-card { padding: 1rem 1.2rem; }
+	.page-menu .section-title { margin-top: 0.55rem; margin-bottom: 0.42rem; }
+}
+
+/* 窄屏（≤760px）结局页：手机浏览器上下还有 1rem 内边距，再收一点 */
+@media (max-width: 760px) {
+	.page-ending { padding-top: 52px; padding-bottom: 14px; }
+	.page-ending .page-box { padding: 0.35rem 0; }
+	.page-ending .page-box h1 { font-size: 2rem; }
+	.page-ending .page-note { line-height: 1.55; }
+
+	/* 成就页与主界面共用 page-menu 外壳：窄屏把面板留白压紧 */
+	.page-menu .panel-card { padding: 0.9rem 1rem; }
+	.page-menu .section-title { margin-top: 0.5rem; margin-bottom: 0.4rem; }
+
+	body.page-group { padding-top: 48px; padding-bottom: 12px; gap: 0.5rem; }
+}
+
+/* 小组页在 761–900px 矮屏：顶部内边距 + 卡片间距把「返回主页」顶出首屏
+   （800×660 差 34px、768×640 差 50px），压掉即可。 */
+@media (min-width: 761px) and (max-width: 900px) and (max-height: 720px) {
+	body.page-group { padding: 28px 1rem 10px; gap: 0.45rem; }
+}
+
+/* 选模式页：两张卡本身很高，矮屏把标题与卡片内边距压一档，
+   免得「退出登录」被顶到首屏外（960×640 差 299px、1280×720 差 30px）。 */
+@media (max-height: 820px) {
+	body.page-mode { padding-top: 22px; padding-bottom: 14px; justify-content: flex-start; }
+	.mode-heading { margin-bottom: 0.75rem; }
+	.mode-heading h1 { margin-bottom: 0.3rem; font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+	.mode-card { padding: 1rem 1.2rem; }
+	.mode-card__eyebrow { margin-bottom: 0.3rem; font-size: 0.64rem; }
+	.mode-card > strong { font-size: clamp(1.4rem, 3vw, 2.2rem); }
+	.mode-card__copy { margin-top: 0.5rem; font-size: 0.86rem; line-height: 1.55; }
+	.mode-card__cta { margin-top: 0.7rem; font-size: 0.78rem; }
+	.mode-footer { margin-top: 0.7rem; }
+}
+
+/* ==========================================================================
+   追加：玩家第四轮反馈（2026-09-16）
+   ========================================================================== */
+
+/* ── ① 主界面：地图按"网页缩放 80%"显示 + 底部按钮排成一行、退出登录靠最右 ──
+   地图尺寸原本是 `min(97vw, 1280px, calc(112svh - 320px))`；玩家要求按 80% 缩放显示，
+   于是三处一起乘 0.8：`97vw→77.6vw`、`1280px→1024px`、`(112svh - 320px)→(89.6svh - 256px)`。
+   地图是"宽度驱动 + 固定宽高比"，宽度乘 0.8 就等于整张图等比缩到 80%。
+   底部一排原来会折成两行：`.page-box` 宽度被 `.page-box{width:min(92vw,720px)}` 限死 720，
+   而 5 个按钮 = 5×145 + 4×8 = 757 > 720。现在把那层放宽、禁止折行，
+   并给最后一个 li（退出登录）`margin-left:auto` 顶到最右。
+   ⚠️ 窄桌面（761~900px）放不下 5×145：那一段把 min-width 放开，让按钮按内容宽度排。
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+	.campaign-map-shell {
+		width: min(77.6vw, 1024px, calc(89.6svh - 256px));
+		min-width: 0;
+	}
+	.page-menu > .page-box:has(> .menu-list) {
+		width: min(96vw, 1000px);
+	}
+	.page-menu .menu-list {
+		width: 100%;
+		flex-wrap: nowrap;
+	}
+	.page-menu .menu-list > li:last-child { margin-left: auto; }
+}
+
+@media (min-width: 761px) and (max-width: 900px) {
+	.page-menu .menu-link { min-width: 0; }
+}
+
+/* ── ④ index.html 下方那条深色带 ──
+   这是我上一轮"矮视口压缩排版"引入的：那个紧凑块给 `body.page-login` 写了
+   `min-height: 0`，body 于是只剩内容高度（实测 1366×768 下 545.7px），
+   下面 222px 露出 `html` 的底色 `rgb(8,19,33)`（近黑），与上方 body 的蓝色渐变断层。
+   同一份 `min-height: 0` 在原有的 `@media (max-height:680px)` 里也有。
+   这里统一把两处都覆盖回 `100svh`，让 body 的渐变铺满整个视口。
+   ⚠️ 这条必须写在文件末尾（比那两个媒体查询晚），否则同特异性压不住。
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+	body.page-login,
+	body.page-register { min-height: 100svh; }
+}
+
+/* ── ③ 小组介绍页：标题与成员卡之间留出呼吸感 ──
+   原来两者间距就是 body 的 `gap`（实测仅 10px），成员卡紧贴着"小组介绍"标题。
+   ⚠️ 必须带 `.page-group` 前缀：4652 行那条 `.page-group .member-grid{margin:0}`
+      特异性是 (0,2,0)，光写 `.member-grid` 压不住（第一版就是这么没生效的）。
+   ───────────────────────────────────────────────────────────────────────── */
+.page-group .member-grid { margin-top: 2rem; }
+
+@media (max-width: 760px) {
+	.page-group .member-grid { margin-top: 1.25rem; }
+}
+
+/* ── ② index.html?prologue=1 要"直接进加载页"，不能先闪一下登录表单 ──
+   `<head>` 里的内联脚本按 query 给 <html> 挂 `.prologue-boot`，登录卡从第一帧就不画；
+   随后 body 末尾的脚本挂 `is-routing` → 全屏幕布（金圈 N）= 玩家看到的"加载页"；
+   560ms 后剧情层出现（body 带 `dialogue-active`），幕布由下面那条既有规则自动让位。
+   若query 要求序章但实际不播（没登录 / 已看过），脚本会摘掉 `.prologue-boot` 把登录卡放回来。
+   ───────────────────────────────────────────────────────────────────────── */
+html.prologue-boot .page-box { display: none !important; }
+
+/* ==========================================================================
+   追加：玩家第五轮反馈（2026-09-16）
+   ========================================================================== */
+
+/* ── ① 统一"加载页那枚 N 徽记" ──
+   全站一共两处加载态会显示"N 套一个圆圈"，原来它们长得不一样：
+     · `.page-route-curtain span`（index / register / mode 的换场幕布）：96px、2px 金边、
+       `--ui-display` **斜体** N、无底色、`0 0 0 8px` 光晕；入场是 scale(.72)+rotate(-8deg) → 1。
+     · `.campaign-arrival__seal strong`（menu.html 的接镜层）：68px、1px 金边、
+       Georgia **正体** N、深色底、`0 0 36px` 光晕；退场只做 scale(1) → .72 + 模糊。
+   这两处是**前后脚出现**的（幕布 → 下一页接镜），所以要统一成同一枚徽记：
+   同尺寸 / 同圈 / 同字体 / 同光晕，并且**同一条旋转入场与退场**——
+   幕布入场从 scale(.72) rotate(-8deg) 起步，接镜退场就回到同一个姿态，
+   跨页连起来看就是"徽记留在原地，背景换掉了"。
+   ⚠️ 接镜那枚的说明文字原来在 grid 流里，会把圆环顶到中心线以上（约 12px）；
+      改成绝对定位挂在圆环下方，圆环才真正落在屏幕正中，与幕布那枚对得上。
+   ========================================================================== */
+.page-route-curtain span,
+.campaign-arrival__seal strong {
+	display: grid;
+	place-items: center;
+	box-sizing: border-box;
+	width: 88px;
+	height: 88px;
+	border: 2px solid #d7ba72;
+	border-radius: 50%;
+	font-family: var(--ui-display);
+	font-size: 2.85rem;
+	font-style: italic;
+	font-weight: 500;
+	line-height: 1;
+	color: #f3d992;
+	background: rgba(10, 26, 43, .46);
+	box-shadow:
+		0 0 0 8px rgba(215, 186, 114, .08),
+		0 0 42px rgba(215, 186, 114, .22),
+		0 20px 70px rgba(0, 0, 0, .58);
+}
+
+.campaign-arrival__seal { gap: 0; }
+.campaign-arrival__seal span {
+	position: absolute;
+	top: calc(100% + 0.6rem);
+	left: 50%;
+	transform: translateX(-50%);
+	white-space: nowrap;
+}
+
+@keyframes loadingSealOut {
+	0%, 30% { opacity: 1; transform: scale(1) rotate(0); filter: blur(0); }
+	100% { opacity: 0; transform: scale(.72) rotate(-8deg); filter: blur(6px); }
+}
+.page-menu.campaign-arriving--reveal .campaign-arrival__seal {
+	animation: loadingSealOut .74s ease both;
+}
+
+/* ── ② 主界面五个按钮排成一行、彼此挨在一起（取消上一版的"退出登录顶到最右"） ──
+   玩家要的是"在一起，不要分开"，所以去掉 `margin-left:auto`，整排居中。
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+	.page-menu .menu-list { justify-content: center; }
+	.page-menu .menu-list > li:last-child { margin-left: 0; }
+}
+
+/* ── ③ 主界面地图大小 = "页面缩到 80% 时的观感"（玩家澄清过的那一版） ──
+   上一版我把公式整体 ×0.8（地图变小），理解错了。正确做法：
+   在 100% 缩放下，让地图渲染出"80% 缩放时"的设备像素尺寸。
+   80% 缩放时：vw/svh 变大 1.25 倍、而绝对 px 与最终渲染又要 ×0.8，两相抵消，
+   于是只有**绝对 px 项**需要缩放：
+     · `97vw`   → 仍是 `97vw`（自洽）
+     · `1280px` → `1024px`
+     · `calc(112svh - 320px)` → `calc(112svh - 256px)`
+   实测 1440×900：旧公式 688px、我上一版 550px、本次目标 752px。
+   地图变大后纵向又不够了，所以同一段里把页头与行距压一档（玩家已同意"差一点点就压缩排版"）。
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+	.campaign-map-shell {
+		width: min(97vw, 1024px, calc(112svh - 256px));
+		min-width: 0;
+	}
+	/* 页头：kicker + h1 + 欢迎语，原来在 900 高下占 119px */
+	.page-menu .page-box h1 { font-size: clamp(1.5rem, 3.4vh, 2.5rem); }
+	.page-menu .page-kicker { margin-bottom: 0.1rem; }
+	.page-menu .page-sub { margin-top: 0.06rem; }
+	/* 底部导航行的上下留白再收一点（上一版已从 1rem 收到 0.25rem） */
+	.page-menu > .page-box:has(> .menu-list) { padding: 0.15rem 0; }
+}
+
+/* 矮视口再压一档：地图按高度算，屏一矮就更要省出纵向空间 */
+@media (min-width: 761px) and (max-height: 800px) {
+	body.page-menu { padding-top: clamp(12px, 1.8vh, 22px); }
+	.page-menu .page-box h1 { font-size: clamp(1.35rem, 3vh, 1.9rem); }
+	.page-menu .page-kicker { font-size: 0.6rem; }
+	.page-menu .page-sub { font-size: 0.76rem; }
+	.page-menu .menu-link { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+}
+
+/* ── ⑤ 关卡页：棋盘下移一点、放大、贴住下方；右侧操作坞跟着棋盘的真实几何走 ──
+   原来右侧停靠坞的 `left` 用的是**另一套棋盘公式**（`min(78dvh, calc(100vw - 440px))`），
+   而棋盘在三个断点里分别是 `min(72dvh, 100vw-740px)` / `min(65dvh, 100vw-530px)` /
+   `min(78dvh, 100vw-440px)`——所以实测缝隙在 43~102px 之间乱跳，
+   垂直方向也整体偏下（最多 +83px）。
+   纯 CSS 的 calc 追不上三套断点公式，所以由 `main.js` 的 `syncDockGeometry()`
+   把棋盘的**真实**右缘与垂直中心写成 `--board-right` / `--board-center-y`，这里直接引用。
+   坞整体高 = 操作区 282 + 间隙 94 + 「下一步」50 = 426，所以操作区上移 213、按钮下移 129。
+   （⚠️ 按钮那个 `+129` 是**减掉了它自己的 `margin-top:34px`** 之后的数 —— fixed 元素的
+     margin 仍会叠加到 top 上，实测第一版就是因此整体低了 17px。）
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 1101px) {
+	body.game-page #game-actions {
+		left: min(calc(var(--board-right, 60vw) + 30px), var(--dock-max-left, 60vw));
+		top: calc(var(--board-center-y, 50vh) - 213px);
+	}
+	body.game-page #button {
+		left: min(calc(var(--board-right, 60vw) + 30px), var(--dock-max-left, 60vw));
+		top: calc(var(--board-center-y, 50vh) + 129px);
+	}
+}
+
+/* 棋盘：加大 + 与战况条拉开距离，下方不留大片空白。
+   ⚠️ 为什么同时把 ≥1181px 的编制栏改窄（154/12px → 124/6px）：
+      要同时满足玩家的三条要求 —— 棋盘放大、右侧操作坞离棋盘 26px 且**不压到编制栏**、
+      下方不留空隙 —— 就得算清右侧那一列：
+      `坞 188 + 与棋盘 26 + 与编制栏 10` + 常驻编制栏，棋盘右缘 ≤ 视口宽 − 354，
+      棋盘居中 → 宽 ≤ 视口宽 − 708。
+      原来的编制栏是 154px 宽、离边 12px（共占 166），只能反推出 `100vw − 784`，
+      1440×900 下棋盘只有 656px —— 比高度允许的 702 小 46px，下方白白空出 95px。
+      收窄到 124px/6px 之后 1440 就能吃满 702（高度说了算），1280 也从 540 涨到 572。
+      124px/6px 不是新尺寸：901~1180 那一档本来就是这么写的，这里只是把两档统一。
+      编制栏内容只有「兵种 n + 血条」，124px 完全放得下。 */
+@media (min-width: 1181px) {
+	body.game-page { padding-left: 300px; padding-right: 300px; }
+	.army-roster { width: 124px; padding: .5rem; }
+	.army-roster--blue { left: 6px; }
+	.army-roster--red { right: 6px; }
+	#info-bar { left: 146px; width: 150px; }
+	#enemy-info { right: 146px; width: 150px; }
+	.game-page #board {
+		width: min(78dvh, calc(100vw - 708px));
+		height: min(78dvh, calc(100vw - 708px));
+	}
+}
+
+/* 901~1100：右侧**不套停靠坞**（坞的断点是 1101），所以宽度按原来的口径给，
+   不然会凭空少了 180px（实测 1024×768 从 494 掉到 410）。
+   这一档只把 dvh 系数从 65 抬到 71，让高度还有余量时棋盘能长大。 */
+@media (min-width: 901px) and (max-width: 1100px) {
+	.game-page #board {
+		width: min(71dvh, calc(100vw - 530px));
+		height: min(71dvh, calc(100vw - 530px));
+	}
+}
+
+/* 1101~1180：坞在右边，必须先给它留位（坞 188 + 缝 24 + 与编制栏 10）。 */
+@media (min-width: 1101px) and (max-width: 1180px) {
+	.game-page #board {
+		width: min(71dvh, calc(100vw - 704px));
+		height: min(71dvh, calc(100vw - 704px));
+	}
+}
+
+@media (min-width: 901px) {
+	.game-page #board { margin-top: 16px; }
+}
+
+/* ==========================================================================
+   追加：玩家第六轮反馈（2026-09-16）
+   ========================================================================== */
+
+/* ── ② 主界面地图上的关卡标志（图钉 + 星级）整体缩小 ──
+   玩家反馈"关卡标志太大了"。桌面档的圆钉是 36px（隐藏关 52px）、星级 1.08rem，
+   在 1920×873 下地图外壳只有 722px 宽，图钉显得很占地方，相邻图钉也容易挤在一起。
+   修法：**整枚图钉等比缩放**，而不是逐个改 px —— `.map-pin` 是 0×0 的锚点
+   （`left/top` 就是投影坐标，宽高都是 0），所以给父级 `transform: scale()` +
+   `transform-origin: 0 0` 就等于"绕着钉尖缩放"，圆钉、小尖脚、星级、锁形图标
+   全部同步缩小，**并且投影坐标一点都不会偏**。
+   这样也不用去动那批手工调过的星级偏移量（`top: 31px` / `translateX(-50% + .05em)`）。
+   ⚠️ 前置条件（都已核对）：`.map-pin` 自身没有别的 transform；
+     `map-pin-pop` 动画作用在子级 `.map-pin__dot` 上；`menu-saves.js` 不写 pin 的 style.transform。
+   ⚠️ 只在 ≥761px 生效：窄屏那档图钉本来就只有 22px，再缩就看不清了。
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+	.map-pin {
+		transform: scale(0.8);
+		transform-origin: 0 0;
+	}
+}
+
+/* ── ③ 加载徽记里的 N 往左挪一点，让墨迹中心和圆心重合 ──
+   徽记是斜体衬线 N：实测 `advance = 37.62px`，而**墨迹右边界在 45px**
+   —— 斜体的悬挑让墨迹比"字宽"多出 7.4px，而 CSS 是按键宽（advance）居中的，
+   于是墨迹中心比圆心**偏右 3.69px**（实测值）。
+   修法：给右侧留等价的内边距，把居中基准整体往左推半个量 ——
+   `padding-right: 0.162em`（= 7.38px @45.6px 字号），按 em 写所以随字号自适应。
+   ⚠️ 不用 `transform: translateX()`：幕布那枚的 transform 被入场动画（scale+rotate）占着，
+      写静态位移会被动画的终态覆盖。padding 不参与 transform，安全。
+   ⚠️ 两处（幕布 / 接镜）必须一起改，否则跨页接力时徽记会横向跳一下。
+   ───────────────────────────────────────────────────────────────────────── */
+.page-route-curtain span,
+.campaign-arrival__seal strong {
+	padding-right: 0.162em;
+}
+
+/* ==========================================================================
+   追加：玩家第七轮反馈（2026-09-16）
+   ========================================================================== */
+
+/* ── ⑦ 地图标志：再缩小一档，并把隐藏关（第 7 关）图钉统一成和别的图钉一样大 ──
+   玩家："关卡标志仍然过大，再次缩小，7 标志显著大于其它标志，统一成 1 标志大小"。
+   `scale` 由 0.8 收到 0.7（圆钉 36 → 25.2px）。
+   第 7 关那枚的问题在合并后的远端版本里：`.map-pin--hidden .map-pin__dot` 被写成
+   **52px / 3px 边 / 1.42rem**（`::after` 还有 6px 光环，视觉直径 64px），
+   比普通图钉大一圈；而项目文档里写的意图一直是"圆钉尺寸与其它图钉一致（26px / 2px）"。
+   这里按文档的原意统一：尺寸 / 边框 / 字号 / 阴影全部对齐普通图钉，
+   **只保留"金框 + 金尖脚"这个身份特征**（金边来自 `.map-pin--hidden .map-pin__dot`
+   的 border-color，`::after` 的尖脚颜色也是金色）。
+   配套：星级偏移与锁形图标也回到普通图钉的数值。
+   ───────────────────────────────────────────────────────────────────────── */
+@media (min-width: 761px) {
+	.map-pin { transform: scale(0.7); }
+}
+
+.campaign-map-shell .map-pin--hidden .map-pin__dot {
+	width: 36px;
+	height: 36px;
+	border-width: 2.5px;
+	font-size: 1.02rem;
+	box-shadow: 0 3px 10px rgba(57, 39, 17, 0.32);
+}
+.campaign-map-shell .map-pin--hidden .map-pin__stars {
+	top: 31px;
+	font-size: 1.08rem;
+	letter-spacing: 0;
+	transform: translateX(calc(-50% + 0.05em));
+}
+/* 未解锁时那枚「14/18 星」胶囊：跟着缩一圈，免得压到相邻图钉 */
+.campaign-map-shell .map-pin--hidden.map-pin--locked .map-pin__stars {
+	top: 33px;
+	padding: 2px 7px;
+	font-size: 0.86rem;
+	letter-spacing: 0.02em;
+}
+.campaign-map-shell .map-pin--hidden .map-pin__lock {
+	left: 8px;
+	top: -17px;
+	transform: none;
+}
+
+@media (max-width: 760px) {
+	.campaign-map-shell .map-pin--hidden .map-pin__dot { width: 28px; height: 28px; font-size: 0.82rem; }
+	.campaign-map-shell .map-pin--hidden .map-pin__stars { top: 24px; font-size: 0.88rem; }
+	.campaign-map-shell .map-pin--hidden.map-pin--locked .map-pin__stars { top: 26px; padding: 2px 6px; font-size: 0.8rem; }
+	.campaign-map-shell .map-pin--hidden .map-pin__lock { left: 7px; top: -15px; transform: scale(0.9); }
+}

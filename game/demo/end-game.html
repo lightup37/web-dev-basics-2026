@@ -3,34 +3,35 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>结局：走向欧洲 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<title>结局：通往滑铁卢 - 拿破仑战争</title>
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-ending ending-victory">
+<body class="page-ending ending-victory" data-title-i18n="ending.standardTitle">
 	<audio id="game-music" loop>
 		<source src="mus/La-Marseillaise.mp3" type="audio/mpeg">
 	</audio>
 
 
 	<div class="page-box">
-		<p class="page-kicker">CAMPAIGN CONCLUDED · 战役终章</p>
-		<h1>胜利！</h1>
-		<p class="page-sub">拿破仑战争的六大战役全部获胜</p>
+		<p class="page-kicker" data-localize>CAMPAIGN CONCLUDED · 战役终章</p>
+		<h1 data-i18n="ending.standardTitle">结局 · 通往滑铁卢</h1>
+		<p class="page-sub" data-i18n="ending.standardSub">利尼获胜，却未能摧毁普军</p>
 		<div class="story-panel">
-			<p class="story-line"><b>加斯帕尔・古尔戈：</b>内伊元帅的进攻受挫了，我们没能拿下四臂村，不过威灵顿在得知普军失利后，主动向北撤退到<strong>滑铁卢高地</strong>构筑防线。</p>
-			<p class="story-line"><b>拿破仑：</b>可惜没有直接击败英国佬，传令让格鲁希率领部队追击撤退的普军，让他盯住普鲁士人、阻止他们与威灵顿会合。</p>
-			<p class="story-line"><b>拿破仑：</b>只要普鲁士人没有与英国人汇合，我们应该能击穿惠灵顿的防线。</p>
-			<p class="story-line"><b>拿破仑：</b>据报内伊的部队已经抵达滑铁卢前沿，传令休整所有部队，明早开始总攻。</p>
+			<p class="story-line" data-i18n="ending.standard1">古尔戈：内伊没能夺下四臂村；威灵顿得知普军在利尼失利后，向蒙圣让高地撤退。</p>
+			<p class="story-line" data-i18n="ending.standard2">拿破仑：命格鲁希紧追普军。只要他们不能与威灵顿会合，我们仍能各个击破。</p>
+			<p class="story-line" data-i18n="ending.standard3">传令兵：普军没有向东溃散，而是保持建制向北退往瓦夫尔。</p>
+			<p class="story-line" data-i18n="ending.standard4">拿破仑：那就让全军休整。明早必须在两支联军重新握手之前，击穿蒙圣让。</p>
+			<p class="story-line" data-i18n="ending.standard5">战地旁白：1815年6月18日，湿地拖慢法军进攻，普军赶到滑铁卢，近卫军最终被击退。拿破仑四天后再度退位。</p>
 		</div>
-		<p class="page-note" id="normal-note">（历史正常进行，拿破仑将军正走向他的滑铁卢高地。而另一种可能，还藏在更深处……）</p>
+		<p class="page-note" data-i18n="ending.standardNote" id="normal-note">（正常结局：故事回到正史。另一种可能仍藏在战役地图的秘密路线中……）</p>
 		<div class="form-box">
-			<button id="button-next" class="game-btn">Next</button>
+			<button id="button-next" class="game-btn" data-localize>Next</button>
 		</div>
 	</div>
-	<script src="js/account.js"></script>
-	<script src="js/ui.js"></script>
-	<script src="js/save.js"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/save.js?v=20260916-fixB34"></script>
 	<script>
 		if (typeof currentUser === 'function' && currentUser()) unlockAchievement('victory_end');
 
@@ -49,9 +50,9 @@
 		});
 	</script>
 
-	<script src="js/bgm.js"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
 	<script>
-		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js?v=20260914-gameplay2） */
 		initBgm('game-music');
 	</script>
 </body>

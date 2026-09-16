@@ -4,17 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>成就 - 拿破仑战争</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
 	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
-<body class="page-menu">
+<body class="page-menu" data-title-i18n="site.title">
 	<audio id="menu-music" loop>
 		<source src="mus/Preussens-Gloria.mp3" type="audio/mpeg">
 	</audio>
 	<div class="page-box">
-		<p class="page-kicker">IMPERIAL HONOURS · 帝国荣誉</p>
-		<h1>成就</h1>
-		<p class="page-sub">指挥官 <span id="welcome-name"></span>，这是你的战功簿。</p>
+		<p class="page-kicker" data-localize>IMPERIAL HONOURS · 帝国荣誉</p>
+		<h1 data-localize>成就</h1>
+		<p class="page-sub"><span data-localize>指挥官</span> <span id="welcome-name"></span><span data-localize>，这是你的战功簿。</span></p>
 	</div>
 
 	<!-- 成就墙（2026-09 起独立成页）：由 js/menu-achv.js 的 renderMenuAchievements() 填充 -->
@@ -22,16 +22,16 @@
 
 	<div class="page-box">
 		<ul class="menu-list">
-			<li><a class="menu-link" href="menu.html">返回主界面</a></li>
+			<li><a class="menu-link" href="menu.html" data-localize>返回主界面</a></li>
 		</ul>
 	</div>
 
-	<script src="js/account.js"></script>
-	<script src="js/ui.js"></script>
-	<script src="js/save.js"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/save.js?v=20260916-fixB34"></script>
 	<!-- 成就系统（独立模块）：成就墙 #achv-area -->
-	<script src="js/menu-achv.js"></script>
-	<script src="js/bgm.js"></script>
+	<script src="js/menu-achv.js?v=20260916-fixB34"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
 	<script>
 		/* 本页外壳只做两件事：登录校验、欢迎语；成就墙交给 menu-achv.js。
 		   2026-09：这页不再放"退出登录"（要登出请回主界面），所以也没有 logout 绑定。 */

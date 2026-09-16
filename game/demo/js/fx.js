@@ -1,228 +1,342 @@
-/* 开火特效 + 移动尾迹（2026-09）
+/* ============================================================
+ * fx.js — 战场表现层特效（2026-09 新增）
  *
- * 表现层，不改动 nextStep() 的移动 / 攻击逻辑。main.js 里只有 4 行钩子：
- *   fxMarkFired(unit, target)   开火结算处标记（每个单位每回合只记一次）→ 烟雾 + 枪口火光
- *   fxMarkMoving(unit)          移动落点处标记（每个单位每回合只记一次）→ 沿路径铺尾迹
- *   fxFlush()                   24 帧跑完后调用一次，统一生成上述特效
- *
- * 设计要点：
- *   - 一回合内部同步跑 24 帧，逐帧生成会瞬间造出 24×N 个节点，因此按"单位/回合"聚合：
- *     开火 1 撮烟（6 烟团 + 1 火光）、移动 1 条尾迹（≤6 个尘团，沿路径等距分布）；
- *   - 生成延迟 400ms，与棋子 CSS 滑行（transition 0.4s）对齐；尾迹按"尾→头"错开出现，
- *     看起来是被落在身后；
- *   - 两层：烟雾/火光在 #fx-layer（z 120，盖住棋子），尾迹在 #fx-trail-layer（z 8，压在棋子下）；
- *   - 坐标用棋盘几何换算：left = offset + distance*pos（与 pieces.js 的 movePieceTo 一致），
- *     distance/offset 由 .cell 的实测矩形推出（它们不是全局变量），不依赖 DOM 过渡时机；
- *   - 节点总量上限 MAX_NODES，超出丢最旧；动画结束即移除；
- *   - window.fxEnabled = false 可即时关闭；系统 prefers-reduced-motion / 页面不可见时自动不生成。
- */
+ * 设计原则（与 main.js 的约定）：
+ *   1. 不干扰游戏逻辑：本文件只读取棋子状态、创建 DOM，绝不修改 posx/lp/target；
+ *   2. 不逐帧创建 DOM：main.js 在每个"帧"只做两件极轻量的事——
+ *        fxMarkMoving(unit, x0, y0)  记录移动起点（每回合每单位只记一次）
+ *        fxMarkFired(unit, target)   记录一次开火（每回合每对单位只聚合一次）
+ *      注意：两个参数都是 armys 里的军队数据对象（含 id/posx/posy/disabled），
+ *      DOM 元素由本文件按 unit.id = 'piece-N' 自行解析；
+ *      24 帧全部跑完后由 fxFlush() 统一生成特效；
+ *   3. 特效坐标一律锚定"事件发生瞬间"的棋盘坐标：
+ *      单位可能在本回合开火后又移动（击杀目标后继续推进），绝不能用单位的
+ *      最终坐标画火光/曳光，否则正在滑动的棋子身上会冒出战斗特效；
+ *   4. 尊重系统设置：prefers-reduced-motion 或页面不可见时不生成特效；
+ *   5. 所有特效节点自动过期清理，调试期可用 fxDebug.liveCount() 巡检。
+ * ============================================================ */
+
 (function () {
 	'use strict';
 
-	/* ---- 可调参数 ---- */
-	var PUFFS = 6;             // 每撮烟团数（加浓后）
-	var PUFF_MS = 1500;        // 烟团寿命（与 CSS 动画一致）
-	var FLASH_MS = 240;        // 枪口火光寿命
-	var TRAIL_MAX = 10;        // 单条尾迹最多尘团数
-	var TRAIL_MS = 1400;       // 尘团寿命
-	var TRAIL_MIN_CELL = 0.3;  // 位移小于该值（格）不画尾迹
-	var TRAIL_SPACING = 0.35;  // 尾迹尘团的目标间距（格）
-	var SPAWN_DELAY = 400;     // 与棋子滑行对齐
-	var MAX_NODES = 200;       // 同屏节点上限
+	/* ---------- 可调参数（集中在这里，方便美术/策划微调） ---------- */
+	const PUFFS_PER_SHOT = 6;        // 每次开火喷出的烟雾团数量
+	const PUFF_MS = 1500;            // 烟雾寿命
+	const FLASH_MS = 240;            // 枪口火光寿命
+	const TRACER_MS = 320;           // 弹道曳光寿命
+	const IMPACT_MS = 760;           // 命中冲击环寿命
+	const TRAIL_MAX = 10;            // 单次移动尾迹最多尘团数
+	const TRAIL_MS = 1400;           // 尾迹尘团寿命
+	const TRAIL_MIN_CELLS = 0.3;     // 位移小于该格数不画尾迹
+	const TRAIL_SPACING_CELLS = 0.35;// 尾迹尘团间距（格）
+	const SPAWN_DELAY_MS = 40;       // 特效错峰生成的间隔
+	const MAX_NODES = 200;           // 单层节点软上限，超了直接丢弃新特效
+	const FIRE_STAY_EPS = 0.05;      // 开火点与最终位置差 ≤ 该格数视为"原地开火"
 
-	/* ---- 状态 ---- */
-	var fired = [];            // { unit, target }
-	var moved = [];            // { unit, x0, y0 }
-	var live = [];             // 存活节点（用于上限回收）
+	let distance = 0;
+	let offset = 0;
+	let boardLayer = null;   // #fx-layer：烟雾 / 火光 / 弹道 / 命中（盖在棋子上）
+	let trailLayer = null;   // #fx-trail-layer：行军扬尘（压在棋子下，像留在地上的土）
+	let moveMap = new Map(); // key(unit.id) -> { unit, x0, y0 }
+	let fireMap = new Map(); // key(shooter.id->target.id) -> { unit, target, fx, fy, tx, ty }
+
+	const prefersReduced = typeof window.matchMedia === 'function'
+		&& window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	function ensureGeometry() {
+		const board = document.getElementById('board');
+		if (!board) return false;
+		const a = board.querySelector('.cell[data-row="0"][data-col="0"]');
+		const b = board.querySelector('.cell[data-row="1"][data-col="1"]');
+		if (!a || !b) return false;
+		const ra = a.getBoundingClientRect();
+		const rb = b.getBoundingClientRect();
+		distance = rb.left - ra.left;
+		offset = ra.width / 2;
+		return distance > 0;
+	}
+
+	/* 特效层 #fx-layer 与棋子都是 #board 的绝对定位子元素（containing block
+	 * 为 padding box），因此坐标必须与 pieces.js 的 movePieceTo 完全一致：
+	 * 相对棋盘内容区的 left/top = offset + distance * 逻辑坐标，
+	 * 不能加 getBoundingClientRect 的屏幕偏移（否则整体错位一个棋盘位置）。 */
+	function getBoardPointXY(posx, posy) {
+		return {
+			x: offset + posx * distance,
+			y: offset + posy * distance
+		};
+	}
+
+	/* 军队数据对象 -> 棋盘 DOM 元素（可能已被移除/重绘，拿不到就返回 null）。 */
+	function getUnitElement(unit) {
+		if (!unit || !unit.id) return null;
+		return document.getElementById(unit.id);
+	}
+
+	/* ⚠️ B06：必须检查特效层是否还"活着"。
+	 * loadSnapshot()/loadGame() 会重建 #board 的 innerHTML，旧的特效层节点随之被移除，
+	 * 但 boardLayer / trailLayer 这两个缓存引用仍然指着那些已经脱离文档的节点——
+	 * 于是读档之后 smoke/trail 全部挂到了看不见的旧节点上，画面里没有任何特效。
+	 * 判据：节点存在、仍连接在文档里、且父节点就是当前 board。 */
+	function layerUsable(node, board) {
+		return !!node && node.isConnected === true && node.parentNode === board;
+	}
+
+	function ensureLayers() {
+		const board = document.getElementById('board');
+		if (!board) return null;
+		if (!layerUsable(boardLayer, board)) {
+			if (boardLayer && boardLayer.parentNode) boardLayer.parentNode.removeChild(boardLayer);
+			boardLayer = document.createElement('div');
+			boardLayer.id = 'fx-layer';
+			boardLayer.setAttribute('aria-hidden', 'true');
+			boardLayer.style.cssText =
+				'position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:120;';
+			board.appendChild(boardLayer);
+		}
+		if (!layerUsable(trailLayer, board)) {
+			if (trailLayer && trailLayer.parentNode) trailLayer.parentNode.removeChild(trailLayer);
+			trailLayer = document.createElement('div');
+			trailLayer.id = 'fx-trail-layer';
+			trailLayer.setAttribute('aria-hidden', 'true');
+			trailLayer.style.cssText =
+				'position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:8;';
+			board.appendChild(trailLayer);
+		}
+		return board;
+	}
+
+	function pageVisible() {
+		return typeof document.hidden === 'boolean' ? !document.hidden : true;
+	}
+
+	function scheduleSpawn(layer, maker, delay) {
+		if (!layer) return;
+		if (layer.childElementCount >= MAX_NODES) return;
+		window.setTimeout(function () {
+			if (window.fxEnabled === false) return;
+			if (layer.childElementCount < MAX_NODES) maker();
+		}, delay);
+	}
+
+	function expire(node, ms) {
+		window.setTimeout(function () {
+			if (node && node.parentNode) node.parentNode.removeChild(node);
+		}, ms + 120);
+	}
+
+	function rand(min, max) { return min + Math.random() * (max - min); }
+
+	/* ---------------- 行军：扬尘尾迹 + 颠簸 ---------------- */
+
+	function spawnDust(layer, point) {
+		const d = document.createElement('span');
+		d.className = 'fx-dust';
+		const size = rand(10, 18);
+		d.style.left = (point.x - size / 2) + 'px';
+		d.style.top = (point.y - size / 2) + 'px';
+		d.style.width = size + 'px';
+		d.style.height = size + 'px';
+		layer.appendChild(d);
+		expire(d, TRAIL_MS);
+	}
+
+	/* unit = armys 中的军队数据对象；x0/y0 = 本回合移动前的逻辑坐标。 */
+	function fxMarkMoving(unit, x0, y0) {
+		if (prefersReduced || !pageVisible()) return;
+		if (window.fxEnabled === false) return;
+		if (!unit || unit.disabled) return;
+		const key = unit.id;
+		if (moveMap.has(key)) return;              // 每回合每单位只记一次起点
+		moveMap.set(key, { unit: unit, x0: x0, y0: y0 });
+		const el = getUnitElement(unit);
+		if (el) {
+			el.classList.add('is-marching');
+			window.setTimeout(function () {
+				el.classList.remove('is-marching');
+			}, 680);
+		}
+	}
+
+	/* 只有骑兵在行军时扬起尘烟尾迹。
+	 * 步兵 / 炮兵 / 散兵 / 掷弹兵是步行或缓行推进，扬尘既不符合直觉，
+	 * 也会让整张棋盘到处都是尘团、盖住棋子与射程圈。
+	 * 注意：行军颠簸（.is-marching，见 fxMarkMoving）仍然给所有兵种保留 ——
+	 * 那是"这一步动了"的即时反馈，与地面尾迹是两件事。 */
+	function unitLeavesDustTrail(unit) {
+		return !!unit && unit.cls === '骑';
+	}
+
+	function flushMovement(rec) {
+		const unit = rec.unit;
+		if (!unit || unit.disabled) return;
+		if (!unitLeavesDustTrail(unit)) return;
+		const x1 = unit.posx;
+		const y1 = unit.posy;
+		const dx = x1 - rec.x0;
+		const dy = y1 - rec.y0;
+		const distCells = Math.hypot(dx, dy);
+		if (distCells < TRAIL_MIN_CELLS) return;
+		const steps = Math.min(TRAIL_MAX, Math.max(2, Math.floor(distCells / TRAIL_SPACING_CELLS)));
+		for (let i = 1; i <= steps; i++) {
+			const t = i / (steps + 1);
+			const px = rec.x0 + dx * t;
+			const py = rec.y0 + dy * t;
+			const point = getBoardPointXY(px, py);
+			/* 越靠后的尘团越早出现，整体看起来像一路被甩在身后；
+			 * 尘团画在地面层（旧坐标），单位滑走后尾迹留在原地。 */
+			const delay = (steps - i) * 14;
+			scheduleSpawn(trailLayer, function () { spawnDust(trailLayer, point); }, delay);
+		}
+	}
+
+	/* ---------------- 开火：烟雾 + 火光 + 曳光 + 命中 ---------------- */
+
+	function spawnBurst(layer, point) {
+		for (let i = 0; i < PUFFS_PER_SHOT; i++) {
+			const p = document.createElement('span');
+			p.className = 'fx-smoke';
+			const size = rand(9, 20);
+			const angle = rand(0, Math.PI * 2);
+			const radius = rand(2, 13);
+			p.style.left = (point.x + Math.cos(angle) * radius - size / 2) + 'px';
+			p.style.top = (point.y + Math.sin(angle) * radius * 0.55 - size / 2) + 'px';
+			p.style.width = size + 'px';
+			p.style.height = size + 'px';
+			scheduleSpawn(layer, function () { layer.appendChild(p); expire(p, PUFF_MS); }, i * 18);
+		}
+		const flash = document.createElement('span');
+		flash.className = 'fx-muzzle';
+		flash.style.left = (point.x - 13) + 'px';
+		flash.style.top = (point.y - 13) + 'px';
+		layer.appendChild(flash);
+		expire(flash, FLASH_MS);
+	}
+
+	function spawnTracer(layer, start, finish) {
+		const dx = finish.x - start.x;
+		const dy = finish.y - start.y;
+		const len = Math.hypot(dx, dy);
+		if (len < 4) return;
+		const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+		const tracer = document.createElement('span');
+		tracer.className = 'fx-tracer';
+		tracer.style.left = start.x + 'px';
+		tracer.style.top = (start.y - 1) + 'px';
+		tracer.style.width = len + 'px';
+		tracer.style.transform = 'rotate(' + angle + 'deg)';
+		tracer.style.transformOrigin = '0 50%';
+		layer.appendChild(tracer);
+		expire(tracer, TRACER_MS);
+	}
+
+	function spawnImpact(layer, point) {
+		const ring = document.createElement('span');
+		ring.className = 'fx-impact';
+		ring.style.left = (point.x - 12) + 'px';
+		ring.style.top = (point.y - 12) + 'px';
+		layer.appendChild(ring);
+		expire(ring, IMPACT_MS);
+		for (let i = 0; i < 3; i++) {
+			const spark = document.createElement('span');
+			spark.className = 'fx-spark';
+			const angle = rand(0, Math.PI * 2);
+			const radius = rand(4, 12);
+			spark.style.left = (point.x + Math.cos(angle) * radius - 2) + 'px';
+			spark.style.top = (point.y + Math.sin(angle) * radius - 2) + 'px';
+			layer.appendChild(spark);
+			expire(spark, 360);
+		}
+	}
+
+	/* unit / target 均为军队数据对象。 */
+	function fxMarkFired(unit, target) {
+		if (prefersReduced || !pageVisible()) return;
+		if (window.fxEnabled === false) return;
+		if (!unit || !target) return;
+		if (unit.disabled || target.disabled) return;
+		const key = unit.id + '->' + target.id;
+		if (fireMap.has(key)) return;             // 同一回合同一对单位只聚合一次
+		/* 关键：记录"开火瞬间"双方的棋盘坐标。单位击杀目标后可能继续滑动，
+		 * flush 时绝不能改用它们的最终坐标。 */
+		fireMap.set(key, {
+			unit: unit,
+			target: target,
+			fx: unit.posx,
+			fy: unit.posy,
+			tx: target.posx,
+			ty: target.posy
+		});
+	}
+
+	function flushFire(rec) {
+		const unit = rec.unit;
+		if (!unit || unit.disabled) return;
+		const el = getUnitElement(unit);
+
+		/* 单位开火后又离开了开火点（典型：击杀当前目标后继续推进）：
+		 * 枪口火光的后坐 class 不再挂到正在滑动的棋子身上，烟雾/曳光按
+		 * 开火瞬间的旧坐标画在地面上，避免"移动中的棋子冒战斗特效"。 */
+		const stayed = Math.hypot(unit.posx - rec.fx, unit.posy - rec.fy) <= FIRE_STAY_EPS;
+		if (stayed && el) {
+			el.classList.add('is-firing');
+			window.setTimeout(function () {
+				el.classList.remove('is-firing');
+			}, 320);
+		}
+
+		const muzzle = getBoardPointXY(rec.fx, rec.fy);
+		const impact = getBoardPointXY(rec.tx, rec.ty);
+		spawnBurst(boardLayer, muzzle);
+		spawnTracer(boardLayer, muzzle, impact);
+		scheduleSpawn(boardLayer, function () {
+			spawnImpact(boardLayer, impact);
+		}, 150);
+	}
+
+	/* ---------------- 回合末统一结算 ---------------- */
+
+	function fxFlush() {
+		if (!ensureGeometry()) return;
+		const board = ensureLayers();
+		if (!board) return;
+		if (prefersReduced || !pageVisible() || window.fxEnabled === false) {
+			moveMap.clear();
+			fireMap.clear();
+			return;
+		}
+		moveMap.forEach(flushMovement);
+		fireMap.forEach(flushFire);
+		moveMap.clear();
+		fireMap.clear();
+	}
+
+	function fxReset() {
+		moveMap.clear();
+		fireMap.clear();
+		if (boardLayer) boardLayer.innerHTML = '';
+		if (trailLayer) trailLayer.innerHTML = '';
+	}
 
 	window.fxEnabled = true;
-
-	function fxOn() {
-		if (window.fxEnabled === false) return false;
-		if (typeof document === 'undefined' || document.hidden) return false;
-		try {
-			if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-		} catch (e) { /* 老浏览器忽略 */ }
-		return true;
-	}
-
-	function layer(id, cls, z) {
-		var board = document.getElementById('board');
-		if (!board) return null;
-		var el = document.getElementById(id);
-		if (!el) {
-			el = document.createElement('div');
-			el.id = id;
-			el.className = cls;
-			board.appendChild(el);   // 动态创建，页面 DOM 不用改
-		}
-		return el;
-	}
-	function fxLayer() { return layer('fx-layer', 'fx-above', 120); }
-	function trailLayer() { return layer('fx-trail-layer', 'fx-below', 8); }
-
-	/* 棋盘几何：distance = 相邻格心间距(px)，offset = 格宽/2（与 pieces.js 的换算一致） */
-	function geom() {
-		var d = document;
-		var c00 = d.querySelector('#board .cell[data-row="0"][data-col="0"]');
-		var c11 = d.querySelector('#board .cell[data-row="1"][data-col="1"]');
-		if (!c00 || !c11) return null;
-		var r0 = c00.getBoundingClientRect();
-		var r1 = c11.getBoundingClientRect();
-		var dist = r1.left - r0.left;
-		if (!(dist > 0)) dist = r1.top - r0.top;
-		if (!(dist > 0)) return null;
-		return { dist: dist, off: r0.width / 2 };
-	}
-
-	/* 单位尺寸（棋子直径 px），用于烟雾/尾迹的大小与偏移 */
-	function unitSize(unit) {
-		var piece = (unit && unit.id) ? document.getElementById(unit.id) : null;
-		if (!piece) return 0;
-		return piece.getBoundingClientRect().width;
-	}
-
-	/* 登记并按时回收节点 */
-	function track(node, ms) {
-		live.push(node);
-		while (live.length > MAX_NODES) {
-			var old = live.shift();
-			if (old && old.parentNode) old.parentNode.removeChild(old);
-		}
-		window.setTimeout(function () {
-			if (node.parentNode) node.parentNode.removeChild(node);
-			var i = live.indexOf(node);
-			if (i >= 0) live.splice(i, 1);
-		}, ms);
-	}
-
-	/* ---- 开火：一撮烟（绕棋子外圈）+ 枪口火光 ---- */
-	function burst(unit, size) {
-		var box = fxLayer();
-		var g = geom();
-		if (!box || !g) return;
-		var cx = g.off + g.dist * unit.posx;
-		var cy = g.off + g.dist * unit.posy;
-		var unitPx = size || unitSize(unit) || (g.dist / 2);
-
-		for (var i = 0; i < PUFFS; i++) {
-			var puff = document.createElement('div');
-			puff.className = 'fx-puff';
-			var ang = Math.random() * Math.PI * 2;
-			var rad = unitPx * (0.45 + Math.random() * 0.5);
-			puff.style.left = (cx + Math.cos(ang) * rad).toFixed(1) + 'px';
-			puff.style.top = (cy + Math.sin(ang) * rad).toFixed(1) + 'px';
-			puff.style.setProperty('--fx-scale', (1.1 + Math.random() * 0.9).toFixed(2));
-			puff.style.animationDelay = Math.round(Math.random() * 160) + 'ms';
-			box.appendChild(puff);
-			track(puff, PUFF_MS + 350);
-		}
-	}
-
-	function flash(unit, target) {
-		var box = fxLayer();
-		var g = geom();
-		if (!box || !g || !target) return;
-		var dx = target.posx - unit.posx;
-		var dy = target.posy - unit.posy;
-		var len = Math.sqrt(dx * dx + dy * dy);
-		if (!len) return;
-		var size = unitSize(unit) || (g.dist / 2);
-		var cx = g.off + g.dist * unit.posx;
-		var cy = g.off + g.dist * unit.posy;
-		var off = size * 0.5;
-		var el = document.createElement('div');
-		el.className = 'fx-flash';
-		el.style.left = (cx + dx / len * off).toFixed(1) + 'px';
-		el.style.top = (cy + dy / len * off).toFixed(1) + 'px';
-		el.style.transform = 'translate(-50%, -50%) rotate(' + Math.round(Math.atan2(dy, dx) * 180 / Math.PI) + 'deg)';
-		box.appendChild(el);
-		track(el, FLASH_MS + 220);
-	}
-
-	/* ---- 移动：沿路径铺一条尘迹（尾→头错开出现） ---- */
-	function trail(unit, rec) {
-		var box = trailLayer();
-		var g = geom();
-		if (!box || !g) return;
-		var dcx = unit.posx - rec.x0;
-		var dcy = unit.posy - rec.y0;
-		var cells = Math.sqrt(dcx * dcx + dcy * dcy);
-		if (cells < TRAIL_MIN_CELL) return;
-
-		var total = Math.min(TRAIL_MAX, Math.max(1, Math.round(cells / TRAIL_SPACING)));
-		var x0 = g.off + g.dist * rec.x0;
-		var y0 = g.off + g.dist * rec.y0;
-		var x1 = g.off + g.dist * unit.posx;
-		var y1 = g.off + g.dist * unit.posy;
-		var unitPx = unitSize(unit) || (g.dist / 2);
-
-		for (var i = 0; i < total; i++) {
-			var t = total === 1 ? 0.35 : (i / (total - 1));   // 0 = 起点（尾），1 = 终点（头）
-			var dust = document.createElement('div');
-			dust.className = 'fx-trail';
-			// 垂直于路径的随机抖动，让尘迹有宽度
-			var nx = -dcy, ny = dcx;
-			var nl = cells || 1;
-			var jitter = (Math.random() - 0.5) * unitPx * 0.55;
-			dust.style.left = (x0 + (x1 - x0) * t + (nx / nl) * jitter).toFixed(1) + 'px';
-			dust.style.top = (y0 + (y1 - y0) * t + (ny / nl) * jitter).toFixed(1) + 'px';
-			dust.style.setProperty('--fx-trail-scale', (0.8 + Math.random() * 0.6).toFixed(2));
-			dust.style.animationDelay = Math.round(t * (SPAWN_DELAY - 40)) + 'ms';   // 尾先、头后
-			box.appendChild(dust);
-			track(dust, TRAIL_MS + SPAWN_DELAY + 250);
-		}
-	}
-
-	/* ---- 对外：标记 ---- */
-	function markFired(unit, target) {
-		if (!unit) return;
-		for (var i = 0; i < fired.length; i++) {
-			if (fired[i].unit === unit) return;
-		}
-		fired.push({ unit: unit, target: target || null });
-	}
-
-	function markMoving(unit) {
-		if (!unit) return;
-		for (var i = 0; i < moved.length; i++) {
-			if (moved[i].unit === unit) return;   // 只记本回合第一次出现的位置作为路径起点
-		}
-		moved.push({ unit: unit, x0: unit.posx, y0: unit.posy });
-	}
-
-	/* ---- 对外：回合结束统一生成 ---- */
-	function flush() {
-		var fireList = fired.slice();
-		var moveList = moved.slice();
-		fired.length = 0;
-		moved.length = 0;
-		if (!fireList.length && !moveList.length) return;
-		window.setTimeout(function () {
-			if (!fxOn()) return;
-			moveList.forEach(function (rec) {
-				if (!rec.unit || rec.unit.disabled) return;   // 本回合已阵亡的不画
-				trail(rec.unit, rec);
-			});
-			fireList.forEach(function (rec) {
-				if (!rec.unit || rec.unit.disabled) return;
-				flash(rec.unit, rec.target);
-				burst(rec.unit);
-			});
-		}, SPAWN_DELAY);
-	}
-
-	/* ---- 供控制台调试 / 验收 ---- */
-	window.fxMarkFired = markFired;
-	window.fxMarkMoving = markMoving;
-	window.fxFlush = flush;
+	window.fxMarkMoving = fxMarkMoving;
+	window.fxMarkFired = fxMarkFired;
+	window.fxFlush = fxFlush;
+	window.fxReset = fxReset;
 	window.fxDebug = {
-		liveCount: function () { return live.length; },
+		liveCount: function () {
+			return {
+				smoke: boardLayer ? boardLayer.querySelectorAll('.fx-smoke').length : 0,
+				trails: trailLayer ? trailLayer.childElementCount : 0,
+				pendingMoves: moveMap.size,
+				pendingFires: fireMap.size
+			};
+		},
 		clearAll: function () {
-			live.slice().forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
-			live.length = 0;
-			fired.length = 0;
-			moved.length = 0;
+			if (boardLayer) boardLayer.innerHTML = '';
+			if (trailLayer) trailLayer.innerHTML = '';
+			moveMap.clear();
+			fireMap.clear();
 		}
 	};
 })();

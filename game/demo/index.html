@@ -1,66 +1,178 @@
-<!DOCTYPE html> 
-<html lang="zh-CN"> 
-<head> 
-	<meta charset="UTF-8"> 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-	<title>拿破仑战争 - 主页</title> 
-	<link rel="stylesheet" href="css/style.css"> 
-	<link rel="icon" type="image/svg+xml" href="./favicon.svg"> 
-</head> 
-<body class="page-login">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>拿破仑战争 - 主页</title>
+	<link rel="stylesheet" href="css/style.css?v=20260916-fixB34">
+	<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+	<script>
+		/* ?prologue=1 = 注册完成后直接进的"序章加载页"。
+		   必须在 <head> 里就把标记挂到 <html> 上：body 末尾那段脚本跑之前，
+		   登录表单可能已经画出来了，玩家就会看到"先跳登录页再加载"。
+		   CSS 里 `html.prologue-boot .page-box{display:none}` 从第一帧就藏掉登录卡。 */
+		if (new URLSearchParams(window.location.search).get('prologue') === '1') {
+			document.documentElement.classList.add('prologue-boot');
+		}
+	</script>
+</head>
+<body class="page-login" data-title-i18n="site.title">
 	<audio id="index-music" loop>
 		<source src="mus/Preussens-Gloria.mp3" type="audio/mpeg">
 	</audio>
 
-	<div class="page-box"> 
-		<p class="page-kicker">THE NAPOLEONIC CAMPAIGNS · 1805–1815</p>
-		<h1>拿破仑战争</h1> 
-		<p class="page-sub">回合制策略小游戏 · 消灭红方军队，改写历史</p> 
- 
-		<div id="login-panel" class="form-box"> 
-			<h2>登录</h2> 
-			<form id="login-form" autocomplete="on"> 
-				<label>用户名 
-					<input type="text" id="login-name" autocomplete="username" placeholder="请输入用户名"> 
-				</label> 
-				<label>密码 
-					<input type="password" id="login-pass" autocomplete="current-password" placeholder="请输入密码"> 
-				</label> 
-				<button type="submit">登 录</button> 
-			</form> 
-			<p id="login-msg" class="form-msg"></p> 
-			<p class="form-link">还没有账号？<a href="register.html">去注册</a></p> 
-			<p class="form-link"><a href="group.html">查看小组介绍</a></p> 
-		</div> 
-	</div> 
+	<div class="page-box">
+		<p class="page-kicker">THE NAPOLEONIC CAMPAIGNS · 1793–1815</p>
+		<h1 data-i18n="site.title">拿破仑战争</h1>
+		<p class="page-sub" data-i18n="site.subtitle">回合制策略小游戏 · 消灭红方军队，改写历史</p>
 
- 
-	<script src="js/account.js"></script> 
-	<script> 
-		document.getElementById('login-form').addEventListener('submit', function (e) { 
-			e.preventDefault(); 
+		<div id="login-panel" class="form-box">
+			<h2 data-i18n="auth.loginTitle">登录</h2>
+			<form id="login-form" autocomplete="on">
+				<label><span data-i18n="auth.username">用户名</span>
+					<input type="text" id="login-name" autocomplete="username" placeholder="请输入用户名" data-i18n-placeholder="auth.usernamePlaceholder">
+				</label>
+				<label><span data-i18n="auth.password">密码</span>
+					<input type="password" id="login-pass" autocomplete="current-password" placeholder="请输入密码" data-i18n-placeholder="auth.passwordPlaceholder">
+				</label>
+				<button type="submit" data-i18n="auth.loginButton">登 录</button>
+			</form>
+			<p id="login-msg" class="form-msg"></p>
+			<p class="form-link"><span data-i18n="auth.noAccount">还没有账号？</span> <a href="register.html" data-i18n="auth.toRegister">去注册</a></p>
+			<p class="form-link"><a href="group.html" data-i18n="auth.group">查看小组介绍</a></p>
+		</div>
+	</div>
 
-			var msg = document.getElementById('login-msg'); 
-			var name = document.getElementById('login-name').value; 
-			var pass = document.getElementById('login-pass').value; 
+	<!-- 完整土伦序章由对话引擎播放；这里负责剧情后的地图接镜。 -->
+	<section id="campaign-prologue" class="campaign-prologue" aria-hidden="true">
+		<div class="campaign-prologue__map" aria-hidden="true"></div>
+		<div class="campaign-prologue__copy">
+			<p class="campaign-prologue__kicker" data-i18n="transition.handoff">IMPERIAL STAFF MAP · 帝国参谋地图</p>
+			<p class="campaign-prologue__enter" data-i18n="transition.enter">正在展开欧洲战役地图……</p>
+			<button id="prologue-skip" type="button" class="campaign-prologue__skip" data-i18n="transition.skip">跳过序章</button>
+		</div>
+	</section>
 
-			var res = login(name, pass); 
 
-			if (!res.ok) { 
-				msg.textContent = res.msg; 
-				return; 
-			} 
+	<!-- 登录成功后的换场幕布（远端 2026-09-15 引入，与 mode.html / register.html 同一套） -->
+	<div class="page-route-curtain" aria-hidden="true"><span>N</span></div>
 
-			// 登录成功，进入游戏主界面
-			window.location.href = 'menu.html'; 
-		}); 
-	</script> 
-
-	<script src="js/bgm.js"></script>
+	<script src="js/ui.js?v=20260916-fixB34"></script>
+	<script src="js/account.js?v=20260916-fixB34"></script>
+	<script src="js/bgm.js?v=20260916-fixB34"></script>
+	<script src="js/dialog.js?v=20260916-fixB34"></script>
+	<script src="js/levels.js?v=20260916-fixB34"></script>
 	<script>
-		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击（见 js/bgm.js） */
+		/* 序章收尾：无论走"继续/跳过"、还是玩家中途切走标签页导致计时器不触发，
+		   都必须把玩家送到主界面 —— 这里用 navigated 标记 + 兜底计时器保证只跳一次。
+		   2026-09-16：修"注册完 / 新账号点通关模式后一直停在序章页"。 */
+		var prologueNavigated = false;
+		function goToMenu() {
+			if (prologueNavigated) return;
+			prologueNavigated = true;
+			if (typeof markPrologueSeen === 'function') markPrologueSeen();
+			window.location.href = 'menu.html?intro=1';
+		}
+
+		function startCampaignTransition() {
+			var prologue = document.getElementById('campaign-prologue');
+			var skip = document.getElementById('prologue-skip');
+			/* 走到这里说明"不演立绘剧情、直接放地图转场"：
+			   幕布必须撤掉，否则会盖住下面这块 .campaign-prologue 地图。 */
+			document.body.classList.remove('is-routing');
+			var go = function () {
+				if (prologueNavigated) return;
+				/* 先让序章文字退场、欧洲地图向镜头推进；下一页从同一张地图
+				 * 接着显影，避免剧情介绍结束后直接“闪切”到主界面。 */
+				if (prologue) {
+					prologue.classList.add('is-leaving');
+					prologue.setAttribute('aria-hidden', 'true');
+				}
+				document.body.classList.add('is-entering-map');
+				/* 正常路径：0.98s 后跳转。 */
+				window.setTimeout(goToMenu, 980);
+				/* 兜底：即使上面的计时器被浏览器节流/吞掉（标签页切后台、
+				 * 极端低帧率等），2.6s 后也一定要离开这一页。 */
+				window.setTimeout(goToMenu, 2600);
+			};
+
+			document.body.classList.add('is-deploying');
+			if (prologue) prologue.setAttribute('aria-hidden', 'false');
+			window.requestAnimationFrame(function () { if (prologue) prologue.classList.add('is-visible'); });
+			if (skip) {
+				skip.addEventListener('click', go, { once: true });
+				window.setTimeout(function () { try { skip.focus(); } catch (e) { } }, 350);
+			}
+			/* 原本 1.8s 自动进主界面。保留自动前进，但把它拉长到 2.6s，
+			   让玩家来得及看清"正在展开欧洲战役地图…"和跳过按钮；
+			   同时这一步本身就是兜底，所以不再叠加额外定时器。 */
+			window.setTimeout(go, 2600);
+		}
+
+		function playCampaignPrologue() {
+			/* ⚠️ 这里**故意不摘** body.is-routing。
+			   玩家要求"注册完直接进加载页，别先闪一下登录页" —— 那块 z-index:9999 的
+			   全屏幕布正好就是加载页（深色 + 金圈 N）。它会一直盖到剧情层出现为止：
+			   playDialogue() 给 body 挂上 dialogue-active 后，
+			   css 里 `body.dialogue-active .page-route-curtain{opacity:0;visibility:hidden}`
+			   会让幕布自动让位（0.52s 淡出，与对话层 0.68s 淡入叠成一次交叉溶解）。
+			   ⚠️ 反过来说，**那块 CSS 保险不能删**：删了幕布就又压住剧情，
+			   就退回"注册完一直卡在加载页"的老毛病（详见 AGENTS.md 第四轮记录）。 */
+			var story = (typeof getCampaignPrologueStory === 'function')
+				? getCampaignPrologueStory()
+				: [];
+			if (story.length && typeof playDialogue === 'function') {
+				/* 兜底：剧情引擎万一没能正常收尾（例如某些浏览器把对话框动画
+				   的终态渲染成不可见），30s 后也要推进到地图转场，不让玩家干等。 */
+				var entered = false;
+				var enter = function () { if (entered) return; entered = true; startCampaignTransition(); };
+				window.setTimeout(enter, 30000);
+				playDialogue(story, enter);
+				return;
+			}
+			startCampaignTransition();
+		}
+
+		document.getElementById('login-form').addEventListener('submit', function (e) {
+			e.preventDefault();
+
+			var msg = document.getElementById('login-msg');
+			var name = document.getElementById('login-name').value;
+			var pass = document.getElementById('login-pass').value;
+
+			var res = login(name, pass);
+
+			if (!res.ok) {
+				msg.textContent = res.msg;
+				return;
+			}
+
+			/* 2026-09-16 玩家要求：登录后**先进模式选择**，由玩家自己选
+			 * "通关模式 / 联机模式"，再由那一页分流到主界面或联机大厅 ——
+			 * 不再按"序章看没看过"直接跳 menu。序章的补播交给 mode.html 的
+			 * 「通关模式」按钮（它按 hasSeenPrologue 决定去 index?prologue=1 还是 menu）。 */
+			document.body.classList.add('is-routing');
+			window.setTimeout(function () { window.location.href = 'mode.html'; }, 560);
+		});
+
+		/* 背景音乐：先尝试播放，被浏览器拦截则等页面首次点击。 */
+		/* 注册成功跳回 index.html?prologue=1：新账号自动播放一次序章（幕布换场，播完回主界面）。 */
+		(function () {
+			var wantsPrologue = new URLSearchParams(window.location.search).get('prologue') === '1';
+			var user = (typeof currentUser === 'function') ? currentUser() : '';
+			if (wantsPrologue && user && !(typeof hasSeenPrologue === 'function' && hasSeenPrologue(user))) {
+				/* 幕布（金圈 N）= 玩家要的"加载页"，一直挂到剧情层出现为止。 */
+				document.body.classList.add('is-routing');
+				window.setTimeout(playCampaignPrologue, 560);
+			} else if (wantsPrologue) {
+				/* query 要求序章、但实际不播（没登录 / 已看过）：
+				   把 <head> 里藏起来的登录卡放回来，否则页面会是一片空白。 */
+				document.documentElement.classList.remove('prologue-boot');
+			}
+		})();
+
 		initBgm('index-music');
 	</script>
 
-</body> 
+</body>
 </html>
