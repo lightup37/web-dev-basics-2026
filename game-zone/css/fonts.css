@@ -1,0 +1,51 @@
+/* =====================================================================
+   fonts.css —— 字体方案（全部使用系统/Windows 自带字体，零下载、零外链）
+   ---------------------------------------------------------------------
+   为什么不用 Web 字体：
+     完整中文字体动辄 4MB/字重，即使子集化也要几百 KB；而目标环境是 Windows，
+     系统自带的微软雅黑/黑体/宋体/等线质量足够，且用户已明确要求直接使用
+     Windows 自带字体。因此这里只声明字体栈，不引入任何 @font-face 或外部请求。
+   ---------------------------------------------------------------------
+   字体族与用途：
+     微软雅黑 Microsoft YaHei .... 正文（屏幕阅读最舒适，字重齐全）
+     黑体     SimHei ............. 正文回退 / 强调块
+     等线     DengXian ........... 正文回退
+     宋体     SimSun ............. 极旧环境回退
+     微软正黑 Microsoft JhengHei . 繁体环境回退
+     思源黑体 Noto Sans SC ....... 若用户另装了思源黑体则优先使用
+     思源宋体 Noto Serif SC ...... 标题（若已安装，否则回退到宋体/雅黑）
+     楷体     KaiTi .............. 引文（可选气质）
+   ===================================================================== */
+
+:root {
+  /* 正文：无衬线 */
+  --font-sans: 'Noto Sans SC', 'Microsoft YaHei', '微软雅黑', 'Microsoft YaHei UI', 'DengXian', '等线', SimHei,
+    '黑体', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft JhengHei', '微軟正黑體', SimSun, '宋体', system-ui,
+    -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* 标题：衬线，营造「档案馆 / 读物」的气质 */
+  --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, '宋体', 'Microsoft YaHei', '微软雅黑',
+    Georgia, 'Times New Roman', serif;
+
+  /* 引文：楷体，与正文区分 */
+  --font-kai: KaiTi, '楷体', STKaiti, 'Kaiti SC', 'Noto Serif SC', SimSun, serif;
+
+  /* 数字与代码：等宽，便于表格对齐与数字滚动 */
+  --font-mono: Consolas, 'Cascadia Mono', 'Courier New', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* 小字号与表格里的数字用等宽，读起来更整齐 */
+.metric-value,
+.tl-time,
+.entry-card-no,
+.lightbox-counter,
+.filter-count,
+.table-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 引文块用楷体（若系统装了楷体），否则回退到衬线 */
+.md-quote,
+blockquote.md-quote {
+  font-family: var(--font-kai);
+}

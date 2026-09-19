@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>王者荣耀 · 铭文与装备 · 游戏天地</title>
+  <meta name="description" content="对局开始前配好的铭文是「底子」，对局中逐件购买的装备是「变量」——两套属性系统共同决定英雄的强度曲线。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#0f2137">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#c9a227;--accent-2:#2e86de;--deep:#0f2137;}</style>
+</head>
+<body data-section="hok" class="theme-hok">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/游戏研究-首页.html">游戏研究</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">王者荣耀</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/CS2-首页.html">CS2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/王者荣耀-首页.html">王者荣耀</a>
+        <span class="bc-sep">&gt;</span> <strong>铭文与装备</strong>
+      </span>
+      <span id="second-nav">
+        <a href="../html/王者荣耀-峡谷初印象.html">峡谷初印象</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/王者荣耀-六职百相.html">六职百相</a> <span class="sn-sep" aria-hidden="true">|</span> <span class="sn-current" aria-current="page">铭文与装备</span> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/王者荣耀-排位征途.html">排位征途</a>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">王者荣耀</p>
+        <h1 class="page-title">铭文与装备</h1>
+        <p class="page-summary">对局开始前配好的铭文是「底子」，对局中逐件购买的装备是「变量」——两套属性系统共同决定英雄的强度曲线。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<h2 id="铭文对局开始前的底子">铭文：对局开始前的底子</h2>
+<p>在《王者荣耀》里，玩家最早做出的一次策略决策并不发生在对局中，而是发生在对局之前——配置铭文。铭文为英雄提供基础属性加成，覆盖攻击、法术、防御、移速、攻速、暴击、吸血等多个维度。<strong>它不是对局里买来的，而是开局就带在身上的</strong>，因此它决定的是英雄在 1 级时的初始战斗能力。</p>
+<p>铭文的核心逻辑是「适配英雄定位」：法师通用页以法术攻击、法术穿透和冷却缩减为主；射手侧重攻速、暴击率与物理吸血；坦克堆最大生命值与物理防御；刺客与物理战士则强调物理攻击和物理穿透。一套配得合适的铭文带来的属性差，在开局的前几分钟的对线换血里相当明显——<strong>这正是同一名英雄在不同玩家手里手感不一样的原因之一。</strong></p>
+<p>一套铭文页通常包含 30 个槽位，红色、蓝色、绿色三类各 10 个，只能镶嵌对应颜色的铭文。游戏在 S22 赛季对铭文系统做过一次比较重要的优化：增加了英雄专属铭文页、铭文预览功能与铭文推荐系统，并简化了铭文的获取流程。对新手来说，系统推荐的通用铭文页已经够用；随着段位提升，为特定英雄单独定制铭文页会逐渐变成进阶的必经之路。</p>
+<p>三类铭文各取一枚示例：</p>
+<div class="icon-sheet">
+ <figure class="icon-cell"><img src="../images/hok/hok-rune-1.png" alt="红色铭文 圣人" width="44" height="52"><figcaption>圣人<em>红色 · 法术攻击 +5.3</em></figcaption></figure>
+ <figure class="icon-cell"><img src="../images/hok/hok-rune-2.png" alt="蓝色铭文 轮回" width="44" height="52"><figcaption>轮回<em>蓝色 · 法术攻击 +2.4</em></figcaption></figure>
+ <figure class="icon-cell"><img src="../images/hok/hok-rune-3.png" alt="绿色铭文 虚空" width="44" height="52"><figcaption>虚空<em>绿色 · 最大生命 +37.5</em></figcaption></figure>
+</div>
+<h2 id="铭文速查">铭文速查</h2>
+<p>下面按属性用途整理了常见的铭文。</p>
+<div class="filter-bar" data-filter-root="#pool-runes">
+ <span class="filter-label">用途</span>
+ <button class="chip is-active" data-filter="all">全部</button>
+ <button class="chip" data-filter="攻击">攻击</button>
+ <button class="chip" data-filter="法术">法术</button>
+ <button class="chip" data-filter="防御">防御</button>
+ <button class="chip" data-filter="移速">移速</button>
+ <input class="filter-search" type="search" placeholder="搜索铭文名称或作用…">
+ <span class="filter-count" data-filter-count></span>
+</div>
+<div class="card-pool" id="pool-runes">
+ <div class="pool-item" data-tags="攻击 穿透">
+ <div class="pool-item-head"><span class="pool-item-name">异变</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">提供物理攻击与物理穿透，是物理系英雄最常见的一套起手铭文之一。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 穿透">
+ <div class="pool-item-head"><span class="pool-item-name">鹰眼</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">同样以物理攻击与物理穿透为主，常与「异变」搭配，构成物理输出英雄的通用页。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 移速">
+ <div class="pool-item-head"><span class="pool-item-name">隐匿</span><span class="pool-item-tag">攻击 / 移速</span></div>
+ <p class="pool-item-desc">在物理攻击之外附加移动速度，适合需要频繁走位与支援的英雄。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 暴击">
+ <div class="pool-item-head"><span class="pool-item-name">祸源</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">以暴击率为主，配合暴击类装备使用，用来提高爆发上限。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 攻速">
+ <div class="pool-item-head"><span class="pool-item-name">红月</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">攻速与暴击率兼顾，适合依赖普攻输出的物理英雄。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 攻击">
+ <div class="pool-item-head"><span class="pool-item-name">圣人</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">提供法术攻击力加成，是法师铭文页里最常见的红色铭文。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 吸血">
+ <div class="pool-item-head"><span class="pool-item-name">轮回</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">法术攻击与法术吸血兼顾，让法师在消耗中保持续航。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 穿透">
+ <div class="pool-item-head"><span class="pool-item-name">梦魇</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">法术攻击搭配法术穿透，用来对抗出了法术防御的英雄。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 冷却">
+ <div class="pool-item-head"><span class="pool-item-name">献祭</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">在法术攻击之外提供冷却缩减，加快技能循环。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 冷却">
+ <div class="pool-item-head"><span class="pool-item-name">怜悯</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">以冷却缩减为主，适合技能依赖度高的英雄压短技能间隔。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 冷却">
+ <div class="pool-item-head"><span class="pool-item-name">虚空</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">最大生命与冷却缩减兼顾，通用性很强，坦克与法师都能用。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 攻速">
+ <div class="pool-item-head"><span class="pool-item-name">宿命</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">攻速、最大生命与物理防御三项兼顾，适合需要站得住的前排英雄。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 生命">
+ <div class="pool-item-head"><span class="pool-item-name">长生</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">堆叠最大生命值，用来提升开局的抗压能力。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 抗性">
+ <div class="pool-item-head"><span class="pool-item-name">均衡</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">同时提供物理防御与法术防御，属于纯防守向的选择。</p>
+ </div>
+ <div class="pool-item" data-tags="移速 攻击 攻速">
+ <div class="pool-item-head"><span class="pool-item-name">狩猎</span><span class="pool-item-tag">移速</span></div>
+ <p class="pool-item-desc">攻速与移动速度兼顾，是很多英雄提高游走效率的通用选择。</p>
+ </div>
+</div>
+<h2 id="装备六大类别与出装逻辑">装备：六大类别与出装逻辑</h2>
+<p>装备系统是《王者荣耀》对局里最核心的动态策略系统。<strong>铭文是开局前定好的常量，装备则是每一次回城都要重新计算的变量。</strong>游戏内装备分为攻击、法术、防御、移动、打野和辅助六大类别，每类承载不同的战术价值。</p>
+<ul class="md-list"><li><strong>攻击装备</strong>提供物理攻击、攻速与暴击属性，是射手与物理刺客的成长路径。</li><li><strong>法术装备</strong>提供法术强度与冷却缩减，决定法师在中期的伤害曲线。</li><li><strong>防御装备</strong>包含物理防御、法术防御、血量与回复几类，主要服务于坦克和战士。</li><li><strong>移动装备</strong>以鞋类为主，用移速换取游走与支援的效率。</li><li><strong>打野装备</strong>分为狩猎宽刃、游击弯刀、追击刀锋、巡守利斧、符文大剑等不同层级，对应不同的打野节奏与英雄类型。</li><li><strong>辅助装备</strong>提供视野、护盾与团队增益，是辅助英雄区别于其他位置的关键。</li></ul>
+<p>出装的核心原则只有一句：<strong>看对面阵容。</strong>对方物理输出多，就优先考虑反伤刺甲、不祥征兆；对方法术伤害高，魔女斗篷与永夜守护的优先级立刻上升；对方前排堆了防御，穿透类装备的价值随之提高。每一次出装都是一次微型决策——先出鞋子保证游走效率，还是先出核心件抢节奏？对方刺客发育太好，要不要提前做一件防御装？这些选择没有标准答案，但它们的累积最终决定了比赛的走向。</p>
+<p>几件核心成品装备的图标：</p>
+<div class="icon-sheet">
+ <figure class="icon-cell"><img src="../images/hok/hok-item-1.jpg" alt="装备 闪电匕首" width="87" height="87"><figcaption>闪电匕首<em>攻速 · 暴击 · 移速</em></figcaption></figure>
+ <figure class="icon-cell"><img src="../images/hok/hok-item-2.jpg" alt="装备 无尽战刃" width="87" height="87"><figcaption>无尽战刃<em>物理攻击 · 暴击率</em></figcaption></figure>
+ <figure class="icon-cell"><img src="../images/hok/hok-item-3.jpg" alt="装备 泣血之刃" width="87" height="87"><figcaption>泣血之刃<em>物理攻击 · 物理吸血</em></figcaption></figure>
+</div>
+<h2 id="装备速查">装备速查</h2>
+<p>下面按类别整理了常见的成品装备。</p>
+<div class="filter-bar" data-filter-root="#pool-items">
+ <span class="filter-label">类别</span>
+ <button class="chip is-active" data-filter="all">全部</button>
+ <button class="chip" data-filter="攻击">攻击</button>
+ <button class="chip" data-filter="法术">法术</button>
+ <button class="chip" data-filter="防御">防御</button>
+ <button class="chip" data-filter="移动">移动</button>
+ <input class="filter-search" type="search" placeholder="搜索装备名称或作用…">
+ <span class="filter-count" data-filter-count></span>
+</div>
+<div class="card-pool" id="pool-items">
+ <div class="pool-item" data-tags="攻击 攻速 暴击">
+ <div class="pool-item-head"><span class="pool-item-name">闪电匕首</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">提升攻速、暴击率与移动速度；被动「电弧」在普攻时造成额外的法术伤害，清线与拉扯能力都很强。官方数据：+40 物理攻击 ／ +35% 攻击速度 ／ +7.5% 移速。总价 2040 金。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 暴击">
+ <div class="pool-item-head"><span class="pool-item-name">无尽战刃</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">提供物理攻击与暴击率，被动进一步提升暴击效果，是暴击流射手的核心装。官方数据：+120 物理攻击 ／ +20% 暴击率。总价 2060 金。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 吸血">
+ <div class="pool-item-head"><span class="pool-item-name">泣血之刃</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">物理攻击搭配物理吸血，让射手与物理刺客拥有不回城也能持续作战的能力。官方数据：+80 物理攻击 ／ +25% 物理吸血 ／ +500 最大生命。总价 2020 金。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 冷却 穿透">
+ <div class="pool-item-head"><span class="pool-item-name">暗影战斧</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">物理攻击、冷却缩减与最大生命三项兼顾，被动提供物理穿透，并让普攻附带减速效果。官方数据：+80 物理攻击 ／ +10% 冷却缩减 ／ +500 最大生命。总价 2090 金。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 攻速 穿透">
+ <div class="pool-item-head"><span class="pool-item-name">破晓</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">攻速、暴击率与物理穿透兼顾，被动对远程英雄的效果更强，是射手后期最有分量的装备之一。</p>
+ </div>
+ <div class="pool-item" data-tags="攻击 保命">
+ <div class="pool-item-head"><span class="pool-item-name">名刀·司命</span><span class="pool-item-tag">攻击</span></div>
+ <p class="pool-item-desc">物理攻击与冷却缩减；被动在受到致命伤害时短暂免疫伤害，是决定团战生死的一件保命装。官方数据：+500 最大生命 ／ +75 物理攻击 ／ +15% 攻击速度。总价 2060 金。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 移速">
+ <div class="pool-item-head"><span class="pool-item-name">回响之杖</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">法术攻击与移动速度；被动在技能命中后触发范围法术伤害，兼顾消耗与清线。官方数据：+220 法术攻击 ／ +7.5% 移速。总价 2050 金。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 爆发">
+ <div class="pool-item-head"><span class="pool-item-name">博学者之怒</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">大幅提升法术攻击，被动按比例进一步提高法术强度，是法师伤害抬升的关键一件。官方数据：+210 法术攻击。总价 2140 金。</p>
+ </div>
+ <div class="pool-item" data-tags="法术 穿透">
+ <div class="pool-item-head"><span class="pool-item-name">虚无法杖</span><span class="pool-item-tag">法术</span></div>
+ <p class="pool-item-desc">法术攻击搭配法术穿透，专门用来处理堆了法术防御的前排。官方数据：+210 法术攻击 ／ +500 最大生命值 ／ +5% 冷却缩减。总价 2040 金。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 物理">
+ <div class="pool-item-head"><span class="pool-item-name">反伤刺甲</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">物理防御与物理攻击兼顾；被动把受到的部分物理伤害反弹给攻击者，克制普攻型输出。官方数据：+45 物理攻击 ／ +300 物理防御 ／ +700 最大生命。总价 2020 金。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 物理 生命">
+ <div class="pool-item-head"><span class="pool-item-name">不祥征兆</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">物理防御与最大生命；被动降低攻击者的移动速度与攻击速度，是前排抗压的常见选择。官方数据：+300 物理防御 ／ +1200 最大生命。总价 2020 金。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 法术 护盾">
+ <div class="pool-item-head"><span class="pool-item-name">魔女斗篷</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">法术防御与最大生命；被动提供一层吸收法术伤害的护盾，对线法师时优先级很高。官方数据：+300 法术防御 ／ +1100 最大生命。总价 2020 金。</p>
+ </div>
+ <div class="pool-item" data-tags="防御 法术 回复">
+ <div class="pool-item-head"><span class="pool-item-name">永夜守护</span><span class="pool-item-tag">防御</span></div>
+ <p class="pool-item-desc">法术防御与最大生命；被动在短时间内承受大量伤害后回复自身生命，用来对抗爆发型法术输出。官方数据：+90 物理防御 ／ +180 法术防御 ／ +900 最大生命 ／ +7.5% 移动速度。总价 2020 金。</p>
+ </div>
+ <div class="pool-item" data-tags="移动 攻速">
+ <div class="pool-item-head"><span class="pool-item-name">极速战靴</span><span class="pool-item-tag">移动</span></div>
+ <p class="pool-item-desc">在移动速度之外提供攻击速度，是物理输出英雄最常见的鞋类选择。</p>
+ </div>
+ <div class="pool-item" data-tags="移动 法术 韧性">
+ <div class="pool-item-head"><span class="pool-item-name">抵抗之靴</span><span class="pool-item-tag">移动</span></div>
+ <p class="pool-item-desc">提供法术防御与韧性，减少被控制的时间；对面控制多时优先考虑。官方数据：+50 物理防御 ／ +100 法术防御。总价 700 金。</p>
+ </div>
+ <div class="pool-item" data-tags="移动 物理">
+ <div class="pool-item-head"><span class="pool-item-name">影忍之足</span><span class="pool-item-tag">移动</span></div>
+ <p class="pool-item-desc">提供物理防御，并减少受到的普通攻击伤害，适合对抗物理普攻型英雄。官方数据：+50 法术防御 ／ +120 物理防御。总价 700 金。</p>
+ </div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#铭文对局开始前的底子">铭文：对局开始前的底子</a></li>
+              <li class="toc-top"><a href="#铭文速查">铭文速查</a></li>
+              <li class="toc-top"><a href="#装备六大类别与出装逻辑">装备：六大类别与出装逻辑</a></li>
+              <li class="toc-top"><a href="#装备速查">装备速查</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/王者荣耀-首页.html">栏目主页</a></li>
+              <li><a href="../html/王者荣耀-峡谷初印象.html">峡谷初印象</a></li>
+              <li><a href="../html/王者荣耀-六职百相.html">六职百相</a></li>
+              <li class="is-current"><span>铭文与装备</span></li>
+              <li><a href="../html/王者荣耀-排位征途.html">排位征途</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+  <script src="../js/pages/filter.js" defer></script>
+</body>
+</html>

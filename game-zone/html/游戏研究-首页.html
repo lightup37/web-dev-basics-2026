@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>游戏研究 · 栏目主页 · 游戏天地</title>
+  <meta name="description" content="这个栏目不介绍某一款游戏，而是把四款游戏放在同一张实验台上，研究它们的机制、商业模式与设计取舍。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#141c33">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#5c7cfa;--accent-2:#22b8cf;--deep:#141c33;}</style>
+</head>
+<body data-section="research" class="theme-research">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">游戏研究</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/CS2-首页.html">CS2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <strong>游戏研究</strong>
+        
+      </span>
+      <span id="second-nav">
+        <a href="../html/游戏研究-机制.html">机制</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/游戏研究-商业化.html">商业化</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/游戏研究-时长设计.html">时长设计</a>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+    <!-- 栏目头部 -->
+    <header class="section-hero" style="--hero-img:url('../images/site/cover-research.jpg')">
+      <div class="container hero-inner">
+        <p class="hero-kicker"><i class="bi bi-journal-text"></i> 游戏研究</p>
+        <h1 class="hero-title">不是介绍游戏，而是研究游戏</h1>
+        <p class="hero-lead">为什么一局结束总想"再来一局"？四款游戏靠什么赚钱？我们怎样验证一个关于"好玩"的猜想？这里讨论的是问题，不是攻略。</p>
+      </div>
+    </header>
+
+    <div class="container section-body">
+      <p class="section-summary">这个栏目不介绍某一款游戏，而是把四款游戏放在同一张实验台上，研究它们的机制、商业模式与设计取舍。</p>
+      <h2 class="section-h2">本栏目内容</h2>
+      <div class="row g-4 entry-grid">
+<div class="col-md-6 col-xl-3">
+        <a class="entry-card h-100" href="../html/游戏研究-机制.html">
+          <span class="entry-card-no">01</span>
+          <h3 class="entry-card-title">机制</h3>
+          <p class="entry-card-desc">从可变奖励、损失厌恶、心流与掌控感四个角度，解释"再来一局"为什么这么自然，并把它们对应到本网站的四款游戏上。</p>
+          <span class="entry-card-more">进入本页 <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+<div class="col-md-6 col-xl-3">
+        <a class="entry-card h-100" href="../html/游戏研究-商业化.html">
+          <span class="entry-card-no">02</span>
+          <h3 class="entry-card-title">商业化</h3>
+          <p class="entry-card-desc">把四款游戏的商业模式放在同一张表里比较：玩家付多少钱、付费影响多少游戏强度、不付费的玩家是否被削弱。</p>
+          <span class="entry-card-more">进入本页 <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+<div class="col-md-6 col-xl-3">
+        <a class="entry-card h-100" href="../html/游戏研究-时长设计.html">
+          <span class="entry-card-no">03</span>
+          <h3 class="entry-card-title">时长设计</h3>
+          <p class="entry-card-desc">玩法、数值与美术都能改，唯独"一局多长"最难动。四款游戏把玩家的时间切成完全不同的形状，而这决定了它们各自被谁、在什么场合打开。</p>
+          <span class="entry-card-more">进入本页 <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+      </div>
+      <div class="section-extra md-body"><h2 id="这个栏目研究什么">这个栏目研究什么</h2>
+<p>打开任何一款游戏，你会看到角色、关卡、数值和界面。但如果把镜头往后拉一点，会看到另一层东西：<strong>这套系统在奖励什么行为、在惩罚什么行为、以及它希望你多久回来一次。</strong></p>
+<p>《游戏研究》栏目关心的就是这一层。它不回答"鲁班七号怎么出装"，而回答：</p>
+<div class="md-cards" data-cols="3"><div class="md-card">
+  <i class="bi bi-arrow-repeat md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">机制：它为什么让人停不下来</h3>
+  
+  <div class="md-card-body"><p>可变奖励、损失厌恶与心流曲线，如何体现在 CS2 的经济局和尖塔的开局抉择里。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-cash-coin md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">商业化：四种赚钱方式</h3>
+  
+  <div class="md-card-body"><p>买断制、皮肤内购、开包与通行证——四种模式让玩家付出的东西并不一样。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-hourglass-split md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">时长设计：一局有多长</h3>
+  
+  <div class="md-card-body"><p>从 5 分钟到 90 分钟，四款游戏的单局长度差了近十倍。时间是最难改的参数，它先决定受众，再决定玩法。</p></div>
+</div></div>
+<div class="callout callout-note">
+  <div class="callout-head"><i class="bi bi-info-circle"></i><span>写作原则</span></div>
+  <div class="callout-body"><p>本栏目的所有判断都尽量落到<strong>可以指出来源的事实</strong>上。凡是无法核实的数字，宁可写成定性描述， 也不写成看起来很精确的结论。涉及的第三方数据会明确标注为"估算"或"公开报道"。</p></div>
+</div>
+<h2 id="四款游戏的横向对照">四款游戏的横向对照</h2>
+<p>下表把本站四个游戏栏目放在一起比较。它们分属四个不同品类，商业模式的差异比玩法差异更值得注意。</p>
+<div class="table-responsive"><table class="table md-table">
+  <thead><tr><th style="text-align:left">项目</th><th style="text-align:left">杀戮尖塔</th><th style="text-align:left">王者荣耀</th><th style="text-align:left">CS2</th><th style="text-align:left">炉石传说</th></tr></thead>
+  <tbody><tr><td style="text-align:left">开发商</td><td style="text-align:left">Mega Crit Games（独立团队）</td><td style="text-align:left">腾讯天美工作室群</td><td style="text-align:left">Valve</td><td style="text-align:left">暴雪娱乐</td></tr>
+<tr><td style="text-align:left">上线时间</td><td style="text-align:left">2017 年抢先体验，2019 年正式版</td><td style="text-align:left">2015 年 11 月</td><td style="text-align:left">2023 年（2012 年上线的是它的前作 CS:GO）</td><td style="text-align:left">2014 年 3 月正式运营</td></tr>
+<tr><td style="text-align:left">商业模式</td><td style="text-align:left">买断制</td><td style="text-align:left">免费下载 + 皮肤与内购</td><td style="text-align:left">免费游玩 + 饰品交易与通行证</td><td style="text-align:left">免费游玩 + 扩展包与卡包</td></tr>
+<tr><td style="text-align:left">核心循环</td><td style="text-align:left">爬塔 → 选牌 → 战败 → 重开</td><td style="text-align:left">选英雄 → 对局 → 上分</td><td style="text-align:left">买枪 → 回合 → 赢下比赛</td><td style="text-align:left">组卡 → 对局 → 开包/上分</td></tr>
+<tr><td style="text-align:left">单局时长</td><td style="text-align:left">约 40–90 分钟一局完整爬塔</td><td style="text-align:left">约 15–25 分钟</td><td style="text-align:left">约 30–60 分钟一场比赛</td><td style="text-align:left">约 5–15 分钟</td></tr>
+<tr><td style="text-align:left">竞技层级</td><td style="text-align:left">无官方职业赛事，以个人挑战为主</td><td style="text-align:left">完整的联赛体系与赛季</td><td style="text-align:left">完整的职业巡回赛体系</td><td style="text-align:left">完整的官方赛事体系</td></tr>
+<tr><td style="text-align:left">上手门槛</td><td style="text-align:left">低（规则简单）</td><td style="text-align:left">中（需要理解阵容与节奏）</td><td style="text-align:left">高（枪法 + 地图 + 经济）</td><td style="text-align:left">中（需要认识卡池）</td></tr></tbody>
+</table></div>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>表里最值得注意的一行</span></div>
+  <div class="callout-body"><p><strong>商业模式</strong>这一行里，只有《杀戮尖塔》是买断制。另外三款都免费下载，但它们在"玩家付钱买到了什么"这件事上， 选择了完全不同的答案。这正是"商业化"这个研究方向要讨论的核心问题。</p></div>
+</div>
+<div class="md-bars" data-bars><div class="md-bar-row">
+  <span class="md-bar-name">买断制</span>
+  <span class="md-bar-track"><span class="md-bar-fill" style="--bar-width:100%"></span></span>
+  <span class="md-bar-value">一次付费，内容完整</span>
+</div><div class="md-bar-row">
+  <span class="md-bar-name">皮肤内购</span>
+  <span class="md-bar-track"><span class="md-bar-fill" style="--bar-width:0%"></span></span>
+  <span class="md-bar-value">不付费也能玩完整内容</span>
+</div><div class="md-bar-row">
+  <span class="md-bar-name">开包</span>
+  <span class="md-bar-track"><span class="md-bar-fill" style="--bar-width:0%"></span></span>
+  <span class="md-bar-value">随机性付费，卡池影响强度</span>
+</div><div class="md-bar-row">
+  <span class="md-bar-name">通行证</span>
+  <span class="md-bar-track"><span class="md-bar-fill" style="--bar-width:0%"></span></span>
+  <span class="md-bar-value">按期付费，回报可预期</span>
+</div></div>
+<h2 id="三个研究方向">三个研究方向</h2>
+<p>上面三张卡片对应的三个议题，已经各自展开为一个页面：</p>
+<div class="md-cards" data-cols="3"><div class="md-card">
+  <i class="bi bi-arrow-repeat md-card-icon" aria-hidden="true"></i>
+  <a class="md-card-link" href="游戏研究-机制.html">
+  <h3 class="md-card-title">机制：为什么"再来一局"如此自然</h3>
+  </a>
+  <div class="md-card-body"><p>从可变奖励、损失厌恶、心流与掌控感四条线，拆开"好玩"与"停不下来"这两件常被混为一谈的事，并把每一节对应到本站四款游戏的具体设计上。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-cash-coin md-card-icon" aria-hidden="true"></i>
+  <a class="md-card-link" href="游戏研究-商业化.html">
+  <h3 class="md-card-title">商业化：四种模式，四道门槛</h3>
+  </a>
+  <div class="md-card-body"><p>买断制、皮肤内购、饰品通行证与卡包放在同一张表里，比较三件事：玩家付多少钱、付费影响多少对局强度、不付费玩家的体验是否被削弱。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-hourglass-split md-card-icon" aria-hidden="true"></i>
+  <a class="md-card-link" href="游戏研究-时长设计.html">
+  <h3 class="md-card-title">时长设计：一局多长决定了谁来玩</h3>
+  </a>
+  <div class="md-card-body"><p>四款游戏的单局时长差了近十倍。这一页讲"一局多长"这个最难改的参数，如何反过来决定受众、赛制与玩法细节。</p></div>
+</div></div>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>建议的阅读顺序</span></div>
+  <div class="callout-body"><p>先看<strong>机制</strong>，它解释玩家为什么愿意继续玩；再看<strong>商业化</strong>，它解释厂商靠什么把这份意愿变成收入； 最后看<strong>时长设计</strong>，它从"一局有多长"这条轴解释前两页的设计为什么长成那样。 如果你只想读一页，读<strong>时长设计</strong>——时间是所有设计参数里最难改的一个，它约束了其它一切。</p></div>
+</div></div>
+      
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <span aria-current="page">游戏研究</span>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

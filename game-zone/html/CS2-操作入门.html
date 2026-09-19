@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CS2 · 操作入门 · 游戏天地</title>
+  <meta name="description" content="按键表、急停、静步、蹲下、换弹与投掷物：这一页把 CS2 的基础操作讲清楚，并指出几个几乎人人都练错的地方。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#1b1f26">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#de9b35;--accent-2:#4a9fd8;--deep:#1b1f26;}</style>
+</head>
+<body data-section="cs2" class="theme-cs2">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/游戏研究-首页.html">游戏研究</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">CS2</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/CS2-首页.html">CS2</a>
+        <span class="bc-sep">&gt;</span> <strong>操作入门</strong>
+      </span>
+      <span id="second-nav">
+        <a href="../html/CS2-新手指南.html">新手指南</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-地图介绍.html">地图介绍</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-枪械道具.html">枪械道具</a> <span class="sn-sep" aria-hidden="true">|</span> <span class="sn-current" aria-current="page">操作入门</span>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">CS2</p>
+        <h1 class="page-title">操作入门</h1>
+        <p class="page-summary">按键表、急停、静步、蹲下、换弹与投掷物：这一页把 CS2 的基础操作讲清楚，并指出几个几乎人人都练错的地方。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<h2 id="基础按键先把操作变成肌肉记忆">基础按键：先把操作变成肌肉记忆</h2>
+<p>CS2 的键位并不多，难点在于把它们练到不需要思考。刚开始玩的时候，不需要急着学习复杂战术，先熟悉移动、瞄准、换弹、蹲下、跳跃以及投掷物的使用，让手指记住每一个动作的位置。</p>
+<div class="table-responsive"><table class="table md-table">
+  <thead><tr><th style="text-align:left">按键</th><th style="text-align:left">作用</th><th style="text-align:left">说明</th></tr></thead>
+  <tbody><tr><td style="text-align:left">W / A / S / D</td><td style="text-align:left">前 / 左 / 后 / 右移动</td><td style="text-align:left">最基础的移动键，决定你站在哪个位置、什么时候能退</td></tr>
+<tr><td style="text-align:left">Shift</td><td style="text-align:left">静步</td><td style="text-align:left">降低移动产生的声音，适合绕后、接近敌人与残局</td></tr>
+<tr><td style="text-align:left">Ctrl</td><td style="text-align:left">蹲下</td><td style="text-align:left">改变角色高度，同时影响射击状态与移动速度</td></tr>
+<tr><td style="text-align:left">Space</td><td style="text-align:left">跳跃</td><td style="text-align:left">越过矮墙或躲避投掷物；空中开枪的命中率极低，不要指望跳狙</td></tr>
+<tr><td style="text-align:left">R</td><td style="text-align:left">换弹</td><td style="text-align:left">重新装填弹药，注意换弹时会短暂失去开火能力</td></tr>
+<tr><td style="text-align:left">E</td><td style="text-align:left">使用</td><td style="text-align:left">安装与拆除 C4、开门等交互动作都要用 E 完成</td></tr>
+<tr><td style="text-align:left">Q</td><td style="text-align:left">切换武器</td><td style="text-align:left">快速切回上一把使用过的武器，例如主武器与副武器之间互换</td></tr>
+<tr><td style="text-align:left">1</td><td style="text-align:left">主武器</td><td style="text-align:left">步枪、冲锋枪、狙击枪等</td></tr>
+<tr><td style="text-align:left">2</td><td style="text-align:left">副武器</td><td style="text-align:left">手枪，换弹或主武器打空时的备选</td></tr>
+<tr><td style="text-align:left">3</td><td style="text-align:left">近战武器</td><td style="text-align:left">刀，移动速度最快，也用于近距离补刀</td></tr>
+<tr><td style="text-align:left">4</td><td style="text-align:left">投掷物</td><td style="text-align:left">烟雾弹、闪光弹、手雷、燃烧弹等</td></tr></tbody>
+</table></div>
+<p>这张表看起来简单，但实战里的问题几乎都出在"来不及"。看到敌人时，是开枪、是转身、是蹲下、还是先丢一颗闪，这些决定要在半秒内完成——所以基础操作必须练到不用想。建议先在训练类地图和死斗模式里把移动、瞄准、换弹、蹲下、跳跃和投掷物都跑熟，再进入正式的爆破模式。</p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-shot-economy.jpg" data-caption="对局画面：准星、血量、金钱与小地图占据了视野的四个角，操作熟练之后你才有余力去读这些信息">
+    <img src="../images/cs2/cs2-shot-economy.jpg" alt="对局画面：准星、血量、金钱与小地图占据了视野的四个角，操作熟练之后你才有余力去读这些信息" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>对局画面：准星、血量、金钱与小地图占据了视野的四个角，操作熟练之后你才有余力去读这些信息<span class="figure-source">来源：Steam 商店官方素材 (Counter-Strike 2)</span></figcaption>
+  
+</figure>
+<h2 id="急停移动射击为什么打不中">急停：移动射击为什么打不中</h2>
+<p>CS2 中移动时射击会降低精准度，这是这款游戏最核心的一条枪械规则。因此开枪前需要停止移动——很多新手抱怨"明明瞄准了却打在墙上"，原因通常不是准星放错了，而是脚步还没有停。</p>
+<p>最基本的练习方法是：移动到敌人所在方向后迅速停下，再进行射击。反复做这个动作，直到"停—开枪"变成一个连贯的动作，而不是两个需要思考的步骤。</p>
+<ol class="md-steps"><li class="md-step">
+  <span class="md-step-no">1</span>
+  <div><h4 class="md-step-title">第一步：找一块空地</h4><div class="md-step-body">在训练图或死斗模式里选一条直线通道，反复练习横向移动后立刻停住，感受角色从移动到静止的那一瞬间。</div></div>
+</li><li class="md-step">
+  <span class="md-step-no">2</span>
+  <div><h4 class="md-step-title">第二步：到位再开枪</h4><div class="md-step-body">朝敌人可能出现的位置移动到合适距离，迅速停下脚步，把准星压到对方身上之后才按下开火键。</div></div>
+</li><li class="md-step">
+  <span class="md-step-no">3</span>
+  <div><h4 class="md-step-title">第三步：用反向按键更快停下</h4><div class="md-step-body">实战中很多人会在向右移动时轻点一下相反方向的键，让速度更快归零，再立刻开枪，这就是常说的急停。</div></div>
+</li></ol>
+<div class="callout callout-warn">
+  <div class="callout-head"><i class="bi bi-exclamation-triangle"></i><span>两个最常见的急停误区</span></div>
+  <div class="callout-body"><p><strong>边跑边点射</strong>：看起来动作很帅，但由于移动惩罚，子弹大概率会飞向准星之外。CS2 不是一款能靠跑动射击吃饭的游戏。</p>
+<p><strong>走一步打一枪</strong>：在没有停稳的情况下连续开枪，等于把每一发子弹的命中率都交给运气。宁可慢半步，也要保证开枪时人是停住的。</p></div>
+</div>
+<h2 id="静步与蹲下什么时候该慢什么时候不该蹲">静步与蹲下：什么时候该慢、什么时候不该蹲</h2>
+<p><strong>静步</strong> 可以降低移动产生的声音。静步适合绕后、接近敌人以及残局，因为对手听不到你的脚步，就无法提前判断你的位置。但静步并不是任何时候都应该用：进攻时过度静步可能导致团队推进速度过慢，队友已经在包点交火，你还在通道里慢慢挪，机会就这样被拖没了。</p>
+<p><strong>蹲下</strong> 可以让角色蹲下，能够改变玩家的高度并影响射击状态。蹲下有时能让子弹更集中，但它同时让你失去了移动能力。最需要避免的是养成"看到敌人就立刻蹲下"的习惯——蹲在原地意味着你放弃了拉枪、撤回掩体和使用道具的可能，完全把胜负交给这一次对枪。</p>
+<div class="md-cards" data-cols="2"><div class="md-card">
+  <i class="bi bi-volume-mute md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">适合静步的场景</h3>
+  
+  <div class="md-card-body"><p>绕后包抄、残局独自处理、确定附近有敌人但还没被发现时。此时声音比速度重要，慢下来能换来先手。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-lightning md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">不该静步的场景</h3>
+  
+  <div class="md-card-body"><p>团队发起进攻、需要抢时间转点、包点已经交火时。此时推进速度决定能不能形成人数优势，慢一步就会变成逐个送。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-arrows-collapse md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">蹲下真正的作用</h3>
+  
+  <div class="md-card-body"><p>在掩体后改变身位高度、让对手的预瞄失效，或者在远距离对枪时让弹道更集中。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-slash-circle md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">蹲下的代价</h3>
+  
+  <div class="md-card-body"><p>你停在了原地。蹲下之后既不能快速撤离，也不能马上拉枪，一旦对手没有被打死，先手就拱手让人了。</p></div>
+</div></div>
+<p>判断标准其实只有一句话：<strong>静步和蹲下都是"为了换取某个优势"付出的代价，如果换不到东西，就不要用。</strong></p>
+<h2 id="换弹与投掷物别浪费回合里的几秒">换弹与投掷物：别浪费回合里的几秒</h2>
+<p><strong>换弹</strong> 可以重新装填弹药，但它有一个容易被忽视的代价：换弹过程中你无法开火。因此不要在敌人距离很近的时候随意换弹，可以选择先切换副武器应对，或者退到掩体后面再换弹。特别是 AK-47、M4A4 这类弹匣较大的步枪，新手常常在还有大半弹匣时就习惯性按 R，结果刚好把最关键的几秒浪费掉。</p>
+<p><strong>投掷物</strong>则是提高 CS2 水平的重要一步。玩家可以根据不同的投掷方式改变投掷距离，并通过练习掌握常用地图的烟雾、闪光和燃烧弹点位。同一颗烟雾弹，站的位置、瞄准的参照物、投掷的力度不同，落点就完全不同——这也是职业选手会把大量时间花在"跑图"上的原因。</p>
+<p>对新手来说，投掷物的练习顺序可以这样安排：</p>
+<ol class="md-list"><li>先记住自己常打的地图上最常用的几个点位，例如封狙位的烟雾和进包点前的闪光。</li><li>再练习投掷方式，理解远投与近抛分别能覆盖什么距离。</li><li>最后才是配合队友的战术道具，例如同一时间两颗闪光加一颗烟，把一整条通道接管下来。</li></ol>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>本页要点</span></div>
+  <div class="callout-body"><ul class="md-list"><li>基础按键不难，难的是不用思考：W/A/S/D 移动、Shift 静步、Ctrl 蹲下、Space 跳跃、R 换弹、E 使用、Q 切枪、1—4 切换武器与投掷物。</li><li>移动射击会降低精准度，<strong>开枪之前先停下来</strong>，急停是新手最值得投入时间练习的技术。</li><li>静步能降低脚步声，但过度静步会让团队推进过慢；蹲下能改变身位，但不要形成"看到敌人就蹲下"的习惯。</li><li>不要在近距离随意换弹，可以先切副武器或退到掩体后再补弹。</li><li>投掷物的距离与落点由投掷方式决定，需要靠跑图练习，而不是临场凭感觉。</li></ul></div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#基础按键先把操作变成肌肉记忆">基础按键：先把操作变成肌肉记忆</a></li>
+              <li class="toc-top"><a href="#急停移动射击为什么打不中">急停：移动射击为什么打不中</a></li>
+              <li class="toc-top"><a href="#静步与蹲下什么时候该慢什么时候不该蹲">静步与蹲下：什么时候该慢、什么时候不该蹲</a></li>
+              <li class="toc-top"><a href="#换弹与投掷物别浪费回合里的几秒">换弹与投掷物：别浪费回合里的几秒</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/CS2-首页.html">栏目主页</a></li>
+              <li><a href="../html/CS2-新手指南.html">新手指南</a></li>
+              <li><a href="../html/CS2-地图介绍.html">地图介绍</a></li>
+              <li><a href="../html/CS2-枪械道具.html">枪械道具</a></li>
+              <li class="is-current"><span>操作入门</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

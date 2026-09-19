@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CS2 · 新手指南 · 游戏天地</title>
+  <meta name="description" content="从回合规则、金钱经济到报点方式，这一页把新手最该先建立的四类认知按顺序讲清楚，让第一局就知道自己该做什么。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#1b1f26">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#de9b35;--accent-2:#4a9fd8;--deep:#1b1f26;}</style>
+</head>
+<body data-section="cs2" class="theme-cs2">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/游戏研究-首页.html">游戏研究</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">CS2</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/CS2-首页.html">CS2</a>
+        <span class="bc-sep">&gt;</span> <strong>新手指南</strong>
+      </span>
+      <span id="second-nav">
+        <span class="sn-current" aria-current="page">新手指南</span> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-地图介绍.html">地图介绍</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-枪械道具.html">枪械道具</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-操作入门.html">操作入门</a>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">CS2</p>
+        <h1 class="page-title">新手指南</h1>
+        <p class="page-summary">从回合规则、金钱经济到报点方式，这一页把新手最该先建立的四类认知按顺序讲清楚，让第一局就知道自己该做什么。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<h2 id="一局比赛是怎样进行的">一局比赛是怎样进行的</h2>
+<p>CS2 的竞技比赛由多个回合组成，而不是一场混战打到底。每个回合开始时，玩家可以使用上一回合获得的金钱购买武器、防具和投掷物；购买时间结束后进入交战阶段，回合中阵亡的玩家要等到下一个回合才能重新出现。这条规则决定了 CS2 的节奏：你打的不是一条命，而是一连串"钱怎么花、命怎么换"的小决策。</p>
+<p>回合的胜负由阵营目标决定。T 方的主要目标是安装炸弹并使其爆炸，或者消灭所有 CT；CT 方则需要阻止 T 下包，或者拆除已经安装的炸弹，同样也可以通过消灭所有 T 来赢下回合。因此每个回合都有两条取胜路径：完成目标，或者清空对面。</p>
+<p>对新手来说，最容易混淆的是"什么时候该做什么"：</p>
+<ul class="md-list"><li><strong>回合刚开始</strong>：确认自己有多少钱，决定这一回合买什么；不要习惯性地点满购物车。</li><li><strong>交战中</strong>：记住自己不是孤军作战，队友的位置和你看到的信息一样重要。</li><li><strong>炸弹安装之后</strong>：T 方要转入守包位置，CT 方要立刻组织回防，这时的站位和前面完全不同。</li><li><strong>回合结束</strong>：无论输赢都会结算金钱，输掉回合的连败方通常还会得到一定的补偿金，这也是经济局能翻回来的原因。</li></ul>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-shot-bomb.jpg" data-caption="爆破模式对局：炸弹安装前与安装后，双方要做的事情完全不同">
+    <img src="../images/cs2/cs2-shot-bomb.jpg" alt="爆破模式对局：炸弹安装前与安装后，双方要做的事情完全不同" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>爆破模式对局：炸弹安装前与安装后，双方要做的事情完全不同<span class="figure-source">来源：Steam 商店官方素材 (Counter-Strike 2)</span></figcaption>
+  
+</figure>
+<p>记住一句话：<strong>一局游戏并不是单纯地"谁杀人多谁赢"，完成阵营目标才是最重要的事情。</strong> 一个只杀了两个人但成功拆包的 CT，比杀了四个人却让炸弹爆炸的 CT 对队伍的贡献更大。</p>
+<h2 id="新手先练这五件事">新手先练这五件事</h2>
+<p>刚开始玩 CS2 时，不需要急着学习复杂战术。先把最基础的动作做扎实，比背十套烟点更有用。下面五项按优先级排列，前两项是技术，后三项是习惯。</p>
+<div class="accordion md-accordion" id="acc-gbisvc"><div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc-gbisvc-0" aria-expanded="true" aria-controls="acc-gbisvc-0">
+      一、移动与瞄准的基本手感
+    </button>
+  </h3>
+  <div id="acc-gbisvc-0" class="accordion-collapse collapse show" data-bs-parent="#acc-gbisvc">
+    <div class="accordion-body"><p>先熟悉 WASD 移动、鼠标瞄准、换弹、蹲下、跳跃以及投掷物使用。这一阶段的目标不是打准，而是让手指不再需要思考：想往前走就走，想蹲下就蹲下，想换弹不用低头找键位。可以在死斗或训练类地图里反复做，直到这些动作变成本能，再进入实战。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-gbisvc-1" aria-expanded="false" aria-controls="acc-gbisvc-1">
+      二、急停：开枪之前先停下来
+    </button>
+  </h3>
+  <div id="acc-gbisvc-1" class="accordion-collapse collapse" data-bs-parent="#acc-gbisvc">
+    <div class="accordion-body"><p>CS2 中移动射击会影响枪械精准度，因此看到敌人时需要先停止移动，再进行射击。最基本的练习方法是朝敌人所在的方向移动到合适位置后迅速停下，把准星压到对方身上再开枪。很多新手抱怨"明明瞄准了却打不中"，原因基本都是脚步还没停。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-gbisvc-2" aria-expanded="false" aria-controls="acc-gbisvc-2">
+      三、准星控制与爆头线
+    </button>
+  </h3>
+  <div id="acc-gbisvc-2" class="accordion-collapse collapse" data-bs-parent="#acc-gbisvc">
+    <div class="accordion-body"><p>所谓"爆头线"，是指移动时让准星保持在敌人头部可能出现的高度，而不是盯着地面或墙面。把准星一直放在这个高度，可以减少发现敌人后重新瞄准的时间；配合急停，就能在对方反应过来之前完成射击。这项习惯需要长期保持，一旦养成，收益远大于任何一次临时压枪。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-gbisvc-3" aria-expanded="false" aria-controls="acc-gbisvc-3">
+      四、把自己的位置当成信息
+    </button>
+  </h3>
+  <div id="acc-gbisvc-3" class="accordion-collapse collapse" data-bs-parent="#acc-gbisvc">
+    <div class="accordion-body"><p>不要只顾着看准星。你站在哪个位置、能不能被对面看到、退路在哪里，这些判断会直接决定你是先手还是被先手。新手常见的失误是跟着队友挤在同一条路上，被一颗手雷或一串扫射同时打掉两个人。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-gbisvc-4" aria-expanded="false" aria-controls="acc-gbisvc-4">
+      五、接受"打不过就先活着
+    </button>
+  </h3>
+  <div id="acc-gbisvc-4" class="accordion-collapse collapse" data-bs-parent="#acc-gbisvc">
+    <div class="accordion-body"><p>残局里逃走保存实力并不是懦弱。装备可以留到下一个回合继续使用，而只要你还活着，队伍就多一份信息和火力。判断什么时候该撤、什么时候该拼，是新手向中级过渡时最重要的一课。</p></div>
+  </div>
+</div></div>
+<h2 id="小地图与经济两条不靠枪法的胜负线">小地图与经济：两条不靠枪法的胜负线</h2>
+<p>小地图能够提供非常重要的信息。通过观察队友的位置、死亡情况以及已经发现的敌人，可以判断敌人的进攻方向。例如队友在 B 点发现多个敌人，那么其他队员就可以考虑向 B 点支援，或者利用敌方人数调动，在另一侧寻找机会。很多时候，你不需要看到敌人，也能从队友的位置变化和地图上的信息推断出他在哪里。</p>
+<p>经济管理是另一条不需要枪法的能力。每个回合结束后都会获得金钱：经济足够时，可以购买步枪、防弹衣和投掷物；如果经济不足，可以选择经济局，暂时少购买装备，为下一回合积攒资金。判断标准很简单——这一回合买齐了也大概率打不过，那就干脆省下来。</p>
+<p>新手最容易犯的错误就是每个回合都把钱全部花掉：手里刚够买一把步枪，就配上半套投掷物，结果全队四个人凑不齐一套完整装备。合理的经济管理能够让整个队伍拥有更加稳定的装备，也让连续几个回合的火力更平均。</p>
+<div class="md-split md-split-right">
+  <div class="md-split-media">
+    <a class="lightbox-trigger" href="../images/cs2/cs2-shot-economy.jpg" data-caption="对局画面：屏幕左上角的金钱与右下角的小地图，是新手最该养成的两个查看习惯">
+      <img src="../images/cs2/cs2-shot-economy.jpg" alt="对局画面：屏幕左上角的金钱与右下角的小地图，是新手最该养成的两个查看习惯" class="img-fluid" loading="lazy">
+    </a>
+  </div>
+  <div class="md-split-text"><p>两者之间的关系可以这样理解：<strong>小地图决定你往哪走，经济决定你手里有什么。</strong> 一个合格的回合，是先把这两件事看清楚，再去想要不要开枪。</p>
+<p><em>图：Steam 商店官方素材</em></p>
+<p>还有一点常被忽略：阵亡之后不要立刻切出游戏发呆，而应该继续观察剩下的队友和敌人动向，把看到的东西讲出来。残局里活着的人注意力都在准星上，你这个"已经出局"的视角，可能是队伍里唯一能看到全貌的一双眼睛。</p></div>
+</div>
+<h2 id="报点把有人换成有用的信息">报点：把「有人」换成有用的信息</h2>
+<p>CS2 是团队游戏，因此报点非常重要。发现敌人后不要只说"有人"，而应该告诉队友敌人的位置和数量，例如"A 小两个""B 点三个""中路有 AWP"。准确的信息能够帮助队友快速判断局势：知道对面有三个人在 B，队伍就可以选择集中回防或者连点进攻 A 点，而不是五个人在地图上互相找。</p>
+<p>报点本身也有几条不成文的规矩：</p>
+<ul class="md-list"><li><strong>先说位置，再说数量</strong>，让队友先定位、再判断要不要支援。</li><li><strong>说关键武器</strong>，对面拿着 AWP 时，队友的走位方式会完全不一样。</li><li><strong>报自己死亡时的信息</strong>，你被谁、从哪个方向打死，对残局判断非常有用。</li><li><strong>丢掉的信息要更新</strong>，如果人已经走了，及时说一句"B 点没人了"，避免队伍做无用回防。</li></ul>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>报点示范</span></div>
+  <div class="callout-body"><p>坏例子：「有人！有人！A 点有人！」</p>
+<p>好例子：「A 小两个」「B 点三个，都在包点」「中路一把 AWP，别直拉」「他们转点了，B 现在空了」</p>
+<p>把位置、数量、关键信息三件事讲清楚，一句话就够队友做决定了。</p></div>
+</div>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>本页要点</span></div>
+  <div class="callout-body"><ul class="md-list"><li>比赛由多个回合组成，回合开始时用上一回合的钱购买装备；T 要下包、CT 要阻止或拆包，<strong>回合目标优先于击杀数</strong>。</li><li>新手先把移动、瞄准、换弹、蹲下、跳跃和投掷物用熟，再重点练急停和准星控制，同时养成保持爆头线的习惯。</li><li>移动射击会降低精准度，看到敌人要先停下再开枪。</li><li>小地图提供敌人方向，经济决定全队装备水平，这两件事不需要枪法就能做好。</li><li>报点要说清位置、数量和关键武器，不要只喊"有人"。</li></ul></div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#一局比赛是怎样进行的">一局比赛是怎样进行的</a></li>
+              <li class="toc-top"><a href="#新手先练这五件事">新手先练这五件事</a></li>
+              <li class="toc-top"><a href="#小地图与经济两条不靠枪法的胜负线">小地图与经济：两条不靠枪法的胜负线</a></li>
+              <li class="toc-top"><a href="#报点把有人换成有用的信息">报点：把「有人」换成有用的信息</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/CS2-首页.html">栏目主页</a></li>
+              <li class="is-current"><span>新手指南</span></li>
+              <li><a href="../html/CS2-地图介绍.html">地图介绍</a></li>
+              <li><a href="../html/CS2-枪械道具.html">枪械道具</a></li>
+              <li><a href="../html/CS2-操作入门.html">操作入门</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

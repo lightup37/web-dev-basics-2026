@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>游戏研究 · 时长设计 · 游戏天地</title>
+  <meta name="description" content="玩法、数值与美术都能改，唯独&quot;一局多长&quot;最难动。四款游戏把玩家的时间切成完全不同的形状，而这决定了它们各自被谁、在什么场合打开。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#141c33">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#5c7cfa;--accent-2:#22b8cf;--deep:#141c33;}</style>
+</head>
+<body data-section="research" class="theme-research">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">游戏研究</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/CS2-首页.html">CS2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <span class="bc-sep">&gt;</span> <strong>时长设计</strong>
+      </span>
+      <span id="second-nav">
+        <a href="../html/游戏研究-机制.html">机制</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/游戏研究-商业化.html">商业化</a> <span class="sn-sep" aria-hidden="true">|</span> <span class="sn-current" aria-current="page">时长设计</span>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">游戏研究</p>
+        <h1 class="page-title">时长设计</h1>
+        <p class="page-summary">玩法、数值与美术都能改，唯独"一局多长"最难动。四款游戏把玩家的时间切成完全不同的形状，而这决定了它们各自被谁、在什么场合打开。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<div class="callout callout-note">
+  <div class="callout-head"><i class="bi bi-info-circle"></i><span>为什么把"一局多长"单独拿出来看</span></div>
+  <div class="callout-body"><p>一局的时间是所有设计参数里最容易被忽略、也最难改动的那一个。它不描述玩法，却决定了玩家要在什么场合腾出时间、失败一次要付出多少、以及这款游戏能不能被搬上转播台。 本站四款游戏的单局时长差了近十倍，却各自稳定运行了很多年。这一页研究的就是这个数字从哪来、又管住了什么。</p></div>
+</div>
+<h2 id="一局有多长决定了谁来玩">一局有多长，决定了谁来玩</h2>
+<p>单局时长一旦定下，就同时锁定了三件事：玩家需要多长的空闲、失败一次的代价、以及这场对局能不能被打断。四款游戏给出的答案完全不同。</p>
+<div class="metrics" data-cols="4"><div class="metric">
+  <i class="bi bi-hourglass-split metric-icon" aria-hidden="true"></i>
+  <div class="metric-value" data-count="60" data-formatted="60">60<span class="metric-tail">分钟</span></div>
+  <div class="metric-label">《杀戮尖塔》一局完整爬塔，约 40–90 分钟</div>
+  
+</div>
+<div class="metric">
+  <i class="bi bi-phone metric-icon" aria-hidden="true"></i>
+  <div class="metric-value" data-count="20" data-formatted="20">20<span class="metric-tail">分钟</span></div>
+  <div class="metric-label">《王者荣耀》一场对局，通常 15–25 分钟</div>
+  
+</div>
+<div class="metric">
+  <i class="bi bi-crosshair metric-icon" aria-hidden="true"></i>
+  <div class="metric-value" data-count="40" data-formatted="40">40<span class="metric-tail">分钟</span></div>
+  <div class="metric-label">《反恐精英 2》一场竞技比赛，约 30–60 分钟</div>
+  
+</div>
+<div class="metric">
+  <i class="bi bi-suit-heart-fill metric-icon" aria-hidden="true"></i>
+  <div class="metric-value" data-count="10" data-formatted="10">10<span class="metric-tail">分钟</span></div>
+  <div class="metric-label">《炉石传说》一局标准对局，通常 5–15 分钟</div>
+  
+</div></div>
+<div class="md-split md-split-right">
+  <div class="md-split-media">
+    <a class="lightbox-trigger" href="../images/research/research-flow.jpg" data-caption="沙漏：时间是玩家最不愿意被说服交出的资源">
+      <img src="../images/research/research-flow.jpg" alt="沙漏：时间是玩家最不愿意被说服交出的资源" class="img-fluid" loading="lazy">
+    </a>
+  </div>
+  <div class="md-split-text"><p>时间既筛选场合，也筛选人。《炉石传说》一局十分钟上下，可以在等车和午休时打开；《王者荣耀》二十分钟一局，需要一段相对完整的空档；《杀戮尖塔》四十分钟起步，玩家通常要专门安排一段时间；《反恐精英 2》介于两者之间，但和王者一样属于多人对局，一旦匹配成功就必须打完。</p>
+<p>愿意为一局预留一小时的人，和只想利用十分钟空隙的人，几乎是两类玩家。时长先划出受众，然后玩法才有机会说话。</p></div>
+</div>
+<h2 id="把长局切成小节拍">把长局切成小节拍</h2>
+<p>一局时间长，不代表玩家要连续承受长时间的压力。四款游戏都把自己切成更小的单位，让玩家在每一个小单位里得到一次完整的判断、一次结果和一次休息。</p>
+<div class="md-cards" data-cols="2"><div class="md-card">
+  <i class="bi bi-map md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">杀戮尖塔：幕、楼层与节点</h3>
+  
+  <div class="md-card-body"><p>一层塔由若干节点串成路线，普通战斗、精英、事件、商店和休息处交替出现。一个节点一到三分钟，打完就能停下。玩家真正感知的"一局"，其实是几十次"选哪条路、要不要碰这个精英"。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-stopwatch md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">反恐精英 2：回合、半场与赛点</h3>
+  
+  <div class="md-card-body"><p>一个回合不到两分钟，阵亡之后等到下一回合重新开始。半场十二个回合结束时交换阵营并重置经济，让落后的一方拿到一次结构性的重新开始。整场比赛因此变成二十几个可以单独复盘的小局。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-diagram-3 md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">王者荣耀：兵线、团战与推塔</h3>
+  
+  <div class="md-card-body"><p>一局二十分钟内部还有节奏。前期对线发育，中期围绕暴君、主宰这类中立资源开团，防御塔被推掉之后可活动的空间迅速变大。玩家感受到的不是二十分钟，而是若干个"这一波要不要打"。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-bar-chart-steps md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">炉石传说：回合与法力曲线</h3>
+  
+  <div class="md-card-body"><p>回合制把对局切成一人一次的固定节拍，法力水晶每回合增加一颗，到第十颗封顶。这条曲线本身就是时间表：前期铺垫、中期交换、后期决胜，节奏由系统替玩家排好。</p></div>
+</div></div>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/sts/sts-map-1.jpg" data-caption="《杀戮尖塔》官方截图：路线上的事件房间里，玩家正与一只白色巨型生物对话，对话框下方给出可选行动">
+    <img src="../images/sts/sts-map-1.jpg" alt="《杀戮尖塔》官方截图：路线上的事件房间里，玩家正与一只白色巨型生物对话，对话框下方给出可选行动" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>《杀戮尖塔》官方截图：路线上的事件房间里，玩家正与一只白色巨型生物对话，对话框下方给出可选行动<span class="figure-source">来源：Steam 商店官方截图</span></figcaption>
+  
+</figure>
+<div class="md-emphasis"><p>分段的作用不是把长局变短，而是让玩家随时有一个可以停下的位置。愿意让人停下的游戏，玩家才敢在碎片时间打开它。</p></div>
+<h2 id="长局与短局各自要付的代价">长局与短局各自要付的代价</h2>
+<p>时长不是免费的选择。长局换来厚度，也换来退出成本；短局换来轻便，也换来对局中每个参与者的高依赖。</p>
+<p><strong>长局的问题在于"押注越来越重"。</strong> 《杀戮尖塔》一局四十到九十分钟，前面所有选牌都押在同一套牌上，失败很疼。它必须做到两件事：允许玩家随时退出并保留进度，同时让每一次选牌都立刻见效，否则玩家不会开始第二局。《反恐精英 2》一场比赛三十到六十分钟，中途离开会直接伤害四名队友，于是它用弃赛惩罚和投降投票来处理离场；经济系统又让前一回合的失败影响后一回合，长局里的每一步都互相牵制。</p>
+<p><strong>短局的问题在于"每局都容易被忘掉"。</strong> 《王者荣耀》二十分钟一局，说不长，但中途挂机会影响四个人，所以它用信誉积分和禁赛来约束离场行为。《炉石传说》一局十分钟，输掉重来的代价很小，玩家可以说走就走；代价是对局本身的重量变轻，很难形成"整晚泡在里面"的感觉。这也解释了为什么同一个客户端里还要放一个半小时上下的酒馆战棋——用另一种时长覆盖另一类场合。</p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-shot-economy.jpg" data-caption="《反恐精英 2》官方截图：对局中的第一人称视角，玩家在掩体后观察通道">
+    <img src="../images/cs2/cs2-shot-economy.jpg" alt="《反恐精英 2》官方截图：对局中的第一人称视角，玩家在掩体后观察通道" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>《反恐精英 2》官方截图：对局中的第一人称视角，玩家在掩体后观察通道<span class="figure-source">来源：Steam 商店《Counter-Strike 2》官方截图</span></figcaption>
+  
+</figure>
+<h2 id="结束点什么时候允许玩家离开">结束点：什么时候允许玩家离开</h2>
+<p>玩家离开游戏的位置，几乎总是一个干净的边界：一局结束、一个回合结束、一个节点结束。设计者真正要回答的问题，是这种边界出现得有多频繁。</p>
+<div class="accordion md-accordion" id="acc-hddc5n"><div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc-hddc5n-0" aria-expanded="true" aria-controls="acc-hddc5n-0">
+      杀戮尖塔：把边界放到每一层之后
+    </button>
+  </h3>
+  <div id="acc-hddc5n-0" class="accordion-collapse collapse show" data-bs-parent="#acc-hddc5n">
+    <div class="accordion-body"><p>单机设计的优势在这里最明显。玩家可以在任意楼层退出并保留进度，一局四十分钟的爬塔因此能被拆成几次二十分钟的游玩。代价是"战败即终结"，它收回成本的方式是重开一局的成本同样很低。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-hddc5n-1" aria-expanded="false" aria-controls="acc-hddc5n-1">
+      反恐精英 2：边界越密，越敢顺手开一局
+    </button>
+  </h3>
+  <div id="acc-hddc5n-1" class="accordion-collapse collapse" data-bs-parent="#acc-hddc5n">
+    <div class="accordion-body"><p>单个回合不到两分钟，玩家随时知道"再过一会儿就是一局结束"。半场交换阵营时双方经济重置，落后的队伍不至于失去整场比赛。这类机制的作用是让"继续玩"看起来仍然值得。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-hddc5n-2" aria-expanded="false" aria-controls="acc-hddc5n-2">
+      王者荣耀：边界拉长，就必须处理离场
+    </button>
+  </h3>
+  <div id="acc-hddc5n-2" class="accordion-collapse collapse" data-bs-parent="#acc-hddc5n">
+    <div class="accordion-body"><p>一局二十分钟不可中断，中途离开会伤害队友，所以离场成本由信誉积分与禁赛来承担。它也提供投降投票，让已经输定的对局提前结束，避免玩家被迫在必败的局面里待满二十分钟。</p></div>
+  </div>
+</div>
+<div class="accordion-item">
+  <h3 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-hddc5n-3" aria-expanded="false" aria-controls="acc-hddc5n-3">
+      炉石传说：边界最短，进入门槛也最低
+    </button>
+  </h3>
+  <div id="acc-hddc5n-3" class="accordion-collapse collapse" data-bs-parent="#acc-hddc5n">
+    <div class="accordion-body"><p>一局十分钟上下，输掉的损失小到可以直接再开一局。这让它成为四款游戏里启动成本最低的一款，"再来一局"几乎不需要理由。短局的风险是玩家对单局的投入感更弱。</p></div>
+  </div>
+</div></div>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>一条可以带走的判断</span></div>
+  <div class="callout-body"><p>把一局想象成一段不能中断的视频。长度超过玩家能安心腾出的时间，就必须提供存档或者投降；短于这个时间，就必须接受输赢很快被忘掉。</p></div>
+</div>
+<h2 id="时长被赛制与直播反向锁定">时长被赛制与直播反向锁定</h2>
+<p>竞技类游戏的单局时长并不是设计团队单方面说了算。一场比赛要卖给转播方、要排进赛事日程、要让选手保持专注，单局长度于是变成必须被标准化的参数。</p>
+<ol class="timeline"><li class="tl-item">
+  <span class="tl-dot" aria-hidden="true"></span>
+  <div class="tl-time">2012–2023</div>
+  <div class="tl-body">
+    <h4 class="tl-title">先赢十六回合的时代</h4>
+    <p>《反恐精英：全球攻势》的竞技模式以先赢十六回合为胜，最长要打满三十回合，一场比赛拖到一个半小时以上并不罕见。</p>
+  </div>
+</li>
+<li class="tl-item">
+  <span class="tl-dot" aria-hidden="true"></span>
+  <div class="tl-time">2023.09</div>
+  <div class="tl-body">
+    <h4 class="tl-title">《反恐精英 2》改为先赢十三回合</h4>
+    <p>新版本把一局上限压到二十四回合，赛点提前到第十三回合，十二比十二进入加时。单场比赛变短，转播时段也因此更容易编排。</p>
+  </div>
+</li></ol>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/research/research-esports.jpg" data-caption="电竞赛事现场：舞台上的选手比赛区与巨幅赛事标识">
+    <img src="../images/research/research-esports.jpg" alt="电竞赛事现场：舞台上的选手比赛区与巨幅赛事标识" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>电竞赛事现场：舞台上的选手比赛区与巨幅赛事标识<span class="figure-source">来源：Wikimedia Commons</span></figcaption>
+  
+</figure>
+<p>《王者荣耀》走的是另一条路：单局长度基本不动，改用多局连续对抗来填满一个转播时段，一局二十分钟左右的设计让每局之间都能插入解说与广告。《炉石传说》的官方赛事长期要求选手带上多套卡组连续应战，一局十分钟的长度正好把一场对阵控制在可接受的时间内。反过来说，一局动辄数小时、结果难以预期的品类，天生就很难被搬上转播台。</p>
+<div class="md-emphasis"><p>时长从来不只是玩家体验问题。它同时被选手的体力、转播的时段表和观众的注意力约束，最后写进规则里的那个数字，往往是三方妥协的结果。</p></div>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>本页要点</span></div>
+  <div class="callout-body"><ul class="md-list"><li>单局时长是最难改的设计参数之一，它先决定受众与使用场合，再决定玩法细节。</li><li>长局靠分段变得可以承受：幕与节点、回合与半场、法力曲线，都是把长时间切成可暂停的小单位。</li><li>长局的代价是退出成本高，必须提供存档或投降；短局的代价是单局投入感更弱。</li><li>玩家总是在干净的边界离开，边界的密度决定了一款游戏适合什么场合。</li><li>竞技游戏的时长会被赛制与转播反向锁定，《反恐精英 2》从十六回合缩到十三回合就是一个例子。</li></ul></div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#一局有多长决定了谁来玩">一局有多长，决定了谁来玩</a></li>
+              <li class="toc-top"><a href="#把长局切成小节拍">把长局切成小节拍</a></li>
+              <li class="toc-top"><a href="#长局与短局各自要付的代价">长局与短局各自要付的代价</a></li>
+              <li class="toc-top"><a href="#结束点什么时候允许玩家离开">结束点：什么时候允许玩家离开</a></li>
+              <li class="toc-top"><a href="#时长被赛制与直播反向锁定">时长被赛制与直播反向锁定</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/游戏研究-首页.html">栏目主页</a></li>
+              <li><a href="../html/游戏研究-机制.html">机制</a></li>
+              <li><a href="../html/游戏研究-商业化.html">商业化</a></li>
+              <li class="is-current"><span>时长设计</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <span aria-current="page">游戏研究</span>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

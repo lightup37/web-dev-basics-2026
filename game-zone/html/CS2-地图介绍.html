@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CS2 · 地图介绍 · 游戏天地</title>
+  <meta name="description" content="七张现役地图的结构与打法：先弄清每张图的控制区、进攻路线和阵营特点，再决定自己该先练哪一张。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#1b1f26">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#de9b35;--accent-2:#4a9fd8;--deep:#1b1f26;}</style>
+</head>
+<body data-section="cs2" class="theme-cs2">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/游戏研究-首页.html">游戏研究</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">CS2</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/CS2-首页.html">CS2</a>
+        <span class="bc-sep">&gt;</span> <strong>地图介绍</strong>
+      </span>
+      <span id="second-nav">
+        <a href="../html/CS2-新手指南.html">新手指南</a> <span class="sn-sep" aria-hidden="true">|</span> <span class="sn-current" aria-current="page">地图介绍</span> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-枪械道具.html">枪械道具</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/CS2-操作入门.html">操作入门</a>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">CS2</p>
+        <h1 class="page-title">地图介绍</h1>
+        <p class="page-summary">七张现役地图的结构与打法：先弄清每张图的控制区、进攻路线和阵营特点，再决定自己该先练哪一张。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<h2 id="中路为王mirage-与-dust-ii">中路为王：Mirage 与 Dust II</h2>
+<p>有两张地图的结构最容易被讲清楚，也最适合新手建立"地图控制"这个概念：Mirage 与 Dust II。它们的共同点是中央区域连接着两个包点，谁先拿下中路，谁就掌握了选择进攻方向的主动权。学会在这两张图上判断"中路是谁的"，你对地图的理解就已经超过大多数新手。</p>
+<h3 id="mirage">Mirage</h3>
+<p>Mirage 是 CS2 中非常经典的地图，结构比较清晰，适合新玩家学习。地图主要由 A 点、B 点和 Mid 构成，Mid 是双方争夺的重要区域：T 方控制中路后，可以选择进攻 A 点，也可以转向 B 点；CT 则依靠中路的信息判断对面究竟要打哪一边。</p>
+<p>A 点主要有 A Ramp、Palace、Connector 等进攻路线；B 点则主要通过 Apartments 等区域进入。正因为两个包点各有多种入口，Mirage 的战术比较丰富，常见打法包括 A 快攻、B 快攻、中路控图以及 A/B 分割进攻。<strong>阵营特点：T、CT 均衡，地图控制非常重要。</strong></p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-mirage.png" data-caption="Mirage 游戏内雷达俯视图：A 点、B 点与中路的位置关系，是理解这张图的起点">
+    <img src="../images/cs2/cs2-map-mirage.png" alt="Mirage 游戏内雷达俯视图：A 点、B 点与中路的位置关系，是理解这张图的起点" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Mirage 游戏内雷达俯视图：A 点、B 点与中路的位置关系，是理解这张图的起点<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<h3 id="dust-ii">Dust II</h3>
+<p>Dust II 是 CS 系列最经典的地图之一，地图结构简单明了，非常适合新手学习。地图主要区域包括 A、B、Mid、Long、Short 和 B Tunnel。</p>
+<p>A Long 和 Mid 是非常重要的战斗区域。T 方可以控制 Long 进攻 A，也可以通过 Mid 寻找突破机会；Short 连接中路与 A 点，是两队争夺最频繁的一条线；B 点则通常通过 B Tunnel 进入。<strong>Dust II 看似简单，但高水平比赛中依然非常考验枪法和团队配合</strong>，因为每一个关键位置都早已被所有人研究透了，剩下的只有对枪细节和队友之间的默契。阵营特点：结构简单，枪法和地图控制非常重要。</p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-dust2.png" data-caption="Dust II 游戏内雷达俯视图：A Long、Mid、Short 与 B Tunnel 构成这张图的骨架">
+    <img src="../images/cs2/cs2-map-dust2.png" alt="Dust II 游戏内雷达俯视图：A Long、Mid、Short 与 B Tunnel 构成这张图的骨架" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Dust II 游戏内雷达俯视图：A Long、Mid、Short 与 B Tunnel 构成这张图的骨架<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<h2 id="道具决定成败inferno-与-ancient">道具决定成败：Inferno 与 Ancient</h2>
+<p>Inferno 与 Ancient 的共同点是通道狭窄、包点附近有大量掩体，防守方只要站住位置就能大幅拖延进攻。因此这两张图里，投掷物的价值被放到最大——一颗及时的烟雾或燃烧弹，往往比一次成功的对枪更能改变回合走向。</p>
+<h3 id="inferno">Inferno</h3>
+<p>Inferno 是一张非常依赖道具的地图。Banana 是 B 点附近最重要的控制区域之一，T 方通常需要争夺 Banana，而 CT 则会使用烟雾、燃烧弹和手雷阻止 T 推进。这条通道狭窄且笔直，谁先在里面架好道具，谁就能把对方堵在出口。</p>
+<p>A 点则拥有 Apartments、Second Mid 等多条进攻路线，需要队伍分散注意力才能形成有效突破。Inferno 的关键在于利用投掷物控制狭窄通道，再寻找合适的进攻时机。<strong>阵营特点：CT 防守较强，道具价值很高。</strong></p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-inferno.png" data-caption="Inferno 游戏内雷达俯视图：Banana 位于 B 点外侧，是这张图最先被争夺的区域">
+    <img src="../images/cs2/cs2-map-inferno.png" alt="Inferno 游戏内雷达俯视图：Banana 位于 B 点外侧，是这张图最先被争夺的区域" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Inferno 游戏内雷达俯视图：Banana 位于 B 点外侧，是这张图最先被争夺的区域<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<h3 id="ancient">Ancient</h3>
+<p>Ancient 拥有明显的中路结构，Mid 是双方争夺的重要区域。T 方可以通过 Mid、A 区和 B 区多方向展开进攻，B 点周围拥有 Cave、Elbow 等重要位置。</p>
+<p>由于地图存在较多狭窄通道，烟雾弹和闪光弹能够有效帮助队伍突破防线：烟雾负责切断防守方的视线，闪光负责争抢那几秒钟的先手。<strong>阵营特点：地图控制和道具配合非常重要。</strong></p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-ancient.png" data-caption="Ancient 游戏内雷达俯视图：中路直通包点，狭窄通道让道具的作用被进一步放大">
+    <img src="../images/cs2/cs2-map-ancient.png" alt="Ancient 游戏内雷达俯视图：中路直通包点，狭窄通道让道具的作用被进一步放大" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Ancient 游戏内雷达俯视图：中路直通包点，狭窄通道让道具的作用被进一步放大<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<h2 id="立体与开放nuke-与-anubis">立体与开放：Nuke 与 Anubis</h2>
+<p>前面四张图基本都在一个平面上展开，而 Nuke 与 Anubis 各自提供了不同的空间感：一个把战场叠成上下两层，一个把区域之间的连接做得更开放。它们对玩家的地图理解和转点判断要求更高。</p>
+<h3 id="nuke">Nuke</h3>
+<p>Nuke 最大的特点是拥有上下两层结构，因此地图路线比普通地图更加复杂。A 点位于上层，B 点位于下层，Outside、Ramp、Secret 等区域连接着地图的重要位置。</p>
+<p>T 方经常通过 Outside 控制地图，再根据 CT 的防守情况选择进攻 A 或 B；CT 则要同时兼顾上下两层的防守，沟通稍有遗漏就会被打到空档。<strong>阵营特点：CT 防守优势明显，团队配合非常重要。</strong></p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-nuke.png" data-caption="Nuke 游戏内雷达俯视图：图中的平面结构只是地图的一半，A 点与 B 点分别位于上下两层">
+    <img src="../images/cs2/cs2-map-nuke.png" alt="Nuke 游戏内雷达俯视图：图中的平面结构只是地图的一半，A 点与 B 点分别位于上下两层" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Nuke 游戏内雷达俯视图：图中的平面结构只是地图的一半，A 点与 B 点分别位于上下两层<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<div class="callout callout-note">
+  <div class="callout-head"><i class="bi bi-info-circle"></i><span>关于 Nuke 的建议</span></div>
+  <div class="callout-body"><p>Nuke 的上下两层结构让它的路线判断、报点方式和残局处理都与其他地图不同，新手很容易在里面"迷路"。建议先熟悉 Mirage、Dust II 这类平面结构清晰的地图，再回头学习 Nuke。</p></div>
+</div>
+<h3 id="anubis">Anubis</h3>
+<p>Anubis 的地图空间相对开放，中路和两侧区域之间存在较多连接。T 方可以通过控制 Mid 获得更多进攻选择，同时利用烟雾和闪光突破 CT 的防守。</p>
+<p>也正因为连接多，Anubis 对玩家的枪法、地图理解以及转点能力都有一定要求：进攻方要判断从哪里发起，防守方则要决定把人力放在哪一侧。<strong>阵营特点：T 方进攻路线较多，地图控制十分重要。</strong></p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-anubis.png" data-caption="Anubis 游戏内雷达俯视图：中路与两侧区域之间连接密集，转点速度很快">
+    <img src="../images/cs2/cs2-map-anubis.png" alt="Anubis 游戏内雷达俯视图：中路与两侧区域之间连接密集，转点速度很快" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Anubis 游戏内雷达俯视图：中路与两侧区域之间连接密集，转点速度很快<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<h2 id="重制地图cache">重制地图：Cache</h2>
+<p>Cache 是经典的工业设施风格地图，拥有 A、B 和 Mid 等主要区域。Mid 是重要的地图控制区域，T 方控制中路后可以快速选择进攻方向；A 点附近存在多个适合交战的位置，B 点则更加依赖道具配合和团队推进。</p>
+<p>这张图在 CS2 中以重制后的版本回归，部分区域的结构与早期版本相比有所调整，本页使用的是游戏内的雷达资源。<strong>阵营特点：攻防比较均衡，重视中路控制</strong>——它既不像 Inferno 那样偏向防守方，也不像 Anubis 那样给进攻方大量路线，胜负更多取决于中路的争夺结果和队伍的转点速度。</p>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/cs2/cs2-map-cache.png" data-caption="Cache 游戏内雷达俯视图：工业设施风格的结构，A 点、B 点与中路构成主要争夺区域">
+    <img src="../images/cs2/cs2-map-cache.png" alt="Cache 游戏内雷达俯视图：工业设施风格的结构，A 点、B 点与中路构成主要争夺区域" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>Cache 游戏内雷达俯视图：工业设施风格的结构，A 点、B 点与中路构成主要争夺区域<span class="figure-source">来源：Valve 官方游戏内素材</span></figcaption>
+  
+</figure>
+<p>七张地图放在一起看，会发现它们的差别主要落在三件事上：<strong>中路能不能被控制、包点附近有多少条进攻路线、道具能不能封锁关键通道。</strong> 判断清楚这三点，无论是进攻时选择方向，还是防守时分配人力，都会比单纯背点位更有依据。</p>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>本页要点</span></div>
+  <div class="callout-body"><ul class="md-list"><li>Mirage 与 Dust II 结构清晰、中路决定进攻选择，是最适合新手入门的两张地图。</li><li>Inferno 与 Ancient 通道狭窄，烟雾弹、燃烧弹和闪光弹的价值被放大，道具配合比枪法更关键。</li><li>Nuke 拥有上下两层结构，路线复杂、CT 防守优势明显，建议熟悉平面地图后再学。</li><li>Anubis 区域连接多、进攻路线多，对转点能力和地图理解要求较高。</li><li>判断一张地图只需要问三个问题：中路归谁、包点有几条路、道具能不能封住关键通道。</li></ul></div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#中路为王mirage-与-dust-ii">中路为王：Mirage 与 Dust II</a></li>
+              <li class="toc-top"><a href="#道具决定成败inferno-与-ancient">道具决定成败：Inferno 与 Ancient</a></li>
+              <li class="toc-top"><a href="#立体与开放nuke-与-anubis">立体与开放：Nuke 与 Anubis</a></li>
+              <li class="toc-top"><a href="#重制地图cache">重制地图：Cache</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/CS2-首页.html">栏目主页</a></li>
+              <li><a href="../html/CS2-新手指南.html">新手指南</a></li>
+              <li class="is-current"><span>地图介绍</span></li>
+              <li><a href="../html/CS2-枪械道具.html">枪械道具</a></li>
+              <li><a href="../html/CS2-操作入门.html">操作入门</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

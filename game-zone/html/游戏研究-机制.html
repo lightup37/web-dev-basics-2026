@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>游戏研究 · 机制 · 游戏天地</title>
+  <meta name="description" content="从可变奖励、损失厌恶、心流与掌控感四个角度，解释&quot;再来一局&quot;为什么这么自然，并把它们对应到本网站的四款游戏上。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#141c33">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#5c7cfa;--accent-2:#22b8cf;--deep:#141c33;}</style>
+</head>
+<body data-section="research" class="theme-research">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">游戏研究</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/CS2-首页.html">CS2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <span class="bc-sep">&gt;</span> <strong>机制</strong>
+      </span>
+      <span id="second-nav">
+        <span class="sn-current" aria-current="page">机制</span> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/游戏研究-商业化.html">商业化</a> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/游戏研究-时长设计.html">时长设计</a>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">游戏研究</p>
+        <h1 class="page-title">机制</h1>
+        <p class="page-summary">从可变奖励、损失厌恶、心流与掌控感四个角度，解释"再来一局"为什么这么自然，并把它们对应到本网站的四款游戏上。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<div class="callout callout-note">
+  <div class="callout-head"><i class="bi bi-info-circle"></i><span>本栏目讨论的是"机制"，不是"道德</span></div>
+  <div class="callout-body"><p>下面提到的机制既被用在优秀设计里，也被用在糟糕设计里。区分好坏的关键，是玩家事后是觉得"这一局有意思"， 还是觉得"我刚刚被耍了"。本文只描述机制怎么运作，不替任何一款游戏下判决。</p></div>
+</div>
+<h2 id="先分清两件事好玩与停不下来">先分清两件事：好玩与停不下来</h2>
+<p>日常语言里"这游戏好玩"和"我停不下来"常被当成一回事，其实它们是两条不同的线：</p>
+<ul class="md-list"><li><strong>好玩</strong>来自"玩家的判断产生了结果"——我做了一个决定，局势因此改变，而且我能看懂为什么改变。</li><li><strong>停不下来</strong>来自"下一步总有一个我现在就想知道的答案"——再打一局就知道能不能上分，再爬一层就知道能不能拿到那张牌。</li></ul>
+<p>这两条线可以同时成立，也可以分开：有些游戏好玩但你能随时关掉，有些游戏谈不上多好玩，却让人一局接一局。 本章拆的是第二条线，也就是常说的<strong>粘性</strong>。</p>
+<div class="md-emphasis"><p>判断一个设计是在服务"好玩"还是只在制造"停不下来"，有个简单的问法： 如果这一局注定失败，玩家还会觉得刚才的过程有价值吗？</p></div>
+<h2 id="可变奖励不确定的那一下">可变奖励：不确定的那一下</h2>
+<p>行为心理学里有个被反复讨论的结论：<strong>不确定的奖励比确定的奖励更容易维持行为</strong>。经典解释来自对"预期"的研究—— 奖励完全可预测时，多巴胺反应会随着时间推移减弱；而奖励不可预测时，反应会持续甚至增强。</p>
+<p>游戏把这一点做成了具体结构。本站四款游戏里最典型的三处：</p>
+<div class="md-cards" data-cols="3"><div class="md-card">
+  <i class="bi bi-suit-spade-fill md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">每场战斗后的三选一</h3>
+  
+  <div class="md-card-body"><p>《杀戮尖塔》每打完一场就给三张牌，其中可能有一张就是你这轮构筑的关键组件。不确定的不是"有没有奖励"，而是"这次是不是那张牌"。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-box-seam md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">开包与卡池</h3>
+  
+  <div class="md-card-body"><p>《炉石传说》的卡包是教科书式的随机奖励：结果固定的只有数量，内容完全未知；而卡牌的强度又直接影响对局体验。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-crosshair md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">回合制的经济账</h3>
+  
+  <div class="md-card-body"><p>CS2 每回合都有钱可花，但花多花少是博弈：这一局强起可能翻盘，也可能把下两局的钱一起输掉。</p></div>
+</div></div>
+<figure class="md-figure ">
+  <a class="lightbox-trigger" href="../images/sts/sts-cards-2.jpg" data-caption="战斗中的一回合：中央是刚打出的 Zap（0 费，充能一颗闪电充能球），下方手牌区还剩四张牌，右侧是结束回合按钮">
+    <img src="../images/sts/sts-cards-2.jpg" alt="战斗中的一回合：中央是刚打出的 Zap（0 费，充能一颗闪电充能球），下方手牌区还剩四张牌，右侧是结束回合按钮" class="img-fluid" loading="lazy">
+  </a>
+  <figcaption>战斗中的一回合：中央是刚打出的 Zap（0 费，充能一颗闪电充能球），下方手牌区还剩四张牌，右侧是结束回合按钮<span class="figure-source">来源：Steam 商店官方截图</span></figcaption>
+  
+</figure>
+<p>值得注意的是，<strong>"可以选择跳过"这个设计比随机本身更重要</strong>。如果只能三选一，玩家是被随机推着走； 有了跳过，随机就变成了"我判断这次值不值得拿"。同一套随机机制，加一个退出选项，性质就从"赌博"偏向"决策"。</p>
+<h2 id="损失厌恶不想放弃已经投入的局">损失厌恶：不想放弃已经投入的局</h2>
+<p>另一个被广泛讨论的现象是<strong>损失厌恶</strong>：同样大小的损失，带来的心理冲击通常大于收益带来的满足。 游戏里常见两种用法：</p>
+<p><strong>一、用沉没成本留住玩家。</strong> 一局《杀戮尖塔》爬到第三层，前面四十分钟的构筑都押在这套牌上， 此时"重开"意味着放弃全部投入。很多玩家明知道这套牌打不过最终 Boss，仍然会试着打完——不是为了赢，而是不想白费。</p>
+<p><strong>二、用"输了也不归零"降低放弃率。</strong> CS2 的经济系统这里做得很有意思：输了回合会得到连败补偿， 所以输并不会让局势无限恶化，玩家不会因为连输三局就退出。相比之下，如果失败完全归零，玩家更容易直接关掉游戏。</p>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>从设计角度看"存档</span></div>
+  <div class="callout-body"><p>能中途存盘的单机游戏（比如《杀戮尖塔》一局内可随时退出并保留进度）降低了"这一局不能中断"的压力， 反而让玩家更愿意在碎片时间开一局。<strong>降低单局的心理成本，往往比增加奖励更能提高回访率。</strong></p></div>
+</div>
+<h2 id="心流难度与能力的窄门">心流：难度与能力的窄门</h2>
+<p>心流描述的是人完全投入一件事、忘记时间流逝的状态。它的条件说起来不复杂： <strong>目标清晰、反馈即时、难度与能力大致匹配</strong>。</p>
+<p>难度太低会无聊，太高会焦虑，只有中间那条窄带里才会进入心流。四款游戏用了不同的方式维持这条窄带：</p>
+<div class="table-responsive"><table class="table md-table">
+  <thead><tr><th style="text-align:left">游戏</th><th style="text-align:left">维持难度的方式</th><th style="text-align:left">代价</th></tr></thead>
+  <tbody><tr><td style="text-align:left">杀戮尖塔</td><td style="text-align:left">二十级进阶模式逐级加码；每局的随机地图自带难度波动</td><td style="text-align:left">高进阶需要长时间练习，新手可能被劝退</td></tr>
+<tr><td style="text-align:left">王者荣耀</td><td style="text-align:left">段位匹配把水平接近的玩家放在一起</td><td style="text-align:left">匹配质量直接决定体验，队友水平不可控</td></tr>
+<tr><td style="text-align:left">CS2</td><td style="text-align:left">基于段位的匹配 + 经济系统自带"翻盘可能"</td><td style="text-align:left">学习曲线陡，前几十小时容易被压制</td></tr>
+<tr><td style="text-align:left">炉石传说</td><td style="text-align:left">天梯分段 + 卡组强度分布</td><td style="text-align:left">卡池深度影响强度，新玩家有资源门槛</td></tr></tbody>
+</table></div>
+<p>一个常被忽略的细节是：<strong>"即时反馈"本身就是心流条件之一</strong>。CS2 的子弹落点、命中音效、击杀提示， 《杀戮尖塔》的伤害数字与格挡结算，都是在极短时间内告诉玩家"你刚才做对了还是做错了"。 反馈越迟，玩家越难把结果和自己的判断连起来，心流也就越难出现。</p>
+<h2 id="掌控感赢要赢得明白">掌控感：赢要赢得明白</h2>
+<p>如果只把上面三条叠加起来，得到的是一个"让人上瘾但事后空虚"的组合。真正把体验拉回正面的，是<strong>掌控感</strong>—— 玩家相信结果和自己的决策有关。</p>
+<p>《杀戮尖塔》用<strong>意图系统</strong>做到了这一点：挨打不是"运气不好"， 而是"我判断错了"。玩家可以复盘、可以改进，所以愿意再来一次。</p>
+<p>反过来，如果一款游戏的失败主要来自玩家无法预知也无法干预的因素，短期可能靠随机性留住人， 但玩家迟早会意识到"我的决策没有用"，这时粘性会迅速转为流失。</p>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>本页要点</span></div>
+  <div class="callout-body"><ul class="md-list"><li>"好玩"和"停不下来"是两条不同的线：前者来自决策有效，后者来自"下一步有我现在就想知道的答案"。</li><li><strong>可变奖励</strong>负责制造期待，但"是否允许跳过"决定了它是赌博还是决策。</li><li><strong>损失厌恶</strong>既被用来留住玩家，也可以被用来降低单局压力——连败补偿、中途存档都属于后者。</li><li><strong>心流</strong>依赖难度与能力的匹配，以及足够即时的反馈。</li><li><strong>掌控感</strong>是长期留存的底线：玩家必须相信结果和自己的判断有关，否则粘性会转为流失。</li></ul></div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#先分清两件事好玩与停不下来">先分清两件事：好玩与停不下来</a></li>
+              <li class="toc-top"><a href="#可变奖励不确定的那一下">可变奖励：不确定的那一下</a></li>
+              <li class="toc-top"><a href="#损失厌恶不想放弃已经投入的局">损失厌恶：不想放弃已经投入的局</a></li>
+              <li class="toc-top"><a href="#心流难度与能力的窄门">心流：难度与能力的窄门</a></li>
+              <li class="toc-top"><a href="#掌控感赢要赢得明白">掌控感：赢要赢得明白</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/游戏研究-首页.html">栏目主页</a></li>
+              <li class="is-current"><span>机制</span></li>
+              <li><a href="../html/游戏研究-商业化.html">商业化</a></li>
+              <li><a href="../html/游戏研究-时长设计.html">时长设计</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <span aria-current="page">游戏研究</span>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>游戏研究 · 商业化 · 游戏天地</title>
+  <meta name="description" content="把四款游戏的商业模式放在同一张表里比较：玩家付多少钱、付费影响多少游戏强度、不付费的玩家是否被削弱。">
+  <meta name="keywords" content="游戏天地,杀戮尖塔,王者荣耀,CS2,炉石传说,游戏研究,卡牌,MOBA,射击">
+  <meta name="author" content="Untitled Group">
+  <meta name="theme-color" content="#141c33">
+  <link rel="icon" href="../images/site/favicon.svg" type="image/svg+xml">
+  <!-- 本地化的第三方样式与图标字体（无 CDN 依赖，可离线打开） -->
+  <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <!-- 字体方案：直接使用系统/Windows 自带字体，不需要下载任何字体文件 -->
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <!-- 禁用 JS 时的降级：展开被折叠的内容、隐藏依赖脚本的控件，
+       避免出现"点了没反应"的假按钮，也保证内容不丢失 -->
+  <noscript>
+    <style>
+      .navbar-collapse { display: block !important; }
+      .accordion-collapse { display: block !important; }
+      .carousel-item { display: block !important; }
+      .carousel-indicators, .carousel-control-prev, .carousel-control-next { display: none !important; }
+      .filter-bar, .skill-icons, .lightbox-trigger { display: none !important; }
+      .reading-progress { display: none; }
+    </style>
+  </noscript>
+  <style>:root{--accent:#5c7cfa;--accent-2:#22b8cf;--deep:#141c33;}</style>
+</head>
+<body data-section="research" class="theme-research">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 主导航：栏目 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark site-navbar sticky-top" id="top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html"><img class="logo-responsive" src="../images/site/logo.svg" alt="游戏天地 logo" width="48" height="48">
+        <span class="brand-text">游戏天地<small>Game World</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
+              aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="展开或收起导航菜单">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ms-auto">
+        <li class="nav-item active" id="current">
+          <span class="nav-link text-light" aria-current="page">游戏研究</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/杀戮尖塔-首页.html">杀戮尖塔</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/王者荣耀-首页.html">王者荣耀</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/CS2-首页.html">CS2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="../html/炉石传说-首页.html">炉石传说</a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- 面包屑 & 二级导航 -->
+  <div class="container-fluid" id="bread">
+    <nav aria-label="面包屑导航" class="container bread-inner">
+      <span class="bc-path">
+        <a href="../index.html">首页</a> <span class="bc-sep">&gt;</span>
+        <a href="../html/游戏研究-首页.html">游戏研究</a>
+        <span class="bc-sep">&gt;</span> <strong>商业化</strong>
+      </span>
+      <span id="second-nav">
+        <a href="../html/游戏研究-机制.html">机制</a> <span class="sn-sep" aria-hidden="true">|</span> <span class="sn-current" aria-current="page">商业化</span> <span class="sn-sep" aria-hidden="true">|</span> <a href="../html/游戏研究-时长设计.html">时长设计</a>
+      </span>
+    </nav>
+  </div>
+
+  <main id="main" class="site-main">
+
+    <header class="page-hero page-hero-compact">
+      <div class="container">
+        <p class="page-kicker">游戏研究</p>
+        <h1 class="page-title">商业化</h1>
+        <p class="page-summary">把四款游戏的商业模式放在同一张表里比较：玩家付多少钱、付费影响多少游戏强度、不付费的玩家是否被削弱。</p>
+      </div>
+    </header>
+    <div class="container page-body">
+      <div class="row g-5">
+        <article class="col-lg-9 md-body" id="article">
+<h2 id="四种模式四道不同的门槛">四种模式，四道不同的门槛</h2>
+<p>本站四款游戏，恰好代表了四种主流商业模式。它们的差别不只是"收多少钱"，而是<strong>钱在什么位置介入体验</strong>。</p>
+<div class="table-responsive"><table class="table md-table">
+  <thead><tr><th style="text-align:left">游戏</th><th style="text-align:left">收费方式</th><th style="text-align:left">门槛位置</th><th style="text-align:left">玩家为它付钱的理由</th></tr></thead>
+  <tbody><tr><td style="text-align:left">杀戮尖塔</td><td style="text-align:left">买断制</td><td style="text-align:left">在进入游戏之前</td><td style="text-align:left">一次付费换取一套完整、封闭、可预期的内容</td></tr>
+<tr><td style="text-align:left">王者荣耀</td><td style="text-align:left">免费下载 + 皮肤与内购</td><td style="text-align:left">在进入游戏之后</td><td style="text-align:left">外观、便利、加速成长；核心对局不依赖付费</td></tr>
+<tr><td style="text-align:left">CS2</td><td style="text-align:left">免费游玩 + 饰品与通行证</td><td style="text-align:left">在进入游戏之后</td><td style="text-align:left">外观饰品与赛事通行证；武器皮肤不影响伤害数值</td></tr>
+<tr><td style="text-align:left">炉石传说</td><td style="text-align:left">免费游玩 + 扩展包与卡包</td><td style="text-align:left">在进入游戏之后且深</td><td style="text-align:left">卡牌本身就是对局资源，收集广度影响可玩牌组</td></tr></tbody>
+</table></div>
+<p>这张表最重要的一列是"门槛位置"。<strong>买断制的门槛在门口，免费游戏的门槛在屋里</strong>—— 后者不阻止你进来，但决定了你进来之后能走多远。</p>
+<h2 id="付费买到的到底是什么">付费买到的到底是什么</h2>
+<p>把"付费能买到什么"拆开看，四款游戏的答案完全不同：</p>
+<div class="md-cards" data-cols="2"><div class="md-card">
+  <i class="bi bi-box md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">买断制：买的是完整度</h3>
+  
+  <div class="md-card-body"><p>《杀戮尖塔》一次付费，之后所有卡牌、角色（含后续更新加入的观者）、进阶等级都包含在内。玩家不需要再判断"值不值得再花一笔"，游戏设计也不需要为付费点让路——这是它能做到"没有一张废卡"的前提之一。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-palette md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">皮肤内购：买的是可见性</h3>
+  
+  <div class="md-card-body"><p>《王者荣耀》的皮肤主要改变外观与特效。付费不会提高英雄的数值上限，但会让你的角色在人群中更容易被认出来。这类消费的心理动机更接近"表达"而不是"变强"。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-gem md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">饰品与通行证：买的是身份与参与感</h3>
+  
+  <div class="md-card-body"><p>CS2 的武器皮肤不改变任何弹道与伤害，价值几乎完全来自稀缺性与社交展示；通行证则以任务形式把"看比赛/玩游戏"变成可积累的进度。</p></div>
+</div>
+<div class="md-card">
+  <i class="bi bi-suit-heart md-card-icon" aria-hidden="true"></i>
+  
+  <h3 class="md-card-title">卡包：买的是对局资源</h3>
+  
+  <div class="md-card-body"><p>《炉石传说》的情况最特殊：卡牌不是装饰，而是打牌用的东西。卡池越宽，能组的牌组越多，这使付费与对局体验之间存在直接联系。</p></div>
+</div></div>
+<div class="callout callout-note">
+  <div class="callout-head"><i class="bi bi-info-circle"></i><span>为什么这个区分很关键</span></div>
+  <div class="callout-body"><p>皮肤、饰品这类<strong>纯外观付费</strong>，理论上不改变对局公平性——不付费的玩家在数值上不吃亏。 而"卡包"这类<strong>内容付费</strong>，会直接影响玩家能使用的策略空间。 公平性争议基本都集中在第二类上，而不是"游戏收了钱"这件事本身。</p></div>
+</div>
+<h2 id="公平性付费能否买到强度">公平性：付费能否买到强度</h2>
+<p>用三个问题可以快速判断一款免费游戏的公平性：</p>
+<ol class="md-list"><li><strong>付费能否提高单局内的数值上限？</strong> 能，则属于"付费即变强"；不能，则属于"付费即外观"。</li><li><strong>不付费玩家的可用策略空间是否被压缩？</strong> 如果免费玩家只能玩少数几套打法，那么即使数值公平，体验也不公平。</li><li><strong>获取强度的时间成本有多高？</strong> 即使最终都能拿到，如果耗时以月计，付费实际上买的是时间。</li></ol>
+<p>按这三条看本站四款游戏：《杀戮尖塔》因为是买断制，三个问题都不成立； 《王者荣耀》与 CS2 主要落在"付费即外观"，第 2、3 条影响较小； 《炉石传说》在第 2 条上最需要解释——它的卡牌收集进度确实会影响"能玩什么"。 这也是它后来推出更多获取途径（任务、活动、回归奖励等）的原因之一。</p>
+<div class="md-emphasis"><p>公平性不等于"不收费"，而等于"不付费的玩家仍然有完整的游戏体验路径"。 买断制天生满足这一条；免费游戏则要靠设计去补。</p></div>
+<h2 id="通行证与赛季把消费变成习惯">通行证与赛季：把消费变成习惯</h2>
+<p>近十年免费游戏最明显的变化，是从"一次性卖东西"转向"按周期卖参与感"。 通行证是这一转向的代表：玩家先付一笔，然后通过持续游玩解锁奖励。</p>
+<p>它有三个设计上的好处：</p>
+<ul class="md-list"><li><strong>对厂商</strong>：收入变得可预测，而且玩家留存直接转化为收入，动机与运营目标一致；</li><li><strong>对玩家</strong>：花一笔钱就能看到完整奖励清单，比随机开包更容易做预算；</li><li><strong>对体验</strong>：任务驱动回流，把"今天要不要开一局"变成"今天还差多少进度"。</li></ul>
+<p>代价也在同一处：<strong>它把游玩变成了任务</strong>。玩家可能为了完成任务去打自己并不喜欢的模式， 这在社区里通常被叫作"上班感"。当玩家开始用"清日常"形容一款游戏时，通行证就已经越过了它该有的边界。</p>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>一个判断标准</span></div>
+  <div class="callout-body"><p>把通行证奖励分成两部分想象：一部分是"你本来就想玩，顺手拿到"， 另一部分是"你本来不想玩，但为了进度不得不玩"。 第二部分占比越高，这款游戏的通行证就越接近负担而不是福利。</p></div>
+</div>
+<h2 id="价格与内容的错配">价格与内容的错配</h2>
+<p>最后回到买断制那条路。买断制的风险集中在发售当期：玩家要在体验之前付款， 所以定价与"内容看起来值不值"直接绑定。独立团队因此更依赖试玩、实况与口碑传播。</p>
+<p>《杀戮尖塔》的路径说明了另一种可能：<strong>先把核心玩法做扎实，用抢先体验换取打磨时间， 再靠口碑延长销售周期</strong>。它不靠持续付费点回收成本，而是靠"内容完整"这件事本身形成长期销量。 这条路不适合所有品类——它要求玩法本身能独立支撑几十小时，而这恰恰是卡牌构筑类游戏的强项。</p>
+<div class="callout callout-tip">
+  <div class="callout-head"><i class="bi bi-lightbulb"></i><span>本页要点</span></div>
+  <div class="callout-body"><ul class="md-list"><li>四种模式的真正差别在"门槛位置"：买断制在门口，免费游戏在屋里。</li><li>区分付费类型：<strong>外观付费</strong>不影响对局公平，<strong>内容付费</strong>（卡包）会直接影响玩家能使用的策略空间。</li><li>判断公平性看三点：能否买到数值、策略空间是否被压缩、获取强度的时间成本。</li><li>通行证让收入可预测，但容易把游玩变成任务——"上班感"就是越界的信号。</li><li>《杀戮尖塔》的买断制路径依赖"玩法本身能撑住几十小时"，并非通用解法。</li></ul></div>
+</div>
+        </article>
+        <aside class="col-lg-3 page-aside">
+          <div class="aside-card sticky-lg-top">
+            <h2 class="aside-title">本页目录</h2>
+            <ul class="aside-toc">
+              <li class="toc-top"><a href="#四种模式四道不同的门槛">四种模式，四道不同的门槛</a></li>
+              <li class="toc-top"><a href="#付费买到的到底是什么">付费买到的到底是什么</a></li>
+              <li class="toc-top"><a href="#公平性付费能否买到强度">公平性：付费能否买到强度</a></li>
+              <li class="toc-top"><a href="#通行证与赛季把消费变成习惯">通行证与赛季：把消费变成习惯</a></li>
+              <li class="toc-top"><a href="#价格与内容的错配">价格与内容的错配</a></li>
+            </ul>
+            <hr>
+            <h2 class="aside-title">同栏目页面</h2>
+            <ul class="aside-links">
+              <li><a href="../html/游戏研究-首页.html">栏目主页</a></li>
+              <li><a href="../html/游戏研究-机制.html">机制</a></li>
+              <li class="is-current"><span>商业化</span></li>
+              <li><a href="../html/游戏研究-时长设计.html">时长设计</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer bg-dark text-light">
+    <div class="container footer-inner">
+      <div class="footer-main">
+        <p class="footer-brand">游戏天地 · Game World</p>
+        <p class="footer-copy">© 2026 Untitled Group</p>
+      </div>
+      <div class="footer-links">
+        <a href="../index.html">首页</a>
+        <span aria-current="page">游戏研究</span>
+        <a href="../html/sitemap.html">站点地图</a>
+        <a href="../credits.html">图片来源</a>
+      </div>
+    </div>
+  </footer>
+  <a href="#top" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden><i class="bi bi-arrow-up"></i></a>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="../js/common.js" defer></script>
+  <script src="../js/effects.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
+
+</body>
+</html>

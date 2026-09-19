@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  王者峡谷分路与野区示意（本站自绘）
+  说明：官方没有提供可下载的、带分路标注的峡谷地图，此图为按游戏内地图的一般结构自绘的示意图，
+        用于说明三条兵线的走向、野区位置与双方基地的相对关系，不追求与游戏内地图逐点对应。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560"
+     role="img" aria-label="王者峡谷分路与野区示意图：上路与下路沿两侧边界推进，中路斜穿中央，两翼为野区">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14243a"/>
+      <stop offset="0.5" stop-color="#182b3f"/>
+      <stop offset="1" stop-color="#241a24"/>
+    </linearGradient>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <rect width="1000" height="560" rx="14" fill="url(#bgGrad)"/>
+  <rect x="6" y="6" width="988" height="548" rx="10" fill="none" stroke="#ffffff22" stroke-width="2"/>
+
+  <!-- 野区色块（两块，分列中路两侧） -->
+  <ellipse cx="700" cy="170" rx="145" ry="100" fill="#2f5d3a" opacity="0.40" filter="url(#soft)"/>
+  <ellipse cx="300" cy="390" rx="145" ry="100" fill="#5d3a2f" opacity="0.40" filter="url(#soft)"/>
+
+  <!-- 上路 -->
+  <path d="M166 124 L 840 124 Q 878 124 878 162 L 878 214"
+        fill="none" stroke="#4a86c8" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 下路 -->
+  <path d="M876 436 L 160 436 Q 122 436 122 398 L 122 340"
+        fill="none" stroke="#c98a3c" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 中路（两端收在基地之外，避免压住基地圆标） -->
+  <path d="M203 176 L 797 354" fill="none" stroke="#d9c27a" stroke-width="22" stroke-linecap="round" opacity="0.95"/>
+
+  <!-- 双方基地 -->
+  <circle cx="122" cy="122" r="42" fill="#1d3f66" stroke="#7fb6ea" stroke-width="4"/>
+  <circle cx="122" cy="122" r="18" fill="#7fb6ea" opacity="0.8"/>
+  <text x="122" y="68" text-anchor="middle" fill="#cfe6ff" font-size="19" font-weight="700" font-family="Microsoft YaHei, sans-serif">我方基地</text>
+
+  <circle cx="878" cy="438" r="42" fill="#5a2a2a" stroke="#e0976a" stroke-width="4"/>
+  <circle cx="878" cy="438" r="18" fill="#e0976a" opacity="0.8"/>
+  <text x="878" y="508" text-anchor="middle" fill="#ffd9c0" font-size="19" font-weight="700" font-family="Microsoft YaHei, sans-serif">敌方基地</text>
+
+  <!-- 防御塔 -->
+  <g fill="#eae3d2" opacity="0.85">
+    <rect x="170" y="112" width="14" height="24" rx="3"/>
+    <rect x="380" y="112" width="14" height="24" rx="3"/>
+    <rect x="590" y="112" width="14" height="24" rx="3"/>
+    <rect x="866" y="250" width="24" height="14" rx="3"/>
+    <rect x="866" y="330" width="24" height="14" rx="3"/>
+    <rect x="170" y="424" width="14" height="24" rx="3"/>
+    <rect x="380" y="424" width="14" height="24" rx="3"/>
+    <rect x="600" y="424" width="14" height="24" rx="3"/>
+    <rect x="110" y="240" width="24" height="14" rx="3"/>
+    <rect x="110" y="320" width="24" height="14" rx="3"/>
+    <rect x="400" y="252" width="14" height="14" rx="3"/>
+    <rect x="600" y="332" width="14" height="14" rx="3"/>
+  </g>
+
+  <!-- 分路标签（避开中路连线） -->
+  <g font-family="Microsoft YaHei, sans-serif" font-weight="700">
+    <text x="470" y="92" text-anchor="middle" fill="#bcd9f5" font-size="21">上路</text>
+    <text x="470" y="112" text-anchor="middle" fill="#7fa8cc" font-size="14" font-weight="400">对抗路常在此路</text>
+    <text x="470" y="488" text-anchor="middle" fill="#f0c48a" font-size="21">下路</text>
+    <text x="470" y="468" text-anchor="middle" fill="#c8955c" font-size="14" font-weight="400">发育路常在此路</text>
+    <rect x="466" y="238" width="68" height="30" rx="8" fill="#0d1626" opacity="0.82" transform="rotate(17.5 500 253)"/>
+    <text x="500" y="262" text-anchor="middle" fill="#f3e2a8" font-size="20" transform="rotate(17.5 500 253)">中路</text>
+  </g>
+
+  <!-- 野区标签 -->
+  <g font-family="Microsoft YaHei, sans-serif">
+    <text x="748" y="146" text-anchor="middle" fill="#9fe0b4" font-size="19" font-weight="700">我方野区</text>
+    <text x="748" y="172" text-anchor="middle" fill="#7fc497" font-size="14">蓝 BUFF · 红 BUFF · 小野怪</text>
+    <text x="748" y="196" text-anchor="middle" fill="#6fae86" font-size="13">打野与前期的发育来源</text>
+
+    <text x="252" y="368" text-anchor="middle" fill="#e6b394" font-size="19" font-weight="700">敌方野区</text>
+    <text x="252" y="394" text-anchor="middle" fill="#cf8f6d" font-size="14">蓝 BUFF · 红 BUFF · 小野怪</text>
+    <text x="252" y="418" text-anchor="middle" fill="#b57a5c" font-size="13">入侵与反野的争夺对象</text>
+  </g>
+
+  <!-- 中立资源 -->
+  <g font-family="Microsoft YaHei, sans-serif" font-size="15">
+    <circle cx="330" cy="196" r="15" fill="#6b4fa8" stroke="#d9c27a" stroke-width="2.5"/>
+    <text x="330" y="176" text-anchor="middle" fill="#cbb6ff" font-size="14">暴君一侧</text>
+    <circle cx="670" cy="364" r="15" fill="#8a5a2a" stroke="#d9c27a" stroke-width="2.5"/>
+    <text x="670" y="404" text-anchor="middle" fill="#e0b077" font-size="14">主宰一侧</text>
+    <circle cx="500" cy="280" r="12" fill="#3d7fa8" stroke="#9fd0ea" stroke-width="2"/>
+    <text x="500" y="308" text-anchor="middle" fill="#9fd0ea" font-size="14">河道</text>
+  </g>
+
+  <text x="984" y="536" text-anchor="end" fill="#9a978f" font-size="13" font-family="Microsoft YaHei, sans-serif">
+    示意图：仅表示分路走向与野区相对位置，非游戏内地图等比还原
+  </text>
+</svg>
