@@ -3787,6 +3787,12 @@ function warmIntroImage(src) {
 	if (typeof image.decode === 'function') image.decode().catch(function () { /* load 事件仍可继续 */ });
 }
 
+/* 战前教学图清单：由 levels.js 每关的 introImages 声明；没声明 = 本关不弹教学图。 */
+function levelIntroImages(meta) {
+	if (!meta || !Array.isArray(meta.introImages)) return [];
+	return meta.introImages.filter(function (src) { return typeof src === 'string' && src; });
+}
+
 function warmLevelIntroAssets(meta) {
 	(meta.story || []).concat(meta.victoryStory || []).forEach(function (line) {
 		if (!line.portrait) return;
@@ -3795,25 +3801,23 @@ function warmLevelIntroAssets(meta) {
 			dialogueActionPortraitSources(line.portrait).forEach(warmIntroImage);
 		}
 	});
-	if (Number(CURRENT_LEVEL_ID) === 1) {
-		warmIntroImage('./img/level1-intro-1.webp?v=20260916-img1');
-		warmIntroImage('./img/level1-intro-2.webp?v=20260916-img1');
-	}
+	levelIntroImages(meta).forEach(warmIntroImage);
 }
 
-/* ========== 进关流程（B 的立绘对话/简报页 → A 的第一关教程图） ==========
- * 第一关：立绘剧情 → 战前简报（开 战）→ 教程图1 → 教程图2 → 淡入战场
+/* ========== 进关流程（B 的立绘对话/简报页 → A 的战前教学图） ==========
+ * 有教学图的关（第 1~4 关，清单见 levels.js 的 introImages）：
+ *     立绘剧情 → 战前简报（开 战）→ 教学图 1 → … → 教学图 N → 淡入战场
  * 其余关：立绘剧情 → 战前简报（开 战）→ 淡入战场
  *
- * 注：教程图刻意排在剧情与简报【之后】——先交代剧情、再给指令，
- *     最后用两张图把「选中/下令/攻击」和兵种定位讲清楚，然后进场。
+ * 注：教学图刻意排在剧情与简报【之后】——先交代剧情、再给指令，
+ *     最后用一到两张图讲清操作与新兵种的定位，然后进场。
  * ==================================================================== */
 /* 进关流程。
- * opts.skipIntro = true 时跳过整套开场（剧情 / 战前简报 / 第一关教程图）直接进战场。
+ * opts.skipIntro = true 时跳过整套开场（剧情 / 战前简报 / 战前教学图）直接进战场。
  *   适用场景：
  *     · URL 带 ?replay=1（重玩按钮，原本就有）；
- *     · 中途读档 —— 玩家已经在打这一关了，再走一遍剧情和两张教学图纯属打断，
- *       而且第一关读档会连看两次操作图（审查报告"体验建议 5"）。
+ *     · 中途读档 —— 玩家已经在打这一关了，再走一遍剧情和教学图纯属打断，
+ *       而且第 1 关读档会连看两次操作图（审查报告"体验建议 5"）。
  *   首次从主界面正常进关时不传 opts，完整开场照旧。 */
 function showLevelIntro(opts) {
 	opts = opts || {};
@@ -3878,23 +3882,21 @@ function showLevelIntro(opts) {
 		actionLabel: function () { return gameText('dialogue.startBattle', null, '开 战'); }
 	});
 
-	/* ---- A 保留：第一关的两张教程图（① 操作四步教学 ② 步兵兵种介绍） ----
+	/* ---- A 保留：战前教学图（清单见 levels.js 每关的 introImages） ----
+	 * 第 1 关 = ① 操作四步教学 ② 步兵兵种介绍
+	 * 第 2 关 = 炮兵；第 3 关 = 骑兵；第 4 关 = 散兵 + 掷弹兵（两张连播）
 	 * 位置：剧情对话与战前简报之后、淡入战场之前（见文件末尾的总流程）。 */
 	const showIntroImages = function (next) {
-		if (CURRENT_LEVEL_ID !== 1) {
+		const images = levelIntroImages(meta);
+		if (!images.length) {
 			next();
 			return;
 		}
 
-		const images = [
-			'./img/level1-intro-1.webp?v=20260916-img1',
-			'./img/level1-intro-2.webp?v=20260916-img1'
-		];
-
 		let index = 0;
 
 		const showNextImage = function () {
-			/* 两张图都看完了 */
+			/* 教学图都看完了 */
 			if (index >= images.length) {
 				next();
 				return;
@@ -3912,7 +3914,7 @@ function showLevelIntro(opts) {
 			image.decoding = 'async';
 			image.fetchPriority = 'high';
 			image.src = images[index];
-			image.alt = '第一关教程图 ' + (index + 1);
+			image.alt = meta.name + ' · 战前教学图 ' + (index + 1) + ' / ' + images.length;
 			image.draggable = false;
 			imageBox.classList.add('is-loading');
 			image.addEventListener('load', function () { imageBox.classList.remove('is-loading'); }, { once: true });
@@ -3941,7 +3943,7 @@ function showLevelIntro(opts) {
 		showNextImage();
 	};
 
-	/* ---- 开战：第一关先过两张教程图，其余关卡直接淡入战场 ---- */
+	/* ---- 开战：先过本关的战前教学图（没有就淡入战场） ---- */
 	const startBattle = safe(function () {
 		showIntroImages(revealBattlefield);
 	});
@@ -3982,7 +3984,7 @@ function showLevelIntro(opts) {
 	};
 
 	/* ---- 总流程 ----
-	 * 第一关：立绘剧情 → 战前简报（开 战）→ 教程图1 → 教程图2 → 淡入战场
+	 * 第 1~4 关：立绘剧情 → 战前简报（开 战）→ 教学图 1..N → 淡入战场
 	 * 其余关：立绘剧情 → 战前简报（开 战）→ 淡入战场
 	 */
 	if (typeof playDialogue === 'function') {

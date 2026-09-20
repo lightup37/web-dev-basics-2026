@@ -8,7 +8,7 @@
 - **5 个兵种**：步兵 / 炮兵 / 骑兵 / 散兵 / 掷弹兵，数值见「兵种设计」。
 - 引擎逻辑看 `js/main.js`；跨关卡信息看 `js/levels.js`；各关棋子配置在各自的 `js/gameN.js`。
 
-**规模（按当前仓库实际文件，2026-09-16 重新点数）**：根目录 HTML **19** 个 + `members/` **6** 个 = **25** 个页面；JS **23** 个（`js/` 内）+ 根目录 `offline-sw.js` = **24** 个脚本；CSS 项目自用 **1** 个（`css/style.css`，**7192** 行 / 250KB，另有 2 个成员页自带样式）；图片 **44** 个（23 个原素材 + 21 个 WebP 运行版，含 `img/europe-map.svg`）；音频 **5** 首。
+**规模（按当前仓库实际文件；2026-09-16 重新点数，2026-09-17 补入 4 张兵种教学图后复点）**：根目录 HTML **19** 个 + `members/` **6** 个 = **25** 个页面；JS **23** 个（`js/` 内）+ 根目录 `offline-sw.js` = **24** 个脚本；CSS 项目自用 **1** 个（`css/style.css`，**7192** 行 / 250KB，另有 2 个成员页自带样式）；图片 **58** 个（`img/` 内 PNG 原图 **27** + WebP 运行版 **30** + `europe-map.svg`，其中 `img/portraits/` 立绘占 **18** 个）；音频 **5** 首。
 > 计数口径：不含 `game/demo-old` / `game/demo-origin` 两个历史快照目录，也不含仓库根与其它同学子项目（`chinese-food` / `movies` / `poems` / 根 `js/lang.js`）。
 
 ## 技术栈审查：只用「前端三件套」（2026-09-16 全量扫描）
@@ -114,14 +114,18 @@
 │   ├── menu-achv.js          # 成就墙渲染（供 achievements.html）
 │   ├── game1.js … game7.js   # 各关棋子配置（一律用 constants.js 的常量）+ 末尾 loadGame / loadSnapshot
 │   └── game8.js              # 测试关资源（约 2800 行；自带部署期、拖拽、红线结算，未接线）
-├── img/                      # 23 个文件
+├── img/                      # 58 个文件（PNG 原图 27 + WebP 运行版 30 + europe-map.svg）
 │   ├── blue_infantry / blue_artillery / blue_cavalry / blue_skirmisher / blue_grenadier .png
 │   ├── red_infantry / red_artillery / red_cavalry / red_grenadier .png  # 红方无散兵图（走文字占位）
 │   ├── background1.png、backgrass1/2、backdis1/2、backice1/2 .png        # 每关棋盘桌面（style.css 末尾接管）
 │   ├── europe-map.svg        # 主界面战役地图底图（37.9KB，viewBox 0 0 1000 785）
-│   ├── level1-intro-1.png    # 第 1 关教程图①：选中/下令/攻击 四步操作
-│   ├── level1-intro-2.png    # 第 1 关教程图②：步兵兵种介绍
-│   └── portraits/            # 立绘 4 张：napoleon / adjutant / courier / coalition-commander
+│   ├── level1-intro-1.png    # 第 1 关教学图①：选中/下令/攻击 四步操作
+│   ├── level1-intro-2.png    # 第 1 关教学图②：步兵兵种介绍
+│   ├── level2-intro-1.webp   # 第 2 关教学图：炮兵（新兵种首秀）
+│   ├── level3-intro-1.webp   # 第 3 关教学图：骑兵
+│   ├── level4-intro-1.webp   # 第 4 关教学图①：散兵
+│   ├── level4-intro-2.webp   # 第 4 关教学图②：掷弹兵
+│   └── portraits/            # 立绘 9 组（中性 4 + 动作差分 5），每组 PNG + WebP
 ├── favicon.svg               # 网站图标
 ├── README.md                 # 项目文档（按"文档要求"7 问组织）
 └── AGENTS.md                 # 本文件：项目现状 + 工程约定 + 验收清单
@@ -193,6 +197,17 @@
 
 > ⚠️ 命名坑：`constants.js` 的原型用 **`class`** 作键；而 `loadGame()` 建单位时把 DOM 上的类名存成 **`cls`**（`armys[i].cls`）。**对局中判断兵种请用 `u.cls`**。
 
+**新兵种靠"战前教学图"介绍**（2026-09-17 起，见「页面结构与各页职责」的进关流程）：每个新兵种首次成建制登场的关卡，把一整页 PPT 风格的教学图挂到该关 `levels.js` 的 `introImages` 上，玩家在战前简报之后、进棋盘之前逐张翻。
+
+| 关 | 教学图 | 内容 |
+|--|--|--|
+| 1 | `level1-intro-1/2.webp` | 选中 / Ctrl 多选 / 框选 / 下令 / 接敌开打四步操作；步兵 |
+| 2 | `level2-intro-1.webp` | 炮兵（射程 4.0 最远、速度 0.05 最慢） |
+| 3 | `level3-intro-1.webp` | 骑兵（速度 0.2 最快、攻击 1.0 最高） |
+| 4 | `level4-intro-1/2.webp` | 散兵（射程 1.0 / 血 42）、掷弹兵（射程 0.5 / 血 120） |
+
+> 第 3 关其实已经带了 1 名蓝方散兵（`game3.js:16`），但散兵的正式介绍页放在第 4 关——**第 4 关是 5 兵种首次全部到齐的一关**，按玩家要求如此安排。要改顺序只动 `levels.js` 的 `introImages` 即可。
+
 ## 脚本加载顺序与模块
 
 - **游戏页**：`constants → pieces → arrow → bgm → dialog → account → ui → save → main → fx → ai → levels → gameN`（都是 `defer`）。
@@ -214,7 +229,7 @@
 - 行动顺序 = `armys` 数组顺序（`gameN.js` 里 push 的顺序，蓝方先、红方后），每帧按序逐个结算。后果：后面的棋子同帧能打到刚移动过来的前面的棋子，而前者要等下一帧才还手（当作合理 feature 保留）。
 - 判死条件是 **`lp <= 0`**（原"`lp < 0`、恰好归 0 不死"的 bug 已修）。
 - **一回合 24 帧跑完立刻判胜负**：红方全灭优先判胜；否则蓝方全灭 / `remain_turns == 0` / 第 4 关逃脱超限判负。判胜负后 `#board`、`#button` 等隐藏，只留结算区。
-- 死单位先灰显，下一次点 Next Turn（`clearDisable`）才从棋盘消失；结算区的 `Replay` 会带一次性 `?replay=1` 重载，跳过剧情、简报及第一关教程并直达棋盘，然后用 `history.replaceState` 消耗该参数。
+- 死单位先灰显，下一次点 Next Turn（`clearDisable`）才从棋盘消失；结算区的 `Replay` 会带一次性 `?replay=1` 重载，跳过剧情、简报及**战前教学图**并直达棋盘，然后用 `history.replaceState` 消耗该参数。
 - 响应式：`html { min-width: 320px }`；断点 `max-width: 1100px`（面板收窄）、`max-width: 760px`（棋盘边框 6px、单列堆叠）、`max-height: 680px and min-width: 761px`（压扁纵向留白）；`prefers-reduced-motion: reduce` 关掉过渡与部分动画。
 
 ### 选择与查看模式
@@ -352,7 +367,11 @@
 - **游戏页固定 DOM**：`#board`、`#button`（「下一步」）、`#result-area`（内含 `#win`/`#lose`/星级/`#button-next-game`/`#button-replay`/`#button-fail`）、`#info-bar`、`#enemy-info`、`#game-actions`（`#save-load-btns`（Save / `#slot-select` / Load / 查看敌人）+ `#button-exit`（Menu））、`.game-heading`（`h2` + `#footer-bar`）。**一套都不能少**，`main.js` 一加载就取。
 - **登录序章按账号记忆**（2026-09-16）：序章是否播过存 `localStorage['prologue:<用户名>']='1'`（`account.js` 的 `hasSeenPrologue/markPrologueSeen`）。登录成功：有标记直跳 `menu.html`，无标记播序章；序章正常收尾与"跳过序章"都落标记后跳 `menu.html?intro=1`；注册成功跳 `index.html?prologue=1`（IIFE 自动播）。老账号无标记首次登录最多补播一次。
 - **战况条与右侧指挥停靠坞**（2026-09-16）：`renderBattleStatus()` 左上战况条含金色 pill「剩余 N 回合」（`.battle-status__turns`，key `game.turnsLeft`；`remain_turns<=5` 加 `is-urgent` 红色呼吸，reduced-motion 关闭）；`h2` 与 `document.title` 统一取 levels 注册表的 `meta.name`。宽屏 `@media (min-width:1101px)` 下 `#button` 与 `#game-actions` 改为 `position:fixed; right:14px` 的右侧纵向停靠坞（窄屏 ≤1100px 仍是棋盘下方流式；game8 不套右坞）；判胜/判负后右坞随结算隐藏，`view-enemy` 时敌方面板挪到左侧。
-- **进关流程**（`main.js` 末尾）：第 1 关 = 立绘剧情 → 战前简报（`开 战`）→ 教程图 1 → 教程图 2 → 棋盘淡入；其余关 = 立绘剧情 → 战前简报 → 淡入。每一步都裹 `try/catch`，异常直接 `revealBattlefield()`，不会卡在全黑。
+- **进关流程**（`main.js` 末尾）：**有战前教学图的关（第 1~4 关）** = 立绘剧情 → 战前简报（`开 战`）→ 教学图 1..N（逐张弹窗，点右上角 `×` 看下一张）→ 棋盘淡入；**其余关** = 立绘剧情 → 战前简报 → 淡入。每一步都裹 `try/catch`，异常直接 `revealBattlefield()`，不会卡在全黑。
+  - **教学图清单写在 `levels.js` 每关的 `introImages`**（字符串数组，`main.js` 的 `levelIntroImages(meta)` 读取）：**没写 / 空数组 = 本关不弹教学图**（第 5~8 关就是这样）。第 1 关 2 张（操作四步 + 步兵）、第 2 关 1 张（炮兵）、第 3 关 1 张（骑兵）、第 4 关 2 张（散兵 + 掷弹兵）。
+  - **弹窗样式完全复用第 1 关那一套**（`.level-intro-image-overlay` / `-box` / `-image` / `-close`），**CSS 一行没改**；渲染尺寸 `max-width: 96vw; max-height: 94vh` + `object-fit: contain`。删掉原来硬编码的 `if (CURRENT_LEVEL_ID !== 1) { next(); return; }` 与 `const images = [两张固定路径]`，改成读 `introImages`。
+  - **预热与 preload 都跟到第 2/3/4 关**：`warmLevelIntroAssets()` 现在遍历 `levelIntroImages(meta)`；`game2/3/4.html` 也各加了 `<link rel="preload" as="image" ... type="image/webp">`。
+  - **跳过条件与第 1 关完全一致**：`?replay=1`（Replay 按钮）与中途读档的 `opts.skipIntro` 都会**整套**跳过（剧情 + 简报 + 教学图），直接淡入战场。
   - `level-opening` 这个 `body` 类**必须成对**：它把战场藏起来，只有 `revealBattlefield()` 会摘掉。
 - **结局页**：`.page-ending` + `.form-box` 里一个 `Next`。结局页的 `.form-box` 把背景/边框/圆角/阴影/内边距全部归零，**还必须关掉 `.page-ending .form-box::before`（`content:none`）**——那套皮肤给它挂了一个 `inset:7px` 的 1px 装饰线框，只清本体 `border`/`box-shadow` 它还在，按钮上会留一道细线。`index.html` / `register.html` 的登录注册表单走另一套皮肤（选择器带 `.page-ending` 前缀，不受影响）。
   - `end-game.html` 里那句 `.page-note#normal-note`"（历史正常进行……而另一种可能，还藏在更深处……）"**只在隐藏路线还没打开时显示**：页面脚本里 `hiddenRouteOpen()` 为真就把它 `display:none`（否则"还藏在更深处"跟地图上已经出现的隐藏关自相矛盾）。其余三个结局页的 `.page-note` 是常显的。
@@ -1088,5 +1107,45 @@
     与 `levels.js` 的 `meta`，以及页面标题里的回合文案。
   - ⚠️ 推演脚本里若写死 `for (let t = 1; t <= 18; t++)`，改回合数的对照实验会**静默失效**
     （多出来的回合根本没跑）；必须用 `Number(CURRENT_GAME.turns_limit)`。
+
+### 第十二轮：新兵种「战前教学图」（2026-09-17）
+
+玩家要求："加新手教程。炮兵加到第二关，骑兵加到第三关，散兵和掷弹兵加到第四关。新手教程参考关卡一。"
+
+**做法：把第 1 关那套教学图机制抽成"每关一张清单"，再把 4 张新兵种 PPT 挂到第 2/3/4 关。**
+
+| 关 | 新增教学图 | 兵种要点（图上的文案） |
+|--|--|--|
+| 2 | `img/level2-intro-1.webp` | 炮兵：重要兵种；攻击力较高、血量一般、攻击距离极高；中坚力量，是战斗的核心 |
+| 3 | `img/level3-intro-1.webp` | 骑兵：特殊兵种；攻击力较高、血量一般、移动速度极快；突破力量，截杀敌方重要单位 |
+| 4 | `img/level4-intro-1.webp` | 散兵：特殊兵种；攻击范围较高、血量较低、移动速度较快；火力支援，游击骚扰 |
+| 4 | `img/level4-intro-2.webp` | 掷弹兵：特殊兵种；攻击范围较低、血量较高、移动速度较慢；战线支点，重要力量 |
+
+**代码改动（破坏最小的方式，`style.css` 一行没动）：**
+
+1. `js/levels.js`：第 1~4 关各加一个 `introImages: ['…webp?v=…']` 字段（第 1 关就是把原来写死在 `main.js` 里的两个路径搬过来）。**跨关卡信息进 `levels.js`** 符合既有约定，且各关作者以后改自己的教学图不用碰 `main.js`。
+2. `js/main.js`：新增 `levelIntroImages(meta)`（没写 / 空数组 → 返回 `[]`）；`showIntroImages()` 删掉硬编码的 `if (CURRENT_LEVEL_ID !== 1)` 和固定路径数组，改成读清单（**空清单直接 `next()`**，与原来"非第 1 关直接跳过"等价）；`warmLevelIntroAssets()` 里的 `if (Number(CURRENT_LEVEL_ID) === 1) { 预热两张固定图 }` 同样换成遍历清单。`alt` 文案从"第一关教程图 N"改成 `<关名> · 战前教学图 N / M`。
+3. `game2/3/4.html`：各加 `<link rel="preload" as="image" href="…" type="image/webp">`（第 4 关两条），与 `game1.html` 一致。
+4. **19 个 HTML 的资源版本号 `20260916-fixB34` → `20260917-tutor1`**（共 136 处）。新教学图的 URL 带 `?v=20260917-img1`；`level1-intro-*.webp` 保持 `20260916-img1` 不动（图没换）。
+
+**素材**：4 张源 PNG（2000×1184 / 1629×965 / 2000×1184 / 1630×965）统一 `magick in.png -resize 1530x -strip -quality 82 -define webp:method=6 out.webp` → **全部 1530×906，合计 712,636 B**（单张 136~223KB）。比例 1.688 与 `level1-intro-2`（1524×903）完全一致，所以在同一个弹窗里渲染尺寸相同。**只入库 WebP、不留 PNG 母版**：母版每张约 2MB（4 张 ≈ 8MB），而页面只加载 `.webp`；`level1-intro-1/2` 的 PNG 是历史遗留，不影响。
+
+**验收（Playwright + headless Edge，1366×768，程序化点完剧情/简报后逐张关闭教学图）：**
+
+| 页面 | 期望张数 | 实测 | 每张 `naturalWidth×naturalHeight` | 渲染尺寸 |
+|--|--|--|--|--|
+| `game1.html` | 2 | **2** | 1530×1064、1524×903 | 1038×722、1218×722 |
+| `game2.html` | 1 | **1** | 1530×906 | 1219×722 |
+| `game3.html` | 1 | **1** | 1530×906 | 1219×722 |
+| `game4.html` | 2 | **2** | 1530×906 ×2 | 1219×722 |
+| `game5/6/7.html` | 0 | **0** | — | — |
+| `game1/2/4.html?replay=1` | 0 | **0** | — | — |
+| `game8.html`（走完对话） | 0 | **0** | — | — |
+
+- 教学图 `is-loading` 全部 `false`（图片已解码才显示）、`×` 按钮存在、关闭后 `body` 不再带 `level-opening`、`#board` 子元素 108~117 个、**页面破图 0、`pageerror` 0**。
+- 静态：改动的 `main.js` / `levels.js` 通过 `node --check`；**16 段内联 `<script>` 语法自检 0 错**；索引/主界面/模式/成就/三个结局页/小组页/第 8 关 smoke 全部无 `pageerror`、无破图；`git diff --check` 干净。
+- ⚠️ 首次跑 smoke 时 `game8.html` 报 `!!`（`level-opening` + 一张 `src` 为空的 `<img>`）——那是**测试脚本在对话没走完时就取样**，`game8` 本来就要等剧情播完才揭开战场；补上"点完对话"后再测就是 `game8 / overlays 0 / board 109 / 破图 0`。**这类"疑似回归"先怀疑取样时机。**
+
+**遗留提示**：第 3 关已有 1 名蓝方散兵（`game3.js:16`），但按玩家要求散兵介绍页放在第 4 关；要调只需挪 `levels.js` 的 `introImages`。
 
 

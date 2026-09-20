@@ -63,6 +63,12 @@ var LEVELS_ORDER = [
 		   往上挪到 44.50（≈27px），图钉本体稳稳落在大陆上。
 		   ⚠️ 这是**显示用的手动偏移**，和 L2 / L4 的偏移是同一类处理。 */
 		map: { lon: 5.93, lat: 44.50 },
+		/* 战前教学图：简报之后、进棋盘之前按顺序逐张弹出（点右上角 × 看下一张）。
+		   ① 操作四步（选中 / Ctrl 多选 / 框选 / 下令 / 接敌开打）② 步兵兵种介绍。 */
+		introImages: [
+			'./img/level1-intro-1.webp?v=20260916-img1',
+			'./img/level1-intro-2.webp?v=20260916-img1'
+		],
 		hint: localizedText('守军失去统一指挥，不会主动机动。让两翼互相策应，再集中火力逐支歼灭。', 'The garrison lacks unified command and will not maneuver. Keep both wings supporting each other, then concentrate on one unit at a time.'),
 		retryHints: [
 			localizedText('不要让所有部队挤向同一点；左右两翼各留一条接敌路线。', 'Do not funnel every unit through one point; keep a separate approach on each flank.'),
@@ -88,6 +94,8 @@ var LEVELS_ORDER = [
 		chapter: localizedText('第二幕 · 港湾的钥匙', 'Act II · Key to the Harbor'),
 		location: localizedText('埃吉莱特高地 · 1793年12月17日', 'Heights of l’Eguillette · 17 December 1793'), scene: 'battery',
 		map: { lon: 1.44, lat: 43.60 },
+		/* 战前教学图：炮兵在本关首次登场——射程 4.0 格、速度最慢、血量为标准值。 */
+		introImages: ['./img/level2-intro-1.webp?v=20260917-img1'],
 		hint: localizedText('敌军固定火炮控制接近路线。让步兵吸引火力，己方炮兵从射程优势位置拆掉炮位。', 'A fixed enemy battery controls the approach. Let infantry draw its fire while your guns dismantle it from superior range.'),
 		retryHints: [
 			localizedText('先查看敌方火炮射程，不要让低生命散兵率先进入火力圈。', 'Inspect the enemy gun’s range first; do not send low-health skirmishers into it first.'),
@@ -113,6 +121,8 @@ var LEVELS_ORDER = [
 		chapter: localizedText('第三幕 · 雾中的缺口', 'Act III · A Gap in the Fog'),
 		location: localizedText('耶拿高原 · 1806年10月14日清晨', 'Jena Plateau · Morning of 14 October 1806'), scene: 'fog',
 		map: { lon: 11.59, lat: 50.93 },
+		/* 战前教学图：骑兵在本关首次登场——速度 0.2（最快）、攻击 1.0（最高）、血量一般。 */
+		introImages: ['./img/level3-intro-1.webp?v=20260917-img1'],
 		hint: localizedText('浓雾中的敌军会先整队两步，再扑向最近单位。步兵护住炮兵，骑兵与散兵从两翼夹击。', 'The enemy reforms for two turns in the fog, then attacks the nearest unit. Screen your guns and strike from both flanks.'),
 		retryHints: [
 			localizedText('前两步拉成弧形阵线，不要把骑兵单独送进雾里。', 'Use the first two turns to form a curved line; do not send cavalry into the fog alone.'),
@@ -138,6 +148,11 @@ var LEVELS_ORDER = [
 		chapter: localizedText('第四幕 · 王国崩塌', 'Act IV · Collapse of a Kingdom'),
 		location: localizedText('奥尔施塔特—魏玛道路 · 1806年10月14日', 'Auerstedt–Weimar Road · 14 October 1806'), scene: 'river',
 		map: { lon: 13.40, lat: 52.52 },
+		/* 战前教学图：散兵（射程 1.0 / 血 42）与掷弹兵（射程 0.5 / 血 120）同场首秀，两张连播。 */
+		introImages: [
+			'./img/level4-intro-1.webp?v=20260917-img1',
+			'./img/level4-intro-2.webp?v=20260917-img1'
+		],
 		hint: localizedText('普军正向右上方退路溃逃。骑兵提前绕行封锁出口，最多只能放走两支部队。', 'The Prussians are fleeing toward the upper-right exit. Send cavalry ahead to seal it; no more than two units may escape.'),
 		retryHints: [
 			localizedText('开局就让骑兵斜插右上出口，不要从溃兵后方排队追。', 'Send cavalry diagonally toward the upper-right exit immediately; do not queue behind the fugitives.'),
