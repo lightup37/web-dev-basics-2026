@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08101f">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="方块竞技场：本地账号、单人天梯与同机双人分屏俄罗斯方块。">
+  <title>方块竞技场 · Tetris Arena</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="ambient-grid" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <section id="auth-screen" class="screen auth-screen">
+      <div class="auth-hero">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="brand-cell c-cyan"></span>
+          <span class="brand-cell c-pink"></span>
+          <span class="brand-cell c-yellow"></span>
+          <span class="brand-cell c-green"></span>
+        </div>
+        <p class="eyebrow">LOCAL ARCADE / SEASON 01</p>
+        <h1>方块<br><span>竞技场</span></h1>
+        <p class="hero-copy">在单人天梯中磨练节奏，或与身边的朋友在同一台电脑上分屏对决。</p>
+        <div class="feature-strip">
+          <span>7-Bag 随机</span>
+          <span>垃圾行攻击</span>
+          <span>本地排行榜</span>
+        </div>
+        <div class="floating-pieces" aria-hidden="true">
+          <i class="piece piece-t"></i>
+          <i class="piece piece-l"></i>
+          <i class="piece piece-s"></i>
+        </div>
+      </div>
+
+      <div class="auth-card panel">
+        <div class="auth-tabs" role="tablist" aria-label="账号入口">
+          <button id="login-tab" class="auth-tab active" type="button" role="tab" aria-selected="true">登录</button>
+          <button id="register-tab" class="auth-tab" type="button" role="tab" aria-selected="false">注册</button>
+        </div>
+
+        <form id="login-form" class="auth-form" novalidate>
+          <div class="form-heading">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h2>继续你的排位</h2>
+          </div>
+          <label class="field-label" for="login-username">用户名</label>
+          <input id="login-username" name="username" type="text" autocomplete="username" maxlength="16" placeholder="输入用户名" required>
+          <label class="field-label" for="login-password">密码</label>
+          <div class="password-field">
+            <input id="login-password" name="password" type="password" autocomplete="current-password" maxlength="64" placeholder="输入密码" required>
+            <button class="password-toggle" type="button" data-target="login-password" aria-label="显示或隐藏密码">显示</button>
+          </div>
+          <p id="login-message" class="form-message" role="alert"></p>
+          <button class="button button-primary button-block" type="submit">进入竞技场</button>
+          <p class="local-note">账号数据仅保存在当前浏览器，不支持跨设备同步。</p>
+        </form>
+
+        <form id="register-form" class="auth-form" hidden novalidate>
+          <div class="form-heading">
+            <p class="eyebrow">CREATE PLAYER</p>
+            <h2>建立新档案</h2>
+          </div>
+          <label class="field-label" for="register-username">用户名</label>
+          <input id="register-username" name="username" type="text" autocomplete="username" maxlength="16" placeholder="1–16 位中文、字母或数字" required>
+          <label class="field-label" for="register-password">密码</label>
+          <div class="password-field">
+            <input id="register-password" name="password" type="password" autocomplete="new-password" maxlength="64" placeholder="输入密码（至少 1 位）" required>
+            <button class="password-toggle" type="button" data-target="register-password" aria-label="显示或隐藏密码">显示</button>
+          </div>
+          <p id="register-message" class="form-message" role="alert"></p>
+          <button class="button button-primary button-block" type="submit">创建账号</button>
+          <p class="local-note">密码会加盐哈希后存储；本地账号不等同于服务器账号。</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="lobby-screen" class="screen lobby-screen" hidden>
+      <header class="site-header">
+        <a class="mini-brand" href="#" id="lobby-home-link" aria-label="返回大厅">
+          <span class="mini-brand-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span>方块竞技场</span>
+        </a>
+        <div class="header-actions">
+          <div class="user-chip">
+            <span id="header-avatar" class="avatar">P1</span>
+            <div>
+              <strong id="header-username">玩家</strong>
+              <span id="header-tier">青铜</span>
+            </div>
+          </div>
+          <button class="button button-quiet sound-toggle" data-sound-toggle type="button" aria-pressed="true" aria-label="关闭音效"><span class="sound-label">音效</span><strong class="sound-state">开</strong></button>
+          <button id="logout-button" class="button button-quiet" type="button">退出</button>
+        </div>
+      </header>
+
+      <div class="lobby-hero">
+        <div>
+          <p class="eyebrow">PLAYER HUB</p>
+          <h2 class="lobby-title">你能<span class="text-gradient">堆到多高？</span></h2>
+          <p>实时保存本地战绩。天梯分与对战分彼此独立计算。</p>
+        </div>
+        <div class="quick-stats" aria-label="个人战绩">
+          <div><span>天梯分</span><strong id="lobby-ladder-rating">1000</strong></div>
+          <div><span>最高分</span><strong id="lobby-best-score">0</strong></div>
+          <div><span>总消行</span><strong id="lobby-total-lines">0</strong></div>
+          <div><span>对战胜场</span><strong id="lobby-battle-wins">0</strong></div>
+        </div>
+      </div>
+
+      <div class="mode-grid">
+        <article class="mode-card mode-single panel">
+          <div class="mode-card-top">
+            <span class="mode-index">01</span>
+            <span id="single-tier-badge" class="tier-badge">青铜</span>
+          </div>
+          <div class="mode-icon ladder-icon" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p class="eyebrow">SOLO RANKED</p>
+          <h3>单人天梯</h3>
+          <p class="mode-description">冲击更高分数与等级。结束后根据本局表现调整天梯评分。</p>
+          <div class="mode-meta">
+            <div><span>当前天梯</span><strong id="single-current-rating">1000</strong></div>
+            <div><span>已完成</span><strong id="single-games">0 局</strong></div>
+          </div>
+          <button id="start-single-button" class="button button-primary button-block" type="button">开始单人天梯</button>
+          <p class="mode-hint">键盘：A / D 移动 · W 旋转 · S 软降 · 空格硬降 · C 暂存</p>
+        </article>
+
+        <article class="mode-card mode-battle panel">
+          <div class="mode-card-top">
+            <span class="mode-index">02</span>
+            <span class="tier-badge tier-battle">LOCAL VS</span>
+          </div>
+          <div class="mode-icon versus-icon" aria-hidden="true"><span>1</span><b>VS</b><span>2</span></div>
+          <p class="eyebrow">SPLIT-SCREEN</p>
+          <h3>同机分屏对战</h3>
+          <p class="mode-description">两位玩家同屏竞技。消行会向对手发送垃圾行，先顶出者落败。</p>
+
+          <div class="battle-setup">
+            <div class="seat-row">
+              <div class="seat-label"><span class="seat-dot p1-dot"></span>玩家一</div>
+              <div class="seat-account"><strong id="battle-p1-name">当前账号</strong><span id="battle-p1-rating">对战分 1000</span></div>
+            </div>
+            <div class="seat-row">
+              <div class="seat-label"><span class="seat-dot p2-dot"></span>玩家二</div>
+              <div id="battle-p2-accounts" class="account-options" aria-label="选择玩家二账号"></div>
+            </div>
+            <div id="battle-p2-empty" class="inline-empty" hidden>
+              还没有第二个本地账号。请在下方创建一个。
+            </div>
+            <label class="field-label compact-label" for="battle-p2-password">玩家二密码</label>
+            <div class="password-field">
+              <input id="battle-p2-password" type="password" autocomplete="off" maxlength="64" placeholder="验证玩家二身份">
+              <button class="password-toggle" type="button" data-target="battle-p2-password" aria-label="显示或隐藏密码">显示</button>
+            </div>
+            <p id="battle-message" class="form-message" role="alert"></p>
+            <button id="start-battle-button" class="button button-pink button-block" type="button">进入分屏对战</button>
+
+            <details id="create-p2-details" class="secondary-account">
+              <summary>添加第二位本地玩家</summary>
+              <form id="create-p2-form" class="secondary-form" novalidate>
+                <label class="field-label compact-label" for="p2-new-username">新用户名</label>
+                <input id="p2-new-username" type="text" maxlength="16" placeholder="1–16 位用户名" required>
+                <label class="field-label compact-label" for="p2-new-password">新密码</label>
+                <input id="p2-new-password" type="password" maxlength="64" placeholder="输入密码（至少 1 位）" required>
+                <p id="create-p2-message" class="form-message" role="alert"></p>
+                <button class="button button-secondary button-block" type="submit">创建玩家二账号</button>
+              </form>
+            </details>
+          </div>
+        </article>
+      </div>
+
+      <section class="ladder-board panel" aria-labelledby="ladder-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">LOCAL LEADERBOARD</p>
+            <h3 id="ladder-heading">本机天梯榜</h3>
+          </div>
+          <p class="section-note">仅统计当前浏览器内的账号</p>
+        </div>
+        <div class="leaderboard-table" role="table" aria-label="本机天梯排行榜">
+          <div class="leaderboard-head" role="row">
+            <span role="columnheader">排名</span>
+            <span role="columnheader">玩家</span>
+            <span role="columnheader">段位</span>
+            <span role="columnheader">天梯分</span>
+            <span role="columnheader">最高分</span>
+            <span role="columnheader">场次</span>
+          </div>
+          <div id="leaderboard-body" class="leaderboard-body"></div>
+        </div>
+        <div class="ladder-rules">
+          <strong>评分规则</strong>
+          <span>初始 1000 分；每局根据得分、消行数和等级综合调整，最高单局 +50 分。</span>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <span>BLOCK ARENA / LOCAL EDITION</span>
+        <span>账号与排行榜数据存储于本机浏览器</span>
+      </footer>
+    </section>
+
+    <section id="game-screen" class="screen game-screen" hidden>
+      <header class="game-header">
+        <button id="leave-game-button" class="button button-quiet" type="button">← 返回大厅</button>
+        <div class="match-title">
+          <p id="game-mode-label" class="eyebrow">SOLO RANKED</p>
+          <h2 id="game-title">单人天梯</h2>
+        </div>
+        <div class="match-tools">
+          <span id="game-timer" class="game-timer">00:00</span>
+          <button class="button button-quiet sound-toggle" data-sound-toggle type="button" aria-pressed="true" aria-label="关闭音效"><span class="sound-label">音效</span><strong class="sound-state">开</strong></button>
+          <button id="pause-game-button" class="button button-secondary" type="button">暂停</button>
+        </div>
+      </header>
+
+      <div id="game-stage" class="game-stage solo">
+        <article class="player-panel player-one" data-player="1">
+          <header class="player-head">
+            <div class="player-identity">
+              <span class="seat-dot p1-dot"></span>
+              <div><strong id="p1-name">玩家一</strong><span id="p1-tier">青铜</span></div>
+            </div>
+            <div class="player-score"><span>SCORE</span><strong id="p1-score">0</strong></div>
+          </header>
+          <div class="player-layout">
+            <div class="board-column">
+              <div class="board-frame">
+                <canvas id="p1-board" width="300" height="600" aria-label="玩家一游戏棋盘"></canvas>
+                <div id="p1-toast" class="board-toast" aria-live="polite"></div>
+              </div>
+            </div>
+            <aside class="side-stack">
+              <section class="mini-card">
+                <h3>暂存</h3>
+                <canvas id="p1-hold" width="100" height="76" aria-label="玩家一暂存方块"></canvas>
+              </section>
+              <section class="mini-card next-card">
+                <h3>下一个</h3>
+                <canvas id="p1-next" width="100" height="220" aria-label="玩家一下一个方块"></canvas>
+              </section>
+              <section class="player-stats">
+                <div><span>等级</span><strong id="p1-level">1</strong></div>
+                <div><span>消行</span><strong id="p1-lines">0</strong></div>
+                <div><span>攻击</span><strong id="p1-combo">0</strong></div>
+              </section>
+            </aside>
+          </div>
+          <div class="controls-ribbon">
+            <span><kbd>A</kbd><kbd>D</kbd> 移动</span>
+            <span><kbd>W</kbd> 旋转</span>
+            <span><kbd>S</kbd> 软降</span>
+            <span><kbd>Space</kbd> 硬降</span>
+            <span><kbd>C</kbd> 暂存</span>
+          </div>
+        </article>
+
+        <article id="p2-panel" class="player-panel player-two" data-player="2" hidden>
+          <header class="player-head">
+            <div class="player-identity">
+              <span class="seat-dot p2-dot"></span>
+              <div><strong id="p2-name">玩家二</strong><span id="p2-tier">白银</span></div>
+            </div>
+            <div class="player-score"><span>SCORE</span><strong id="p2-score">0</strong></div>
+          </header>
+          <div class="player-layout">
+            <div class="board-column">
+              <div class="board-frame">
+                <canvas id="p2-board" width="300" height="600" aria-label="玩家二游戏棋盘"></canvas>
+                <div id="p2-toast" class="board-toast" aria-live="polite"></div>
+              </div>
+            </div>
+            <aside class="side-stack">
+              <section class="mini-card">
+                <h3>暂存</h3>
+                <canvas id="p2-hold" width="100" height="76" aria-label="玩家二暂存方块"></canvas>
+              </section>
+              <section class="mini-card next-card">
+                <h3>下一个</h3>
+                <canvas id="p2-next" width="100" height="220" aria-label="玩家二下一个方块"></canvas>
+              </section>
+              <section class="player-stats">
+                <div><span>等级</span><strong id="p2-level">1</strong></div>
+                <div><span>消行</span><strong id="p2-lines">0</strong></div>
+                <div><span>攻击</span><strong id="p2-combo">0</strong></div>
+              </section>
+            </aside>
+          </div>
+          <div class="controls-ribbon">
+            <span><kbd>←</kbd><kbd>→</kbd> 移动</span>
+            <span><kbd>↑</kbd> 旋转</span>
+            <span><kbd>↓</kbd> 软降</span>
+            <span><kbd>Enter</kbd> 硬降</span>
+            <span><kbd>右Shift</kbd> 暂存</span>
+          </div>
+        </article>
+      </div>
+
+      <div id="countdown-overlay" class="countdown-overlay" hidden aria-live="assertive">
+        <span id="countdown-value">3</span>
+      </div>
+      <div id="pause-overlay" class="pause-overlay" hidden>
+        <div class="pause-card panel">
+          <p class="eyebrow">MATCH PAUSED</p>
+          <h2>比赛暂停</h2>
+          <p>按 <kbd>P</kbd> 或 <kbd>Esc</kbd> 继续</p>
+          <button id="resume-game-button" class="button button-primary" type="button">继续比赛</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="result-modal" class="modal-backdrop" hidden>
+    <section class="modal-card panel" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <p id="result-eyebrow" class="eyebrow">RUN COMPLETE</p>
+      <h2 id="result-title">本局结束</h2>
+      <p id="result-subtitle" class="result-subtitle"></p>
+      <div id="result-stats" class="result-stats"></div>
+      <p id="result-rating" class="result-rating"></p>
+      <div class="modal-actions">
+        <button id="play-again-button" class="button button-primary" type="button">再来一局</button>
+        <button id="result-lobby-button" class="button button-quiet" type="button">返回大厅</button>
+      </div>
+    </section>
+  </div>
+
+  <noscript>本游戏需要启用 JavaScript。</noscript>
+  <script src="js/storage.js"></script>
+  <script src="js/tetris.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
+
+
